@@ -1,3 +1,3 @@
-def teste():
-    g = 1  + 2 
+def teste(var1, var2):
+    g = a + b
     return g
