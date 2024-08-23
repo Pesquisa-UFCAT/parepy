@@ -16,7 +16,7 @@ Example 1
 {: .label .label-blue }
 
 <p align="justify">
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). The loads are random variables. Assume \(\boldsymbol{P}, \boldsymbol{W}\) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:<br><br>
+Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). The loads are random variables. Assume \(\boldsymbol{P},\; \boldsymbol{W}\) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:<br><br>
 <table style = "width:100%">
     <tr>
         <th style="width: 25%;">Variable</th>
@@ -25,19 +25,19 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <th style="width: 25%;">coefficient of variation (COV)</th>
     </tr>
     <tr>
-        <td style="width: 25%;">Live load (\(\boldsymbol{F_y}\))</td>
+        <td style="width: 25%;">Live load \(\left(\boldsymbol{F_y}\right)\)</td>
         <td style="width: 25%;">Normal</td>
         <td style="width: 25%;">40.3</td>
         <td style="width: 25%;">0.115</td>
     </tr>
     <tr>
-        <td style="width: 25%;">Live load (\(\boldsymbol{P}\))</td>
+        <td style="width: 25%;">Live load \(\left(\boldsymbol{P}\right)\)</td>
         <td style="width: 25%;">Gumbel max.</td>
         <td style="width: 25%;">10.2</td>
         <td style="width: 25%;">0.110</td>
     </tr>
     <tr>
-        <td style="width: 25%;">Dead load (\(\boldsymbol{W}\))</td>
+        <td style="width: 25%;">Dead load \(\left(\boldsymbol{W}\right)\)</td>
         <td style="width: 25%;">Log-normal</td>
         <td style="width: 25%;">0.25</td>
         <td style="width: 25%;">0.100</td>

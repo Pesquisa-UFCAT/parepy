@@ -21,7 +21,7 @@ pip install parepy-toolbox
 ```
 <h1><b>FILES STRUCTURE</b></h1>
 
-<p align="justify">Let's use the example of building a problem in PAREpy using Jupyter Notebook or <code>Python</code> file. Therefore, the basic file structure that you must assemble to use the library must be as follows:</p>
+<p align="justify">Let's use the example of building a problem in PAREpy using Jupyter Notebook or <b>Python</b> file. Therefore, the basic file structure that you must assemble to use the library must be as follows:</p>
 
 ```bash
  .
