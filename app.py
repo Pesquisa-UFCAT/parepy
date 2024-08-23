@@ -21,6 +21,13 @@ def generate_function_code(name, num_vars, body):
 
 st.title('Gerador de Código Python')
 
+st.write("""
+Esta aplicação permite ao usuário gerar um código para uma função Python. 
+Para isso, o usuário fornece o nome da função, o número de variáveis de entrada e o corpo da função. 
+O código gerado incluirá automaticamente uma variável 'g' retornada pela função.
+Após gerar o código, o usuário poderá visualizá-lo na tela e fazer o download do arquivo Python.
+""")
+
 func_name = st.text_input('Nome da função:')
 num_vars = st.number_input('Número de variáveis:', min_value=0, step=1)
 func_body = st.text_area('Corpo da função:', help='Certifique-se de que o corpo da função comece com "g =".')
