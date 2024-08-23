@@ -61,10 +61,11 @@ The limit state function for beam bending can be expressed as:
         <td style="width: 10%;"><p align = "right" id = "eq2">(2)</p></td>
     </tr>
     <tr>
-        <td style="width: 90%;">\[ \boldsymbol{G} = \boldsymbol{S} - \boldsymbol{R} \begin{cases}
-\leq 0 & \text{safe}\\ 
-> 0 & \text{failure}
-\end{cases} \]</td>
+        <td style="width: 90%;">\[ \boldsymbol{G} = \boldsymbol{R} - \boldsymbol{S} \begin{cases}
+\leq 0 & \text{failure}\\ 
+> 0 & \text{safe}
+\end{cases} \]
+        </td>
         <td style="width: 10%;"><p align = "right" id = "eq3">(3)</p></td>
     </tr>
 </table>
