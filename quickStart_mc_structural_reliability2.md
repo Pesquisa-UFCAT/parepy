@@ -17,7 +17,8 @@ Example 1
 {: .label .label-blue }
 
 <p align="justify">
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). The loads are random variables. Assume \(\boldsymbol{P}, \boldsymbol{W}\) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:<br><br>
+Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). The loads are random variables. Assume \(\boldsymbol{P}, \boldsymbol{W}\) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+</p>
 
 <table style = "width:100%; text-align: center;">
     <tr>
@@ -46,7 +47,9 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
     </tr>
 </table>
 
+<p align="justify">
 The limit state function for beam bending can be expressed as:
+</p>
 
 <table style = "width:100%">
     <tr>
@@ -66,7 +69,9 @@ The limit state function for beam bending can be expressed as:
     </tr>
 </table>
 
+<p align="justify">
 Consider equation <a href="#eq4">(4)</a> for resistance degradation. Consider 50 years to stochastic analysis (five time steps).
+</p>
 
 <table style = "width:100%">
     <tr>
@@ -75,9 +80,8 @@ Consider equation <a href="#eq4">(4)</a> for resistance degradation. Consider 50
     </tr>
 </table>
 
-</p> 
-
-<h3><code>of_file.py</code></h3>
+of_file.py
+{: .label .label-red }
 
 ```python
 def nowak_collins_time_example(x, none_variable):
@@ -110,7 +114,8 @@ def nowak_collins_time_example(x, none_variable):
     return [capacity], [demand], [constraint]
 ```
 
-<h3><code>your_problem.ipynb</code></h3>
+your_problem.ipynb
+{: .label .label-red }
 
 ```python
 # Libraries
