@@ -17,7 +17,7 @@ Example 1
 
 <p align="justify">
 Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). The loads are random variables. Assume \(\boldsymbol{P},\; \boldsymbol{W}\) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:<br><br>
-<table style = "width:100%">
+<table style = "width:100%; text-align: center;">
     <tr>
         <th style="width: 25%;">Variable</th>
         <th style="width: 25%;">Distribution</th>
