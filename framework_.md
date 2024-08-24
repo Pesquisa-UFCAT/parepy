@@ -12,3 +12,6 @@ title: Framework
 <!--Don't delete ths script-->
 
 <p align="justify">In this section, we will show the internal functions of this framework.</p>
+
+
+{:toc}
