@@ -40,8 +40,6 @@ pip install parepy-toolbox
 ```
 
 <p align="justify">The <code>of_file.py</code> file should contain the objective function of the problem. The <code>your_problem</code> file is the file that will contain the call to the main function and other settings necessary for the use of the algorithm.
-
-More details will be shown in other sections!
 </p>
 
 <h2><code>of_file.py</code></h2>
