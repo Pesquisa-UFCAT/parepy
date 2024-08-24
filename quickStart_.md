@@ -76,7 +76,7 @@ def my_function(x, none_variable):
 </ol>
 
 <p align="justify">
-To demenostrate how to created a object function we use Beck <a href="#ref1">[1]</a> example. The State Limit Function as given by:
+To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a> example. The State Limit Function is given by:
 </p>
 
 <table style = "width:100%">
