@@ -5,7 +5,7 @@ remote_theme: just-the-docs/just-the-docs
 url: https://just-the-docs.github.io
 
 aux_links:
-  PyPi: https://pypi.org/project/parepy-toolbox/
+  Release history: https://pypi.org/project/parepy-toolbox/#history
 
 color_scheme: nil
 
