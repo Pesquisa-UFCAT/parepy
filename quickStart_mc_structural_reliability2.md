@@ -133,9 +133,9 @@ from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_time_example
 
 # Dataset
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False, 'seed': None}
+f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': True, 'seed': None}
 p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'stochastic variable': False, 'seed': None}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'stochastic variable': True, 'seed': None}
+w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'stochastic variable': False, 'seed': None}
 var = [f, p, w]
 
 # PAREpy setup
