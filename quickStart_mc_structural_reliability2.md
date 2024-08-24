@@ -12,8 +12,7 @@ title: Time-dependent structural reliability
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete this script-->
 
-
-Example 1
+Example 1 - CRUDE MONTE CARLO
 {: .label .label-blue }
 
 <p align="justify">
@@ -28,7 +27,7 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <th style="width: 25%;">Coefficient of Variation (COV)</th>
     </tr>
     <tr>
-        <td style="width: 25%;">Live load \(\left(\boldsymbol{F_y}\right)\)</td>
+        <td style="width: 25%;">Live load¹ \(\left(\boldsymbol{F_y}\right)\)</td>
         <td style="width: 25%;">Normal</td>
         <td style="width: 25%;">40.3</td>
         <td style="width: 25%;">0.115</td>
@@ -44,6 +43,9 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <td style="width: 25%;">Log-normal</td>
         <td style="width: 25%;">0.25</td>
         <td style="width: 25%;">0.100</td>
+    </tr>
+    <tr>
+        <td colspan="4">¹Stochastic random variable</td>
     </tr>
 </table>
 
@@ -71,12 +73,12 @@ The limit state function for beam bending can be expressed as:
 </table>
 
 <p align="justify">
-Consider equation <a href="#eq4">(4)</a> for resistance degradation. Consider 50 years to stochastic analysis (five time steps).
+Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\). Use 50 years to stochastic analysis (five time steps).
 </p>
 
 <table style = "width:100%">
     <tr>
-        <td style="width: 90%;">\[ D(t_i) = 1 - \frac{0.2/t_i}{100} \]</td>
+        <td style="width: 90%;">\[ D(t_i) = 1 - \frac{0.2}{t_i} \cdot 0.01 \]</td>
         <td style="width: 10%;"><p align = "right" id = "eq4">(4)</p></td>
     </tr>
 </table>
@@ -88,6 +90,7 @@ of_file.py
 def nowak_collins_time_example(x, none_variable):
     """Objective function for the Nowak example (tutorial).
     """
+    
     # User must copy and paste this code when tim reliability is required
     ###########################################
     id_analysis = int(x[-1])

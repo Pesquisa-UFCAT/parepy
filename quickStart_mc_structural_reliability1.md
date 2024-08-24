@@ -12,7 +12,7 @@ title: Structural reliability
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete this script-->
 
-Example 1
+Example 1 - CRUDE MONTE CARLO
 {: .label .label-blue }
 
 <p align="justify">
