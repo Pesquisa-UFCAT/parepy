@@ -141,7 +141,7 @@ Using two state limit functions:
 
 <table style = "width:100%">
     <tr>
-        <td style="width: 90%;">\[ \mathbf{G}_0 = \mathbf{R} - \mathbf{D} - \mathbf{L} \]</td>
+        <td style="width: 90%;">\[ \mathbf{G}_0 = \mathbf{R}_d - \mathbf{D} - \mathbf{L} \]</td>
         <td style="width: 10%;"><p align = "right" id = "eq1">(1)</p></td>
     </tr>
     <tr>
