@@ -296,6 +296,8 @@ random variables n=90:
  [8.55312079  0.        ]  --> sample 29 time step = 0
  [8.55312079  1.        ]  --> sample 29 time step = 1
  [8.55312079  2.        ]] --> sample 29 time step = 2
+
+type variable: <class 'numpy.ndarray'>
 ```
 
 Example 3
@@ -335,6 +337,8 @@ random variables n=90:
  [8.55312079  0.        ]  --> sample 29 time step = 0
  [9.12659394  1.        ]  --> sample 29 time step = 1
  [9.12659394  2.        ]] --> sample 29 time step = 2
+
+type variable: <class 'numpy.ndarray'>
 ```
 
 <!-- 
