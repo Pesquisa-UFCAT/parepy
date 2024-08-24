@@ -13,5 +13,5 @@ title: Framework
 
 <p align="justify">In this section, we will show the internal functions of this framework.</p>
 
-
+Table of Contents
 {:toc}
