@@ -75,8 +75,8 @@ Output variables
 </table>
 
 <ol>
-    <li><a href="#norm">Normal or Gaussian</a>;</li>
-    <li><a href="#norm-time">Normal or Gaussian - Stochastic</a>;</li>
+    <li><a href="#norm">Normal or Gaussian</a></li>
+    <li><a href="#norm-time">Normal or Gaussian - Stochastic</a></li>
 </ol>
 
 <h4><i>Normal or Gaussian</i></h4>
@@ -181,8 +181,8 @@ random variables n=1000000:
 ```
 
 <center>
-    <img src="assets/images/normal_distribution.png">
-    <p align="center"><b>Figure 1.</b> Normal histogram.</p>
+    <img src="assets/images/normal_distribution.png" width="80%" height="auto">
+    <p align="center"><b>Figure 1.</b> Random variable example 1.</p>
 </center>
 
 <h4><i>Normal or Gaussian - Stochastic</i></h4>
@@ -263,7 +263,7 @@ Example 2
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=30)\) following a Normal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup.</i>
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=30)\) following a Normal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup and generate fixed values each time step.</i>
 </p>
 
 ```python
@@ -277,9 +277,12 @@ size = 30
 
 # Call function
 r = sampling(size, len(varSet), model, varSet)
+print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 ```
 
 ```bash
+random variables n=90: 
+
 [[ 9.83084403  0.        ]  --> sample 0 time step = 0
  [ 9.83084403  1.        ]  --> sample 0 time step = 1
  [ 9.83084403  2.        ]  --> sample 0 time step = 2
@@ -289,9 +292,13 @@ r = sampling(size, len(varSet), model, varSet)
  [10.06481753  0.        ]  --> sample 2 time step = 0
  [10.06481753  1.        ]  --> sample 2 time step = 1
  [10.06481753  2.        ]  --> sample 2 time step = 2
+ ...
+ [8.55312079  0.        ]  --> sample 29 time step = 0
+ [8.55312079  1.        ]  --> sample 29 time step = 1
+ [8.55312079  2.        ]] --> sample 29 time step = 2
 ```
 
-Example 2
+Example 3
 {: .label .label-blue }
 
 <p align = "justify">
@@ -309,10 +316,12 @@ size = 30
 
 # Call function
 r = sampling(size, len(varSet), model, varSet)
-print(r)
+print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 ```
 
 ```bash
+random variables n=90: 
+
 [[7.73489316  0.        ]  --> sample 0 time step = 0
  [2.39698123  1.        ]  --> sample 0 time step = 1
  [6.73925933  2.        ]  --> sample 0 time step = 2
@@ -322,6 +331,10 @@ print(r)
  [5.15205194  0.        ]  --> sample 2 time step = 0
  [6.95330405  1.        ]  --> sample 2 time step = 1
  [6.65245261  2.        ]  --> sample 2 time step = 2
+ ...
+ [8.55312079  0.        ]  --> sample 29 time step = 0
+ [9.12659394  1.        ]  --> sample 29 time step = 1
+ [9.12659394  2.        ]] --> sample 29 time step = 2
 ```
 
 <!-- 
@@ -643,5 +656,5 @@ var = {'type': 'lognormal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': F
     </tr>
 </table>
 
-<!-- <p align = "center"><b>Figure 3.</b> Gumbel Distribution using Sampling function.</p>
-<center><img src="assets/images/lognormal_distribution.png" width="70%"></center> --> -->
+<p align = "center"><b>Figure 3.</b> Gumbel Distribution using Sampling function.</p>
+<center><img src="assets/images/lognormal_distribution.png" width="70%"></center> -->
