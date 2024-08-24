@@ -72,7 +72,7 @@ def my_function(x, none_variable):
 <ol>
       <li><code>r</code> (type list): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
       <li><code>s</code> (type list): list of values. In structural problems, we recommend putting the demand in this variable;</li>
-      <li><code>g</code> (type list): State limit function \(\mathbf{g} = \mathbf{r} - \mathbf{s}\).</li>
+      <li><code>g</code> (type list): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\).</li>
 </ol>
 
 <p align="justify">
@@ -81,12 +81,29 @@ To demenostrate how to created a object function we use Beck <a href="#ref1">[1]
 
 <table style = "width:100%">
     <tr>
-        <td style="width: 90%;">\[ \mathbf{G} = \mathbf{R_d} - \mathbf{D} - \mathbf{L} \]</td>
+        <td style="width: 90%;">\[ \mathbf{G} = \mathbf{R}_d - \mathbf{D} - \mathbf{L} \]</td>
         <td style="width: 10%;"><p align = "right" id = "eq1">(1)</p></td>
     </tr>
 </table>
 
 ```python
+def example_function(x, none_variable):
+    """Beck example"""
+
+    # random variables statement  
+    r_d = x[0]
+    d = x[1]
+    l = x[2]
+
+    # state limite function
+    r = r_d
+    s = d + l
+    g = r - s
+
+    return [r], [s], [g]
+
+# or
+
 def example_function(x, none_variable):
     """Beck example"""
 
@@ -111,26 +128,9 @@ def example_function(x, none_variable):
     l = x[2]
 
     # state limite function
-    r = r_d
-    s = d_ l
-    g = r - s
-
-    return [r], [s], [g]
-
-# or
-
-def example_function(x, none_variable):
-    """Beck example"""
-
-    # random variables statement  
-    r_d = x[0]
-    d = x[1]
-    l = x[2]
-
-    # state limite function
     r = [r_d]
-    s = [d_ l]
-    g = r - s
+    s = [d + l]
+    g = [r - s]
 
     return r, s, g
 ```
@@ -141,11 +141,11 @@ Using two state limit functions:
 
 <table style = "width:100%">
     <tr>
-        <td style="width: 90%;">\[ \mathbf{G} = \mathbf{R} - \mathbf{D} - \mathbf{L} \]</td>
+        <td style="width: 90%;">\[ \mathbf{G}_0 = \mathbf{R} - \mathbf{D} - \mathbf{L} \]</td>
         <td style="width: 10%;"><p align = "right" id = "eq1">(1)</p></td>
     </tr>
     <tr>
-        <td style="width: 90%;">\[ \mathbf{G} = \mathbf{\sigma _y} \cdot \mathbf{W} - \mathbf{M} \]</td>
+        <td style="width: 90%;">\[ \mathbf{G}_1 = \mathbf{\sigma _y} \cdot \mathbf{W} - \mathbf{M} \]</td>
         <td style="width: 10%;"><p align = "right" id = "eq2">(2)</p></td>
     </tr>
 </table>
