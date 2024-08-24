@@ -27,7 +27,7 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <th style="width: 25%;">Coefficient of Variation (COV)</th>
     </tr>
     <tr>
-        <td style="width: 25%;">Live load \(\left(\boldsymbol{F_y}\right)\)</td>
+        <td style="width: 25%;">Yield stress \(\left(\boldsymbol{F_y}\right)\)</td>
         <td style="width: 25%;">Normal</td>
         <td style="width: 25%;">40.3</td>
         <td style="width: 25%;">0.115</td>

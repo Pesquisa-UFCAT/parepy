@@ -27,13 +27,13 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <th style="width: 25%;">Coefficient of Variation (COV)</th>
     </tr>
     <tr>
-        <td style="width: 25%;">Live load¹ \(\left(\boldsymbol{F_y}\right)\)</td>
+        <td style="width: 25%;">Yield stress \(\left(\boldsymbol{F_y}\right)\)</td>
         <td style="width: 25%;">Normal</td>
         <td style="width: 25%;">40.3</td>
         <td style="width: 25%;">0.115</td>
     </tr>
     <tr>
-        <td style="width: 25%;">Live load \(\left(\boldsymbol{P}\right)\)</td>
+        <td style="width: 25%;">Live load¹ \(\left(\boldsymbol{P}\right)\)</td>
         <td style="width: 25%;">Gumbel max.</td>
         <td style="width: 25%;">10.2</td>
         <td style="width: 25%;">0.110</td>
@@ -133,8 +133,8 @@ from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_time_example
 
 # Dataset
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': True, 'seed': None}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'stochastic variable': False, 'seed': None}
+f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False, 'seed': None}
+p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'stochastic variable': True, 'seed': None}
 w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'stochastic variable': False, 'seed': None}
 var = [f, p, w]
 
