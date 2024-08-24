@@ -14,11 +14,6 @@ nav_order: 1
 {: .note }
 > If you have any suggestions or error reports regarding the algorithm's functioning, please inform us by email: `wanderlei_junior@ufcat.edu.br`. We will be happy to improve the framework.
 
-{: .new-title }
-> Current Version
->
-> 0.0.4
-
 {: .highlight-title }
 > Team
 >

@@ -2,7 +2,6 @@
 layout: home
 nav_order: 3
 has_children: true
-has_toc: true
 title: Framework
 ---
 
@@ -12,6 +11,3 @@ title: Framework
 <!--Don't delete ths script-->
 
 <p align="justify">In this section, we will show the internal functions of this framework.</p>
-
-Table of Contents
-{:toc}
