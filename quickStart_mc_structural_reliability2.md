@@ -45,7 +45,7 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <td style="width: 25%;">0.100</td>
     </tr>
     <tr>
-        <td colspan="4">¹Stochastic random variable</td>
+        <td style = "text-align: left;" colspan="4">¹Stochastic random variable</td>
     </tr>
 </table>
 
