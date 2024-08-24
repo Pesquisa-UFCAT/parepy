@@ -16,7 +16,7 @@ Example 1
 {: .label .label-blue }
 
 <p align="justify">
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). The loads are random variables. Assume \(\boldsymbol{P},\; \boldsymbol{W}\) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P} (concentrated live load), \boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
 </p>
 
 <table style = "width:100%; text-align: center;">
@@ -24,7 +24,7 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <th style="width: 25%;">Variable</th>
         <th style="width: 25%;">Distribution</th>
         <th style="width: 25%;">Mean</th>
-        <th style="width: 25%;">coefficient of variation (COV)</th>
+        <th style="width: 25%;">Coefficient of Variation (COV)</th>
     </tr>
     <tr>
         <td style="width: 25%;">Live load \(\left(\boldsymbol{F_y}\right)\)</td>
@@ -81,11 +81,11 @@ def nowak_collins_example(x, none_variable):
     f_y = x[0]
     p_load = x[1]
     w_load = x[2]
-    capacity = 80*f_y
-    demand = 54*p_load + 5832*w_load
+    capacity = 80 * f_y
+    demand = 54 * p_load + 5832 * w_load
 
     # State limit function
-    constraint = demand - capacity
+    constraint = capacity - demand
 
     return [capacity], [demand], [constraint]
 ```
@@ -125,16 +125,8 @@ setup = {
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-```bash
-PARE^py Report: 
-
-- Output file name: nowak_example_MCS_20240505-135418.txt
-- Processing time (s): 7.355956315994263  (serial kernel)
-```
-
-{: .note }
-> See more details in [sampling_algorithm_structural_analysis](https://wmpjrufg.github.io/PAREPY/framework_samplingAlgStructuralAnalysis.html)
-
+<!-- {: .note }
+> See more details in [sampling_algorithm_structural_analysis](https://wmpjrufg.github.io/PAREPY/framework_samplingAlgStructuralAnalysis.html) -->
 
 <h1><b>REFERENCE LIST</b></h1>
 
