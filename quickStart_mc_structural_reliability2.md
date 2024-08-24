@@ -145,7 +145,7 @@ setup = {
              'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
-             'none variable': list(np.linspace(0, 50, num=5, endpoint=True)),
+             'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))},
              'objective function': nowak_example_time,
              'type process': 'auto',
              'name simulation': 'nowak_example',
