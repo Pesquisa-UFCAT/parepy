@@ -431,7 +431,8 @@ var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'stochastic variable'
     </tr>
 </table>
 
-Example 4 {: .label .label-blue }
+Example 4 
+{: .label .label-blue }
 
 <p align = "justify">
     <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=30)\) following a Triangular distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup and generate different values each time step.</i>
