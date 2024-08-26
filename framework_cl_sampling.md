@@ -440,37 +440,33 @@ Example 4 {: .label .label-blue }
 ```python
 from parepy_toolbox import sampling
 
-# Dataset
-model = {'model sampling': 'mcs'}
-f = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
+# Dataset fixed value in time series
+model = {'model sampling': 'mcs-time', 'time steps': 3}
+f = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None, 'stochastic variable': False}
 varSet = [f]
-size = 1000000
+size = 5
 
 # Call function
 r = sampling(size, len(varSet), model, varSet)
+print(r)
+```
+```bash
+[[6.20583102 0.        ]
+ [6.20583102 1.        ]
+ [6.20583102 2.        ]
+ [7.51896212 0.        ]
+ [7.51896212 1.        ]
+ [7.51896212 2.        ]
+ [5.33441516 0.        ]
+ [5.33441516 1.        ]
+ [5.33441516 2.        ]
+ [3.86008801 0.        ]
+ [3.86008801 1.        ]
+ [3.86008801 2.        ]
+ [5.33573491 0.        ]
+ [5.33573491 1.        ]
+ [5.33573491 2.        ]]
 
-# Output details
-print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
-# Criar o histograma
-chart_config = {
-              'name': "histogram_chart_1",
-              'width': 16, 
-              'height': 8,
-              'extension': 'png',
-              'dots_per_inch': 1000,
-              'x_axis_label': 'Valores',
-              'x_axis_size': 8,
-              'y_axis_label': 'Frequência',
-              'y_axis_size': 8,
-              'axises_color': 'red',
-              'labels_size': 10,
-              'labels_color': '#0E6251', 
-              'chart_color': '#581845',
-              'bins': 20,
-             }
-
-# Call function
-histogram_chart(dataset=r, plot_setup=chart_config)
 ```
 <!-- 
 <h4><i>Gumbel max. sampling</i></h4>
