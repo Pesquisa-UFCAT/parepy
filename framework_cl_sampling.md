@@ -77,6 +77,7 @@ Output variables
 <ol>
     <li><a href="#norm">Normal or Gaussian</a></li>
     <li><a href="#norm-time">Normal or Gaussian - Stochastic</a></li>
+    <li><a href="#trian">Triangular</a></li>
 </ol>
 
 <h4><i>Normal or Gaussian</i></h4>
@@ -341,8 +342,9 @@ random variables n=90:
 type variable: <class 'numpy.ndarray'>
 ```
 
-<!-- 
+
 <h4><i>Triangular sampling</i></h4>
+<p align = "justify" id = "trian"></p>
 
 ```python
 var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
@@ -361,14 +363,14 @@ var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
         <td>Type of probability density function</td>
         <td>String</td>
     </tr>
-    <tr>
-        <td><code>'loc'</code></td>
-        <td>Mean</td>
+        <tr>
+        <td><code>'min'</code></td>
+        <td>Minimum value</td>
         <td>Float</td>
     </tr>
     <tr>
-        <td><code>'min'</code></td>
-        <td>Minimum value</td>
+        <td><code>'loc'</code></td>
+        <td>Mean</td>
         <td>Float</td>
     </tr>
     <tr>
@@ -429,6 +431,48 @@ var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'stochastic variable'
     </tr>
 </table>
 
+Example 4 {: .label .label-blue }
+
+<p align = "justify">
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=30)\) following a Triangular distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup and generate different values each time step.</i>
+</p>
+
+```python
+from parepy_toolbox import sampling
+
+# Dataset
+model = {'model sampling': 'mcs'}
+f = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
+varSet = [f]
+size = 1000000
+
+# Call function
+r = sampling(size, len(varSet), model, varSet)
+
+# Output details
+print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
+# Criar o histograma
+chart_config = {
+              'name': "histogram_chart_1",
+              'width': 16, 
+              'height': 8,
+              'extension': 'png',
+              'dots_per_inch': 1000,
+              'x_axis_label': 'Valores',
+              'x_axis_size': 8,
+              'y_axis_label': 'Frequência',
+              'y_axis_size': 8,
+              'axises_color': 'red',
+              'labels_size': 10,
+              'labels_color': '#0E6251', 
+              'chart_color': '#581845',
+              'bins': 20,
+             }
+
+# Call function
+histogram_chart(dataset=r, plot_setup=chart_config)
+```
+<!-- 
 <h4><i>Gumbel max. sampling</i></h4>
 
 ```python
