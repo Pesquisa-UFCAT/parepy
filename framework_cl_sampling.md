@@ -346,6 +346,18 @@ type variable: <class 'numpy.ndarray'>
 <h4><i>Triangular sampling</i></h4>
 <p align = "justify" id = "trian"></p>
 
+MODEL PARAMETERS
+{: .label .label-red }
+
+<h6><i>Crude Monte Carlo</i></h6>
+
+```python
+model = {'model sampling': 'mcs', 'time steps': 5}
+```
+
+VARIABLES SETTINGS
+{: .label .label-red }
+
 ```python
 var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
 ```
@@ -386,6 +398,18 @@ var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
 </table>
 
 <h4><i>Triangular sampling in time series</i></h4>
+
+MODEL PARAMETERS
+{: .label .label-red }
+
+<h6><i>Crude Monte Carlo</i></h6>
+
+```python
+model = {'model sampling': 'mcs-time', 'time steps': 5}
+```
+
+VARIABLES SETTINGS
+{: .label .label-red }
 
 ```python
 var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'stochastic variable': False, 'seed': None}
@@ -469,8 +493,15 @@ print(r)
  [5.33573491 2.        ]]
 
 ```
-<!-- 
+
 <h4><i>Gumbel max. sampling</i></h4>
+
+MODEL PARAMETERS
+{: .label .label-red }
+
+
+VARIABLES SETTINGS
+{: .label .label-red }
 
 ```python
 var = {'type': 'gumbel max', 'loc': 40.3, 'scale': 4.64, 'seed': None}
@@ -507,6 +538,13 @@ var = {'type': 'gumbel max', 'loc': 40.3, 'scale': 4.64, 'seed': None}
 </table>
 
 <h4><i>Gumbel max. sampling in time series</i></h4>
+
+MODEL PARAMETERS
+{: .label .label-red }
+
+
+VARIABLES SETTINGS
+{: .label .label-red }
 
 ```python
 var = {'type': 'gumbel max', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False, 'seed': None}
@@ -547,7 +585,42 @@ var = {'type': 'gumbel max', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': 
     </tr>
 </table>
 
+Example 5 
+{: .label .label-blue }
+
+<p align = "justify">
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=30)\) following a Gumbel max. distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup and generate different values each time step.</i>
+</p>
+
+```python
+# Dataset
+model = {'model sampling': 'mcs'}
+f = {'type': 'gumbel max', 'loc': 7, 'scale': 3, 'seed': None}
+varSet = [f]
+size = 1000000
+
+# Call function
+r = sampling(size, len(varSet), model, varSet)
+print(r)
+```
+```bash
+[[ 8.46468577]
+ [ 7.97594375]
+ [ 5.32736034]
+ ...
+ [10.59271284]
+ [10.83029474]
+ [ 3.85476323]]
+```
+
 <h4><i>Gumbel min. sampling</i></h4>
+
+MODEL PARAMETERS
+{: .label .label-red }
+
+
+VARIABLES SETTINGS
+{: .label .label-red }
 
 ```python
 var = {'type': 'gumbel min', 'loc': 40.3, 'scale': 4.64, 'seed': None}
@@ -584,6 +657,13 @@ var = {'type': 'gumbel min', 'loc': 40.3, 'scale': 4.64, 'seed': None}
 </table>
 
 <h4><i>Gumbel min. sampling in time series</i></h4>
+
+MODEL PARAMETERS
+{: .label .label-red }
+
+
+VARIABLES SETTINGS
+{: .label .label-red }
 
 ```python
 var = {'type': 'gumbel min', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False, 'seed': None}
@@ -624,7 +704,43 @@ var = {'type': 'gumbel min', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': 
     </tr>
 </table>
 
+Example 6
+{: .label .label-blue }
+
+<p align = "justify">
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=30)\) following a Gumbel min. distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup and generate different values each time step.</i>
+</p>
+
+```python
+# Dataset
+model = {'model sampling': 'mcs'}
+f = {'type': 'gumbel min', 'loc': 7, 'scale': 3, 'seed': None}
+varSet = [f]
+size = 1000000
+
+# Call function
+r = sampling(size, len(varSet), model, varSet)
+print(r)
+```
+```bash
+[[ 6.6573527 ]
+ [ 2.67428949]
+ [-5.30074766]
+ ...
+ [ 9.0293629 ]
+ [ 8.65583937]
+ [ 4.99922794]]
+``` 
+
+
 <h4><i>Log-normal sampling</i></h4>
+
+MODEL PARAMETERS
+{: .label .label-red }
+
+
+VARIABLES SETTINGS
+{: .label .label-red }
 
 ```python
 var = {'type': 'lognormal', 'loc': 40.3, 'scale': 4.64, 'seed': None}
@@ -661,6 +777,13 @@ var = {'type': 'lognormal', 'loc': 40.3, 'scale': 4.64, 'seed': None}
 </table>
 
 <h4><i>Log-normal sampling in time series</i></h4>
+
+MODEL PARAMETERS
+{: .label .label-red }
+
+
+VARIABLES SETTINGS
+{: .label .label-red }
 
 ```python
 var = {'type': 'lognormal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False, 'seed': None}
@@ -702,4 +825,34 @@ var = {'type': 'lognormal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': F
 </table>
 
 <p align = "center"><b>Figure 3.</b> Gumbel Distribution using Sampling function.</p>
-<center><img src="assets/images/lognormal_distribution.png" width="70%"></center> -->
+<center><img src="assets/images/lognormal_distribution.png" width="70%"></center>
+
+Example 7
+{: .label .label-blue }
+
+<p align = "justify">
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=30)\) following a Lognormal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup and generate different values each time step.</i>
+</p>
+
+```python
+# Dataset stochastic value in time series
+model = {'model sampling': 'mcs-time', 'time steps': 3}
+f = {'type': 'lognormal', 'loc': 1, 'scale': 0.05, 'seed': None, 'stochastic variable': True}
+varSet = [f]
+size = 3
+
+# Call function
+r = sampling(size, len(varSet), model, varSet)
+r
+``` 
+```bash
+array([[0.83752631, 0.        ],
+       [0.8696238 , 1.        ],
+       [1.02854465, 2.        ],
+       [0.99895127, 0.        ],
+       [0.9736836 , 1.        ],
+       [1.03284045, 2.        ],
+       [0.9287761 , 0.        ],
+       [0.98123592, 1.        ],
+       [0.96828351, 2.        ]])
+``` 
