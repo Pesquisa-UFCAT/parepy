@@ -78,6 +78,9 @@ Output variables
     <li><a href="#norm">Normal or Gaussian</a></li>
     <li><a href="#norm-time">Normal or Gaussian - Stochastic</a></li>
     <li><a href="#trian">Triangular</a></li>
+    <li><a href="gmax">Gumbel Max</a></li>
+    <li><a href="gmin">Gumbel Min</a></li>
+    <li><a href="lognormal">Log-normal</a></li>
 </ol>
 
 <h4><i>Normal or Gaussian</i></h4>
@@ -495,6 +498,7 @@ print(r)
 ```
 
 <h4><i>Gumbel max. sampling</i></h4>
+<p align = "justify" id = "gmax"></p>
 
 MODEL PARAMETERS
 {: .label .label-red }
@@ -614,6 +618,7 @@ print(r)
 ```
 
 <h4><i>Gumbel min. sampling</i></h4>
+<p align = "justify" id = "gmin"></p>
 
 MODEL PARAMETERS
 {: .label .label-red }
@@ -734,6 +739,7 @@ print(r)
 
 
 <h4><i>Log-normal sampling</i></h4>
+<p align = "justify" id = "lognormal"></p>
 
 MODEL PARAMETERS
 {: .label .label-red }
