@@ -862,6 +862,7 @@ array([[0.83752631, 0.        ],
        [0.98123592, 1.        ],
        [0.96828351, 2.        ]])
 ``` 
+</br>
 
 <h3>First Barrier Failure (FBF)</h3>
 <br>
@@ -1095,3 +1096,6 @@ print(processed_df)
     </tr>
   </tbody>
 </table>
+
+</br>
+
