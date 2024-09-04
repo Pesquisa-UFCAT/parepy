@@ -13,7 +13,7 @@ title: fbf
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>First Barrier Failure (FBF)</h3>
+<h3>fbf</h3>
 <br>
 <p align = "justify">
     This function processes the provided data based on the specified algorithm, modifying the results according to the imposed conditions.
