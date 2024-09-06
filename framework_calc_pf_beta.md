@@ -13,10 +13,11 @@ title: calc_pf_beta
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>PF and Beta Calculation</h3>
+
+<h3>Calculation of Probability of Failure (pf) and Beta</h3>
 <br>
 <p align = "justify">
-    This function calculates the mean values of <i>pf</i> (probability of failure) and <i>beta</i> based on the columns of a DataFrame that start with the prefix <code>'I_'</code>. It returns two DataFrames: one with the calculated mean values of <i>pf</i> and another with the same values for <i>beta</i>.
+    This function calculates the probability of failure (pf) and beta for each column in the DataFrame that starts with 'I_' (Indicator function). The function returns two DataFrames: one with the mean values of pf and another with the corresponding beta values.
 </p>
 
 ```python
@@ -36,7 +37,7 @@ Input variables
     </thead>
     <tr>
         <td><code>df</code></td>
-        <td>DataFrame containing the columns to be processed. Only columns starting with 'I_' will be considered.</td>
+        <td>DataFrame containing the columns with boolean values related to the indicator function (columns starting with 'I_').</td>
         <td>DataFrame</td>
     </tr>
 </table>
@@ -54,12 +55,12 @@ Output variables
    </thead>
    <tr>
        <td><code>pf_df</code></td>
-       <td>DataFrame containing the mean values of <i>pf</i>.</td>
+       <td>DataFrame containing the mean values for pf (probability of failure) for each 'I_' column.</td>
        <td>DataFrame</td>
    </tr>
    <tr>
        <td><code>beta_df</code></td>
-       <td>DataFrame containing the same values as <code>pf_df</code>, representing <i>beta</i> values.</td>
+       <td>DataFrame containing the corresponding beta values calculated from the pf values.</td>
        <td>DataFrame</td>
    </tr>
 </table>
@@ -67,8 +68,10 @@ Output variables
 <h4><i>Example Usage</i></h4>
 <p align = "justify" id = "pf-beta-example"></p>
 
-VARIABLES SETTINGS
+MODEL PARAMETERS
 {: .label .label-red }
+
+<h6><i>DataFrame Example</i></h6>
 
 ```python
 data = {
@@ -91,17 +94,24 @@ df = pd.DataFrame(data)
       </tr>
     </thead>
     <tr>
-        <td><code>'df'</code></td>
-        <td>DataFrame with columns to process. Only columns starting with 'I_' are used.</td>
-        <td>DataFrame</td>
+        <td><code>'I_1', 'I_2''</code></td>
+        <td>Columns containing boolean values related to the indicator function.</td>
+        <td>Integer (0 or 1)</td>
     </tr>
 </table>
+
+VARIABLES SETTINGS
+{: .label .label-red }
+
+```python
+pf_df, beta_df = calc_pf_beta(df)
+```
 
 Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, the <code>calc_pf_beta</code> function processes the DataFrame to calculate the mean values of <i>pf</i> and <i>beta</i> from the columns starting with 'I_'. Both results are returned in separate DataFrames.</i>
+    <i>In this example, the <code>calc_pf_beta</code> function processes a DataFrame with three indicator columns ('I_1', 'I_2'). It returns two DataFrames: one containing the mean values of probability of failure (pf) for each column, and another containing the corresponding beta values.</i>
 </p>
 ```
 
