@@ -64,205 +64,23 @@ Output variables
    </tr>
 </table>
 
-<h4><i>Calculate exemple</i></h4>
+<h4><i>Example Usage</i></h4>
 <p align = "justify" id = "pf-beta-example"></p>
 
 VARIABLES SETTINGS
 {: .label .label-red }
 
-<p align = "justify">
-    Dataframe serial input exemple:
-</p>
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+```python
+data = {
+    'X_0': [43.519326, 40.184658, 46.269007, 36.370403, 40.089100],
+    'X_1': [11.222943, 11.044150, 10.586153, 9.523268, 9.728168],
+    'R_1': [float('nan'), float('nan'), float('nan'), float('nan'), float('nan')],
+    'I_0': [0.0, 0.0, 0.0, 0.0, 0.0],
+    'I_1': [0.0, 0.0, 0.0, 0.0, 0.0]
+}
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>X_0</th>
-      <th>X_1</th>
-      <th>X_2</th>
-      <th>R_0</th>
-      <th>R_1</th>
-      <th>S_0</th>
-      <th>S_1</th>
-      <th>G_0</th>
-      <th>G_1</th>
-      <th>I_0</th>
-      <th>I_1</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>43.519326</td>
-      <td>11.222943</td>
-      <td>0.189671</td>
-      <td>3481.546080</td>
-      <td>NaN</td>
-      <td>1712.201638</td>
-      <td>1712.201638</td>
-      <td>1769.344442</td>
-      <td>1769.344442</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>40.184658</td>
-      <td>11.044150</td>
-      <td>0.247242</td>
-      <td>3214.772659</td>
-      <td>NaN</td>
-      <td>2038.301401</td>
-      <td>2038.301401</td>
-      <td>1176.471258</td>
-      <td>1176.471258</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>46.269007</td>
-      <td>10.586153</td>
-      <td>0.238284</td>
-      <td>3701.520547</td>
-      <td>NaN</td>
-      <td>1961.325563</td>
-      <td>1961.325563</td>
-      <td>1740.194984</td>
-      <td>1740.194984</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>36.370403</td>
-      <td>9.523268</td>
-      <td>0.276446</td>
-      <td>2909.632213</td>
-      <td>NaN</td>
-      <td>2126.486910</td>
-      <td>2126.486910</td>
-      <td>783.145303</td>
-      <td>783.145303</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>40.089100</td>
-      <td>9.728168</td>
-      <td>0.260700</td>
-      <td>3207.127976</td>
-      <td>NaN</td>
-      <td>2045.722536</td>
-      <td>2045.722536</td>
-      <td>1161.405440</td>
-      <td>1161.405440</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>49995</th>
-      <td>50.100028</td>
-      <td>12.170102</td>
-      <td>0.285213</td>
-      <td>4008.002218</td>
-      <td>NaN</td>
-      <td>2320.549910</td>
-      <td>2320.549910</td>
-      <td>1687.452308</td>
-      <td>1687.452308</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>49996</th>
-      <td>36.185830</td>
-      <td>9.693708</td>
-      <td>0.249899</td>
-      <td>2894.866377</td>
-      <td>NaN</td>
-      <td>1980.870768</td>
-      <td>1980.870768</td>
-      <td>913.995609</td>
-      <td>913.995609</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>49997</th>
-      <td>38.931085</td>
-      <td>9.926531</td>
-      <td>0.262616</td>
-      <td>3114.486770</td>
-      <td>NaN</td>
-      <td>2067.608947</td>
-      <td>2067.608947</td>
-      <td>1046.877823</td>
-      <td>1046.877823</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>49998</th>
-      <td>41.673405</td>
-      <td>11.669636</td>
-      <td>0.242565</td>
-      <td>3333.872403</td>
-      <td>NaN</td>
-      <td>2044.799300</td>
-      <td>2044.799300</td>
-      <td>1289.073102</td>
-      <td>1289.073102</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>49999</th>
-      <td>40.430469</td>
-      <td>12.503527</td>
-      <td>0.273984</td>
-      <td>3234.437544</td>
-      <td>NaN</td>
-      <td>2273.064551</td>
-      <td>2273.064551</td>
-      <td>961.372994</td>
-      <td>961.372994</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-  </tbody>
-</table>
-<p>50000 rows × 11 columns</p>
-</div>
+df = pd.DataFrame(data)
+```
 
 <table style = "width:100%">
     <thead>
@@ -288,25 +106,34 @@ Example 1
 ```
 
 ```python
-# Exemple 
+data = {
+    'X_0': [43.519326, 40.184658, 46.269007, 36.370403, 40.089100],
+    'X_1': [11.222943, 11.044150, 10.586153, 9.523268, 9.728168],
+    'X_2': [0.189671, 0.247242, 0.238284, 0.276446, 0.260700],
+    'I_0': [0.0, 0.0, 0.0, 0.0, 0.0],
+    'I_1': [0.0, 0.0, 0.0, 0.0, 0.0]
+}
+
+serial_df = pd.DataFrame(data)
+
 pf_df, beta_df, result_df = calc_pf_beta(serial_df)
 
-# 
+# Exibindo os resultados
 print(f'PF:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
 print(f'Beta:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
 ```
 ```
-[0.00212, 0.00212]
+[0.0019, 0.0019]
 PF:
-+---------+---------+
-|    0    |    1    |
-+---------+---------+
-| 0.00212 | 0.00212 |
-+---------+---------+
++--------+--------+
+|   0    |   1    |
++--------+--------+
+| 0.0019 | 0.0019 |
++--------+--------+
 Beta:
-+---------+---------+
-|    0    |    1    |
-+---------+---------+
-| 0.00212 | 0.00212 |
-+---------+---------+
++--------+--------+
+|   0    |   1    |
++--------+--------+
+| 0.0019 | 0.0019 |
++--------+--------+
 ```
