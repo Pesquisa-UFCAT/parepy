@@ -77,7 +77,7 @@ MODEL PARAMETERS
 data = {
     'X_0': [43.519326, 40.184658, 46.269007, 36.370403, 40.089100],
     'X_1': [11.222943, 11.044150, 10.586153, 9.523268, 9.728168],
-    'R_1': [float('nan'), float('nan'), float('nan'), float('nan'), float('nan')],
+    'X_2': [0.189671, 0.247242, 0.238284, 0.276446, 0.260700],
     'I_0': [0.0, 0.0, 0.0, 0.0, 0.0],
     'I_1': [0.0, 0.0, 0.0, 0.0, 0.0]
 }
@@ -94,9 +94,9 @@ df = pd.DataFrame(data)
       </tr>
     </thead>
     <tr>
-        <td><code>'I_1', 'I_2''</code></td>
-        <td>Columns containing boolean values related to the indicator function.</td>
-        <td>Integer (0 or 1)</td>
+        <td><code>df</code></td>
+        <td>DataFrame with columns to process.</td>
+        <td>Dataframe</td>
     </tr>
 </table>
 
