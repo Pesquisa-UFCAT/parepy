@@ -11,7 +11,7 @@ title: Quick Start
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete this script-->
 
-<h1><b>REQUIREMENTS AND INSTALL</b></h1>
+<h1>Install</h1>
 
 <p align="justify">To use the framework in an <b>Python</b> environment, use the following command:</p>
 
@@ -20,7 +20,7 @@ pip install parepy-toolbox
 # or pip install --upgrade parepy-toolbox
 ```
 
-<h1><b>FILES STRUCTURE</b></h1>
+<h1>Files structure</h1>
 
 <p align="justify">Let's use the example of building a problem in PAREpy using Jupyter Notebook or <b>Python</b> file. Therefore, the basic file structure that you must assemble to use the library must be as follows:</p>
 
@@ -50,7 +50,7 @@ pip install parepy-toolbox
 
 ```python
 def my_function(x, none_variable):
-    # put your block of code
+    # add your code
     return r, s, g
 ```
 
@@ -58,20 +58,23 @@ def my_function(x, none_variable):
 <code>of_file.py</code> has two parameters: 
 </p>
 
-<ol>
-      <li><code>x</code> (type list): list of design random variables. PAREpy generates this values;</li>
-      <li><code>none_variable</code> (type None, list, float, dictionary, str or any): The user can define this variable. The user can input any value in this variable when calling the framework's main function.</li>
-</ol>
+<ul>
+    <li><code>x</code> (type list): list of design random variables. PAREpy generates this values</li>
+    <li><code>none_variable</code> (type None, list, float, dictionary, str or any): The user can define this variable. The user can input any value in this variable when calling the framework's main function</li>
+</ul>
 
 <p align="justify">
 <code>of_file.py</code> has three returns: 
 </p>
 
-<ol>
-      <li><code>r</code> (type list): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
-      <li><code>s</code> (type list): list of values. In structural problems, we recommend putting the demand in this variable;</li>
-      <li><code>g</code> (type list): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\).</li>
-</ol>
+<ul>
+    <li><code>r</code> (type list): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
+    <li><code>s</code> (type list): list of values. In structural problems, we recommend putting the demand in this variable;</li>
+    <li><code>g</code> (type list): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\).</li>
+</ul>
+
+{: .important }
+> The lists `r`, `s` and `g` must have the same size and will be defined in the main function setup.
 
 <p align="justify">
 To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a> example. The State Limit Function is given by:
@@ -158,9 +161,9 @@ def example_function(x, none_variable):
     l = x[2]
 
     # random variables statement g_1
-    sigma_y = x[0]
-    w = x[1]
-    m = x[2]
+    sigma_y = x[3]
+    w = x[4]
+    m = x[5]
 
     # state limite function g_0
     r_0 = r_d
