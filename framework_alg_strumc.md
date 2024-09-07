@@ -74,14 +74,51 @@ Output variables
 </table>
 
 <p align="justify">
-To use the sample algorithm, you must choose the algorithm and variable types and correctly fill in the 'numerical model' and 'variables settings' keys. See following examples and <a href="https://wmpjrufg.github.io/PAREPY/framework_cl_sampling.html" target="_blank">sampling function</a>.
+To use the sample algorithm, you must choose the algorithm and variable types and correctly fill in the <code>'numerical model'</code> and <code>'variables settings'</code> keys. See the following examples and <a href="https://wmpjrufg.github.io/PAREPY/framework_cl_sampling.html" target="_blank">sampling function</a>.
+</p>
+
+<p align="justify" id="model"></p>
+<center>
+    <table style = "width:100%">
+        <thead>
+            <tr>
+            <th>Example</th>
+            <th>Sintax</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>Crude Monte Carlo</td>
+            <td><code>'numerical model': {'model sampling': 'mcs'}</code></td>
+        </tr>
+        <tr>
+            <td>Stochastic - Crude Monte Carlo (five steps)</td>
+            <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code>¹</li></td>
+        </tr>
+    </table>
+    <p align="center"><b>Table 1.</b> <code>'numerical model'</code> key - examples.</p>
+</center>
+
+{: .important }
+>¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. In this example, we use five time steps between 0 and 50 years. In this case, a user should import the **Numpy** library to use ```np. linspace``. Another library can be used. 
+
+{: .important }
+>¹When applying a stochastic procedure, use this code on top of the objective function:    
+
+```python
+id_analysis = int(x[-1])
+time_step = none_variable['time analysis']
+t_i = time_step[id_analysis] 
+```
+<p align="justify">
+More details in example <a href="#example">2</a>.
 </p>
 
 Example 1
 {: .label .label-blue }
 
 <p align="justify">
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+<i>Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+</i>
 </p>
 
 <table style = "width:100%; text-align: center;">
@@ -188,6 +225,7 @@ setup = {
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
+<p align="justify" id="example2"></p>
 Example 2
 {: .label .label-blue }
 
