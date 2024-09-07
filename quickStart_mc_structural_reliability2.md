@@ -73,7 +73,7 @@ The limit state function for beam bending can be expressed as:
 </table>
 
 <p align="justify">
-Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\). Use 50 years to stochastic analysis (five time steps).
+Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\) <a href="#ref2">[2]</a>. Use 50 years to stochastic analysis (five time steps).
 </p>
 
 <table style = "width:100%">
@@ -154,14 +154,14 @@ setup = {
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-<h1>View results</h1>
+<!-- <h1>View results</h1>
 <p align="justify">
 Following instructions to see all results:
 </p>
 
 ```python
 print...bla bla bla
-```
+``` -->
 
 <h1>Reference list</h1>
 
@@ -176,6 +176,10 @@ print...bla bla bla
         <tr>
             <td><p align = "center" id = "ref1">[1]</p></td>
             <td><p align = "left"><a href="https://doi.org/10.1007/s00521-016-2328-2" target="_blank" rel="noopener noreferrer">Nowak AS, Collins KR. Reliability of Structures. 2nd edition. CRC Press; 2012.</a></p></td>
+        </tr>
+        <tr>
+            <td><p align = "center" id = "ref2">[2]</p></td>
+            <td><p align = "left"><a href="https://doi.org/10.1007/s00521-016-2328-2" target="_blank" rel="noopener noreferrer">Beck AT. Confiabilidade e segurança das estruturas. Elsevier; 2019. ISBN 978-85-352-8895-7</a></p></td>
         </tr>
     </tbody>
 </table>

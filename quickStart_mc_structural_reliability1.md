@@ -123,14 +123,14 @@ setup = {
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-<h1>View results</h1>
+<!-- <h1>View results</h1>
 <p align="justify">
 Following instructions to see all results:
 </p>
 
 ```python
 print...bla bla bla
-```
+``` -->
 
 <h1>Reference list</h1>
 
