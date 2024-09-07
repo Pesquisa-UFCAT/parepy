@@ -24,7 +24,7 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <th style="width: 25%;">Variable</th>
         <th style="width: 25%;">Distribution</th>
         <th style="width: 25%;">Mean</th>
-        <th style="width: 25%;">Coefficient of Variation (COV)</th>
+        <th style="width: 25%; text-align: justify;">Coefficient of Variation (COV)</th>
     </tr>
     <tr>
         <td style="width: 25%;">Yield stress \(\left(\boldsymbol{F_y}\right)\)</td>
@@ -97,7 +97,6 @@ your_problem.ipynb
 # Libraries
 import pandas as pd
 pd.set_option('display.max_columns', None)
-import numpy as np
 
 from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_example
@@ -110,14 +109,13 @@ var = [f, p, w]
 
 # PAREpy setup
 setup = {
-             'number of samples': 10000, 
+             'number of samples': 70000, 
              'number of dimensions': len(var), 
              'numerical model': {'model sampling': 'mcs'}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
              'none variable': None,
              'objective function': nowak_collins_example,
-             'type process': 'auto',
              'name simulation': 'nowak_collins_example',
         }
 
@@ -125,10 +123,16 @@ setup = {
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-<!-- {: .note }
-> See more details in [sampling_algorithm_structural_analysis](https://wmpjrufg.github.io/PAREPY/framework_samplingAlgStructuralAnalysis.html) -->
+<h1>View results</h1>
+<p align="justify">
+Following instructions to see all results:
+</p>
 
-<h1><b>REFERENCE LIST</b></h1>
+```python
+print...bla bla bla
+```
+
+<h1>Reference list</h1>
 
 <table>
     <thead>

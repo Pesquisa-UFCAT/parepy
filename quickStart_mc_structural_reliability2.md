@@ -24,7 +24,7 @@ Consider the simply supported beam show in example 5.1 Nowak and Collins <a href
         <th style="width: 25%;">Variable</th>
         <th style="width: 25%;">Distribution</th>
         <th style="width: 25%;">Mean</th>
-        <th style="width: 25%;">Coefficient of Variation (COV)</th>
+        <th style="width: 25%; text-align: justify;">Coefficient of Variation (COV)</th>
     </tr>
     <tr>
         <td style="width: 25%;">Yield stress \(\left(\boldsymbol{F_y}\right)\)</td>
@@ -91,7 +91,7 @@ def nowak_collins_time_example(x, none_variable):
     """Objective function for the Nowak example (tutorial).
     """
     
-    # User must copy and paste this code when tim reliability is required
+    # User must copy and paste this code in time reliability objective function
     ###########################################
     id_analysis = int(x[-1])
     time_step = none_variable['time analysis']
@@ -140,22 +140,30 @@ var = [f, p, w]
 
 # PAREpy setup
 setup = {
-             'number of samples': 10000, 
+             'number of samples': 70000, 
              'number of dimensions': len(var), 
              'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
              'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))},
-             'objective function': nowak_example_time,
-             'type process': 'auto',
-             'name simulation': 'nowak_example',
+             'objective function': nowak_collins_time_example,
+             'name simulation': 'nowak_collins_time_example',
         }
 
 # Call algorithm
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-<h1><b>REFERENCE LIST</b></h1>
+<h1>View results</h1>
+<p align="justify">
+Following instructions to see all results:
+</p>
+
+```python
+print...bla bla bla
+```
+
+<h1>Reference list</h1>
 
 <table>
     <thead>

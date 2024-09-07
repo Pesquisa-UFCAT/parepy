@@ -179,7 +179,7 @@ def example_function(x, none_variable):
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
 
-<h1><b>REFERENCE LIST</b></h1>
+<h1>Reference list</h1>
 
 <table>
     <thead>
