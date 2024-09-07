@@ -73,12 +73,86 @@ Output variables
    </tr>
 </table>
 
-Example 1
+Example 1 - CRUDE MONTE CARLO
 {: .label .label-blue }
 
-<p align = "justify">
-    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1000000)\) following a Normal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "seed without control" in your setup.</i>
+<p align="justify">
+Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
 </p>
+
+<table style = "width:100%; text-align: center;">
+    <tr>
+        <th style="width: 25%;">Variable</th>
+        <th style="width: 25%;">Distribution</th>
+        <th style="width: 25%;">Mean</th>
+        <th style="width: 25%; text-align: justify;">Coefficient of Variation (COV)</th>
+    </tr>
+    <tr>
+        <td style="width: 25%;">Yield stress \(\left(\boldsymbol{F_y}\right)\)</td>
+        <td style="width: 25%;">Normal</td>
+        <td style="width: 25%;">40.3</td>
+        <td style="width: 25%;">0.115</td>
+    </tr>
+    <tr>
+        <td style="width: 25%;">Live load \(\left(\boldsymbol{P}\right)\)</td>
+        <td style="width: 25%;">Gumbel max.</td>
+        <td style="width: 25%;">10.2</td>
+        <td style="width: 25%;">0.110</td>
+    </tr>
+    <tr>
+        <td style="width: 25%;">Dead load \(\left(\boldsymbol{W}\right)\)</td>
+        <td style="width: 25%;">Log-normal</td>
+        <td style="width: 25%;">0.25</td>
+        <td style="width: 25%;">0.100</td>
+    </tr>
+</table>
+
+<p align="justify">
+The limit state function for beam bending can be expressed as:
+</p>
+
+<table style = "width:100%">
+    <tr>
+        <td style="width: 90%;">\[ \boldsymbol{R} = 80 \cdot \boldsymbol{F_y} \]</td>
+        <td style="width: 10%;"><p align = "right" id = "eq1">(1)</p></td>
+    </tr>
+    <tr>
+        <td style="width: 90%;">\[ \boldsymbol{S} = 54 \cdot \boldsymbol{P} + 5832 \cdot \boldsymbol{W} \]</td>
+        <td style="width: 10%;"><p align = "right" id = "eq2">(2)</p></td>
+    </tr>
+    <tr>
+        <td style="width: 90%;">\[ \boldsymbol{G} = \boldsymbol{R} - \boldsymbol{S} \begin{cases}
+\leq 0 & \text{failure}\\ 
+> 0 & \text{safe}
+\end{cases} \]
+        </td>
+        <td style="width: 10%;"><p align = "right" id = "eq3">(3)</p></td>
+    </tr>
+</table>
+
+of_file.py
+{: .label .label-red }
+
+```python
+def nowak_collins_example(x, none_variable):
+    """Objective function for the Nowak example (tutorial).
+    """
+
+    # Random variables
+    f_y = x[0]
+    p_load = x[1]
+    w_load = x[2]
+    capacity = 80 * f_y
+    demand = 54 * p_load + 5832 * w_load
+
+    # State limit function
+    constraint = capacity - demand
+
+    return [capacity], [demand], [constraint]
+```
+
+your_problem.ipynb
+{: .label .label-red }
 
 ```python
 # Libraries
@@ -108,18 +182,4 @@ setup = {
 
 # Call algorithm
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
-```
-
-```bash
-random variables n=1000000: 
-
- [[ 3.5106688 ]
- [ 5.69074161]
- [ 8.60932312]
- ...
- [10.28841779]
- [ 7.25655855]
- [ 7.21348877]] 
-
- type variable: <class 'numpy.ndarray'>
 ```
