@@ -11,7 +11,9 @@ nav_order: 1
   </tr>
 </table>  
 
-{: .note }
+{: .note-title }
+> Suggestions  
+>
 > If you have any suggestions or error reports regarding the algorithm's functioning, please inform us by email: `wanderlei_junior@ufcat.edu.br`. We will be happy to improve the framework.
 
 {: .highlight-title }
