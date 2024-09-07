@@ -92,7 +92,7 @@ To use the sample algorithm, you must choose the algorithm and variable types an
         </tr>
         <tr>
             <td>Stochastic - Crude Monte Carlo (five steps)</td>
-            <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code>¹</li></td>
+            <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code>¹</li></ul></td>
         </tr>
     </table>
     <p align="center"><b>Table 1.</b> <code>'numerical model'</code> key - examples.</p>
