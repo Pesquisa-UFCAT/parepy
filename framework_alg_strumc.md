@@ -99,10 +99,10 @@ To use the sample algorithm, you must choose the algorithm and variable types an
 </center>
 
 {: .important }
->¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. In this example, we use five time steps between 0 and 50 years. In this case, a user should import the **Numpy** library to use ```np. linspace``. Another library can be used. 
+>¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. In this example, we use five time steps between 0 and 50 years. In this case, a user should import the **Numpy** library to use ```np. linspace``. Another library can be used to create a list.
 
 {: .important }
->¹When applying a stochastic procedure, use this code on top of the objective function:    
+>¹When applying a stochastic procedure, use the following code on top of the objective function:    
 
 ```python
 id_analysis = int(x[-1])
@@ -110,10 +110,10 @@ time_step = none_variable['time analysis']
 t_i = time_step[id_analysis] 
 ```
 <p align="justify">
-More details in example <a href="#example">2</a>.
+More details in example <a href="#example2">2</a>.
 </p>
 
-Example 1 - CRUDE MONTE CARLO
+Example 1
 {: .label .label-blue }
 
 <p align="justify">
