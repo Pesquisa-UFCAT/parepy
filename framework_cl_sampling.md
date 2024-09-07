@@ -3,8 +3,8 @@ layout: home
 parent: common_library
 grand_parent: Framework
 nav_order: 1
-has_children: false
-has_toc: false
+has_children: true
+has_toc: true
 title: sampling
 ---
 
@@ -14,7 +14,6 @@ title: sampling
 <!--Don't delete ths script-->
 
 <h3>sampling</h3>
-<br>
 <p align = "justify">
     This algorithm generates a set of random numbers according to a type of distribution.
 </p>
@@ -83,13 +82,13 @@ Output variables
     <li><a href="#lognormal">Log-normal</a></li>
 </ol>
 
-<h4><i>Normal or Gaussian</i></h4>
 <p align = "justify" id = "norm"></p>
+<h4><i>Normal or Gaussian</i></h4>
 
 MODEL PARAMETERS
 {: .label .label-red }
 
-<h6><i>Crude Monte Carlo</i></h6>
+<h5><i>Crude Monte Carlo</i></h5>
 
 ```python
 model = {'model sampling': 'mcs'}
@@ -189,13 +188,13 @@ random variables n=1000000:
     <p align="center"><b>Figure 1.</b> Random variable example 1.</p>
 </center>
 
-<h4><i>Normal or Gaussian - Stochastic</i></h4>
 <p align = "justify" id = "norm-time"></p>
+<h4><i>Normal or Gaussian - Stochastic</i></h4>
 
 MODEL PARAMETERS
 {: .label .label-red }
 
-<h6><i>Crude Monte Carlo</i></h6>
+<h5><i>Crude Monte Carlo</i></h5>
 
 ```python
 model = {'model sampling': 'mcs-time', 'time steps': 5}
@@ -287,19 +286,19 @@ print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 ```bash
 random variables n=90: 
 
-[[ 9.83084403  0.        ]  --> sample 0 time step = 0
- [ 9.83084403  1.        ]  --> sample 0 time step = 1
- [ 9.83084403  2.        ]  --> sample 0 time step = 2
- [10.21614749  0.        ]  --> sample 1 time step = 0
- [10.21614749  1.        ]  --> sample 1 time step = 1
- [10.21614749  2.        ]  --> sample 1 time step = 2
- [10.06481753  0.        ]  --> sample 2 time step = 0
- [10.06481753  1.        ]  --> sample 2 time step = 1
- [10.06481753  2.        ]  --> sample 2 time step = 2
+[[ 9.83084403  0.        ]  # --> sample 0 time step = 0
+ [ 9.83084403  1.        ]  # --> sample 0 time step = 1
+ [ 9.83084403  2.        ]  # --> sample 0 time step = 2
+ [10.21614749  0.        ]  # --> sample 1 time step = 0
+ [10.21614749  1.        ]  # --> sample 1 time step = 1
+ [10.21614749  2.        ]  # --> sample 1 time step = 2
+ [10.06481753  0.        ]  # --> sample 2 time step = 0
+ [10.06481753  1.        ]  # --> sample 2 time step = 1
+ [10.06481753  2.        ]  # --> sample 2 time step = 2
  ...
- [8.55312079  0.        ]  --> sample 29 time step = 0
- [8.55312079  1.        ]  --> sample 29 time step = 1
- [8.55312079  2.        ]] --> sample 29 time step = 2
+ [8.55312079  0.        ]  # --> sample 29 time step = 0
+ [8.55312079  1.        ]  # --> sample 29 time step = 1
+ [8.55312079  2.        ]] # --> sample 29 time step = 2
 
 type variable: <class 'numpy.ndarray'>
 ```
@@ -328,23 +327,22 @@ print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 ```bash
 random variables n=90: 
 
-[[7.73489316  0.        ]  --> sample 0 time step = 0
- [2.39698123  1.        ]  --> sample 0 time step = 1
- [6.73925933  2.        ]  --> sample 0 time step = 2
- [5.09639542  0.        ]  --> sample 1 time step = 0
- [5.46050213  1.        ]  --> sample 1 time step = 1
- [6.77307753  2.        ]  --> sample 1 time step = 2
- [5.15205194  0.        ]  --> sample 2 time step = 0
- [6.95330405  1.        ]  --> sample 2 time step = 1
- [6.65245261  2.        ]  --> sample 2 time step = 2
+[[7.73489316  0.        ]  # --> sample 0 time step = 0
+ [2.39698123  1.        ]  # --> sample 0 time step = 1
+ [6.73925933  2.        ]  # --> sample 0 time step = 2
+ [5.09639542  0.        ]  # --> sample 1 time step = 0
+ [5.46050213  1.        ]  # --> sample 1 time step = 1
+ [6.77307753  2.        ]  # --> sample 1 time step = 2
+ [5.15205194  0.        ]  # --> sample 2 time step = 0
+ [6.95330405  1.        ]  # --> sample 2 time step = 1
+ [6.65245261  2.        ]  # --> sample 2 time step = 2
  ...
- [8.55312079  0.        ]  --> sample 29 time step = 0
- [9.12659394  1.        ]  --> sample 29 time step = 1
- [9.12659394  2.        ]] --> sample 29 time step = 2
+ [8.55312079  0.        ]  # --> sample 29 time step = 0
+ [9.12659394  1.        ]  # --> sample 29 time step = 1
+ [9.12659394  2.        ]] # --> sample 29 time step = 2
 
 type variable: <class 'numpy.ndarray'>
 ```
-
 
 <h4><i>Triangular sampling</i></h4>
 <p align = "justify" id = "trian"></p>
@@ -352,11 +350,26 @@ type variable: <class 'numpy.ndarray'>
 MODEL PARAMETERS
 {: .label .label-red }
 
-<h6><i>Crude Monte Carlo</i></h6>
+<h5><i>Crude Monte Carlo</i></h5>
 
 ```python
-model = {'model sampling': 'mcs', 'time steps': 5}
+model = {'model sampling': 'mcs'}
 ```
+
+<table style = "width:100%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>
+      </tr>
+    </thead> 
+    <tr>
+        <td><code>'model sampling'</code></td>
+        <td>Numerical algorithm used in sampling generator</td>
+        <td>String</td>
+    </tr>
+</table>
 
 VARIABLES SETTINGS
 {: .label .label-red }
@@ -400,12 +413,54 @@ var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
     </tr>
 </table>
 
+Example 4
+{: .label .label-blue }
+
+<p align = "justify">
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1000000)\) following a Triangular distribution with mean \(\mu = 7\), minimum value \(\micro _l = 3\) and maximum value \(\micro _u = 8\). Use "seed without control" in your setup.</i>
+</p>
+
+```python
+from parepy_toolbox import sampling
+
+# Dataset
+model = {'model sampling': 'mcs'}
+f = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
+varSet = [f]
+size = 1000000
+
+# Call function
+r = sampling(size, len(varSet), model, varSet)
+
+# Output details
+print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
+```
+
+```bash
+random variables n=1000000: 
+
+ [[ 3.5106688 ]
+ [ 5.69074161]
+ [ 8.60932312]
+ ...
+ [10.28841779]
+ [ 7.25655855]
+ [ 7.21348877]] 
+
+ type variable: <class 'numpy.ndarray'>
+```
+
+<center>
+    <img src="assets/images/normal_distribution.png" width="80%" height="auto">
+    <p align="center"><b>Figure 1.</b> Random variable example 1.</p>
+</center>
+
 <h4><i>Triangular sampling in time series</i></h4>
 
 MODEL PARAMETERS
 {: .label .label-red }
 
-<h6><i>Crude Monte Carlo</i></h6>
+<h5><i>Crude Monte Carlo</i></h5>
 
 ```python
 model = {'model sampling': 'mcs-time', 'time steps': 5}
@@ -862,7 +917,3 @@ array([[0.83752631, 0.        ],
        [0.98123592, 1.        ],
        [0.96828351, 2.        ]])
 ``` 
-</br>
-
-
-
