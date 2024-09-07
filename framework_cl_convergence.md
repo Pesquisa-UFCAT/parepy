@@ -115,5 +115,9 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
 x, m, l, u = convergence_probability_failure(results, 'I_0')
 ``` 
 
-<center><img src="assets/images/convergence_rate_chart.svg" width="60%"></center>
+<p align = "justify">
+    We can construct the convergence rate chart using the results <code>m</code>, <code>ci_l</code>, and <code>ci_u</code>. We using <code>x</code> in x-axis.
+</p>
+
+<center><img src="assets/images/convergence_rate_chart.svg" width="90%"></center>
 <p align = "center"><b>Figure 1.</b> Failure probability - convergence rate.</p>
