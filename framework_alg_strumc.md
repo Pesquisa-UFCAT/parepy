@@ -113,11 +113,12 @@ t_i = time_step[id_analysis]
 More details in example <a href="#example">2</a>.
 </p>
 
-Example 1
+Example 1 - CRUDE MONTE CARLO
 {: .label .label-blue }
 
 <p align="justify">
-<i>Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+<i>
+Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
 </i>
 </p>
 
@@ -225,12 +226,23 @@ setup = {
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
+<!-- <h1>View results</h1>
+<p align="justify">
+Following instructions to see all results:
+</p>
+
+```python
+print...bla bla bla
+``` -->
+
 <p align="justify" id="example2"></p>
 Example 2
 {: .label .label-blue }
 
 <p align="justify">
+<i>
 Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+</i>
 </p>
 
 <table style = "width:100%; text-align: center;">
