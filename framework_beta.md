@@ -2,10 +2,10 @@
 layout: home
 parent: common_library
 grand_parent: Framework
-nav_order: 4
+nav_order: 3
 has_children: false
 has_toc: false
-title: beta
+title: beta_equation
 ---
 
 <!--Don't delete ths script-->
@@ -14,10 +14,9 @@ title: beta
 <!--Don't delete ths script-->
 
 
-<h3>Beta Equation</h3>
-<br>
+<h3>beta_equation</h3>
 <p align = "justify">
-    This function calculates the beta value for a given probability of failure (pf). The calculation involves complex mathematical operations and considers specific conditions where the probability of failure is greater than 0.5, resulting in a beta value of "minus infinity".
+    This function calculates the beta value for a given probability of failure (pf).
 </p>
 
 ```python
@@ -37,7 +36,7 @@ Input variables
     </thead>
     <tr>
         <td><code>pf</code></td>
-        <td>Probability of failure.</td>
+        <td>Probability of failure</td>
         <td>Float</td>
     </tr>
 </table>
@@ -55,74 +54,25 @@ Output variables
    </thead>
    <tr>
        <td><code>beta_value</code></td>
-       <td>Calculated beta value, or "minus infinity" if the probability of failure exceeds 0.5.</td>
-       <td>Float or String</td>
+       <td>Beta value</td>
+       <td>Float</td>
    </tr>
-</table>
-
-<h4><i>Beta Equation Example</i></h4>
-<p align = "justify" id = "beta-example"></p>
-
-MODEL PARAMETERS
-{: .label .label-red }
-
-<h6><i>Beta Equation for a Given Probability of Failure</i></h6>
-
-```python
-pf = 0.3820885778
-```
-
-<table style = "width:100%">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tr>
-        <td><code>'pf'</code></td>
-        <td>Probability of failure used for the beta calculation</td>
-        <td>Float</td>
-    </tr>
-</table>
-
-VARIABLES SETTINGS
-{: .label .label-red }
-
-```python
-beta_value = beta_equation(pf)
-```
-
-<table style = "width:100%">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tr>
-        <td><code>'beta_value'</code></td>
-        <td>Calculated beta value based on the given probability of failure</td>
-        <td>Float or String</td>
-    </tr>
 </table>
 
 Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, the <code>beta_equation</code> function calculates the beta value for a probability of failure (pf) of 0.3820885778. The result is returned as a floating-point number, representing the beta value associated with this failure probability.</i>
+    <i>In this example, the <code>beta_equation</code> function calculates the reliability index for a probability of failure (pf) equals 2.32629e-04.</i>
 </p>
 
 ```python
-from parepy_toolbox.common_library import beta_equation
+from parepy_toolbox import beta_equation
 
-pf = 0.3820885778
+pf = 2.32629e-04
 beta = beta_equation(pf)
-print(beta)
+print(f"Reliability index {beta:.2f}")
 ``` 
 ```bash
-0.3000000000289662
+Reliability index 3.50
 ``` 

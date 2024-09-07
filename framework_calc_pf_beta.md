@@ -2,7 +2,7 @@
 layout: home
 parent: common_library
 grand_parent: Framework
-nav_order: 6
+nav_order: 4
 has_children: false
 has_toc: false
 title: calc_pf_beta
@@ -14,14 +14,13 @@ title: calc_pf_beta
 <!--Don't delete ths script-->
 
 
-<h3>Calculation of Probability of Failure (pf) and Beta</h3>
-<br>
+<h3>calc_pf_beta</h3>
 <p align = "justify">
-    This function calculates the probability of failure (pf) and beta for each column in the DataFrame that starts with 'I_' (Indicator function). The function returns two DataFrames: one with the mean values of pf and another with the corresponding beta values.
+    Calculates the values of pf and beta from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and beta values too.
 </p>
 
 ```python
-calc_pf_beta(df)
+df_pf, df_beta = calc_pf_beta(df_or_path)
 ```
 
 Input variables
@@ -36,9 +35,9 @@ Input variables
       </tr>
     </thead>
     <tr>
-        <td><code>df</code></td>
-        <td>DataFrame containing the columns with boolean values related to the indicator function (columns starting with 'I_').</td>
-        <td>DataFrame</td>
+        <td><code>df_or_path</code></td>
+        <td>The DataFrame containing the columns with boolean values about indicator function, or a path to a .txt file</td>
+        <td>DataFrame or String</td>
     </tr>
 </table>
 
@@ -54,93 +53,95 @@ Output variables
      </tr>
    </thead>
    <tr>
-       <td><code>pf_df</code></td>
-       <td>DataFrame containing the mean values for pf (probability of failure) for each 'I_' column.</td>
+       <td><code>df_pf</code></td>
+       <td>DataFrame containing the values for probability of failure for each 'I_' column</td>
        <td>DataFrame</td>
    </tr>
    <tr>
-       <td><code>beta_df</code></td>
-       <td>DataFrame containing the corresponding beta values calculated from the pf values.</td>
+       <td><code>df_beta</code></td>
+       <td>DataFrame containing the values for beta for each 'I_' column</td>
        <td>DataFrame</td>
    </tr>
 </table>
-
-<h4><i>Example Usage</i></h4>
-<p align = "justify" id = "pf-beta-example"></p>
-
-MODEL PARAMETERS
-{: .label .label-red }
-
-<h6><i>DataFrame Example</i></h6>
-
-```python
-data = {
-    'X_0': [43.519326, 40.184658, 46.269007, 36.370403, 40.089100, 45.000000, 40.000000],
-    'X_1': [11.222943, 11.044150, 10.586153, 9.523268, 9.728168, 10.000000, 10.000000],
-    'X_2': [0.189671, 0.247242, 0.238284, 0.276446, 0.260700, 0.250000, 0.250000],
-    'I_0': [0, 0, 1, 0, 0, 1, 0],
-    'I_1': [1, 1, 1, 0, 0, 0, 0]}
-
-serial_df = pd.DataFrame(data)
-```
-
-<table style = "width:100%">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tr>
-        <td><code>df</code></td>
-        <td>DataFrame with columns to process.</td>
-        <td>Dataframe</td>
-    </tr>
-</table>
-
-VARIABLES SETTINGS
-{: .label .label-red }
-
-```python
-pf_df, beta_df = calc_pf_beta(df)
-```
 
 Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, the <code>calc_pf_beta</code> function processes a DataFrame with three indicator columns ('I_1', 'I_2'). It returns two DataFrames: one containing the mean values of probability of failure (pf) for each column, and another containing the corresponding beta values.</i>
+    <i>In this example, the <code>calc_pf_beta</code> function processes a DataFrame with two indicator function (columns 'I_0', 'I_1'). Use this function to obtain the probability of failure and the reliability index.</i>
 </p>
-```
 
 ```python
+# pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
+from tabulate import tabulate
+import pandas as pd
+from parepy_toolbox import calc_pf_beta
+
 data = {
     'X_0': [43.519326, 40.184658, 46.269007, 36.370403, 40.089100, 45.000000, 40.000000],
     'X_1': [11.222943, 11.044150, 10.586153, 9.523268, 9.728168, 10.000000, 10.000000],
     'X_2': [0.189671, 0.247242, 0.238284, 0.276446, 0.260700, 0.250000, 0.250000],
     'I_0': [0, 0, 1, 0, 0, 1, 0],
     'I_1': [1, 1, 1, 0, 0, 0, 0]}
+df = pd.DataFrame(data)
 
-serial_df = pd.DataFrame(data)
+pf_df, beta_df = calc_pf_beta(df)
 
-pf_df, beta_df = calc_pf_beta(serial_df)
+print(f'pf:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
+print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
+``` 
+```bash
+pf:
++--------------------+---------------------+
+|        I_0         |         I_1         |
++--------------------+---------------------+
+| 0.2857142857142857 | 0.42857142857142855 |
++--------------------+---------------------+
+ϐ:
++-------------------+---------------------+
+|        I_0        |         I_1         |
++-------------------+---------------------+
+| 0.565948821932863 | 0.18001236979270438 |
++-------------------+---------------------+
+``` 
 
-# Exibindo os resultados
-print(f'PF:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
-print(f'Beta:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
-```
-```
-PF:
-+---------+---------+
-|   I_0   |   I_1   |
-+---------+---------+
-| 0.00188 | 0.00188 |
-+---------+---------+
-Beta:
-+--------------------+--------------------+
-|        I_0         |        I_1         |
-+--------------------+--------------------+
-| 2.8976248913337237 | 2.8976248913337237 |
-+--------------------+--------------------+
-```
+Example 2
+{: .label .label-blue }
+
+<p align = "justify">
+    <i>In this example, the <code>calc_pf_beta</code> function processes a .txt dataset with two indicator function (columns 'I_0', 'I_1'). Use this function to obtain the probability of failure and the reliability index.</i>
+</p>
+
+```python
+# pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
+from tabulate import tabulate
+import pandas as pd
+from parepy_toolbox import calc_pf_beta
+
+data = {
+    'X_0': [43.519326, 40.184658, 46.269007, 36.370403, 40.089100, 45.000000, 40.000000],
+    'X_1': [11.222943, 11.044150, 10.586153, 9.523268, 9.728168, 10.000000, 10.000000],
+    'X_2': [0.189671, 0.247242, 0.238284, 0.276446, 0.260700, 0.250000, 0.250000],
+    'I_0': [0, 0, 1, 0, 0, 1, 0],
+    'I_1': [1, 1, 1, 0, 0, 0, 0]}
+df = pd.DataFrame(data)
+
+pf_df, beta_df = calc_pf_beta(df)
+
+print(f'pf:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
+print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
+``` 
+```bash
+pf:
++--------------------+---------------------+
+|        I_0         |         I_1         |
++--------------------+---------------------+
+| 0.2857142857142857 | 0.42857142857142855 |
++--------------------+---------------------+
+ϐ:
++-------------------+---------------------+
+|        I_0        |         I_1         |
++-------------------+---------------------+
+| 0.565948821932863 | 0.18001236979270438 |
++-------------------+---------------------+
+``` 

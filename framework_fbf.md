@@ -2,7 +2,7 @@
 layout: home
 parent: common_library
 grand_parent: Framework
-nav_order: 2
+nav_order: 6
 has_children: false
 has_toc: false
 title: fbf
@@ -14,7 +14,6 @@ title: fbf
 <!--Don't delete ths script-->
 
 <h3>fbf</h3>
-<br>
 <p align = "justify">
     This function processes the provided data based on the specified algorithm, modifying the results according to the imposed conditions.
 </p>
