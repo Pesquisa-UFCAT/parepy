@@ -73,61 +73,6 @@ Output variables
    </tr>
 </table>
 
-<h4><i>Crude Monte Carlo - Time Analysis</i></h4>
-<p align = "justify" id = "mcs-time"></p>
-
-MODEL PARAMETERS
-{: .label .label-red }
-
-<h6><i>Crude Monte Carlo Time Analysis</i></h6>
-
-```python
-algorithm = 'MCS-TIME'
-```
-
-<table style = "width:100%">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tr>
-        <td><code>'algorithm'</code></td>
-        <td>Algorithm used for processing</td>
-        <td>String</td>
-    </tr>
-</table>
-
-VARIABLES SETTINGS
-{: .label .label-red }
-
-```python
-n_constraints = 3
-time_analysis = 5
-```
-
-<table style = "width:100%">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
-    </thead>
-    <tr>
-        <td><code>'n_constraints'</code></td>
-        <td>Number of constraints to analyze</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
-        <td><code>'time_analysis'</code></td>
-        <td>Time period for analysis</td>
-        <td>Integer</td>
-    </tr>
-</table>
-
 Example 1
 {: .label .label-blue }
 
