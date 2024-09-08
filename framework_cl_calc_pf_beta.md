@@ -19,7 +19,7 @@ title: calc_pf_beta
 </p>
 
 ```python
-df_pf, df_beta = calc_pf_beta(df_or_path)
+df_pf, df_beta = calc_pf_beta(df_or_path, numerical_model, n_constraints)
 ```
 
 Input variables
