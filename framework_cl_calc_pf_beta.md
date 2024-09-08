@@ -72,7 +72,7 @@ Output variables
        <td>DataFrame</td>
    </tr>
 </table>
-out 
+
 Example 1
 {: .label .label-blue }
 
