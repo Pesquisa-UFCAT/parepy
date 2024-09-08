@@ -38,6 +38,16 @@ Input variables
         <td>The DataFrame containing the columns with boolean values about indicator function, or a path to a .txt file</td>
         <td>DataFrame or String</td>
     </tr>
+    <tr>
+        <td><code>numerical_model</code></td>
+        <td>Containing the numerical model parameters</td>
+        <td>Dictionary</td>
+    </tr>
+    <tr>
+        <td><code>n_constraints</code></td>
+        <td>Number of state limit functions or constraints</td>
+        <td>Integer</td>
+    </tr>
 </table>
 
 Output variables
@@ -62,7 +72,7 @@ Output variables
        <td>DataFrame</td>
    </tr>
 </table>
-
+out 
 Example 1
 {: .label .label-blue }
 
@@ -86,7 +96,7 @@ data =  {
             'I_1': [1, 1, 1, 0, 0, 0, 0]
         }
 df = pd.DataFrame(data)
-pf_df, beta_df = calc_pf_beta(df)
+pf_df, beta_df = calc_pf_beta(serial_df, {'model sampling': 'mcs'}, 2)
 print(f'pf:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
 print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
 ``` 
@@ -132,7 +142,7 @@ import pandas as pd
 from parepy_toolbox import calc_pf_beta
 
 df = pd.read_csv('./example.txt', sep='\t')
-pf_df, beta_df = calc_pf_beta(df)
+pf_df, beta_df = calc_pf_beta(serial_df, {'model sampling': 'mcs'}, 2)
 print(f'pf:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
 print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
 ``` 
