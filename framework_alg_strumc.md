@@ -25,7 +25,7 @@ results_about_data, failure_prob_list, beta_list = sampling_algorithm_structural
 Input variables
 {: .label .label-yellow }
 
-<table style = "width:100%">
+<table style="width:100%">
     <thead>
       <tr>
         <th>Name</th>
@@ -34,43 +34,79 @@ Input variables
       </tr>
     </thead>
     <tr>
-        <td><code>n_samples</code></td>
-        <td>Number of samples</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
-        <td><code>d</code></td>
-        <td>Number of dimensions</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
-        <td><code>model</code></td>
-        <td>Model parameters</td>
+        <td><code>setup</code></td>
+        <td>Setup settings.</td>
         <td>Dictionary</td>
     </tr>
     <tr>
-        <td><code>variables_setup</code></td>
-        <td><p align = "justify">Random variable parameters (list of dictionary format).</p></td>
+        <td><code>number of samples</code></td>
+        <td>Number of samples (key in setup dictionary)</td>
+        <td>Integer</td>
+    </tr>
+    <tr>
+        <td><code>number of dimensions</code></td>
+        <td>Number of dimensions (key in setup dictionary)</td>
+        <td>Integer</td>
+    </tr>
+    <tr>
+        <td><code>numerical model</code></td>
+        <td>Numerical model settings (key in setup dictionary)</td>
+        <td>Dictionary</td>
+    </tr>
+    <tr>
+        <td><code>variables settings</code></td>
+        <td>Variables settings (key in setup dictionary)</td>
         <td>List</td>
+    </tr>
+    <tr>
+        <td><code>number of state limit functions or constraints</code></td>
+        <td>Number of state limit functions or constraints</td>
+        <td>Integer</td>
+    </tr>
+    <tr>
+        <td><code>none_variable</code></td>
+        <td>None variable. User can use this variable in the objective function (key in setup dictionary)</td>
+        <td>None, List, Float, Dictionary, String, or any</td>
+    </tr>
+    <tr>
+        <td><code>objective function</code></td>
+        <td>Objective function. The PAREpy user defines this function (key in setup dictionary)</td>
+        <td>Python function</td>
+    </tr>
+    <tr>
+        <td><code>name simulation</code></td>
+        <td>Output filename (key in setup dictionary)</td>
+        <td>String</td>
     </tr>
 </table>
 
-Output variables
-{: .label .label-yellow}
 
-<table style = "width:100%">
-   <thead>
-     <tr>
-       <th>Name</th>
-       <th>Description</th>
-       <th>Type</th>
-     </tr>
-   </thead>
-   <tr>
-       <td><code>random_sampling</code></td>
-       <td>Random samples</td>
-       <td>Numpy array</td>
-   </tr>
+Output variables
+{: .label .label-yellow }
+
+<table style="width:100%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tr>
+        <td><code>results_about_data</code></td>
+        <td>Results about reliability analysis</td>
+        <td>DataFrame</td>
+    </tr>
+    <tr>
+        <td><code>failure_prob_list</code></td>
+        <td>Failure probability list</td>
+        <td>List</td>
+    </tr>
+    <tr>
+        <td><code>beta_list</code></td>
+        <td>Beta list</td>
+        <td>List</td>
+    </tr>
 </table>
 
 <p align="justify">
