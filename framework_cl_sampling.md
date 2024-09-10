@@ -77,13 +77,13 @@ Output variables
     <li><a href="#norm">Normal or Gaussian</a></li>
     <li><a href="#norm-time">Normal or Gaussian - Stochastic</a></li>
     <li><a href="#trian">Triangular</a></li>
-    <li><a href="#trian-time">Triangular sampling in time series</a></li>
+    <li><a href="#trian-time">Triangular - Stochastic</a></li>
     <li><a href="#gmax">Gumbel Max</a></li>
-    <li><a href="#gmax-time">Gumbel Max in time series</a></li>
+    <li><a href="#gmax-time">Gumbel Max - Stochastic</a></li>
     <li><a href="#gmin">Gumbel Min</a></li>
-    <li><a href="#gmin-time">Gumbel Min in time series</a></li>
+    <li><a href="#gmin-time">Gumbel Min - Stochastic</a></li>
     <li><a href="#lognormal">Log-normal</a></li>
-    <li><a href="#lognormal-time">Log-normal sampling in time series</a></li>
+    <li><a href="#lognormal-time">Log-normal - Stochastic</a></li>
 </ol>
 
 <p align = "justify" id = "norm"></p>
@@ -459,7 +459,7 @@ random variables n=1000000:
     <p align="center"><b>Figure 1.</b> Random variable example 1.</p>
 </center>
 
-<h4><i>Triangular sampling in time series</i></h4>
+<h4><i>Triangular - Stochastic</i></h4>
 <p align = "justify" id = "trian-time"></p>
 
 MODEL PARAMETERS
@@ -634,7 +634,7 @@ print(r)
  [ 3.85476323]]
 ```
 
-<h4><i>Gumbel max. sampling in time series</i></h4>
+<h4><i>Gumbel max. - Stochastic</i></h4>
 <p align = "justify" id = "gmax-time"></p>
 
 MODEL PARAMETERS
@@ -837,7 +837,7 @@ print(r)
  [ 4.99922794]]
 ``` 
 
-<h4><i>Gumbel min. sampling in time series</i></h4>
+<h4><i>Gumbel min. - Stochastic</i></h4>
 <p align = "justify" id = "gmin-time"></p>
 
 MODEL PARAMETERS
@@ -1044,7 +1044,7 @@ print(r_ln)
 
 
 
-<h4><i>Log-normal sampling in time series</i></h4>
+<h4><i>Log-normal - Stochastic</i></h4>
 <p align = "justify" id = "lognormal-time"></p>
 
 MODEL PARAMETERS
