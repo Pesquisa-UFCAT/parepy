@@ -45,12 +45,12 @@ Input variables
     </tr>
     <tr>
         <td><code>model</code></td>
-        <td>Model parameters</td>
+        <td>Model parameters. See <a href="#examples">examples</a></td>
         <td>Dictionary</td>
     </tr>
     <tr>
         <td><code>variables_setup</code></td>
-        <td><p align = "justify">Random variable parameters (list of dictionary format).</p></td>
+        <td><p align = "justify">Random variable parameters (list of dictionary format). See <a href="#examples">examples</a></p></td>
         <td>List</td>
     </tr>
 </table>
@@ -73,6 +73,7 @@ Output variables
    </tr>
 </table>
 
+<p align = "justify" id = "examples"></p>
 <ol>
     <li><a href="#norm">Normal or Gaussian</a></li>
     <li><a href="#norm-time">Normal or Gaussian - Stochastic</a></li>
@@ -154,7 +155,7 @@ Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1000000)\) following a Normal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "seed without control" in your setup.</i>
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1,000,000)\) following a Normal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "seed without control" in your setup.</i>
 </p>
 
 ```python
@@ -188,7 +189,7 @@ random variables n=1000000:
 ```
 
 <center>
-    <img src="assets/images/normal_distribution.png" width="80%" height="auto">
+    <img src="assets/images/sampling_figure_1.svg" width="50%" height="auto">
     <p align="center"><b>Figure 1.</b> Random variable example 1.</p>
 </center>
 
