@@ -45,12 +45,12 @@ Input variables
     </tr>
     <tr>
         <td><code>model</code></td>
-        <td>Model parameters. See <a href="#examples">examples</a></td>
+        <td>Model parameters. See <a href="#models">models table</a></td>
         <td>Dictionary</td>
     </tr>
     <tr>
         <td><code>variables_setup</code></td>
-        <td><p align = "justify">Random variable parameters (list of dictionary format). See <a href="#examples">examples</a></p></td>
+        <td><p align = "justify">Random variable parameters (list of dictionary format). See <a href="#examples">configs table</a></p></td>
         <td>List</td>
     </tr>
 </table>
@@ -73,7 +73,65 @@ Output variables
    </tr>
 </table>
 
-<p align = "justify" id = "examples"></p>
+<p align = "justify" id = "models"></p>
+<center>
+    <p align="center"><b>Table 1.</b> Numerical models (<code>model</code> key).</p>
+    <table style = "width:100%">
+        <thead>
+        <tr>
+            <th>Model</th>
+            <th>Sintax</th>
+            <th>Example</th>
+        </tr>
+        </thead> 
+        <tr>
+            <td>Crude Monte Carlo</td>
+            <td><code>{'model sampling': put_your_model_here}</code>
+            <br>
+            <ul>
+                <li>'model sampling': Numerical algorithm used in sampling generator [String]</li>
+            </ul>
+            </td>
+            <td><code>model = {'model sampling': 'mcs'}</code></td>
+        </tr>
+        <tr>
+            <td>Crude Monte Carlo - Stochastic</td>
+            <td><code>{'model sampling': put_your_model_here, <br>'time steps': put_your_time_step_here}</code>
+            <br>
+            <ul>
+                <li>'model sampling': Numerical algorithm used in sampling generator [String]</li>
+                <li>'time steps': Number of time steps used in times series analysis [Integer]</li>
+            </ul>
+            </td>
+            <td><code>model = {'model sampling': 'mcs-time', 'time steps': 5}</code></td>
+        </tr>
+    </table>
+</center>
+
+<p align = "justify" id = "models"></p>
+<center>
+    <p align="center"><b>Table 2.</b> Type of pdf and configs (<code>variables_setup</code> key).</p>
+    <table style = "width:100%">
+        <thead>
+        <tr>
+            <th>Model</th>
+            <th>Sintax</th>
+            <th>Example</th>
+        </tr>
+        </thead> 
+        <tr>
+            <td>Normal or Gaussian</td>
+            <td><code>{'type': put_your_paramter_here, <br>'loc': put_your_paramter_here,    <br>'scale': put_your_paramter_here, <br>'seed': put_your_paramter_here}</code></td>
+            <td><code>model = {'model sampling': 'mcs'}</code></td>
+        </tr>
+        <tr>
+            <td>Crude Monte Carlo - Stochastic</td>
+            <td><code>var = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'seed': None}</code</td>
+            <td><code>model = {'model sampling': 'mcs-time', 'time steps': 5}</code></td>
+        </tr>
+    </table>
+</center>
+
 <ol>
     <li><a href="#norm">Normal or Gaussian</a></li>
     <li><a href="#norm-time">Normal or Gaussian - Stochastic</a></li>
@@ -96,23 +154,8 @@ MODEL PARAMETERS
 <h5><i>Crude Monte Carlo</i></h5>
 
 ```python
-model = {'model sampling': 'mcs'}
-```
 
-<table style = "width:100%">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
-    </thead> 
-    <tr>
-        <td><code>'model sampling'</code></td>
-        <td>Numerical algorithm used in sampling generator</td>
-        <td>String</td>
-    </tr>
-</table>
+```
 
 VARIABLES SETTINGS
 {: .label .label-red }
@@ -173,6 +216,10 @@ r = sampling(size, len(varSet), model, varSet)
 # Output details
 print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 ```
+
+<p align = "justify">
+    <i>Output details:</i>
+</p>
 
 ```bash
 random variables n=1000000: 
@@ -611,7 +658,7 @@ Example 6
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1000000)\) following a Gumbel max. distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "seed without control" in your setup.</i>
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1,000,000)\) following a Gumbel max. distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "seed without control" in your setup.</i>
 </p>
 
 ```python
@@ -625,6 +672,11 @@ size = 1000000
 r = sampling(size, len(varSet), model, varSet)
 print(r)
 ```
+
+<p align = "justify">
+    <i>Output details:</i>
+</p>
+
 ```bash
 [[ 8.46468577]
  [ 7.97594375]
