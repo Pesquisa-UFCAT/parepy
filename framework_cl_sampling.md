@@ -269,9 +269,9 @@ random variables n=300000:
  [10.06481753  1.        ]  # --> sample 2 time step = 1
  [10.06481753  2.        ]  # --> sample 2 time step = 2
  ...
- [8.55312079  0.        ]  # --> sample 299000 time step = 0
- [8.55312079  1.        ]  # --> sample 299000 time step = 1
- [8.55312079  2.        ]] # --> sample 299000 time step = 2
+ [8.55312079  0.         ]  # --> sample 299000 time step = 0
+ [8.55312079  1.         ]  # --> sample 299000 time step = 1
+ [8.55312079  2.         ]] # --> sample 299000 time step = 2
 
 type variable: <class 'numpy.ndarray'>
 ```
@@ -381,6 +381,6 @@ random variables n=1000000:
 ```
 
 <center>
-    <img src="assets/images/normal_distribution.png" width="80%" height="auto">
-    <p align="center"><b>Figure 3.</b> Random variable example 1.</p>
+    <img src="assets/images/sampling_figure_3.svg" width="50%" height="auto">
+    <p align="center"><b>Figure 3.</b> Random variable example.</p>
 </center>
