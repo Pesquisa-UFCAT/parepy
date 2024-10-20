@@ -13,10 +13,9 @@ title: beta_equation
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-
 <h3>beta_equation</h3>
 <p align = "justify">
-    This function calculates the beta value for a given probability of failure (pf).
+    This function calculates the reliability index \(\left(\beta\right)\) value for a given probability of failure \(\left(p_f\right)\).
 </p>
 
 ```python
@@ -76,3 +75,6 @@ print(f"Reliability index {beta:.2f}")
 ```bash
 Reliability index 3.50
 ``` 
+
+{: .important }
+> Incipient instability can be observed around $\beta = 7.5$, which increases significantly for $\beta > 8$.

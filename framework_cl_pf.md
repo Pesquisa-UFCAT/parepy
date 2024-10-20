@@ -62,7 +62,7 @@ Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, we use the <code>pf_equation</code> function to calculate the probability of failure for a reliability index of 3.5.</i>
+    <i>Use <code>pf_equation</code> function to calculate the probability of failure for a reliability index of 3.5.</i>
 </p>
 
 ```python
@@ -70,8 +70,8 @@ from parepy_toolbox import pf_equation
 
 beta = 3.5
 pf = pf_equation(beta)
-print(f"Probability of failure {pf:.2e}")
+print(f"Probability of failure {pf:.5e}")
 ```
 ```bash
-Probability of failure 2.33e-04
+Probability of failure 2.32629e-04
 ``` 
