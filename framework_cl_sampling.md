@@ -129,7 +129,7 @@ Output variables
                     <li><code>'scale'</code>: Standard deviation [Float]</li>
                     <li><code>'seed'</code>: Random seed. Use <code>None</code> for random seed [Integer or None
                     ]</li>
-                    <li><p style="color: red;">add this key in stochastic case</p>. <p align="justify"><code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
+                    <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
             <td><code>var = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'seed': None}</code></td>
@@ -144,7 +144,7 @@ Output variables
                     <li><code>'scale'</code>: Standard deviation [Float]</li>
                     <li><code>'seed'</code>: Random seed. Use <code>None</code> for random seed [Integer or None
                     ]</li>
-                    <li><p style="color: red;">add this key in stochastic case</p>. <p align="justify"><code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
+                    <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
             <td><code>var = {'type': 'gumbel max', 'loc': 40.3, 'scale': 4.64, 'seed': None}</code></td>
@@ -159,7 +159,7 @@ Output variables
                     <li><code>'scale'</code>: Standard deviation [Float]</li>
                     <li><code>'seed'</code>: Random seed. Use <code>None</code> for random seed [Integer or None
                     ]</li>
-                    <li><p style="color: red;">add this key in stochastic case</p>. <p align="justify"><code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
+                    <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
             <td><code>var = {'type': 'gumbel min', 'loc': 40.3, 'scale': 4.64, 'seed': None}</code></td>
@@ -174,7 +174,7 @@ Output variables
                     <li><code>'scale'</code>: Standard deviation [Float]</li>
                     <li><code>'seed'</code>: Random seed. Use <code>None</code> for random seed [Integer or None
                     ]</li>
-                    <li><p style="color: red;">add this key in stochastic case</p>. <p align="justify"><code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
+                    <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
             <td><code>var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}</code></td>
