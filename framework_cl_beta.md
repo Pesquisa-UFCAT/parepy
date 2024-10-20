@@ -77,4 +77,4 @@ Reliability index 3.50
 ``` 
 
 {: .important }
-> Incipient instability can be observed around $\beta = 7.5$, which increases significantly for $\beta > 8$.
+> Incipient instability can be observed around $$\beta = 7.5$$, which increases significantly for $$\beta > 8$$.
