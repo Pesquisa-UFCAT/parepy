@@ -232,7 +232,7 @@ Example 2
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=100,000)\) following a Gumbel minimum distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "stochastic variable" in your setup and generate fixed values each time step. Use three time steps.</i>
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=100,000)\) following a Gumbel minimum distribution with mean \(\mu = 20\) and standard deviation \(\sigma = 2\). Use "stochastic variable" in your setup and generate fixed values each time step. Use three time steps.</i>
 </p>
 
 ```python
@@ -240,7 +240,7 @@ from parepy_toolbox import sampling
 
 # Dataset: fixed value in time series
 model = {'model sampling': 'mcs-time', 'time steps': 3}
-f = {'type': 'gumbel min', 'loc': 7, 'scale': 3, 'seed': None, 'stochastic variable': False}
+f = {'type': 'gumbel min', 'loc': 20, 'scale': 2, 'seed': None, 'stochastic variable': False}
 varSet = [f]
 size = 100000
 
@@ -258,19 +258,19 @@ print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 ```bash
 random variables n=300000: 
 
-[[ 9.83084403  0.        ]  # --> sample 0 time step = 0
- [ 9.83084403  1.        ]  # --> sample 0 time step = 1
- [ 9.83084403  2.        ]  # --> sample 0 time step = 2
- [10.21614749  0.        ]  # --> sample 1 time step = 0
- [10.21614749  1.        ]  # --> sample 1 time step = 1
- [10.21614749  2.        ]  # --> sample 1 time step = 2
- [10.06481753  0.        ]  # --> sample 2 time step = 0
- [10.06481753  1.        ]  # --> sample 2 time step = 1
- [10.06481753  2.        ]  # --> sample 2 time step = 2
+[[20.83084403  0.        ]  # --> sample 0 time step = 0
+ [20.83084403  1.        ]  # --> sample 0 time step = 1
+ [20.83084403  2.        ]  # --> sample 0 time step = 2
+ [21.21614749  0.        ]  # --> sample 1 time step = 0
+ [21.21614749  1.        ]  # --> sample 1 time step = 1
+ [21.21614749  2.        ]  # --> sample 1 time step = 2
+ [19.06481753  0.        ]  # --> sample 2 time step = 0
+ [19.06481753  1.        ]  # --> sample 2 time step = 1
+ [19.06481753  2.        ]  # --> sample 2 time step = 2
  ...
- [8.55312079  0.         ]  # --> sample 299000 time step = 0
- [8.55312079  1.         ]  # --> sample 299000 time step = 1
- [8.55312079  2.         ]] # --> sample 299000 time step = 2
+ [18.55312079  0.        ]  # --> sample 299000 time step = 0
+ [18.55312079  1.        ]  # --> sample 299000 time step = 1
+ [18.55312079  2.        ]] # --> sample 299000 time step = 2
 
 type variable: <class 'numpy.ndarray'>
 ```
@@ -321,7 +321,7 @@ print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 random variables n=90: 
 
 [[7.73489316  0.        ]  # --> sample 0 time step = 0
- [2.39698123  1.        ]  # --> sample 0 time step = 1
+ [4.39698123  1.        ]  # --> sample 0 time step = 1
  [6.73925933  2.        ]  # --> sample 0 time step = 2
  [5.09639542  0.        ]  # --> sample 1 time step = 0
  [5.46050213  1.        ]  # --> sample 1 time step = 1
@@ -341,7 +341,7 @@ Example 4
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1,000,000)\) following a Triangular distribution with mean \(\mu = 7\), minimum value \(\mu _l = 3\) and maximum value \(\mu _u = 8\). Use "seed without control" in your setup.</i>
+    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1,000,000)\) following a Triangular distribution with mean \(\mu = 7\), minimum value \(\mu _l = 3\) and maximum value \(\mu _u = 8\). Use "seed control" in your setup.</i>
 </p>
 
 ```python
@@ -349,15 +349,17 @@ from parepy_toolbox import sampling
 
 # Dataset
 model = {'model sampling': 'mcs'}
-f = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}
+f = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': 23}
 varSet = [f]
 size = 1000000
 
 # Call function
-r = sampling(size, len(varSet), model, varSet)
+r0 = sampling(size, len(varSet), model, varSet)
+r1 = sampling(size, len(varSet), model, varSet)
 
 # Output details
-print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
+print(f'random variables 0 n={len(r0)}: \n\n {r0} \n\n type variable: {type(r0)}')
+print(f'random variables 1 n={len(r1)}: \n\n {r1} \n\n type variable: {type(r1)}')
 ```
 
 <p align = "justify">
@@ -365,7 +367,19 @@ print(f'random variables n={len(r)}: \n\n {r} \n\n type variable: {type(r)}')
 </p>
 
 ```bash
-random variables n=1000000: 
+random variables 0 n=1000000: 
+
+ [[ 3.5106688 ]
+ [ 5.69074161]
+ [ 8.60932312]
+ ...
+ [10.28841779]
+ [ 7.25655855]
+ [ 7.21348877]] 
+
+ type variable: <class 'numpy.ndarray'>
+
+random variables 1 n=1000000: 
 
  [[ 3.5106688 ]
  [ 5.69074161]
