@@ -15,7 +15,7 @@ title: calc_pf_beta
 
 <h3>calc_pf_beta</h3>
 <p align = "justify">
-    Calculates the values of pf and beta from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and beta values too.
+    Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
 </p>
 
 ```python
@@ -77,15 +77,15 @@ Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, the calc_pf_beta function processes a DataFrame with seven columns: (a) random variable 0, random variable 1, random variable 2, state limit function 0, state limit function 1, indicator function 0 ('I_0'), indicator function 1 ('I_1'). Use this function to obtain the probability of failure and the reliability index.</i>
+    <i>Use calc_pf_beta function to process a DataFrame with seven columns: (a) random variable \(x_0\), random variable \(x_1\), random variable \(x_2\), state limit function \(g_0\), state limit function \(x_1\), indicator function \(I_0\), indicator function \(I_1\). Use this function to obtain the probability of failure and the reliability index.</i>
 </p>
 
 ```python
-# pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
-from tabulate import tabulate
 import pandas as pd
+
 from parepy_toolbox import calc_pf_beta
 
+# Dataset
 data =  {
             'X_0': [43.519326, 40.184658, 46.269007, 36.370403, 40.089100, 45.000000, 40.000000],
             'X_1': [11.222943, 11.044150, 10.586153, 9.523268, 9.728168, 10.000000, 10.000000],
@@ -96,10 +96,21 @@ data =  {
             'I_1': [1, 1, 1, 0, 0, 0, 0]
         }
 df = pd.DataFrame(data)
-pf_df, beta_df = calc_pf_beta(serial_df, {'model sampling': 'mcs'}, 2)
+
+# Call function
+pf_df, beta_df = calc_pf_beta(df, {'model sampling': 'mcs'}, 2)
+
+# Output details: Use the external module tabulate to print pretty
+# pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
+from tabulate import tabulate
 print(f'pf:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
 print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
 ``` 
+
+<p align = "justify">
+    <i>Output details.</i>
+</p>
+
 ```bash
 pf:
 +--------------------+---------------------+
@@ -119,7 +130,7 @@ Example 2
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, the calc_pf_beta function processes a txt DataFrame with seven columns: (a) random variable 0, random variable 1, random variable 2, state limit function 0, state limit function 1, indicator function 0 ('I_0'), indicator function 1 ('I_1'). Use this function to obtain the probability of failure and the reliability index.</i>
+    <i>Use calc_pf_beta function to process a txt DataFrame with seven columns: (a) random variable \(x_0\), random variable \(x_1\), random variable \(x_2\), state limit function \(g_0\), state limit function \(x_1\), indicator function \(I_0\), indicator function \(I_1\). Use this function to obtain the probability of failure and the reliability index.</i>
 </p>
 
 
@@ -136,16 +147,24 @@ X_0	X_1	X_2	G_0	G_1	I_0	I_1
 ```
 
 ```python
-# pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
-from tabulate import tabulate
 import pandas as pd
+
 from parepy_toolbox import calc_pf_beta
 
-df = pd.read_csv('./example.txt', sep='\t')
-pf_df, beta_df = calc_pf_beta(serial_df, {'model sampling': 'mcs'}, 2)
+# Call function
+pf_df, beta_df = calc_pf_beta('./example.txt', {'model sampling': 'mcs'}, 2)
+
+# Output details: Use the external module tabulate to print pretty
+# pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
+from tabulate import tabulate
 print(f'pf:\n{tabulate(pf_df, headers="keys", tablefmt="pretty", showindex=False)}')
 print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=False)}')
 ``` 
+
+<p align = "justify">
+    <i>Output details.</i>
+</p>
+
 ```bash
 pf:
 +--------------------+---------------------+

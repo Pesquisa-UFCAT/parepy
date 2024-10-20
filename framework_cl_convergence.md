@@ -15,7 +15,7 @@ title: convergence_probability_failure
 
 <h3>convergence_probability_failure</h3>
 <p align = "justify">
-    This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
+    This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the probability of failure or reliability index.
 </p>
 
 ```python
@@ -82,8 +82,7 @@ Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>
-    In this example, the <code>convergence_probability_failure</code> function is used to determine the convergence rate of the failure probability of the limit state function I_0.</i>
+    <i>Use <code>convergence_probability_failure</code> function is used to determine the convergence rate of the failure probability of the limit state function I_0.</i>
 </p>
 
 ```python

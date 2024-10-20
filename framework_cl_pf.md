@@ -15,7 +15,7 @@ title: pf_equation
 
 <h3>pf_equation</h3>
 <p align = "justify">
-    This function calculates the probability of failure \(\left(p_f\right)\) for a given reliability index \(\left(\beta\right)\) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
+    This function calculates the probability of failure (pf) for a given reliability index (ϐ) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
 </p>
 
 ```python
@@ -71,7 +71,12 @@ from parepy_toolbox import pf_equation
 beta = 3.5
 pf = pf_equation(beta)
 print(f"Probability of failure {pf:.5e}")
-```
+``` 
+
+<p align = "justify">
+    <i>Output details.</i>
+</p>
+
 ```bash
 Probability of failure 2.32629e-04
 ``` 

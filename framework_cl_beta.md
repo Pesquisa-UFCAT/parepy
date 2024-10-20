@@ -15,7 +15,7 @@ title: beta_equation
 
 <h3>beta_equation</h3>
 <p align = "justify">
-    This function calculates the reliability index \(\left(\beta\right)\) value for a given probability of failure \(\left(p_f\right)\).
+    This function calculates the reliability index value for a given probability of failure (pf).
 </p>
 
 ```python
@@ -36,7 +36,7 @@ Input variables
     <tr>
         <td><code>pf</code></td>
         <td>Probability of failure</td>
-        <td>Float</td>
+        <td>Float or String</td>
     </tr>
 </table>
 
@@ -62,7 +62,7 @@ Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, the <code>beta_equation</code> function calculates the reliability index for a probability of failure \(\left(p_f\right)\) equals 2.32629e-04.</i>
+    <i>Use <code>beta_equation</code> function to calculate the reliability index for a probability of failure of 2.32629e-04.</i>
 </p>
 
 ```python
@@ -72,6 +72,11 @@ pf = 2.32629e-04
 beta = beta_equation(pf)
 print(f"Reliability index {beta:.2f}")
 ``` 
+
+<p align = "justify">
+    <i>Output details.</i>
+</p>
+
 ```bash
 Reliability index 3.50
 ``` 
