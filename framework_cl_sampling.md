@@ -225,7 +225,7 @@ random variables n=1000000:
 
 <center>
     <img src="assets/images/sampling_figure_1.svg" width="50%" height="auto">
-    <p align="center"><b>Figure 1.</b> Random variable examplez     .</p>
+    <p align="center"><b>Figure 1.</b> Random variable example.</p>
 </center>
 
 Example 2
@@ -276,7 +276,6 @@ type variable: <class 'numpy.ndarray'>
 ```
 <center>
 <table style = "width:100%">
-    <thead>
     <tr>
         <td><img src="assets/images/sampling_figure_20.svg" width="100%" height="auto"></td>
         <td><img src="assets/images/sampling_figure_21.svg" width="100%" height="auto"></td>
