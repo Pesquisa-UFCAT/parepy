@@ -89,7 +89,8 @@ To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a
 
 ```python
 def example_function(x, none_variable):
-    """Beck example"""
+    """Beck example
+    """
 
     # random variables statement  
     r_d = x[0]
@@ -106,7 +107,8 @@ def example_function(x, none_variable):
 # or
 
 def example_function(x, none_variable):
-    """Beck example"""
+    """Beck example
+    """
 
     # random variables statement  
     r_d = x[0]
@@ -121,7 +123,8 @@ def example_function(x, none_variable):
 # or
 
 def example_function(x, none_variable):
-    """Beck example"""
+    """Beck example
+    """
 
     # random variables statement  
     r_d = x[0]
@@ -153,7 +156,8 @@ Using two state limit functions:
 
 ```python
 def example_function(x, none_variable):
-    """Beck example"""
+    """Beck example
+    """
 
     # random variables statement g_0
     r_d = x[0]
