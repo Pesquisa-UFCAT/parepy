@@ -62,7 +62,7 @@ Example 1
 {: .label .label-blue }
 
 <p align = "justify">
-    <i>In this example, the <code>beta_equation</code> function calculates the reliability index for a probability of failure (pf) equals 2.32629e-04.</i>
+    <i>In this example, the <code>beta_equation</code> function calculates the reliability index for a probability of failure \(\left(p_f\right)\) equals 2.32629e-04.</i>
 </p>
 
 ```python
