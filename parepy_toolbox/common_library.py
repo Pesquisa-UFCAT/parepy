@@ -1,6 +1,5 @@
 """Common library for PAREpy toolbox"""
 from datetime import datetime
-from typing import List, Dict, Union, Callable, Tuple
 from distfit import distfit
 from scipy.stats.distributions import norm, gumbel_r, gumbel_l, dweibull, gamma, beta, triang
 from scipy.integrate import quad
@@ -12,7 +11,7 @@ from numpy import sqrt, pi, exp
 import random
 
 
-def sampling(n_samples: int, d: int, model: Dict, variables_setup: List) -> np.ndarray:
+def sampling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.ndarray:
     """
     This algorithm generates a set of random numbers according to a type of distribution.
 
@@ -233,7 +232,7 @@ def sampling(n_samples: int, d: int, model: Dict, variables_setup: List) -> np.n
     return random_sampling
 
 
-def simpling(n_samples: int, d: int, model: Dict, variables_setup: List) -> np.ndarray:
+def simpling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.ndarray:
     """
     This algorithm generates a set of random numbers according to a type of distribution.
 
@@ -241,7 +240,7 @@ def simpling(n_samples: int, d: int, model: Dict, variables_setup: List) -> np.n
         n_samples (int): Number of samples.
         d (int): Number of dimensions.
         model (Dict): Model parameters, including seed and method.
-        variables_setup (List): List of dictionaries, each with parameters for each variable.
+        variables_setup (List): list of dictionaries, each with parameters for each variable.
 
     Returns:
         np.ndarray: Random samples.
@@ -354,7 +353,7 @@ def beta_equation(pf: float) -> Union[float, str]:
         return beta_value
 
 
-def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: Dict[str, str], n_constraints: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict[str, str], n_constraints: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
     
@@ -391,7 +390,7 @@ def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: Dict[str
     return df_pf, df_beta
 
 
-def norm_array(ar: List[float]) -> float:
+def norm_array(ar: list[float]) -> float:
     """
     Evaluates the norm of the array ar.
 
@@ -430,7 +429,7 @@ def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y
     return y_new
 
 
-def convergence_probability_failure(df: pd.DataFrame, column: str) -> Tuple[List[int], List[float], List[float], List[float], List[float]]:
+def convergence_probability_failure(df: pd.DataFrame, column: str) -> Tuple[List[int], list[float], list[float], list[float], list[float]]:
     """
     This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
 
@@ -439,11 +438,11 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> Tuple[List
         column (String): Name of the column to be analyzed
 
     Returns:
-        div (List): List containing sample sizes
-        m (List): List containing the mean values of the column. pf value rate
-        ci_l (List): List containing the lower confidence interval values of the column
-        ci_u (List): List containing the upper confidence interval values of the column
-        var (List): List containing the variance values of the column
+        div (List): list containing sample sizes
+        m (List): list containing the mean values of the column. pf value rate
+        ci_l (List): list containing the lower confidence interval values of the column
+        ci_u (List): list containing the upper confidence interval values of the column
+        var (List): list containing the variance values of the column
     """
     
     column_values = df[column].to_list()
@@ -474,7 +473,7 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> Tuple[List
     return div, m, ci_l, ci_u, var
 
 
-def goodness_of_fit(data: Union[np.ndarray, List[float]], distributions: Union[str, List[str]] = 'all') -> Dict[str, Dict[str, Union[str, Tuple[float]]]]:
+def goodness_of_fit(data: Union[np.ndarray, list[float]], distributions: Union[str, list[str]] = 'all') -> dict[str, dict[str, Union[str, Tuple[float]]]]:
     """
     Evaluates the fit of distributions to the provided data.
 
@@ -514,7 +513,7 @@ def goodness_of_fit(data: Union[np.ndarray, List[float]], distributions: Union[s
     return top_3_distributions
 
 
-def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> Tuple[pd.DataFrame, List[List[str]]]:
+def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> Tuple[pd.DataFrame, list[List[str]]]:
     """
     This function application first barrier failure algorithm.
 
@@ -577,7 +576,7 @@ def sampling_uniform_distribution(sampling_min: float, sampling_max: float, n_sa
         seed (int): Seed for random number generation
 
     Returns:
-        samples (List): List of random samples
+        samples (List): list of random samples
     """
     np.random.seed(seed)
     samples = np.random.uniform(sampling_min, sampling_max, n_samples).tolist()
@@ -687,7 +686,7 @@ def triangular_inverse_cdf(n_samples: int, a_min: float, a_mean: float, a_max: f
         seed (int): Seed for random number generation
 
     Returns:
-        x_0 (List): List of random samples
+        x_0 (List): list of random samples
     """
 
     if method.upper() == 'MCS':
