@@ -1,6 +1,0 @@
-poetry
-numpy
-pandas
-scipy
-disfit
-matplotlib
