@@ -1,4 +1,5 @@
 """Common library for PAREpy toolbox"""
+from typing import Union, Callable, Tuple, List, Dict
 from datetime import datetime
 from distfit import distfit
 from scipy.stats.distributions import norm, gumbel_r, gumbel_l, dweibull, gamma, beta, triang

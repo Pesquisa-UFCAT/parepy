@@ -1,9 +1,7 @@
 """List of distributions for the toolbox"""
-import random
-
 import numpy as np
 
-def crude_sampling_zero_one(n_samples: int, seed: int) -> list:
+def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
     """
     This function generates a uniform sampling between 0 and 1.
 
@@ -12,14 +10,14 @@ def crude_sampling_zero_one(n_samples: int, seed: int) -> list:
         seed (int): Seed for random number generation
 
     Returns:
-        u (list): list of random samples
+        u (list): Random samples
     """
-    np.random.seed(seed)
+    rng = np.random.default_rng(seed=seed)
     
-    return np.random.uniform(0, 1, n_samples).tolist()
+    return rng.random(n_samples).tolist()
 
 
-def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int) -> np.ndarray:
+def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.ndarray:
     """
     This function generates a uniform sampling between 0 and 1 using Latin Hypercube Sampling Algorithm.
 
@@ -29,22 +27,103 @@ def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int) -> np.ndarr
         seed (int): Seed for random number generation
 
     Returns:
-        u (np.array): Array of random samples
+        u (np.array): Random samples
     """
-    np.random.seed(seed)
     r = np.zeros((n_samples, dimension))
     p = np.zeros((n_samples, dimension))
     original_ids = [i for i in range(1, n_samples+1)]
+    if seed is not None:
+        x = crude_sampling_zero_one(n_samples * dimension, seed)
+    else:
+        x = crude_sampling_zero_one(n_samples * dimension)
     for i in range(dimension):
-        r[:, i] = np.random.uniform(0, 1, n_samples) * (1 / n_samples)
-        permuts = original_ids.copy()
-        random.shuffle(permuts)
+        perms = original_ids.copy()
+        r[:, i] = x[:n_samples]
+        del x[:n_samples]
         if i == 0:
-            p[:, i] = [i for i in range(1, n_samples + 1)]
+            p[:, i] = perms.copy()
         else:
-            p[:, i] = permuts.copy()
+            rng = np.random.default_rng(seed=seed)
+            rng.shuffle(perms)
+            p[:, i] = perms.copy()
+    u = (p - r) * (1 / n_samples)
 
-    p = p * (1 / n_samples)
-    u = p - r
+    return u
+
+
+def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    This function generates a uniform sampling between a and b.
+
+    Args:
+        parameters (dict): Dictionary of parameters. Keys 'a' (min. value [float]), 'b' (max. value [float])
+        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (int): Number of samples
+        seed (int): Seed for random number generation
+    
+    Returns:
+        u (list): Random samples
+    """
+
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux = crude_sampling_zero_one(n_samples, seed)
+        elif seed is None:
+            u_aux = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()
+        elif seed is None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()
+    
+    # PDF parameters and generation of samples    
+    a = parameters['a']
+    b = parameters['b']
+    u = [float(a + (b - a) * i) for i in u_aux]
+
+    return u
+
+
+def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    This function generates a normal sampling with mean mu and standard deviation sigma.
+
+    Args:
+        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
+        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (int): Number of samples
+        seed (int): Seed for random number generation
+    
+    Returns:
+        u (list): Random samples
+    """
+
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux1 = crude_sampling_zero_one(n_samples, seed)
+            u_aux2 = crude_sampling_zero_one(n_samples, seed+1)
+        elif seed is None:
+            u_aux1 = crude_sampling_zero_one(n_samples)
+            u_aux2 = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
+            u_aux2 = lhs_sampling_zero_one(n_samples, 2, seed+1)
+        elif seed is None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2)
+            u_aux2 = lhs_sampling_zero_one(n_samples, 2)
+
+    # PDF parameters and generation of samples  
+    mean = parameters['mean']
+    std = parameters['sigma']
+    u = []
+    for i in range(n_samples):
+        if method.lower() == 'lhs':
+            z_0 = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux2[i, 1]))
+        elif method.lower() == 'mcs':
+            z_0 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
+        u.append(mean + std * z_0)
 
     return u

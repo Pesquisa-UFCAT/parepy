@@ -1,4 +1,5 @@
 """PAREpy toolbox: Probabilistic Approach to Reliability Engineering"""
+from typing import Union, Callable, Tuple, List, Dict
 import time
 import copy
 import os
@@ -325,7 +326,7 @@ def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -
         return None, None, None
 
 
-def deterministic_algorithm_structural_analysis(setup: Dict[str, Union[int, Callable, Dict[str, str], List[Dict[str, float]]]]) -> Tuple[pd.DataFrame, float, float]:
+def deterministic_algorithm_structural_analysis(setup: dict[str, Union[int, Callable, Dict[str, str], List[Dict[str, float]]]]) -> Tuple[pd.DataFrame, float, float]:
     """
     This function solves the deterministic problem in structural reliability problems.
     
