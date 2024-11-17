@@ -110,10 +110,8 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
     elif method.lower() == 'lhs':
         if seed is not None:
             u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
-            u_aux2 = lhs_sampling_zero_one(n_samples, 2, seed+1)
         elif seed is None:
             u_aux1 = lhs_sampling_zero_one(n_samples, 2)
-            u_aux2 = lhs_sampling_zero_one(n_samples, 2)
 
     # PDF parameters and generation of samples  
     mean = parameters['mean']
@@ -121,9 +119,49 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
     u = []
     for i in range(n_samples):
         if method.lower() == 'lhs':
-            z_0 = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux2[i, 1]))
+            z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
         elif method.lower() == 'mcs':
-            z_0 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
-        u.append(mean + std * z_0)
+            z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
+        u.append(mean + std * z)
+
+    return u
+
+
+def gumbel_right_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    This function generates a normal sampling with mean mu and standard deviation sigma.
+
+    Args:
+        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
+        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (int): Number of samples
+        seed (int): Seed for random number generation
+    
+    Returns:
+        u (list): Random samples
+    """
+
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux = crude_sampling_zero_one(n_samples, seed)
+        elif seed is None:
+            u_aux = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1, seed)
+        elif seed is None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1)
+
+    # PDF parameters and generation of samples  
+    mean = parameters['mean']
+    std = parameters['sigma']
+    gamma = 0.577216
+    beta = np.sqrt(6) * std / np.pi
+    mu_n = mean - beta * gamma
+    u = []
+    for i in range(n_samples):
+        u.append(mu_n - beta * np.log(-np.log(u_aux[i])))
+
 
     return u
