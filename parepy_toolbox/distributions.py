@@ -127,9 +127,10 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
     return u
 
 
-def gumbel_right_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a normal sampling with mean mu and standard deviation sigma.
+    This function generates a Gumbel Maximum sampling with mean mu and standard deviation sigma.
+    https://real-statistics.com/other-key-distributions/gumbel-distribution/
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
@@ -149,19 +150,58 @@ def gumbel_right_sampling(parameters: dict, method: str, n_samples: int, seed: i
             u_aux = crude_sampling_zero_one(n_samples)
     elif method.lower() == 'lhs':
         if seed is not None:
-            u_aux = lhs_sampling_zero_one(n_samples, 1, seed)
+            u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()
         elif seed is None:
-            u_aux = lhs_sampling_zero_one(n_samples, 1)
+            u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()
 
     # PDF parameters and generation of samples  
     mean = parameters['mean']
     std = parameters['sigma']
-    gamma = 0.577216
-    beta = np.sqrt(6) * std / np.pi
-    mu_n = mean - beta * gamma
+    gamma = 0.577215665
+    beta = np.pi / (np.sqrt(6) * std) 
+    alpha = mean - gamma / beta
     u = []
     for i in range(n_samples):
-        u.append(mu_n - beta * np.log(-np.log(u_aux[i])))
+        u.append(alpha - (1 / beta) * np.log(-np.log(u_aux[i])))
 
+    return u
+
+
+def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    This function generates a Gumbel Minimum sampling with mean mu and standard deviation sigma.
+    https://real-statistics.com/other-key-distributions/gumbel-distribution/
+
+    Args:
+        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
+        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (int): Number of samples
+        seed (int): Seed for random number generation
+    
+    Returns:
+        u (list): Random samples
+    """
+
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux = crude_sampling_zero_one(n_samples, seed)
+        elif seed is None:
+            u_aux = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()
+        elif seed is None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()
+
+    # PDF parameters and generation of samples  
+    mean = parameters['mean']
+    std = parameters['sigma']
+    gamma = 0.577215665
+    beta = np.pi / (np.sqrt(6) * std) 
+    alpha = mean + gamma / beta
+    u = []
+    for i in range(n_samples):
+        u.append(alpha - (1 / beta) * np.log(-np.log(1 - u_aux[i])))
 
     return u
