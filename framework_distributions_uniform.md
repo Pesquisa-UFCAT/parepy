@@ -130,6 +130,36 @@ Example 1
     <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1,000,000)\) following a Normal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "seed without control" in your setup.</i>
 </p>
 
+```python
+from parepy_toolbox import uniform_sampling
+
+# Sampling
+n = 400
+x = uniform_sampling({'min': 10, 'max': 20}, 'mcs', n)
+y = uniform_sampling({'min': 10, 'max': 20}, 'lhs', n)
+
+# Criar subplots lado a lado
+fig, axes = plt.subplots(1, 2, figsize=(7, 3))
+
+# Primeiro gráfico: Histograma e KDE para dados1
+sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
+axes[0].set_title('MCS Sampling')
+axes[0].set_xlabel('Valores')
+axes[0].set_ylabel('Densidade')
+
+# Segundo gráfico: Histograma e KDE para dados2
+sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
+axes[1].set_title('LHS Sampling')
+axes[1].set_xlabel('Valores')
+axes[1].set_ylabel('Densidade')
+
+# Ajustar o layout
+plt.tight_layout()
+
+# Mostrar o gráfico
+plt.show()
+```
+
 <center>
     <img src="assets/images/uniform_sampling_figure_1.png" width="50%" height="auto">
     <p align="center"><b>Figure 3.</b> Random variable example.</p>
