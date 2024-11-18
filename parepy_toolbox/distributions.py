@@ -127,10 +127,53 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
     return u
 
 
+def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    This function generates a log-normal sampling with mean mu and standard deviation sigma.
+
+    Args:
+        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
+        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (int): Number of samples
+        seed (int): Seed for random number generation
+    
+    Returns:
+        u (list): Random samples
+    """
+
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux1 = crude_sampling_zero_one(n_samples, seed)
+            u_aux2 = crude_sampling_zero_one(n_samples, seed+1)
+        elif seed is None:
+            u_aux1 = crude_sampling_zero_one(n_samples)
+            u_aux2 = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
+        elif seed is None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2)
+
+    # PDF parameters and generation of samples  
+    mean = parameters['mean']
+    std = parameters['sigma']
+    epsilon = np.sqrt(np.log(1 + (std/mean)**2))
+    lambdaa = np.log(mean) - 0.5 * epsilon**2
+    u = []
+    for i in range(n_samples):
+        if method.lower() == 'lhs':
+            z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
+        elif method.lower() == 'mcs':
+            z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
+        u.append(np.exp(lambdaa + epsilon * z))
+
+    return u
+
+
 def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
     This function generates a Gumbel Maximum sampling with mean mu and standard deviation sigma.
-    https://real-statistics.com/other-key-distributions/gumbel-distribution/
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
@@ -170,7 +213,6 @@ def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int
 def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
     This function generates a Gumbel Minimum sampling with mean mu and standard deviation sigma.
-    https://real-statistics.com/other-key-distributions/gumbel-distribution/
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
@@ -203,5 +245,47 @@ def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int
     u = []
     for i in range(n_samples):
         u.append(alpha - (1 / beta) * np.log(-np.log(1 - u_aux[i])))
+
+    return u
+
+
+def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    This function generates a triangular sampling with minimun a, mode c, and maximum b.
+    https://www.math.wm.edu/~leemis/chart/UDR/PDFs/TriangularV.pdf
+
+    Args:
+        parameters (dict): Dictionary of parameters. Keys 'a' (minimum [float]), 'c' (mode [float]), and 'b' (maximum [float])
+        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (int): Number of samples
+        seed (int): Seed for random number generation
+    
+    Returns:
+        u (list): Random samples
+    """
+
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux = crude_sampling_zero_one(n_samples, seed)
+        elif seed is None:
+            u_aux = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()
+        elif seed is None:
+            u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()
+
+    # PDF parameters and generation of samples  
+    a = parameters['min']
+    c = parameters['mode']
+    b = parameters['max']
+    u = []
+    for i in range(n_samples):
+        criteria = (c - a) / (b - a)
+        if u_aux[i] < criteria:
+            u.append(a + np.sqrt(u_aux[i] * (b - a) * (c - a)))
+        else:
+            u.append(b - np.sqrt((1 - u_aux[i]) * (b - a) * (b - c)))
 
     return u
