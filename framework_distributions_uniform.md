@@ -131,6 +131,6 @@ Example 1
 </p>
 
 <center>
-    <img src="assets/images/sampling_figure_3.svg" width="50%" height="auto">
+    <img src="assets/images/uniform_sampling_figure_1.png" width="50%" height="auto">
     <p align="center"><b>Figure 3.</b> Random variable example.</p>
 </center>
