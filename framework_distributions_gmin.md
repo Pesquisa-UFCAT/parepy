@@ -139,11 +139,38 @@ Output variables
 Example 1
 {: .label .label-blue }
 
-<p align = "justify">
-    <i>In this example, we will use the <code>sampling</code> function to generate a set of random samples \((n=1,000,000)\) following a Normal distribution with mean \(\mu = 7\) and standard deviation \(\sigma = 3\). Use "seed without control" in your setup.</i>
+<p align="justify">
+    <i>In this example, we use the <code>gumbel_min_sampling</code> function to generate two sets of random samples \((n=100)\) following a Gumbel distribution with a location parameter \(\mu = 10\) and a scale parameter \(\sigma = 5\). The first set is sampled using the Monte Carlo Sampling (MCS) method, while the second set is generated using the Latin Hypercube Sampling (LHS) method. The results are visualized using histograms with Kernel Density Estimates (KDE) plotted side-by-side for comparison. This comparison helps to illustrate how the two sampling methods affect the distribution of the generated data.</i>
 </p>
 
+```python
+from parepy_toolbox import gumbel_min_sampling
+
+# Sampling
+n = 100
+x = gumbel_min_sampling({'mean': 10, 'sigma': 5}, 'mcs', n)
+y = gumbel_min_sampling({'mean': 10, 'sigma': 5}, 'lhs', n)
+
+# PLot
+fig, axes = plt.subplots(1, 2, figsize=(7, 3))
+
+# First plot: Histogram and KDE for data1
+sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
+axes[0].set_title('MCS Sampling')
+axes[0].set_xlabel('Valores')
+axes[0].set_ylabel('Densidade')
+
+# Second plot: Histogram and KDE for data2
+sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
+axes[1].set_title('LHS Sampling')
+axes[1].set_xlabel('Valores')
+axes[1].set_ylabel('Densidade')
+
+# Ajust and show plot
+plt.tight_layout()
+plt.show()
+```
 <center>
-    <img src="assets/images/sampling_figure_3.svg" width="50%" height="auto">
-    <p align="center"><b>Figure 3.</b> Random variable example.</p>
+    <img src="assets/images/gmin_sampling_figure_1.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Gmin variable example.</p>
 </center>
