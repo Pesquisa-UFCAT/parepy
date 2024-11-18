@@ -78,8 +78,8 @@ def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=No
             u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()
     
     # PDF parameters and generation of samples    
-    a = parameters['a']
-    b = parameters['b']
+    a = parameters['min']
+    b = parameters['max']
     u = [float(a + (b - a) * i) for i in u_aux]
 
     return u
@@ -201,7 +201,7 @@ def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int
     mean = parameters['mean']
     std = parameters['sigma']
     gamma = 0.577215665
-    beta = np.pi / (np.sqrt(6) * std) 
+    beta = np.pi / (np.sqrt(6) * std)
     alpha = mean - gamma / beta
     u = []
     for i in range(n_samples):
@@ -244,7 +244,7 @@ def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int
     alpha = mean + gamma / beta
     u = []
     for i in range(n_samples):
-        u.append(alpha - (1 / beta) * np.log(-np.log(1 - u_aux[i])))
+        u.append(alpha + (1 / beta) * np.log(-np.log(1 - u_aux[i])))
 
     return u
 
