@@ -13,11 +13,7 @@
 [Msc Matheus Henrique Morato Moraes](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8214592P6)$^3$.
 
 
-1.School of Engineering, Federal University of Catalão, Brazil
-2.Department of Structures, São Carlos School of Engineering, Brazil
-3.Federal University of São Carlos (UFSCar), Brazil.
-4.School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil.
-5.State University of Rio de Janeiro, Polytechnic Institute, Brazil.
+**1.** School of Engineering, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **5.** State University of Rio de Janeiro, Polytechnic Institute, Brazil.  
 
 ## Sumary
 PAREpy é uma software baseado em Python para análise de confiabilidade de sistemas de engenharia, considerando variáveis aleatórias e incertezas. O software é baseado em métodos probabilísticos e estatísticos, como o método de amostragem de Monte Carlo, e o Hípercubo Latino. O software é desenvolvido para ser uma ferramenta de código aberto e fácil de usar para engenheiros e pesquisadores que desejam realizar análises de confiabilidade em seus sistemas de engenharia. 
