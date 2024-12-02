@@ -14,13 +14,9 @@
 
 
 1.School of Engineering, Federal University of Catalão, Brazil
-
 2.Department of Structures, São Carlos School of Engineering, Brazil
-
 3.Federal University of São Carlos (UFSCar), Brazil.
-
 4.School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil.
-
 5.State University of Rio de Janeiro, Polytechnic Institute, Brazil.
 
 ## Sumary
