@@ -2,7 +2,7 @@
 layout: home
 parent: distributions
 grand_parent: Framework
-nav_order: 5
+nav_order: 4
 has_children: true
 has_toc: true
 title: gumbel_max_sampling
@@ -13,7 +13,6 @@ title: gumbel_max_sampling
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>Gumbel Max Sampling</h3>
 <p align="justify">
     This function generates a Gumbel Maximum distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>
@@ -88,13 +87,12 @@ Output variables
    </tr>
 </table>
 
-
 Example 1
 {: .label .label-blue }
 
 <p align="justify">
     <i>
-        In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=400)\) following a Gumbel Maximuim distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Mean and standard deviation is defined as \([10, 2]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+        In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=400\)) following a Gumbel Maximuim distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Mean and standard deviation is defined as \([10, 2]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
     </i>
 </p>
 
@@ -131,7 +129,7 @@ plt.show()
 
 <center>
     <img src="assets/images/gmax_sampling_figure_1.png" height="auto">
-    <p align="center"><b>Figure 1.</b> Uniform variable example.</p>
+    <p align="center"><b>Figure 1.</b> Gumbel maximum variable example.</p>
 </center>
 
 Example 2
@@ -139,7 +137,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=3)\) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code), we uniformly sampling generate 3 times and compare results.
+    In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a Gumbel maximum distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
     </i>
 </p>
 
