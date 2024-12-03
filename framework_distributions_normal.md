@@ -15,7 +15,7 @@ title: normal_sampling
 
 <h3>Normal Sampling</h3>
 <p align="justify">
-    This function generates random samples from a normal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
+    This function generates random samples from a Normal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>
 
 ```python
@@ -147,9 +147,9 @@ from parepy_toolbox import uniform_sampling
 
 # Sampling
 n = 3
-x0 = uniform_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
-x1 = uniform_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
-x2 = uniform_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+x0 = normal_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+x1 = normal_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+x2 = normal_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
 print(x0, '\n', x1, '\n', x2)
 ```
 ```
