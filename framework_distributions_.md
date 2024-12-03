@@ -13,5 +13,5 @@ title: distributions
 <!--Don't delete ths script-->
 
 <p align = "justify">
-    This section describes documentation of algorithms.
+    This section describes the documentation of the implemented probability distributions.
 </p>
