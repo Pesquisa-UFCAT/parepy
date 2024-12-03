@@ -129,7 +129,7 @@ plt.show()
 ```
 
 <center>
-    <img src="assets/images/uniform_sampling_figure_1.png" height="auto">
+    <img src="assets/images/normal_sampling_figure_1.png" height="auto">
     <p align="center"><b>Figure 1.</b> Uniform variable example.</p>
 </center>
 
