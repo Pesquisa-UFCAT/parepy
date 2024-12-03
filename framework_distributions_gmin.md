@@ -14,7 +14,7 @@ title: gumbel_min_sampling
 <!--Don't delete ths script-->
 
 <p align="justify">
-    This function generates a Gumbel Maximum distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
+    This function generates a Gumbel Minimum distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>
 
 ```python
@@ -65,7 +65,7 @@ Input variables
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>integer or None</td>
+        <td>integer or none</td>
     </tr>
 </table>
 
@@ -100,7 +100,7 @@ Example 1
 # Library
 import matplotlib.pyplot as plt
 
-from parepy_toolbox import uniform_sampling
+from parepy_toolbox import gumbel_min_sampling
 
 # Sampling
 n = 400
@@ -109,20 +109,14 @@ y = gumbel_min_sampling({'mean': 10, 'sigma': 2}, 'lhs', n)
 
 # Plot
 fig, axes = plt.subplots(1, 2, figsize=(7, 3))
-
-# First plot: Histogram and KDE for data1
 sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
 axes[0].set_title('MCS Sampling')
 axes[0].set_xlabel('Values')
 axes[0].set_ylabel('Densidade')
-
-# Second plot: Histogram and KDE for data2
 sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
 axes[1].set_title('LHS Sampling')
 axes[1].set_xlabel('Valores')
 axes[1].set_ylabel('Densidade')
-
-# Ajust and show plot
 plt.tight_layout()
 plt.show()
 ```
@@ -137,12 +131,12 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a Gumbel maximum distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
+    In this example, we will use the <code>gumbel_min_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a Gumbel minimum distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
     </i>
 </p>
 
 ```python
-from parepy_toolbox import uniform_sampling
+from parepy_toolbox import gumbel_min_sampling
 
 # Sampling
 n = 3
@@ -153,9 +147,9 @@ print(x0, '\n', x1, '\n', x2)
 ```
 
 ```bash
-[11.607212332320078, 10.003120351710036, 12.16598464462817] 
-[11.607212332320078, 10.003120351710036, 12.16598464462817] 
-[11.607212332320078, 10.003120351710036, 12.16598464462817]
+[7.682671659156481, 10.003120351710036, 12.102906071949647] 
+[7.682671659156481, 10.003120351710036, 12.102906071949647]
+[7.682671659156481, 10.003120351710036, 12.102906071949647] 
 ```
 
 {: .important }
