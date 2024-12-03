@@ -106,8 +106,8 @@ from parepy_toolbox import uniform_sampling
 
 # Sampling
 n = 400
-x = gumbel_max_sampling({'mean': 10, 'sigma': 5}, 'mcs', n)
-y = gumbel_max_sampling({'mean': 10, 'sigma': 5}, 'lhs', n)
+x = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n)
+y = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'lhs', n)
 
 # Plot
 fig, axes = plt.subplots(1, 2, figsize=(7, 3))
