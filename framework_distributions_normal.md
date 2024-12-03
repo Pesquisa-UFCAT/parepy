@@ -123,7 +123,7 @@ plt.show()
 ```
 
 <center>
-    <img src="assets/images/normal_sampling_figure_1.png" height="auto">
+    <img src="assets/images/normal_sampling.png" height="auto">
     <p align="center"><b>Figure 1.</b> Normal variable example.</p>
 </center>
 

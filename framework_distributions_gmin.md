@@ -122,7 +122,7 @@ plt.show()
 ```
 
 <center>
-    <img src="assets/images/gmax_sampling_figure_1.png" height="auto">
+    <img src="assets/images/gumbel-min_sampling.png" height="auto">
     <p align="center"><b>Figure 1.</b> Gumbel minimum variable example.</p>
 </center>
 

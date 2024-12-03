@@ -119,6 +119,11 @@ plt.tight_layout()
 plt.show()
 ```
 
+<center>
+    <img src="assets/images/triangular_sampling.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Triangular variable example.</p>
+</center>
+
 Example 2
 {: .label .label-blue }
 
