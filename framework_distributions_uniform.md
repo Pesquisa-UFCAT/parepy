@@ -111,20 +111,14 @@ y = uniform_sampling({'min': 10, 'max': 20}, 'lhs', n)
 
 # Plot
 fig, axes = plt.subplots(1, 2, figsize=(7, 3))
-
-# First plot: Histogram and KDE for data1
 sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
 axes[0].set_title('MCS Sampling')
 axes[0].set_xlabel('Values')
 axes[0].set_ylabel('Densidade')
-
-# Second plot: Histogram and KDE for data2
 sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
 axes[1].set_title('LHS Sampling')
 axes[1].set_xlabel('Valores')
 axes[1].set_ylabel('Densidade')
-
-# Ajust and show plot
 plt.tight_layout()
 plt.show()
 ```
