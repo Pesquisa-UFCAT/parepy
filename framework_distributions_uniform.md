@@ -40,12 +40,12 @@ Input variables
             <p align="justify">
             Dictionary of parameters for uniform distribution. Keys:
             <ul>
-                <li><code>'min'</code>: Minimum value of the uniform distribution [Float]</li>
-                <li><code>'max'</code>: Maximum value of the uniform distribution [Float]</li>
+                <li><code>'min'</code>: Minimum value of the uniform distribution [float]</li>
+                <li><code>'max'</code>: Maximum value of the uniform distribution [float]</li>
             </ul>
             </p>
         </td>
-        <td>Dictionary</td>
+        <td>dictionary</td>
     </tr>
     <tr>
         <td><code>method</code></td>
@@ -57,17 +57,17 @@ Input variables
             </ul>
             </p>
         </td>
-        <td>String</td>
+        <td>string</td>
     </tr>
     <tr>
         <td><code>n_samples</code></td>
         <td>Number of samples</td>
-        <td>Integer</td>
+        <td>integer</td>
     </tr>
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>Integer or None</td>
+        <td>integer or None</td>
     </tr>
 </table>
 
@@ -85,7 +85,7 @@ Output variables
    <tr>
        <td><code>u</code></td>
        <td>Random samples</td>
-       <td>List</td>
+       <td>list</td>
    </tr>
 </table>
 
