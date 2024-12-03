@@ -16,7 +16,7 @@ title: uniform_sampling
 <h3>Uniform Sampling</h3>
 
 <p align="justify">
-    This function generates a uniform sampling between a (minimum) and b (maximum).
+    This function generates a Uniform sampling between a (minimum) and b (maximum).
 </p>
 
 ```python
