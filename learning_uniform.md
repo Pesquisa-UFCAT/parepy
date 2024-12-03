@@ -29,8 +29,9 @@ $$
 <p align="justify">Além disso, essa distribuição possui momentos que são derivados diretamente de seus limites. O momento de ordem 1, ou seja, a média (\(\mu\)), é o ponto médio do intervalo, enquanto a variância (\(\sigma^2\)) descreve a dispersão dos valores ao redor da média. Esses momentos são calculados como:</p>
 
 $$
-\mu = \frac{a+b}{2}, 
+\mu = \frac{a+b}{2}
 $$
+
 $$
 \quad \sigma^2 = \frac{(b-a)^2}{12}
 $$
@@ -38,8 +39,9 @@ $$
 <p align="justify">Os limites \(a\) e \(b\) podem ser determinados diretamente a partir da média e do desvio padrão (\(\sigma\)), o que torna a distribuição uniforme bastante conveniente para aplicações práticas. A relação é dada por:</p>
 
 $$
-a = \mu - \sqrt{3}\sigma, 
+a = \mu - \sqrt{3}\sigma
 $$
+
 $$
 \quad b = \mu + \sqrt{3}\sigma
 $$
