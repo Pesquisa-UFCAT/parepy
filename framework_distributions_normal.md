@@ -15,7 +15,7 @@ title: normal_sampling
 
 <h3>Normal Sampling</h3>
 <p align="justify">
-    This function generates random samples from a normal distribution with a specified mean (<code>mu</code>) and standard deviation (<code>sigma</code>), using the specified sampling method.
+    This function generates random samples from a normal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>
 
 ```python
@@ -39,12 +39,12 @@ Input variables
             <p align="justify">
             Dictionary of parameters for the normal distribution. Keys:
             <ul>
-                <li><code>'mean'</code>: Mean of the normal distribution [Float]</li>
-                <li><code>'sigma'</code>: Standard deviation of the normal distribution [Float]</li>
+                <li><code>'mean'</code>: Mean [float]</li>
+                <li><code>'sigma'</code>: Standard deviation [float]</li>
             </ul>
             </p>
         </td>
-        <td>Dictionary</td>
+        <td>dictionary</td>
     </tr>
     <tr>
         <td><code>method</code></td>
@@ -56,17 +56,17 @@ Input variables
             </ul>
             </p>
         </td>
-        <td>String</td>
+        <td>string</td>
     </tr>
     <tr>
         <td><code>n_samples</code></td>
-        <td>Number of samples to generate</td>
-        <td>Integer</td>
+        <td>Number of samples</td>
+        <td>integer</td>
     </tr>
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>Integer or None</td>
+        <td>integer or None</td>
     </tr>
 </table>
 
@@ -83,8 +83,8 @@ Output variables
    </thead>
    <tr>
        <td><code>u</code></td>
-       <td>Generated random samples from a normal distribution</td>
-       <td>List</td>
+       <td>Random samples</td>
+       <td>list</td>
    </tr>
 </table>
 
