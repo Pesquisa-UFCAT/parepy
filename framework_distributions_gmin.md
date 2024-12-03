@@ -140,24 +140,29 @@ Example 1
 {: .label .label-blue }
 
 <p align="justify">
-    <i>In this example, we use the <code>gumbel_min_sampling</code> function to generate two sets of random samples \((n=100)\) following a Gumbel distribution with a location parameter \(\mu = 10\) and a scale parameter \(\sigma = 5\). The first set is sampled using the Monte Carlo Sampling (MCS) method, while the second set is generated using the Latin Hypercube Sampling (LHS) method. The results are visualized using histograms with Kernel Density Estimates (KDE) plotted side-by-side for comparison. This comparison helps to illustrate how the two sampling methods affect the distribution of the generated data.</i>
+    <i>
+        In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=400)\) following a Gumbel Maximuim distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Mean and standard deviation is defined as \([10, 2]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+    </i>
 </p>
 
 ```python
-from parepy_toolbox import gumbel_min_sampling
+# Library
+import matplotlib.pyplot as plt
+
+from parepy_toolbox import uniform_sampling
 
 # Sampling
-n = 100
-x = gumbel_min_sampling({'mean': 10, 'sigma': 5}, 'mcs', n)
-y = gumbel_min_sampling({'mean': 10, 'sigma': 5}, 'lhs', n)
+n = 400
+x = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n)
+y = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'lhs', n)
 
-# PLot
+# Plot
 fig, axes = plt.subplots(1, 2, figsize=(7, 3))
 
 # First plot: Histogram and KDE for data1
 sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
 axes[0].set_title('MCS Sampling')
-axes[0].set_xlabel('Valores')
+axes[0].set_xlabel('Values')
 axes[0].set_ylabel('Densidade')
 
 # Second plot: Histogram and KDE for data2
@@ -170,7 +175,37 @@ axes[1].set_ylabel('Densidade')
 plt.tight_layout()
 plt.show()
 ```
+
 <center>
-    <img src="assets/images/gmin_sampling_figure_1.png" height="auto">
-    <p align="center"><b>Figure 1.</b> Gmin variable example.</p>
+    <img src="assets/images/gmax_sampling_figure_1.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Uniform variable example.</p>
 </center>
+
+Example 2
+{: .label .label-blue }
+
+<p align="justify">
+    <i>
+    In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=3)\) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code), we uniformly sampling generate 3 times and compare results.
+    </i>
+</p>
+
+```python
+from parepy_toolbox import uniform_sampling
+
+# Sampling
+n = 3
+x0 = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+x1 = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+x2 = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+print(x0, '\n', x1, '\n', x2)
+```
+
+```bash
+[11.607212332320078, 10.003120351710036, 12.16598464462817] 
+[11.607212332320078, 10.003120351710036, 12.16598464462817] 
+[11.607212332320078, 10.003120351710036, 12.16598464462817]
+```
+
+{: .important }
+> Note that using the seed 25 by 3 times, we can generate the same values in a random variable.
