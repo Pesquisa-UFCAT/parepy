@@ -139,18 +139,18 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>lognormal_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a Lognormal distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
+    In this example, we will use the <code>lognormal_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a Lognormal distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we Lognormal sampling generate 3 times and compare results.
     </i>
 </p>
 
 ```python
-from parepy_toolbox import normal_sampling
+from parepy_toolbox import lognormal_sampling
 
 # Sampling
 n = 3
-x0 = normal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
-x1 = normal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
-x2 = normal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
+x0 = lognormal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
+x1 = lognormal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
+x2 = lognormal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
 print(x0, '\n', x1, '\n', x2)
 ```
 
