@@ -94,7 +94,7 @@ Example 1
 
 <p align="justify">
     <i>
-        In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=400)\) following a uniform distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The range for both distributions is defined as \([10, 20]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+        In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=400\)) following a uniform distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The range for both distributions is defined as \([10, 20]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
     </i>
 </p>
 
@@ -139,7 +139,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=3)\) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
+    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
     </i>
 </p>
 
