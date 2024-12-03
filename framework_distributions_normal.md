@@ -66,7 +66,7 @@ Input variables
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>integer or None</td>
+        <td>integer or none</td>
     </tr>
 </table>
 
