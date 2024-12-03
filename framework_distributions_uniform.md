@@ -16,7 +16,7 @@ title: uniform_sampling
 <h3>Uniform Sampling</h3>
 
 <p align="justify">
-    This function generates a Uniform sampling between a (minimum) and b (maximum).
+    This function generates a Uniform sampling between \(a\) (minimum) and \(b\) (maximum).
 </p>
 
 ```python
@@ -67,7 +67,7 @@ Input variables
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>integer or None</td>
+        <td>integer or none</td>
     </tr>
 </table>
 
