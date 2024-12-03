@@ -139,7 +139,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=3)\) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code), we uniformly sampling generate 3 times and compare results.
+    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=3)\) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
     </i>
 </p>
 
