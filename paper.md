@@ -3,17 +3,17 @@
 [Prof. PhD Wanderlei Malaquias Pereira Junior](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4460682U0)$^1$, 
 [Prof. PhD Daniel de Lima Araújo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4768864J3)$^1$,
 [Prof. PhD André Teófilo Beck](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4790835Y8)$^2$,
-[Prof. PhD André Luis Christoforo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4706301Z5)³,
+[Prof. PhD André Luis Christoforo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4706301Z5)$^3$,
 [Prof. PhD Iuri Fazolin](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8085097P2)$^1$,
-[Prof. PhD Marcos Luiz Henrique](),
+[Prof. PhD Marcos Luiz Henrique](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4798716D4) $^4$,
 [Prof. Marcos Napoleão Rabelo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4702141E9)$^1$,
-[Prof. PhD Fran Sergio Lobato](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4169590P3)$^4$,
-[Prof. PhD Gustavo Barbosa Libotte](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4930703A6)$^5$,
+[Prof. PhD Fran Sergio Lobato](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4169590P3)$^5$,
+[Prof. PhD Gustavo Barbosa Libotte](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4930703A6)$^6$,
 [Msc Murilo Carneiro Rodrigues](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K1774858Z8)$^1$,
 [Msc Matheus Henrique Morato Moraes](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8214592P6)$^3$.
 
 
-**1.** School of Engineering, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **5.** State University of Rio de Janeiro, Polytechnic Institute, Brazil.  
+**1.** School of Engineering, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** University Federal of Pernambuco, Campus of the Agreste, Brazil. **5.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **6.** Polytechnic Institute, State University of Rio de Janeiro, Brazil.  
 
 ## Sumary
 PAREpy é uma software baseado em Python para análise de confiabilidade de sistemas de engenharia, considerando variáveis aleatórias e incertezas. O software é baseado em métodos probabilísticos e estatísticos, como o método de amostragem de Monte Carlo, e o Hípercubo Latino. O software é desenvolvido para ser uma ferramenta de código aberto e fácil de usar para engenheiros e pesquisadores que desejam realizar análises de confiabilidade em seus sistemas de engenharia. 
