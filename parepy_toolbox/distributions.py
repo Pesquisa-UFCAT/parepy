@@ -53,13 +53,13 @@ def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.
 
 def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a uniform sampling between a and b.
+    This function generates a uniform sampling between a (minimum) and b (maximum).
 
     Args:
-        parameters (dict): Dictionary of parameters. Keys 'a' (min. value [float]), 'b' (max. value [float])
-        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        parameters (dict): Dictionary of parameters. Keys:  'min' (Minimum value of the uniform distribution [Float]), 'max' (Maximum value of the uniform distribution [Float])
+        method (str): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
         n_samples (int): Number of samples
-        seed (int): Seed for random number generation
+        seed (int): Seed for random number generation. Use None for a random seed
     
     Returns:
         u (list): Random samples
