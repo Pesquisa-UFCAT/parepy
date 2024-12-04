@@ -53,13 +53,13 @@ def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.
 
 def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a uniform sampling between a (minimum) and b (maximum).
+    This function generates a Uniform sampling between a (minimum) and b (maximum).
 
     Args:
-        parameters (dict): Dictionary of parameters. Keys:  'min' (Minimum value of the uniform distribution [Float]), 'max' (Maximum value of the uniform distribution [Float])
-        method (str): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation. Use None for a random seed
+        parameters (dictionary): Dictionary of parameters. Keys:  'min' (Minimum value of the uniform distribution [float]), 'max' (Maximum value of the uniform distribution [float])
+        method (string): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (integer): Number of samples
+        seed (integer): Seed for random number generation. Use None for a random seed
     
     Returns:
         u (list): Random samples
@@ -87,13 +87,13 @@ def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=No
 
 def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a normal sampling with mean mu and standard deviation sigma.
+    This function generates a Normal or Gaussian sampling with mean (mu) and standard deviation (sigma).
 
     Args:
-        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
-        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation
+        parameters (dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
+        method (string): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (integer): Number of samples
+        seed (integer): Seed for random number generation. Use None for a random seed
     
     Returns:
         u (list): Random samples
@@ -173,7 +173,7 @@ def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=
 
 def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Gumbel Maximum sampling with mean mu and standard deviation sigma.
+    This function generates a Gumbel maximum distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
