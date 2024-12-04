@@ -39,11 +39,10 @@ $$
 <p align="justify">Para a variável normal padrão \(Y\), a função de densidade de probabilidade \( \phi(y) \) e a função de distribuição acumulada \( \Phi(y) \) são definidas como:</p>
 
 $$
-\phi(y) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{y^2}{2}\right), \quad \text{para } -\infty < y < \infty,
-$$
-
-$$
+\begin{align*}
+\phi(y) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{y^2}{2}\right), \quad \text{para } -\infty < y < \infty, \\
 \Phi(y) = \int_{-\infty}^{y} \phi(z) dz, \quad \text{para } -\infty < y < \infty.
+\end{align*}
 $$
 
 <p align="justify">A PDF \(f(x)\) para uma variável \(X \sim N(\mu, \sigma)\) pode ser expressa em termos de \(\phi(y)\) da seguinte forma:</p>
