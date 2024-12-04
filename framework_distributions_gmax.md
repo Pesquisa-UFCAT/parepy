@@ -2,7 +2,7 @@
 layout: home
 parent: distributions
 grand_parent: Framework
-nav_order: 5
+nav_order: 4
 has_children: true
 has_toc: true
 title: gumbel_max_sampling
@@ -13,9 +13,8 @@ title: gumbel_max_sampling
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>Gumbel Max Sampling</h3>
 <p align="justify">
-    This function generates random samples from a Gumbel maximum distribution with a specified mean (<code>mu</code>) and standard deviation (<code>sigma</code>), using the specified sampling method.
+    This function generates a Gumbel Maximum distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>
 
 ```python
@@ -39,12 +38,12 @@ Input variables
             <p align="justify">
             Dictionary of parameters for the Gumbel maximum distribution. Keys:
             <ul>
-                <li><code>'mean'</code>: Mean of the distribution [Float]</li>
-                <li><code>'sigma'</code>: Standard deviation of the distribution [Float]</li>
+                <li><code>'mean'</code>: Mean [float]</li>
+                <li><code>'sigma'</code>: Standard deviation [float]</li>
             </ul>
             </p>
         </td>
-        <td>Dictionary</td>
+        <td>dictionary</td>
     </tr>
     <tr>
         <td><code>method</code></td>
@@ -56,17 +55,17 @@ Input variables
             </ul>
             </p>
         </td>
-        <td>String</td>
+        <td>string</td>
     </tr>
     <tr>
         <td><code>n_samples</code></td>
         <td>Number of samples to generate</td>
-        <td>Integer</td>
+        <td>integer</td>
     </tr>
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>Integer or None</td>
+        <td>integer or none</td>
     </tr>
 </table>
 
@@ -83,91 +82,75 @@ Output variables
    </thead>
    <tr>
        <td><code>u</code></td>
-       <td>Generated random samples from a Gumbel maximum distribution</td>
-       <td>List</td>
+       <td>Random samples</td>
+       <td>list</td>
    </tr>
 </table>
-
-<p align="justify" id="methods"></p>
-<center>
-    <p align="center"><b>Table 1.</b> Sampling methods (<code>method</code> key).</p>
-    <table style="width:100%">
-        <thead>
-        <tr>
-            <th>Method</th>
-            <th>Sintax and description</th>
-            <th>Example</th>
-        </tr>
-        </thead>
-        <tr>
-            <td>Crude Monte Carlo Sampling</td>
-            <td>
-                <ul>
-                    <li>Generates random samples uniformly distributed between 0 and 1</li>
-                    <li>Transforms the uniform samples into Gumbel samples using the inverse CDF</li>
-                    <li>Uses <code>crude_sampling_zero_one</code> function</li>
-                </ul>
-            </td>
-            <td><code>method = 'mcs'</code></td>
-        </tr>
-        <tr>
-            <td>Latin Hypercube Sampling</td>
-            <td>
-                <ul>
-                    <li>Divides the domain into equal intervals and samples randomly within each interval</li>
-                    <li>Transforms the uniform samples into Gumbel samples using the inverse CDF</li>
-                    <li>Uses <code>lhs_sampling_zero_one</code> function</li>
-                </ul>
-            </td>
-            <td><code>method = 'lhs'</code></td>
-        </tr>
-    </table>
-</center>
-<p align="justify">
-    The Gumbel distribution parameters are calculated as follows:
-    <ul>
-        <li><code>gamma</code>: Euler-Mascheroni constant (approximately 0.5772)</li>
-        <li><code>beta</code>: Scale parameter, computed as <code>np.pi / (np.sqrt(6) * sigma)</code></li>
-        <li><code>alpha</code>: Location parameter, computed as <code>mean - gamma / beta</code></li>
-    </ul>
-</p>
 
 Example 1
 {: .label .label-blue }
 
 <p align="justify">
-    <i>In this example, we use the <code>gumbel_max_sampling</code> function to generate two sets of random samples \((n=400)\) following a Gumbel distribution with a location parameter \(\mu = 10\) and a scale parameter \(\sigma = 5\). The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second set is generated using the Latin Hypercube Sampling (LHS) method. The results are visualized using histograms with Kernel Density Estimates (KDE) plotted side-by-side for comparison, allowing for an insightful comparison of the two sampling methods.</i>
+    <i>
+        In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=400\)) following a Gumbel Maximuim distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The mean and standard deviation are defined as \([10, 2]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+    </i>
+</p>
+
+```python
+# Library
+import matplotlib.pyplot as plt
+
+from parepy_toolbox import gumbel_max_sampling
+
+# Sampling
+n = 400
+x = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n)
+y = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'lhs', n)
+
+# Plot
+fig, axes = plt.subplots(1, 2, figsize=(7, 3))
+sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
+axes[0].set_title('MCS Sampling')
+axes[0].set_xlabel('Values')
+axes[0].set_ylabel('Densidade')
+sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
+axes[1].set_title('LHS Sampling')
+axes[1].set_xlabel('Valores')
+axes[1].set_ylabel('Densidade')
+plt.tight_layout()
+plt.show()
+```
+
+<center>
+    <img src="assets/images/gumbel-max_sampling.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Gumbel maximum variable example.</p>
+</center>
+
+Example 2
+{: .label .label-blue }
+
+<p align="justify">
+    <i>
+    In this example, we will use the <code>gumbel_max_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=3\)) following a Gumbel Maximum distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we generated 3 times and compared the results.
+    </i>
 </p>
 
 ```python
 from parepy_toolbox import gumbel_max_sampling
 
 # Sampling
-n = 400
-x = gumbel_max_sampling({'mean': 10, 'sigma': 5}, 'mcs', n)
-y = gumbel_max_sampling({'mean': 10, 'sigma': 5}, 'lhs', n)
-
-# Plot
-fig, axes = plt.subplots(1, 2, figsize=(7, 3))
-
-# First plot: Histogram and KDE for data1
-sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
-axes[0].set_title('MCS Sampling')
-axes[0].set_xlabel('Valores')
-axes[0].set_ylabel('Densidade')
-
-# Second plot: Histogram and KDE for data2
-sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
-axes[1].set_title('LHS Sampling')
-axes[1].set_xlabel('Valores')
-axes[1].set_ylabel('Densidade')
-
-# Ajust and show plot
-plt.tight_layout()
-plt.show()
+n = 3
+x0 = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+x1 = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+x2 = gumbel_max_sampling({'mean': 10, 'sigma': 2}, 'mcs', n, 25)
+print(x0, '\n', x1, '\n', x2)
 ```
 
-<center>
-    <img src="assets/images/gmax_sampling_figure_1.png" height="auto">
-    <p align="center"><b>Figure 1.</b> Gmax variable example.</p>
-</center>
+```bash
+[11.607212332320078, 10.003120351710036, 12.16598464462817] 
+[11.607212332320078, 10.003120351710036, 12.16598464462817] 
+[11.607212332320078, 10.003120351710036, 12.16598464462817]
+```
+
+{: .important }
+> Note that using the seed 25 by 3 times, we can generate the same values in a random variable.

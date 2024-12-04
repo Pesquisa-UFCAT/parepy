@@ -16,7 +16,7 @@ title: uniform_sampling
 <h3>Uniform Sampling</h3>
 
 <p align="justify">
-    This function generates a uniform sampling between a (minimum) and b (maximum).
+    This function generates a Uniform sampling between \(a\) (minimum) and \(b\) (maximum).
 </p>
 
 ```python
@@ -67,7 +67,7 @@ Input variables
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>integer or None</td>
+        <td>integer or none</td>
     </tr>
 </table>
 
@@ -94,7 +94,7 @@ Example 1
 
 <p align="justify">
     <i>
-        In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=400)\) following a uniform distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The range for both distributions is defined as \([10, 20]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+        In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=400\)) following a uniform distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The range for both distributions is defined as \([10, 20]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
     </i>
 </p>
 
@@ -111,26 +111,20 @@ y = uniform_sampling({'min': 10, 'max': 20}, 'lhs', n)
 
 # Plot
 fig, axes = plt.subplots(1, 2, figsize=(7, 3))
-
-# First plot: Histogram and KDE for data1
 sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
 axes[0].set_title('MCS Sampling')
 axes[0].set_xlabel('Values')
 axes[0].set_ylabel('Densidade')
-
-# Second plot: Histogram and KDE for data2
 sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
 axes[1].set_title('LHS Sampling')
 axes[1].set_xlabel('Valores')
 axes[1].set_ylabel('Densidade')
-
-# Ajust and show plot
 plt.tight_layout()
 plt.show()
 ```
 
 <center>
-    <img src="assets/images/uniform_sampling_figure_1.png" height="auto">
+    <img src="assets/images/uniform_sampling.png" height="auto">
     <p align="center"><b>Figure 1.</b> Uniform variable example.</p>
 </center>
 
@@ -139,7 +133,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples \((n=3)\) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code), we uniformly sampling generate 3 times and compare results.
+    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=3\)) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we generated 3 times and compared the results.
     </i>
 </p>
 
@@ -153,10 +147,11 @@ x1 = uniform_sampling({'min': 10, 'max': 20}, 'mcs', n, 25)
 x2 = uniform_sampling({'min': 10, 'max': 20}, 'mcs', n, 25)
 print(x0, '\n', x1, '\n', x2)
 ```
-```
-[11.607212332320078, 10.003120351710036, 12.16598464462817] 
-[11.607212332320078, 10.003120351710036, 12.16598464462817] 
-[11.607212332320078, 10.003120351710036, 12.16598464462817]
+
+```bash
+[11.607212332320078, 15.003120351710036, 12.16598464462817] 
+[11.607212332320078, 15.003120351710036, 12.16598464462817] 
+[11.607212332320078, 15.003120351710036, 12.16598464462817]
 ```
 
 {: .important }

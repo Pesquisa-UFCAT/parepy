@@ -13,10 +13,8 @@ title: triangular_sampling
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>Triangular Sampling</h3>
-
 <p align="justify">
-    This function generates random samples from a triangular distribution, defined by its minimum (<code>a</code>), mode (<code>c</code>), and maximum (<code>b</code>) values. The distribution is used to model scenarios where the exact shape of the distribution is unknown, but estimates for its bounds and most likely value are available.
+    This function generates a Triangular sampling with minimum \(a\), mode \(c\), and maximum \(b\).
 </p>
 
 ```python
@@ -40,13 +38,13 @@ Input variables
             <p align="justify">
             Dictionary of parameters for the triangular distribution. Keys:
             <ul>
-                <li><code>'min'</code>: Minimum value of the distribution [Float]</li>
-                <li><code>'mode'</code>: Mode (most likely value) of the distribution [Float]</li>
-                <li><code>'max'</code>: Maximum value of the distribution [Float]</li>
+                <li><code>'min'</code>: Minimum value of the distribution [float]</li>
+                <li><code>'mode'</code>: Mode (most likely value) of the distribution [float]</li>
+                <li><code>'max'</code>: Maximum value of the distribution [float]</li>
             </ul>
             </p>
         </td>
-        <td>Dictionary</td>
+        <td>dictionary</td>
     </tr>
     <tr>
         <td><code>method</code></td>
@@ -58,17 +56,17 @@ Input variables
             </ul>
             </p>
         </td>
-        <td>String</td>
+        <td>string</td>
     </tr>
     <tr>
         <td><code>n_samples</code></td>
         <td>Number of samples to generate</td>
-        <td>Integer</td>
+        <td>integer</td>
     </tr>
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>Integer or None</td>
+        <td>integer or none</td>
     </tr>
 </table>
 
@@ -85,68 +83,18 @@ Output variables
    </thead>
    <tr>
        <td><code>u</code></td>
-       <td>Generated random samples from a triangular distribution</td>
-       <td>List</td>
+       <td>Random samples</td>
+       <td>list</td>
    </tr>
 </table>
-
-<p align="justify" id="methods"></p>
-<center>
-    <p align="center"><b>Table 1.</b> Sampling methods (<code>method</code> key).</p>
-    <table style="width:100%">
-        <thead>
-        <tr>
-            <th>Method</th>
-            <th>Syntax and Description</th>
-            <th>Example</th>
-        </tr>
-        </thead>
-        <tr>
-            <td>Crude Monte Carlo Sampling</td>
-            <td>
-                <ul>
-                    <li>Generates random samples uniformly distributed between 0 and 1</li>
-                    <li>Transforms the uniform samples into triangular samples using the inverse CDF</li>
-                    <li>Uses <code>crude_sampling_zero_one</code> function</li>
-                </ul>
-            </td>
-            <td><code>method = 'mcs'</code></td>
-        </tr>
-        <tr>
-            <td>Latin Hypercube Sampling</td>
-            <td>
-                <ul>
-                    <li>Divides the domain into equal intervals and samples randomly within each interval</li>
-                    <li>Transforms the uniform samples into triangular samples using the inverse CDF</li>
-                    <li>Uses <code>lhs_sampling_zero_one</code> function</li>
-                </ul>
-            </td>
-            <td><code>method = 'lhs'</code></td>
-        </tr>
-    </table>
-</center>
-<p align="justify">
-    The triangular distribution is defined by three parameters:
-    <ul>
-        <li><code>a</code>: Minimum value</li>
-        <li><code>c</code>: Mode (most likely value)</li>
-        <li><code>b</code>: Maximum value</li>
-    </ul>
-</p>
-<p align="justify">
-    The inverse CDF method is used to generate samples from the triangular distribution:
-    <ul>
-        <li><code>criteria = (c - a) / (b - a)</code>: Determines the split point in the probability distribution.</li>
-        <li>If <code>u_aux[i] &lt; criteria</code>: The sample is calculated as <code>a + np.sqrt(u_aux[i] * (b - a) * (c - a))</code>.</li>
-        <li>If <code>u_aux[i] &ge; criteria</code>: The sample is calculated as <code>b - np.sqrt((1 - u_aux[i]) * (b - a) * (b - c))</code>.</li>
-    </ul>
-</p>
 
 Example 1
 {: .label .label-blue }
 
 <p align="justify">
-    <i>In this example, we use the <code>triangular_sampling</code> function to generate two sets of random samples \((n=400)\) following a Triangular distribution with a minimum value of 2, a mode of 6, and a maximum value of 7. The first set is sampled using the Monte Carlo Sampling (MCS) method, while the second set is generated using the Latin Hypercube Sampling (LHS) method. The results are visualized using histograms with Kernel Density Estimates (KDE) plotted side-by-side for comparison, providing a clear illustration of how the two sampling methods influence the distribution of the generated data.</i>
+    <i>
+        In this example, we will use the triangular_sampling function from the parepy_toolbox to generate two random samples (\(n=400\)) following a triangular distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Minimum, mode, and maximum are defined as \([2, 6, 7]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+    </i>
 </p>
 
 ```python
@@ -159,25 +107,48 @@ y = triangular_sampling({'min': 2, 'mode': 6, 'max': 7}, 'lhs', n)
 
 # Plot
 fig, axes = plt.subplots(1, 2, figsize=(7, 3))
-
-# First plot: Histogram and KDE for data1
 sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
 axes[0].set_title('MCS Sampling')
 axes[0].set_xlabel('Valores')
 axes[0].set_ylabel('Densidade')
-
-# Second plot: Histogram and KDE for data2
 sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
 axes[1].set_title('LHS Sampling')
 axes[1].set_xlabel('Valores')
 axes[1].set_ylabel('Densidade')
-
-# Ajust and show plot
 plt.tight_layout()
 plt.show()
 ```
 
 <center>
-    <img src="assets/images/triangular_sampling_figure_1.png" height="auto">
+    <img src="assets/images/triangular_sampling.png" height="auto">
     <p align="center"><b>Figure 1.</b> Triangular variable example.</p>
 </center>
+
+Example 2
+{: .label .label-blue }
+
+<p align="justify">
+    <i>
+    In this example, we will use the <code>triangular_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=3\)) following a triangular distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we generated 3 times and compared the results.
+    </i>
+</p>
+
+```python
+from parepy_toolbox import triangular_sampling
+
+# Sampling
+n = 3
+x0 = triangular_sampling({'min': 2, 'mode': 6, 'max': 7}, 'mcs', n, 25)
+x1 = triangular_sampling({'min': 2, 'mode': 6, 'max': 7}, 'mcs', n, 25)
+x2 = triangular_sampling({'min': 2, 'mode': 6, 'max': 7}, 'mcs', n, 25)
+print(x0, '\n', x1, '\n', x2)
+```
+
+```bash
+[3.911914212156261, 2.763962517823044, 6.5574659216434235] 
+[3.911914212156261, 2.763962517823044, 6.5574659216434235]
+[3.911914212156261, 2.763962517823044, 6.5574659216434235] 
+```
+
+{: .important }
+> Note that using the seed 25 by 3 times, we can generate the same values in a random variable.
