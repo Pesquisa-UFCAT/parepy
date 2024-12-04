@@ -102,9 +102,10 @@ $$
 F_T(35) = \exp\left[-\exp(-0.1(35 - 32))\right]
 $$
 
-#### Interpretação dos Resultados
-- A **CDF** nos dá a probabilidade acumulada de que a temperatura máxima seja **menor ou igual** a um valor específico. Por exemplo, se \(F_T(35) = 0.85\), isso significa que há 85% de chance de que a temperatura máxima de um dia seja menor ou igual a 35 °C.
-- A **PDF** nos dá a densidade de probabilidade de que a temperatura máxima seja exatamente igual a um valor. Embora a PDF de uma variável contínua não forneça uma probabilidade exata para um valor específico, ela nos dá a "intensidade" da probabilidade em torno de um valor.
+<p align="justify">Interpretação dos Resultados:</p>
 
-#### Passo 5: Uso da Distribuição para Previsões
-Se quisermos prever o valor do **máximo extremo** da temperatura para os próximos anos, a distribuição de Gumbel nos permitirá modelar esses extremos com base nos dados históricos. Por exemplo, podemos usar a fórmula da CDF para estimar a probabilidade de um evento extremamente quente (por exemplo, temperatura superior a 38 °C) ocorrer em um futuro próximo.
+- A CDF nos dá a probabilidade acumulada de que a temperatura máxima seja <strong>menor ou igual</strong> a um valor específico. Por exemplo, se \(F_T(35) = 0.85\), isso significa que há 85% de chance de que a temperatura máxima de um dia seja menor ou igual a 35 °C.
+
+- A PDF nos dá a densidade de probabilidade de que a temperatura máxima seja exatamente igual a um valor. Embora a PDF de uma variável contínua não forneça uma probabilidade exata para um valor específico, ela nos dá a "intensidade" da probabilidade em torno de um valor.
+
+
