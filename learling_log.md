@@ -57,8 +57,8 @@ $$
 <h2>Exemplo</h2>
 
 Suponha que a média (\(\mu\)) de uma variável que segue uma distribuição log-normal seja \(10\) e o desvio padrão (\(\sigma\)) seja \(3\). Desejamos determinar os parâmetros \(\lambda\) e \(\xi\) da distribuição.
-
-1. **Calcular o parâmetro \(\xi\):**
+<br><br>
+1. Calcular o parâmetro \(\xi\):
    
    A relação para \(\xi\) é dada por:
    \[
@@ -70,7 +70,7 @@ Suponha que a média (\(\mu\)) de uma variável que segue uma distribuição log
    \xi = \sqrt{\ln\left(\frac{3^2}{10^2} + 1\right)} = \sqrt{\ln\left(\frac{9}{100} + 1\right)} = \sqrt{\ln\left(1.09\right)} \approx \sqrt{0.086} \approx 0.293
    \]
 
-2. **Calcular o parâmetro \(\lambda\):**
+2. Calcular o parâmetro \(\lambda\):
    
    A relação para \(\lambda\) é:
    \[
@@ -87,7 +87,7 @@ Portanto, os parâmetros da distribuição log-normal são aproximadamente:
 \lambda \approx 2.259, \quad \xi \approx 0.293
 \]
 
-3. **Validar com a média e desvio padrão:**
+3. Validar com a média e desvio padrão:
 
    Usando as fórmulas:
    \[
