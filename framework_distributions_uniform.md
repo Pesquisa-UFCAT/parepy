@@ -94,7 +94,7 @@ Example 1
 
 <p align="justify">
     <i>
-        In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=400\)) following a uniform distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The range for both distributions is defined as \([10, 20]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+        In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=400\)) following a uniform distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The range for both distributions is defined as \([10, 20]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
     </i>
 </p>
 
@@ -124,7 +124,7 @@ plt.show()
 ```
 
 <center>
-    <img src="assets/images/uniform_sampling_figure_1.png" height="auto">
+    <img src="assets/images/uniform_sampling.png" height="auto">
     <p align="center"><b>Figure 1.</b> Uniform variable example.</p>
 </center>
 
@@ -133,7 +133,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we uniformly sampling generate 3 times and compare results.
+    In this example, we will use the <code>uniform_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=3\)) following a uniform distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we generated 3 times and compared the results.
     </i>
 </p>
 
@@ -149,9 +149,9 @@ print(x0, '\n', x1, '\n', x2)
 ```
 
 ```bash
-[11.607212332320078, 10.003120351710036, 12.16598464462817] 
-[11.607212332320078, 10.003120351710036, 12.16598464462817] 
-[11.607212332320078, 10.003120351710036, 12.16598464462817]
+[11.607212332320078, 15.003120351710036, 12.16598464462817] 
+[11.607212332320078, 15.003120351710036, 12.16598464462817] 
+[11.607212332320078, 15.003120351710036, 12.16598464462817]
 ```
 
 {: .important }

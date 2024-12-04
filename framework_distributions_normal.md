@@ -15,7 +15,7 @@ title: normal_sampling
 
 <h3>Normal Sampling</h3>
 <p align="justify">
-    This function generates random samples from a Normal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
+    This function generates a Normal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>
 
 ```python
@@ -93,7 +93,7 @@ Example 1
 
 <p align="justify">
     <i>
-        In this example, we will use the <code>normal_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=400\)) following a normal distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Mean and standard deviation is defined as \([10, 2]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+        In this example, we will use the <code>normal_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=400\)) following a normal distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The mean and standard deviation are defined as \([10, 2]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
     </i>
 </p>
 
@@ -132,7 +132,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>normal_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a normal distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we normal sampling generate 3 times and compare results.
+    In this example, we will use the <code>normal_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=3\)) following a normal distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we generated 3 times and compared the results.
     </i>
 </p>
 

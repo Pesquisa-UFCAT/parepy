@@ -16,7 +16,7 @@ title: lognormal_sampling
 <h3>Lognormal Sampling</h3>
 
 <p align="justify">
-    This function generates random samples from a Lognormal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
+    This function generates a Lognormal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>
 
 ```python
@@ -67,7 +67,7 @@ Input variables
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>integer or None</td>
+        <td>integer or none</td>
     </tr>
 </table>
 
@@ -84,7 +84,7 @@ Output variables
    </thead>
    <tr>
        <td><code>u</code></td>
-       <td>Generated random samples from a log-normal distribution</td>
+       <td>Random samples</td>
        <td>List</td>
    </tr>
 </table>
@@ -94,7 +94,7 @@ Example 1
 
 <p align="justify">
     <i>
-        In this example, we will use the <code>lognormal_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=400\)) following a Lognormal distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Mean and standard deviation is defined as \([1.0, 0.4]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+        In this example, we will use the <code>lognormal_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=400\)) following a Lognormal distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. The mean and standard deviation are defined as \([1.0, 0.4]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
     </i>
 </p>
 
@@ -133,7 +133,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>lognormal_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a Lognormal distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we Lognormal sampling generate 3 times and compare results.
+    In this example, we will use the <code>lognormal_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=3\)) following a Lognormal distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we generated 3 times and compared the results.
     </i>
 </p>
 
@@ -142,9 +142,9 @@ from parepy_toolbox import lognormal_sampling
 
 # Sampling
 n = 3
-x0 = lognormal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
-x1 = lognormal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
-x2 = lognormal_sampling({'mean': 1, 'sigma': 0.40}, 'mcs', n, 25)
+x0 = lognormal_sampling({'mean': 1.0, 'sigma': 0.4}, 'mcs', n, 25)
+x1 = lognormal_sampling({'mean': 1.0, 'sigma': 0.4}, 'mcs', n, 25)
+x2 = lognormal_sampling({'mean': 1.0, 'sigma': 0.4}, 'mcs', n, 25)
 print(x0, '\n', x1, '\n', x2)
 ```
 

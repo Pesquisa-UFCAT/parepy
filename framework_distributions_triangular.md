@@ -14,7 +14,7 @@ title: triangular_sampling
 <!--Don't delete ths script-->
 
 <p align="justify">
-    This function generates a triangular sampling with minimun \(a\), mode \(c\), and maximum \(b\).
+    This function generates a Triangular sampling with minimum \(a\), mode \(c\), and maximum \(b\).
 </p>
 
 ```python
@@ -93,7 +93,7 @@ Example 1
 
 <p align="justify">
     <i>
-        In this example, we will use the triangular_sampling function from the parepy_toolbox to generate two sets of random samples (\(n=400\)) following a triangular distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Minimum, mode and maximum is defined as \([2, 6, 7]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
+        In this example, we will use the triangular_sampling function from the parepy_toolbox to generate two random samples (\(n=400\)) following a triangular distribution. The first set is sampled using the Monte Carlo Sampling (MCS) method, and the second using the Latin Hypercube Sampling (LHS) method. Minimum, mode, and maximum are defined as \([2, 6, 7]\). The results are visualized using histograms with Kernel Density Estimates (KDE) plotted (using matplotlib lib) side-by-side for comparison.
     </i>
 </p>
 
@@ -129,7 +129,7 @@ Example 2
 
 <p align="justify">
     <i>
-    In this example, we will use the <code>triangular_sampling</code> function from the <code>parepy_toolbox</code> to generate two sets of random samples (\(n=3\)) following a triangular distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we triangular sampling generate 3 times and compare results.
+    In this example, we will use the <code>triangular_sampling</code> function from the <code>parepy_toolbox</code> to generate two random samples (\(n=3\)) following a triangular distribution. Using the Monte Carlo algorithm and the specific seed (<code>seed=25</code>), we generated 3 times and compared the results.
     </i>
 </p>
 
