@@ -34,21 +34,19 @@ $$
 <p align="justify">Os momentos de uma variável log-normal são derivados diretamente de seus parâmetros. A média, variância e moda da distribuição log-normal são calculadas como:</p>
 
 $$
-\mu = \exp(\lambda + \frac{\xi^2}{2})
-$$
-
-$$
-\sigma = \mu \sqrt{(\exp(\xi^2) - 1)}
+\begin{align*}
+\mu &= \exp(\lambda + \frac{\xi^2}{2}) \\
+\sigma &= \mu \sqrt{(\exp(\xi^2) - 1)}
+\end{align*}
 $$
 
 <p align="justify">E os parâmetros \(\lambda\) e \(\xi\) podem ser determinados diretamente a partir da média e do desvio padrão (\(\sigma\)), o que torna a distribuição log-normal bastante conveniente para aplicações práticas. A relação é dada por:</p>
 
 $$
-\lambda = \ln(\mu) - 0.5 \xi^2
-$$
-
-$$
-\xi = \sqrt{\ln\left(\frac{\sigma^2}{\mu^2} + 1\right)}
+\begin{align*}
+\lambda &= \ln(\mu) - 0.5 \xi^2 \\
+\xi &= \sqrt{\ln\left(\frac{\sigma^2}{\mu^2} + 1\right)}
+\end{align*}
 $$
 
 <p align="justify">Para coeficiente de variação \( \delta = \sigma / \mu \lesssim 0,3 \), pode-se aproximar \( \xi \approx \delta \).

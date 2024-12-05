@@ -23,7 +23,6 @@ $$
 u_n &= \text{máximo característico ou moda de } X_n, \\
 \beta &= \text{parâmetro de forma}.
 \end{align*}
-
 $$
 
 <p align="justify">A função densidade de probabilidade (PDF) da distribuição de Gumbel Right é dada por:</p>
@@ -41,9 +40,9 @@ $$
 
 $$
 \begin{align*}
-\mu = u_n + \gamma \beta \\
-\sigma = \frac{\pi}{\sqrt{6}} \cdot \frac{1}{\beta} \\
-\gamma_3 = 1.1396 \quad \text{(coef. de simetria)}
+\mu &= u_n + \gamma \beta \\
+\sigma &= \frac{\pi}{\sqrt{6}} \cdot \frac{1}{\beta} \\
+\gamma_3 &= 1.1396 \quad \text{(coef. de simetria)}
 \end{align*}
 $$
 
@@ -55,7 +54,6 @@ u_n &= \mu - \frac{\gamma}{\beta} \\
 \beta &= \frac{\pi}{\sqrt{6}} \cdot \frac{1}{\sigma}
 \end{align*}
 $$
-
 
 <h2>Exemplo</h2>
 

@@ -19,11 +19,10 @@ title: Uniform distribution
 <p align="justify">Matematicamente, a função densidade de probabilidade (PDF) é definida como:</p>
 
 $$
-f(x) = \frac{1}{b-a}, \quad \text{para } a \leq x \leq b
-$$
-
-$$
-f(x) = 0, \quad \text{para } x < a \text{ ou } x > b
+\begin{align*}
+f(x) &= \frac{1}{b-a}, \quad \text{para } a \leq x \leq b \\
+f(x) &= 0, \quad \text{para } x < a \text{ ou } x > b
+\end{align*}
 $$
 
 <h3 align="justify">Função de Distribuição Acumulada (CDF)</h3>
@@ -46,21 +45,19 @@ $$
 <p align="justify">Além disso, essa distribuição possui momentos que são derivados diretamente de seus limites. O momento de ordem 1, ou seja, a média (\(\mu\)), é o ponto médio do intervalo, enquanto a variância (\(\sigma^2\)) descreve a dispersão dos valores ao redor da média. Esses momentos são calculados como:</p>
 
 $$
-\mu = \frac{a+b}{2}
-$$
-
-$$
-\quad \sigma^2 = \frac{(b-a)^2}{12}
+\begin{align*}
+\mu &= \frac{a+b}{2} \\
+\sigma^2 &= \frac{(b-a)^2}{12}
+\end{align*}
 $$
 
 <p align="justify">Os limites \(a\) e \(b\) podem ser determinados diretamente a partir da média e do desvio padrão (\(\sigma\)), o que torna a distribuição uniforme bastante conveniente para aplicações práticas. A relação é dada por:</p>
 
 $$
-a = \mu - \sqrt{3}\sigma
-$$
-
-$$
-\quad b = \mu + \sqrt{3}\sigma
+\begin{align*}
+a &= \mu - \sqrt{3}\sigma \\
+b &= \mu + \sqrt{3}\sigma
+\end{align*}
 $$
 
 <h2>Exemplo</h2>
@@ -95,7 +92,3 @@ F(x) =
 1, & \text{se } x > 89.29.
 \end{cases}
 $$
-
---- 
-
-Isso completa o texto, apresentando tanto a PDF quanto a CDF, e reforça os conceitos com o exemplo prático.
