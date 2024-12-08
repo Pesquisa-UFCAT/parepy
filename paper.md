@@ -1,6 +1,24 @@
-# PAREpy: A Probabilistic Approach to Reliability Engineering in Python
+---
+title: PAREpy - A Probabilistic Approach to Reliability Engineering in Python
+
+tags:
+  - Python
+  - Reliability
+  - Monte Carlo
+  - Sampling
+  - Structures
+
+authors:
+  - name: Wanderlei Malaquias Pereira Junior
+    equal-contrib: true
+    affiliation: 1
+  - name: Wanderlei Malaquias Pereira Junior
+    equal-contrib: true
+    affiliation: 1
 
 [Prof. PhD Wanderlei Malaquias Pereira Junior](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4460682U0)$^1$, 
+[Msc Murilo Carneiro Rodrigues](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K1774858Z8)$^1$,
+[Msc Matheus Henrique Morato Moraes](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8214592P6)$^3$,
 [Prof. PhD Daniel de Lima Araújo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4768864J3)$^1$,
 [Prof. PhD André Teófilo Beck](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4790835Y8)$^2$,
 [Prof. PhD André Luis Christoforo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4706301Z5)$^3$,
@@ -8,26 +26,30 @@
 [Prof. PhD Marcos Luiz Henrique](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4798716D4) $^4$,
 [Prof. Marcos Napoleão Rabelo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4702141E9)$^1$,
 [Prof. PhD Fran Sergio Lobato](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4169590P3)$^5$,
-[Prof. PhD Gustavo Barbosa Libotte](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4930703A6)$^6$,
-[Msc Murilo Carneiro Rodrigues](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K1774858Z8)$^1$,
-[Msc Matheus Henrique Morato Moraes](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8214592P6)$^3$.
+[Prof. PhD Gustavo Barbosa Libotte](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4930703A6)$^6$.
 
+**1.** Engineering College, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** University Federal of Pernambuco, Campus of the Agreste, Brazil. **5.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **6.** Polytechnic Institute, State University of Rio de Janeiro, Brazil.  
+---
 
-**1.** School of Engineering, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** University Federal of Pernambuco, Campus of the Agreste, Brazil. **5.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **6.** Polytechnic Institute, State University of Rio de Janeiro, Brazil.  
+## Introduction and motivation
+The `PAREpy` (Probabilistic Approach to Reliability Engineering) framework is a library for applying probabilistic concepts to analyze a system containing random variables. The platform is built in Python and can be used in any environment that supports this programming language.  
 
-## Sumary
-PAREpy é uma software baseado em Python para análise de confiabilidade de sistemas de engenharia, considerando variáveis aleatórias e incertezas. O software é baseado em métodos probabilísticos e estatísticos, como o método de amostragem de Monte Carlo, e o Hípercubo Latino. O software é desenvolvido para ser uma ferramenta de código aberto e fácil de usar para engenheiros e pesquisadores que desejam realizar análises de confiabilidade em seus sistemas de engenharia. 
+Tools often offer a certain complexity when building reliability analyses. This framework intends to be a faster library for building reliability problems. This version, it is able to assemble structural reliability problems using sampling methods and derivative methods.  
 
-## Current Modules
-O software atualmente possui os seguintes módulos:
-- **sampling**: este algoritmo gera um conjunto de amostras aleatórias de acordo com o tipo de distribuição de probabilidade especificada.
-- **pf_equation**: esta função calcula a probabilidade de falha (pf) para um dado índice de confiabilidade (ϐ) usando uma função de distribuição cumulativa normal padrão. O cálculo é realizado integrando a função de densidade de probabilidade (PDF) de uma distribuição normal padrão.
-- **beta_equation**: esta função calcula o valor do índice de confiabilidade para uma determinada probabilidade de falha (pf).
-- **calc_pf_beta**: calcula os valores de probabilidade de falha ou índice de confiabilidade das colunas de um DataFrame que começam com 'I_' (função Indicadora). Se um caminho de arquivo .txt for passado, esta função avalia os valores pf e β também.
-- **convergence_probability_failure**: esta função calcula a taxa de convergência de uma coluna dada em um data frame. Desta forma, é possível verificar a convergência da probabilidade de falha ou índice de confiabilidade.
+The study of structural reliability is concerned with the calculation and prediction of the probability of limit state violation for an engineered structural system at any stage  during its life. In particular, the study of structural safety is concerned with the violation of the ultimate or safety limit states for the structure. More generally, the study of  structural reliability is concerned with the violation of performance measures [@melchers_structural_2018].  
+
+PAREPy offers the following functions:
+- `pf_equation`: This function calculates the probability of failure ($p_f$) for a given reliability index ($\beta$) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
+- `beta_equation`: This function calculates the reliability index value for a given probability of failure ($p_f$).
+- `calc_pf_beta_sampling`: Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with `I_` (Indicator function). If a `.txt` file path is passed, this function evaluates $p_f$ and $\beta$ values too. You can used this function when you have a dataset with sampling results.
+- `convergence_probability_failure`: This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the probability of failure or reliability index.
+- `sampling_algorithm_structural_analysis`: This function creates the samples and evaluates the limit state functions in structural reliability problems.
+- `concatenates_txt_files_sampling_algorithm_structural_analysis`
+
+The documentation is available at the [PAREpy web site](https://wmpjrufg.github.io/PAREPY/). There, users can find some examples, learning and see application examples.  
+
 
 ## Quick Start
-
 
 ### Install
 
@@ -40,7 +62,7 @@ pip install parepy-toolbox
 
 ### Files Structure
 
-Let's use the example of building a problem in PAREpy using Jupyter Notebook or a **Python** file. The basic file structure that you must assemble to use the library must be as follows:
+Let's use the example of building a problem in PAREpy using **Jupyter Notebook** file or a **Python** file. The basic file structure that you must assemble to use the library must be as follows:
 
 ```bash
  .
@@ -83,7 +105,9 @@ def my_function(x, none_variable):
 > **Important**  
 > The lists `r`, `s`, and `g` must have the same size and will be defined in the main function setup.
 
-## Example 1: Creating an Objective Function
+## Examples and capabilities
+
+### Example 1: Creating an Objective Function
 
 To demonstrate how to create an objective function, we use Beck [1] as an example. The State Limit Function is given by:
 
@@ -182,20 +206,3 @@ The documentation abou this app can be see in wmpjrufg.github.io/PAREPY/.
 
 ## Contributions
 A.M.K. was reponsible for conceptualization, methodology, software, testing and validation, writing of manuscript, and visualization; A.D. was responsible for testing software and results in training machine learning models; A.M.B., W.F.R., Z-K.L. were responsible for funding acquisition, review, and editing. Z-K.L. was also supervising the work.
-
-## References 
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Reference</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><p align = "center" id = "ref1">[1]</p></td>
-            <td><p align = "left"><a href="https://doi.org/10.1007/s00521-016-2328-2" target="_blank" rel="noopener noreferrer">Beck AT. Confiabilidade e segurança das estruturas. Elsevier; 2019. ISBN 978-85-352-8895-7</a></p></td>
-        </tr>
-    </tbody>
-</table>
