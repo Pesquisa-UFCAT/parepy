@@ -31,7 +31,7 @@ authors:
 **1.** Engineering College, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** University Federal of Pernambuco, Campus of the Agreste, Brazil. **5.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **6.** Polytechnic Institute, State University of Rio de Janeiro, Brazil.  
 ---
 
-## Introduction and motivation
+## Introduction
 The `PAREpy` (Probabilistic Approach to Reliability Engineering) framework is a library for applying probabilistic concepts to analyze a system containing random variables. The platform is built in Python and can be used in any environment that supports this programming language.  
 
 Tools often offer a certain complexity when building reliability analyses. This framework intends to be a faster library for building reliability problems. This version, it is able to assemble structural reliability problems using sampling methods and derivative methods.  
@@ -46,8 +46,10 @@ PAREPy offers the following functions:
 - `sampling_algorithm_structural_analysis`: This function creates the samples and evaluates the limit state functions in structural reliability problems.
 - `concatenates_txt_files_sampling_algorithm_structural_analysis`
 
-The documentation is available at the [PAREpy web site](https://wmpjrufg.github.io/PAREPY/). There, users can find some examples, learning and see application examples.  
+The documentation is available on the [PAREpy web site](https://wmpjrufg.github.io/PAREPY/). There, users can find some examples, learning and see application examples.  
 
+## Reliability Overview
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 ## Quick Start
 
@@ -79,7 +81,7 @@ Let's use the example of building a problem in PAREpy using **Jupyter Notebook**
        └── file n
 ```
 
-The `of_file.py` file should contain the objective function of the problem. The `your_problem` file is the file that will contain the call to the main function and other settings necessary for the use of the algorithm.
+The `of_file.py` file should contain the objective function (state limit function). The `your_problem.ipynb` file contain the call the main algorithm.
 
 ### `of_file.py`
 
@@ -93,17 +95,17 @@ def my_function(x, none_variable):
 
 ### Parameters of `of_file.py`
 
-- **`x`** (type `list`): A list of design random variables. PAREpy generates these values.
-- **`none_variable`** (type `None`, `list`, `float`, `dict`, `str`, or any): The user can define this variable. The user can input any value into this variable when calling the framework's main function.
+- **`x`** (type `list`): A list of design random variables $\left(\mathbf{X}\right)$. PAREpy generates these values.
+- **`none_variable`** (type `None`, `list`, `float`, `dict`, `str`, or `any`): The user can define this variable. The user can input any value into this variable when calling the framework's main function.
 
 ### Returns of `of_file.py`
 
-- **`r`** (type `list`): A list of values. In structural problems, we recommend putting the capacity in this variable.
-- **`s`** (type `list`): A list of values. In structural problems, we recommend putting the demand in this variable.
-- **`g`** (type `list`): State limit function \( \mathbf{G} = \mathbf{R} - \mathbf{S} \).
+- `r` (type `list`): A list of values. In structural problems, we recommend putting the capacity in this variable.
+- `s` (type `list`): A list of values. In structural problems, we recommend putting the demand in this variable.
+- `g` (type `list`): State limit function $\mathbf{G}(\mathbf{X}) = \mathbf{R} - \mathbf{S}$.
 
 > **Important**  
-> The lists `r`, `s`, and `g` must have the same size and will be defined in the main function setup.
+> The lists `r`, `s`, and `g` must have the same size and will be defined in the main function setup. List `g` must always be the last value in the output tuple
 
 ## Examples and capabilities
 
@@ -111,7 +113,7 @@ def my_function(x, none_variable):
 
 To demonstrate how to create an objective function, we use Beck [1] as an example. The State Limit Function is given by:
 
-$\mathbf{G} = \mathbf{R}_d - \mathbf{D} - \mathbf{L} $
+$\mathbf{G}(\mathbf{X}) = \mathbf{R}_d - \mathbf{D} - \mathbf{L} $
 
 Here are some implementations of the example function:
 
