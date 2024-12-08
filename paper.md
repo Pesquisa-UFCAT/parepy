@@ -1,5 +1,5 @@
 ---
-title: PAREpy - A Probabilistic Approach to Reliability Engineering in Python
+title: 'PAREpy: A Probabilistic Approach to Reliability Engineering in Python'
 
 tags:
   - Python
