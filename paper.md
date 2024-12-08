@@ -57,7 +57,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 To use the framework in a **Python** environment, use the following command:
 
-```bash
+```python
 pip install parepy-toolbox
 # or pip install --upgrade parepy-toolbox
 ```
@@ -202,9 +202,9 @@ def example_function(x, none_variable):
 
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
-
-## Documentation
-The documentation abou this app can be see in wmpjrufg.github.io/PAREPY/.
-
+  
+## Conclusions
+A.M.K. was reponsible for conceptualization, methodology, software, testing and Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.  
+  
 ## Contributions
 A.M.K. was reponsible for conceptualization, methodology, software, testing and validation, writing of manuscript, and visualization; A.D. was responsible for testing software and results in training machine learning models; A.M.B., W.F.R., Z-K.L. were responsible for funding acquisition, review, and editing. Z-K.L. was also supervising the work.
