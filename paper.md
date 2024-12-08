@@ -33,11 +33,11 @@ authors:
 
 ## Introduction
 The `PAREpy` (Probabilistic Approach to Reliability Engineering) framework is a library for applying probabilistic concepts to analyze a system containing random variables. The platform is built in Python and can be used in any environment that supports this programming language.  
-
+  
 Tools often offer a certain complexity when building reliability analyses. This framework intends to be a faster library for building reliability problems. This version, it is able to assemble structural reliability problems using sampling methods and derivative methods.  
-
+  
 The study of structural reliability is concerned with the calculation and prediction of the probability of limit state violation for an engineered structural system at any stage  during its life. In particular, the study of structural safety is concerned with the violation of the ultimate or safety limit states for the structure. More generally, the study of  structural reliability is concerned with the violation of performance measures [@melchers_structural_2018].  
-
+  
 PAREPy offers the following functions:
 - `pf_equation`: This function calculates the probability of failure ($p_f$) for a given reliability index ($\beta$) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
 - `beta_equation`: This function calculates the reliability index value for a given probability of failure ($p_f$).
@@ -45,9 +45,9 @@ PAREPy offers the following functions:
 - `convergence_probability_failure`: This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the probability of failure or reliability index.
 - `sampling_algorithm_structural_analysis`: This function creates the samples and evaluates the limit state functions in structural reliability problems.
 - `concatenates_txt_files_sampling_algorithm_structural_analysis`
-
+  
 The documentation is available on the [PAREpy web site](https://wmpjrufg.github.io/PAREPY/). There, users can find some examples, learning and see application examples.  
-
+  
 ## Reliability Overview
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
