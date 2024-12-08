@@ -16,6 +16,9 @@ authors:
     equal-contrib: true
     affiliation: 1
 
+date: 10 January 2025
+bibliography: paper.bib
+
 [Prof. PhD Wanderlei Malaquias Pereira Junior](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4460682U0)$^1$, 
 [Msc Murilo Carneiro Rodrigues](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K1774858Z8)$^1$,
 [Msc Matheus Henrique Morato Moraes](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8214592P6)$^3$,
