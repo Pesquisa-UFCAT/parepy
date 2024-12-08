@@ -1,5 +1,6 @@
-"""List of distributions for the toolbox"""
+"""Distributions for this toolbox"""
 import numpy as np
+
 
 def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
     """
