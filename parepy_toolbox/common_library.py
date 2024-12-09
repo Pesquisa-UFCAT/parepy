@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from numpy import sqrt, pi, exp
 import random
-from parepy_toolbox.distributions import normal_sampling, uniform_sampling, gumbel_max_sampling, gumbel_min_sampling, lognormal_sampling, triangular_sampling
+import parepy_toolbox.distributions as parepydi
 
 def simpling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.ndarray:
     """
@@ -249,51 +249,49 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     model_sampling = model['model sampling'].upper()
 
     if model_sampling in ['MCS', 'MONTE CARLO']:
-        random_sampling = np.zeros((n_samples, len(variables_setup)))  # Update dimension size to match the number of variables
+        random_sampling = np.zeros((n_samples, len(variables_setup)))
 
-        for j, variable in enumerate(variables_setup):  # Correct loop to iterate over the variables
-            # Setup pdf
+        for j, variable in enumerate(variables_setup):
             type_dist = variable['type'].upper()
             seed_dist = variable['seed']
             params = variable['parameters']
 
-            # Handle different distributions
-            if type_dist == 'NORMAL':
+            if type_dist == 'NORMAL' or type_dist == 'GAUSSIAN':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = normal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.normal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'UNIFORM':
                 min_val = params['min']
                 max_val = params['max']
                 parameters = {'min': min_val, 'max': max_val}
-                random_sampling[:, j] = uniform_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.uniform_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'GUMBEL MAX':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = gumbel_max_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'GUMBEL MIN':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = gumbel_min_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'LOGNORMAL':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = lognormal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'TRIANGULAR':
                 min_val = params['min']
                 max_val = params['max']
                 mode = params['mode']
                 parameters = {'min': min_val, 'max': max_val, 'mode': mode}
-                random_sampling[:, j] = triangular_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.triangular_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
     return random_sampling
 
