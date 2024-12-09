@@ -48,10 +48,9 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
 
     # Creating samples
     dataset_x = parepyco.sampling(n_samples=n_samples,
-                                    d=n_dimensions,
                                     model=model,
                                     variables_setup=variables_settings)
-
+    
     # Starting variables
     capacity = np.zeros((len(dataset_x), n_constraints))
     demand = np.zeros((len(dataset_x), n_constraints))

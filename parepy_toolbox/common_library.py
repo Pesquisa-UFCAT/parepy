@@ -5,14 +5,13 @@ from distfit import distfit
 from scipy.stats.distributions import norm, gumbel_r, gumbel_l, dweibull, gamma, beta, triang
 from scipy.integrate import quad
 import scipy.stats as stats
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from numpy import sqrt, pi, exp
 import random
+from parepy_toolbox.distributions import normal_sampling, uniform_sampling, gumbel_max_sampling, gumbel_min_sampling, lognormal_sampling, triangular_sampling
 
-
-def sampling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.ndarray:
+def simpling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.ndarray:
     """
     This algorithm generates a set of random numbers according to a type of distribution.
 
@@ -233,63 +232,71 @@ def sampling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.n
     return random_sampling
 
 
-def simpling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.ndarray:
+def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     """
-    This algorithm generates a set of random numbers according to a type of distribution.
-
+    This algorithm generates a set of random numbers according to a type of distribution and plots the distributions.
+    
     Args:
-        n_samples (int): Number of samples.
-        d (int): Number of dimensions.
-        model (Dict): Model parameters, including seed and method.
-        variables_setup (List): list of dictionaries, each with parameters for each variable.
-
+        n_samples (Integer): Number of samples
+        model (Dictionary): Model parameters
+        variables_setup (List): Random variable parameters (list of dictionaries)
+    
     Returns:
-        np.ndarray: Random samples.
+        random_sampling (np.array): Random samples
     """
-    model_type = model['model sampling'].upper()
-    samples = []
 
-    for variable in variables_setup:
-        type_dist = variable['type'].upper()
-        seed = variable['seed']
+    # Model settings
+    model_sampling = model['model sampling'].upper()
 
-        if model_type in ['MCS']:
-            if type_dist == 'UNIFORM':
-                samples.append(sampling_uniform_distribution(variable["min"], variable["max"], n_samples, seed))
+    if model_sampling in ['MCS', 'MONTE CARLO']:
+        random_sampling = np.zeros((n_samples, len(variables_setup)))  # Update dimension size to match the number of variables
 
-            elif type_dist == "NORMAL":
-                samples.append(inverse_normal_sampling(n_samples, variable["mean"], variable["std"], seed, "MCS"))
+        for j, variable in enumerate(variables_setup):  # Correct loop to iterate over the variables
+            # Setup pdf
+            type_dist = variable['type'].upper()
+            seed_dist = variable['seed']
+            params = variable['parameters']
 
-            elif type_dist == "GUMBEL_R":
-                samples.append(inverse_gumbel_r(n_samples, variable["mu"], variable["beta"], seed, "MCS"))
+            # Handle different distributions
+            if type_dist == 'NORMAL':
+                mean = params['mean']
+                sigma = params['sigma']
+                parameters = {'mean': mean, 'sigma': sigma}
+                random_sampling[:, j] = normal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
-            elif type_dist == "GUMBEL_L":
-                samples.append(inverse_gumbel_l(n_samples,
-                        variable["mu"], variable["beta"], seed, "MCS"))
-                
-            elif type_dist == "TRIANGULAR":
-                samples.append(triangular_inverse_cdf(n_samples, variable["a_min"], variable["a_mean"], variable["a_max"], seed, "MCS"))
+            elif type_dist == 'UNIFORM':
+                min_val = params['min']
+                max_val = params['max']
+                parameters = {'min': min_val, 'max': max_val}
+                random_sampling[:, j] = uniform_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
-        elif model_type in ['LHS']:
-            if type_dist == 'UNIFORM':
-                samples.append(uniform_lhs(n_samples, d, seed))
+            elif type_dist == 'GUMBEL MAX':
+                mean = params['mean']
+                sigma = params['sigma']
+                parameters = {'mean': mean, 'sigma': sigma}
+                random_sampling[:, j] = gumbel_max_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
-            elif type_dist == "NORMAL":
-                samples.append(inverse_normal_sampling(n_samples, variable["mean"], variable["std"], seed, "LHS"))
-                
-            elif type_dist == "GUMBEL_R":
-                samples.append(inverse_gumbel_r(n_samples, variable["mu"], variable["beta"], seed, "LHS"))
+            elif type_dist == 'GUMBEL MIN':
+                mean = params['mean']
+                sigma = params['sigma']
+                parameters = {'mean': mean, 'sigma': sigma}
+                random_sampling[:, j] = gumbel_min_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
-            elif type_dist == "GUMBEL_L":
-                samples.append(inverse_gumbel_l(n_samples, variable["mu"], variable["beta"], seed, "LHS"))
+            elif type_dist == 'LOGNORMAL':
+                mean = params['mean']
+                sigma = params['sigma']
+                parameters = {'mean': mean, 'sigma': sigma}
+                random_sampling[:, j] = lognormal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
-            elif type_dist == "TRIANGULAR":
-                samples.append(triangular_inverse_cdf(n_samples, variable["a_min"], variable["a_mean"], variable["a_max"], seed, "LHS"))
+            elif type_dist == 'TRIANGULAR':
+                min_val = params['min']
+                max_val = params['max']
+                mode = params['mode']
+                parameters = {'min': min_val, 'max': max_val, 'mode': mode}
+                random_sampling[:, j] = triangular_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
 
-            else:
-                raise ValueError(f"Unknown distribution type: {type_dist}")
+    return random_sampling
 
-    return np.array(samples)
 
 
 def newton_raphson(f: Callable[[float], float], df: Callable[[float], float], x0: float, tol: float) -> float:
