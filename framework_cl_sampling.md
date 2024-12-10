@@ -1,18 +1,3 @@
----
-layout: home
-parent: common_library
-grand_parent: Framework
-nav_order: 1
-has_children: true
-has_toc: true
-title: sampling
----
-
-<!--Don't delete ths script-->
-<script src = "https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<!--Don't delete ths script-->
-
 <h3>sampling</h3>
 <p align = "justify">
     This algorithm generates a set of random numbers according to a type of distribution.
