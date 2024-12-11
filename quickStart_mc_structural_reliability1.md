@@ -124,7 +124,6 @@ var = [f, p, w]
 # PAREpy setup
 setup = {
              'number of samples': 70000, 
-             'number of dimensions': len(var), 
              'numerical model': {'model sampling': 'mcs'}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 

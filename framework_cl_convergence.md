@@ -100,7 +100,6 @@ w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'seed': None}
 var = [f, p, w]
 setup = {
              'number of samples': 100000, 
-             'number of dimensions': len(var), 
              'numerical model': {'model sampling': 'mcs'}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
