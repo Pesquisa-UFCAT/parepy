@@ -1,5 +1,6 @@
 """Common library for PAREpy toolbox"""
 from typing import Union, Callable, Tuple, List, Dict
+import re
 from datetime import datetime
 from distfit import distfit
 from scipy.stats.distributions import norm, gumbel_r, gumbel_l, dweibull, gamma, beta, triang
@@ -9,233 +10,13 @@ import numpy as np
 import pandas as pd
 from numpy import sqrt, pi, exp
 import random
-from parepy_toolbox.distributions import normal_sampling, uniform_sampling, gumbel_max_sampling, gumbel_min_sampling, lognormal_sampling, triangular_sampling
-
-def simpling(n_samples: int, d: int, model: dict, variables_setup: list) -> np.ndarray:
-    """
-    This algorithm generates a set of random numbers according to a type of distribution.
-
-    Args:
-        n_samples (Integer): Number of samples
-        d (Integer): Number of dimensions
-        model (Dictionary): Model parameters
-        variables_setup (List): Random variable parameters (list of dictionaries)
-    
-    Returns:
-        random_sampling (np.array): Random samples
-    """
-
-    # Model settnigs
-    model_sampling = model['model sampling'].upper()
-
-    if model_sampling.upper() in ['MCS TIME', 'MCS-TIME', 'MCS_TIME']:
-        # Time analysis
-        time_analysis = model['time steps']
-
-        # Generating n_samples samples
-        random_sampling = np.empty((0, d))
-        for _ in range(n_samples):
-
-            # Generating a temporal sample
-            temporal_sampling = np.zeros((time_analysis, d))
-            for i in range(d):
-
-                # Setup pdf
-                type_dist = variables_setup[i]['type'].upper()
-                seed_dist = variables_setup[i]['seed']
-                n_samples_in_temporal_aux = variables_setup[i]['stochastic variable']
-                if n_samples_in_temporal_aux:
-                    n_samples_in_temporal = time_analysis
-                else:
-                    n_samples_in_temporal = 1
-                
-                # Normal or Gaussian
-                if type_dist == 'GAUSSIAN' or type_dist == 'NORMAL':
-                    mean_dist = variables_setup[i]['loc']
-                    stda_dist = variables_setup[i]['scale']
-                    temporal_sampling[:, i] = norm.rvs(loc=mean_dist,
-                                                       scale=stda_dist,
-                                                       size=n_samples_in_temporal,
-                                                       random_state=seed_dist)
-                # Gumbel right or Gumbel maximum
-                elif type_dist == 'GUMBEL MAX':
-                    mean_dist = variables_setup[i]['loc']
-                    stda_dist = variables_setup[i]['scale']
-                    temporal_sampling[:, i] = gumbel_r.rvs(loc=mean_dist,
-                                                           scale=stda_dist,
-                                                           size=n_samples_in_temporal,
-                                                           random_state=seed_dist)
-                # Gumbel left or Gumbel minimum
-                elif type_dist == 'GUMBEL MIN':
-                    mean_dist = variables_setup[i]['loc']
-                    stda_dist = variables_setup[i]['scale']
-                    temporal_sampling[:, i] = gumbel_l.rvs(loc=mean_dist,
-                                                           scale=stda_dist,
-                                                           size=n_samples_in_temporal,
-                                                           random_state=seed_dist)
-                # Weibull
-                elif type_dist == 'WEIBULL':
-                    shape_dist = variables_setup[i]['shape']
-                    mean_dist = variables_setup[i]['loc']
-                    stda_dist = variables_setup[i]['scale']
-                    temporal_sampling[:, i] = dweibull.rvs(shape_dist,
-                                                           loc=mean_dist,
-                                                           scale=stda_dist,
-                                                           size=n_samples_in_temporal,
-                                                           random_state=seed_dist)
-                # Lognormal
-                elif type_dist == 'LOGNORMAL':
-                    # https://shivamrana.me/2024/01/lognormal-to-normal/
-                    mean_dist = variables_setup[i]['loc']
-                    stda_dist = variables_setup[i]['scale']
-                    rng = np.random.default_rng()
-                    lognorm_samples = rng.lognormal(mean_dist, stda_dist, n_samples_in_temporal)
-                    norm_samples = np.log(lognorm_samples)
-                    temporal_sampling[:, i] = norm.rvs(loc=norm_samples.mean(),
-                                                       scale=norm_samples.std(),
-                                                       size=n_samples_in_temporal,
-                                                       random_state=seed_dist)
-                # Gamma
-                elif type_dist == 'GAMMA':
-                    shape_dist = variables_setup[i]['shape']
-                    mean_dist = variables_setup[i]['loc']
-                    stda_dist = variables_setup[i]['scale']
-                    temporal_sampling[:, i] = gamma.rvs(shape_dist,
-                                                        loc=mean_dist,
-                                                        scale=stda_dist,
-                                                        size=n_samples_in_temporal,
-                                                        random_state=seed_dist)
-                # Beta
-                elif type_dist == 'BETA':
-                    a = variables_setup[i]['a']
-                    b = variables_setup[i]['b']
-                    mean_dist = variables_setup[i]['loc']
-                    stda_dist = variables_setup[i]['scale']
-                    temporal_sampling[:, i] = beta.rvs(a,
-                                                        b,
-                                                        loc=mean_dist,
-                                                        scale=stda_dist,
-                                                        size=n_samples_in_temporal,
-                                                        random_state=seed_dist)
-                # Triangular
-                elif type_dist == 'TRIANGULAR':
-                    loc = variables_setup[i]['loc']
-                    a = variables_setup[i]['min']
-                    b = variables_setup[i]['max']
-                    std = b - a
-                    c = (loc - a) / (b - a)
-                    temporal_sampling[:, i] = triang.rvs(c=c,
-                                                        loc=a,
-                                                        scale=std,
-                                                        size=n_samples_in_temporal,
-                                                        random_state=seed_dist)
-            random_sampling = np.concatenate((random_sampling, temporal_sampling), axis=0)
-
-        # convert time dataset
-        time_sampling = np.zeros((time_analysis * n_samples, 1))
-        cont = 0
-        for _ in range(n_samples):
-            for m in range(time_analysis):
-                time_sampling[cont, 0] = int(m)
-                cont += 1
-        random_sampling = np.concatenate((random_sampling, time_sampling), axis=1)
-
-    elif model_sampling.upper() in ['MCS', 'CRUDE MONTE CARLO', 'MONTE CARLO', 'CRUDE MCS']:
-        random_sampling = np.zeros((n_samples, d))
-
-        for j in range(d):
-            # Setup pdf
-            type_dist = variables_setup[j]['type'].upper()
-            seed_dist = variables_setup[j]['seed']
-
-            # Normal or Gaussian
-            if type_dist == 'GAUSSIAN' or type_dist == 'NORMAL':
-                mean_dist = variables_setup[j]['loc']
-                stda_dist = variables_setup[j]['scale']
-                random_sampling[:, j] = norm.rvs(loc=mean_dist,
-                                                    scale=stda_dist,
-                                                    size=n_samples,
-                                                    random_state=seed_dist)
-            # Gumbel right or Gumbel maximum
-            elif type_dist == 'GUMBEL MAX' or type_dist == 'GUMBEL MAX.':
-                mean_dist = variables_setup[j]['loc']
-                stda_dist = variables_setup[j]['scale']
-                random_sampling[:, j] = gumbel_r.rvs(loc=mean_dist,
-                                                        scale=stda_dist,
-                                                        size=n_samples,
-                                                        random_state=seed_dist)
-            # Gumbel left or Gumbel minimum
-            elif type_dist == 'GUMBEL MIN' or type_dist == 'GUMBEL MIN.':
-                mean_dist = variables_setup[j]['loc']
-                stda_dist = variables_setup[j]['scale']
-                random_sampling[:, j] = gumbel_l.rvs(loc=mean_dist,
-                                                     scale=stda_dist,
-                                                     size=n_samples,
-                                                     random_state=seed_dist)
-            # Weibull
-            elif type_dist == 'WEIBULL':
-                shape_dist = variables_setup[j]['shape']
-                mean_dist = variables_setup[j]['loc']
-                stda_dist = variables_setup[j]['scale']
-                random_sampling[:, j] = dweibull.rvs(shape_dist,
-                                                        loc=mean_dist,
-                                                        scale=stda_dist,
-                                                        size=n_samples,
-                                                        random_state=seed_dist)
-            # Lognormal
-            elif type_dist == 'LOGNORMAL':
-                # https://shivamrana.me/2024/01/lognormal-to-normal/
-                mean_dist = variables_setup[j]['loc']
-                stda_dist = variables_setup[j]['scale']
-                rng = np.random.default_rng()
-                lognorm_samples = rng.lognormal(mean_dist, stda_dist, n_samples)
-                norm_samples = np.log(lognorm_samples)
-                random_sampling[:, j] = norm.rvs(loc=norm_samples.mean(),
-                                                scale=norm_samples.std(),
-                                                size=n_samples,
-                                                random_state=seed_dist)
-            # Gamma
-            elif type_dist == 'GAMMA':
-                shape_dist = variables_setup[j]['shape']
-                mean_dist = variables_setup[j]['loc']
-                stda_dist = variables_setup[j]['scale']
-                random_sampling[:, j] = gamma.rvs(shape_dist,
-                                                    loc=mean_dist,
-                                                    scale=stda_dist,
-                                                    size=n_samples,
-                                                    random_state=seed_dist)
-            # Beta
-            elif type_dist == 'BETA':
-                mean_dist = variables_setup[i]['loc']
-                stda_dist = variables_setup[i]['scale']
-                a = variables_setup[i]['a']
-                b = variables_setup[i]['b']
-                random_sampling[:, j] = beta.rvs(a,
-                                                    b,
-                                                    loc=mean_dist,
-                                                    scale=stda_dist,
-                                                    size=n_samples,
-                                                    random_state=seed_dist)
-            # Triangular
-            elif type_dist == 'TRIANGULAR':
-                loc = variables_setup[j]['loc']
-                a = variables_setup[j]['min']
-                b = variables_setup[j]['max']
-                std = b - a
-                c = (loc - a) / (b - a)
-                random_sampling[:, j] = triang.rvs(c=c,
-                                                   loc=a,
-                                                   scale=std,
-                                                   size=n_samples,
-                                                   random_state=seed_dist)
-
-    return random_sampling
+import parepy_toolbox.distributions as parepydi
 
 
 def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     """
     This algorithm generates a set of random numbers according to a type of distribution and plots the distributions.
-    
+
     Args:
         n_samples (Integer): Number of samples
         model (Dictionary): Model parameters
@@ -248,58 +29,140 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     # Model settings
     model_sampling = model['model sampling'].upper()
 
-    if model_sampling in ['MCS', 'MONTE CARLO']:
-        random_sampling = np.zeros((n_samples, len(variables_setup)))  # Update dimension size to match the number of variables
+    if model_sampling in ['MCS', 'LHS']:
+        random_sampling = np.zeros((n_samples, len(variables_setup)))
 
-        for j, variable in enumerate(variables_setup):  # Correct loop to iterate over the variables
-            # Setup pdf
+        for j, variable in enumerate(variables_setup):
             type_dist = variable['type'].upper()
             seed_dist = variable['seed']
             params = variable['parameters']
 
-            # Handle different distributions
-            if type_dist == 'NORMAL':
+            if type_dist == 'NORMAL' or type_dist == 'GAUSSIAN':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = normal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'UNIFORM':
                 min_val = params['min']
                 max_val = params['max']
                 parameters = {'min': min_val, 'max': max_val}
-                random_sampling[:, j] = uniform_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'GUMBEL MAX':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = gumbel_max_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'GUMBEL MIN':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = gumbel_min_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'LOGNORMAL':
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = lognormal_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'TRIANGULAR':
                 min_val = params['min']
                 max_val = params['max']
                 mode = params['mode']
                 parameters = {'min': min_val, 'max': max_val, 'mode': mode}
-                random_sampling[:, j] = triangular_sampling(parameters, method='mcs', n_samples=n_samples, seed=seed_dist)
+                random_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+    elif model_sampling in ['TIME-MCS', 'TIME-LHS', 'TIME MCS', 'TIME LHS', 'MCS TIME', 'LHS TIME', 'MCS-TIME', 'LHS-TIME']:
+        time_analysis = model['time steps']
+        random_sampling = np.empty((0, len(variables_setup)))
+        match = re.search(r'\b(MCS|LHS)\b', model_sampling.upper(), re.IGNORECASE)
+        model_sampling = match.group(1).upper()
+
+        for _ in range(n_samples):
+            temporal_sampling = np.zeros((time_analysis, len(variables_setup)))
+
+            for j, variable in enumerate(variables_setup):
+                type_dist = variable['type'].upper()
+                seed_dist = variable['seed']
+                sto = variable['stochastic variable']
+                params = variable['parameters']
+
+                if type_dist == 'NORMAL' or type_dist == 'GAUSSIAN':
+                    mean = params['mean']
+                    sigma = params['sigma']
+                    parameters = {'mean': mean, 'sigma': sigma}
+                    if sto is False:
+                        temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+                        temporal_sampling[1:, j]
+                    else:
+                        temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+                elif type_dist == 'UNIFORM':
+                    min_val = params['min']
+                    max_val = params['max']
+                    parameters = {'min': min_val, 'max': max_val}
+                    if sto is False:
+                        temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+                        temporal_sampling[1:, j]
+                    else:
+                        temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+                elif type_dist == 'GUMBEL MAX':
+                    mean = params['mean']
+                    sigma = params['sigma']
+                    parameters = {'mean': mean, 'sigma': sigma}
+                    if sto is False:
+                        temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+                        temporal_sampling[1:, j]
+                    else:
+                        temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+                elif type_dist == 'GUMBEL MIN':
+                    mean = params['mean']
+                    sigma = params['sigma']
+                    parameters = {'mean': mean, 'sigma': sigma}
+                    if sto is False:
+                        temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+                        temporal_sampling[1:, j]
+                    else:
+                        temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+                elif type_dist == 'LOGNORMAL':
+                    mean = params['mean']
+                    sigma = params['sigma']
+                    parameters = {'mean': mean, 'sigma': sigma}
+                    if sto is False:
+                        temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+                        temporal_sampling[1:, j]
+                    else:
+                        temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+                elif type_dist == 'TRIANGULAR':
+                    min_val = params['min']
+                    max_val = params['max']
+                    mode = params['mode']
+                    parameters = {'min': min_val, 'max': max_val, 'mode': mode}
+                    if sto is False:
+                        temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+                        temporal_sampling[1:, j]
+                    else:
+                        temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+            random_sampling = np.concatenate((random_sampling, temporal_sampling), axis=0)  
+
+        time_sampling = np.zeros((time_analysis * n_samples, 1))
+        cont = 0
+        for _ in range(n_samples):
+            for m in range(time_analysis):
+                time_sampling[cont, 0] = int(m)
+                cont += 1
+        random_sampling = np.concatenate((random_sampling, time_sampling), axis=1)   
 
     return random_sampling
 
 
-
-def newton_raphson(f: Callable[[float], float], df: Callable[[float], float], x0: float, tol: float) -> float:
+def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -> float:
     """
     This function calculates the root of a function using the Newton-Raphson method.
 
@@ -346,7 +209,7 @@ def beta_equation(pf: float) -> Union[float, str]:
 
     Args:
         pf (Float): Probability of failure
-    
+
     Returns:
         beta_value (Float or String): Beta value
     """

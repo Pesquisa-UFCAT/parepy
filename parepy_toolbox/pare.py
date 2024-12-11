@@ -46,8 +46,7 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
         time_analysis = None
 
     # Creating samples
-    dataset_x = parepyco.sampling(n_samples=n_samples,
-                                    model=model,
+    dataset_x = parepyco.sampling(n_samples=n_samples, model=model,
                                     variables_setup=variables_settings)
     
     # Starting variables
