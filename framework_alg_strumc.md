@@ -44,11 +44,6 @@ Input variables
         <td>Integer</td>
     </tr>
     <tr>
-        <td><code>number of dimensions</code></td>
-        <td>Number of dimensions (key in setup dictionary)</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
         <td><code>numerical model</code></td>
         <td>Numerical model settings (key in setup dictionary)</td>
         <td>Dictionary</td>
@@ -241,9 +236,9 @@ from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_example
 
 # Dataset
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'seed': None}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'seed': None}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'seed': None}
+f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64}
+p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12}
+w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025}
 var = [f, p, w]
 
 # PAREpy setup
@@ -394,9 +389,9 @@ from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_time_example
 
 # Dataset
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False, 'seed': None}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'stochastic variable': True, 'seed': None}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'stochastic variable': False, 'seed': None}
+f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False}
+p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'stochastic variable': True}
+w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'stochastic variable': False}
 var = [f, p, w]
 
 # PAREpy setup

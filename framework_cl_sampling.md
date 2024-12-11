@@ -24,11 +24,6 @@ Input variables
         <td>Integer</td>
     </tr>
     <tr>
-        <td><code>d</code></td>
-        <td>Number of dimensions</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
         <td><code>model</code></td>
         <td>Model parameters. See <a href="#models">models table</a></td>
         <td>Dictionary</td>
@@ -117,7 +112,7 @@ Output variables
                     <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
-            <td><code>var = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'seed': None}</code></td>
+            <td><code>var = {'type': 'normal', 'loc': 40.3, 'scale': 4.64}</code></td>
         </tr>
         <tr>
             <td>Gumbel Maximum</td>
@@ -132,7 +127,7 @@ Output variables
                     <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
-            <td><code>var = {'type': 'gumbel max', 'loc': 40.3, 'scale': 4.64, 'seed': None}</code></td>
+            <td><code>var = {'type': 'gumbel max', 'loc': 40.3, 'scale': 4.64}</code></td>
         </tr>
         <tr>
             <td>Gumbel Minimum</td>
@@ -147,7 +142,7 @@ Output variables
                     <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
-            <td><code>var = {'type': 'gumbel min', 'loc': 40.3, 'scale': 4.64, 'seed': None}</code></td>
+            <td><code>var = {'type': 'gumbel min', 'loc': 40.3, 'scale': 4.64}</code></td>
         </tr>
         <tr>
             <td>Triangular</td>
@@ -162,7 +157,7 @@ Output variables
                     <li><p align="justify"><font color="red">add this key in stochastic case</font> - <code>'stochastic variable'</code>: This variable represents the behavior of the random variable over time intervals. False means the variable with a fixed value in each time interval, and True represents the random behavior of the variable in each time interval. [Boolean]</p></li>
                 </ul>            
             </td>
-            <td><code>var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, 'seed': None}</code></td>
+            <td><code>var = {'type': 'triangular', 'min': 3, 'loc': 7, 'max': 8, }</code></td>
         </tr>
     </table>
 </center>
@@ -179,7 +174,7 @@ from parepy_toolbox import sampling
 
 # Dataset
 model = {'model sampling': 'mcs'}
-f = {'type': 'normal', 'loc': 7, 'scale': 3, 'seed': None}
+f = {'type': 'normal', 'loc': 7, 'scale': 3}
 varSet = [f]
 size = 1000000
 
@@ -225,7 +220,7 @@ from parepy_toolbox import sampling
 
 # Dataset: fixed value in time series
 model = {'model sampling': 'mcs-time', 'time steps': 3}
-f = {'type': 'gumbel min', 'loc': 20, 'scale': 2, 'seed': None, 'stochastic variable': False}
+f = {'type': 'gumbel min', 'loc': 20, 'scale': 2, 'stochastic variable': False}
 varSet = [f]
 size = 100000
 
@@ -287,7 +282,7 @@ from parepy_toolbox import sampling
 
 # Dataset: stochastic value in time series
 model = {'model sampling': 'mcs-time', 'time steps': 3}
-f = {'type': 'normal', 'loc': 7, 'scale': 3, 'seed': None, 'stochastic variable': True}
+f = {'type': 'normal', 'loc': 7, 'scale': 3, 'stochastic variable': True}
 varSet = [f]
 size = 30
 
