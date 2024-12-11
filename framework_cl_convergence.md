@@ -94,9 +94,20 @@ from parepy_toolbox import sampling_algorithm_structural_analysis, convergence_p
 from obj_function import nowak_collins_example
 
 # Check structural reliability 
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025}
+f = {'type': 'normal', 
+    'parameters': {'mean': 40.3, 'sigma': 4.64}, 
+    'stochastic variable': False, 
+    }
+
+p = {'type': 'gumbel max',
+    'parameters': {'mean': 10.2, 'sigma': 1.12}, 
+    'stochastic variable': False, 
+    }
+
+w = {'type': 'lognormal',
+    'parameters': {'mean': 0.25, 'sigma': 0.025}, 
+    'stochastic variable': False, 
+    }
 var = [f, p, w]
 setup = {
              'number of samples': 100000, 
