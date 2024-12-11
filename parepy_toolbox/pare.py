@@ -19,7 +19,6 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     Args:
         setup (Dictionary): Setup settings
         'number of samples' (Integer): Number of samples (key in setup dictionary)
-        'number of dimensions' (Integer): Number of dimensions (key in setup dictionary)
         'numerical model' (Dictionary): Numerical model settings (key in setup dictionary)
         'variables settings' (List): Variables settings (key in setup dictionary)
         'number of state limit functions or constraints' (Integer): Number of state limit functions or constraints  
@@ -33,8 +32,8 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     # General settings
     obj = setup['objective function']
     n_samples = setup['number of samples']
-    n_dimensions = setup['number of dimensions']
     variables_settings = setup['variables settings']
+    n_dimensions = len(variables_settings)
     n_constraints = setup['number of state limit functions or constraints']
     none_variable = setup['none variable']
 
@@ -136,7 +135,6 @@ def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, l
     Args:
         setup (Dictionary): Setup settings.
         'number of samples' (Integer): Number of samples (key in setup dictionary)
-        'number of dimensions' (Integer): Number of dimensions (key in setup dictionary)
         'numerical model' (Dictionary): Numerical model settings (key in setup dictionary)
         'variables settings' (List): Variables settings (key in setup dictionary)
         'number of state limit functions or constraints' (Integer): Number of state limit functions or constraints  
@@ -159,7 +157,6 @@ def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, l
         for key in setup.keys():
             if key not in ['objective function',
                            'number of samples',
-                           'number of dimensions',
                            'numerical model',
                            'variables settings',
                            'number of state limit functions or constraints',
@@ -182,10 +179,6 @@ def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, l
         # Number of samples verification
         if not isinstance(setup['number of samples'], int):
             raise TypeError('The key "number of samples" must be an integer.')
-
-        # Dimension verification
-        if not isinstance(setup['number of dimensions'], int):
-            raise TypeError('The key "number of dimension" must be an integer.')
 
         # Numerical model verification
         if not isinstance(setup['numerical model'], dict):
