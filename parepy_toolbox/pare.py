@@ -33,6 +33,9 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     obj = setup['objective function']
     n_samples = setup['number of samples']
     variables_settings = setup['variables settings']
+    for i in variables_settings:
+        if 'seed' not in i:
+            i['seed'] = None
     n_dimensions = len(variables_settings)
     n_constraints = setup['number of state limit functions or constraints']
     none_variable = setup['none variable']
@@ -166,7 +169,6 @@ def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, l
                 raise ValueError("""The setup parameter must have the following keys:
                                     - objective function;
                                     - number of samples;
-                                    - number of dimensions;
                                     - numerical model;
                                     - variables settings;
                                     - number of state limit functions or constraints;
