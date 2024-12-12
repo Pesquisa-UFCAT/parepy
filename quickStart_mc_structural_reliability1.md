@@ -148,7 +148,7 @@ print...bla bla bla
 Pós-Processamento dos Resultados
 {: .label .label-red }
 
-<p align="justify"> Após a simulação de Monte Carlo, é importante analisar os resultados para tomar decisões fundamentadas. Esta seção demonstra como processar os resultados da simulação armazenados no DataFrame <code>results</code>. As principais operações incluem visualizar a distribuição dos valores da função de estado limite (\(\boldsymbol{G}\)), identificar os pontos mais prováveis próximos à falha (\(G \approx 0\)) e visualizar variáveis aleatórias relacionadas (\(\boldsymbol{R}\) e \(\boldsymbol{S}\)).</p>
+<p align="justify"> Após a simulação de Monte Carlo, é importante analisar os resultados para tomar decisões fundamentadas. Esta seção demonstra algumas formas de como processar os resultados da simulação armazenados no DataFrame <code>results</code>. As principais operações incluem visualizar a distribuição dos valores da função de estado limite (\(\boldsymbol{G}\)), identificar os pontos mais prováveis próximos à falha (\(G \approx 0\)) e visualizar variáveis aleatórias relacionadas (\(\boldsymbol{R}\) e \(\boldsymbol{S}\)).</p>
 
 <ul>
   <li>Histograma de \(G_0\): plotagem da frequência dos valores de \(G_0\).</li>
