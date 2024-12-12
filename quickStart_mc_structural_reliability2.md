@@ -174,6 +174,63 @@ Following instructions to see all results:
 print...bla bla bla
 ``` -->
 
+Pós-Processamento dos Resultados
+{: .label .label-red }
+
+<p align="justify"> Após a simulação de Monte Carlo, é fundamental analisar os resultados para tomar decisões baseadas em dados concretos. Esta seção apresenta formas de processar os resultados da simulação armazenados no DataFrame <code>results</code>. As principais operações incluem visualizar a distribuição dos valores da função de estado limite (\(\boldsymbol{G}\)), identificar os pontos mais prováveis próximos à falha (\(G \approx 0\)) e comparar variáveis aleatórias relacionadas (\(\boldsymbol{R}\) e \(\boldsymbol{S}\)) para uma compreensão mais detalhada. </p>
+
+<ul>
+  <li>Histograma de \(G_0\): visualização da distribuição dos valores de \(G_0\).</li>
+  <li>Pontos Mais Prováveis Próximos de Falha: os pontos mais próximos de \(G_0 = 0\) são identificados de duas formas:
+    <ul>
+      <li>\(G_0 \geq 0\): ordenando os valores de \(G_0\) de forma crescente para identificar os valores positivos mais próximos de zero.</li>
+      <li>\(G_0 \leq 0\): ordenando os valores de \(G_0\) de forma decrescente para identificar os valores negativos mais próximos de zero.</li>
+    </ul>
+  </li>
+  <li>Histogramas Sobrepostos: comparação visual das distribuições das variáveis \(R_0\) e \(S_0\), relacionadas a \(G_0\).</li>
+  <li>Listas de Confiabilidade: conversão das variáveis \(p_f\) e \(\beta\) em listas Python para facilitar o processamento de múltiplas restrições.</li>
+  <li>Iteração pelas Restrições: para cada coluna de \(p_f\) e \(\beta\), os valores são impressos, permitindo uma análise detalhada dos resultados de confiabilidade.</li>
+</ul>
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# 1. Plot histogram of G_0_t=0
+plt.hist(results['G_0_t=0'], bins=50, alpha=0.7, color='blue')
+plt.xlabel("Valor da Restrição (G_0_t=0)")
+plt.ylabel("Frequência")
+plt.legend()
+plt.show()
+
+# 2. Find the three most probable points near zero for G_0_t=0
+## 2.1 Sort the results by G_0_t=0 >=0
+sorted_positive = results[results['G_0_t=0'] >= 0].sort_values(by='G_0_t=0', ascending=True)
+print('Pontos Mais Prováveis Próximos à Falha (G_0_t=0 >= 0):')
+print(sorted_positive.head(3))
+
+## 2.2 Sort the results by G_0_t=0 <=0
+sorted_negative = results[results['G_0_t=0'] <= 0].sort_values(by='G_0_t=0', ascending=False)
+print('Pontos Mais Prováveis Próximos à Falha (G_0_t=0 <= 0):')
+print(sorted_negative.head(3))
+
+# 3. Overlay histograms for R_0_t=0 and S_0_t=0
+plt.hist(results['R_0_t=0'], bins=50, alpha=0.5, color='green', label='Resistência R_0_t=0')
+plt.hist(results['S_0_t=0'], bins=50, alpha=0.5, color='orange', label='Solicitação S_0_t=0')
+plt.xlabel("Valor")
+plt.ylabel("Frequência")
+plt.legend()
+plt.show()
+
+# 4. Convert pf and beta to lists
+pf_list = pf.iloc[:, :].values.flatten().tolist()
+beta_list = beta.iloc[:, :].values.flatten().tolist()
+
+# 5. Iterate through reliability results for constraints
+for pf_column, beta_column, (pf_value, beta_value) in zip(pf.columns, beta.columns, zip(pf_list, beta_list)):
+    print(f"{pf_column} - p_f: {pf_value:.6f}, β: {beta_value:.6f}")
+```
+
 <h1>Reference list</h1>
 
 <table>
