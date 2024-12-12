@@ -163,7 +163,45 @@ Pós-Processamento dos Resultados
   <li>Iteração pelas Restrições: para cada coluna de \(p_f\) e \(\beta\), os valores são impressos, permitindo a análise detalhada dos resultados de confiabilidade.</li>
 </ul>
 
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
 
+# 1. Plot histogram of G_0
+plt.hist(results['G_0'], bins=50, alpha=0.7, color='blue')
+plt.xlabel("Constraint Value (G_0)")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
+
+# 2. Find the three most probable points near zero for G_0
+## 2.1 Sort the results by G_0 >=0
+sorted_positive = results[results['G_0'] >= 0].sort_values(by='G_0', ascending=True)
+print('Most Probable Points Near Failure (G_0 >= 0):')
+print(sorted_positive.head(3))
+
+## 2.2 Sort the results by G_0 <=0
+sorted_negative = results[results['G_0'] <= 0].sort_values(by='G_0', ascending=False)
+print('Most Probable Points Near Failure (G_0 <= 0):')
+print(sorted_negative.head(3))
+
+
+# 3. Overlay histograms for R_0 and S_0
+plt.hist(results['R_0'], bins=50, alpha=0.5, color='green', label='Resistance R_0')
+plt.hist(results['S_0'], bins=50, alpha=0.5, color='orange', label='Demand S_0')
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
+
+# 4. Convert pf and beta to lists
+pf_list = pf.iloc[:, :].values.flatten().tolist()
+beta_list = beta.iloc[:, :].values.flatten().tolist()
+
+# 5. Iterate through reliability results for constraints
+for pf_column, beta_column, (pf_value, beta_value) in zip(pf.columns, beta.columns, zip(pf_list, beta_list)):
+    print(f"{pf_column} - p_f: {pf_value:.6f}, β: {beta_value:.6f}")
+```
 
 
 <h1>Reference list</h1>
