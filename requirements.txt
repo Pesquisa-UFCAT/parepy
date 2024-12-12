@@ -6,3 +6,4 @@ poetry
 distfit
 seaborn
 ipykernel
+openpyxl
