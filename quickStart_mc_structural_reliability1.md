@@ -154,11 +154,11 @@ Pós-Processamento dos Resultados
   <li>Histograma de \(G_0\): plotagem da frequência dos valores de \(G_0\).</li>
   <li>Pontos Mais Prováveis Próximos de Falha: Os pontos mais próximos de \(G_0 = 0\) são identificados de duas maneiras:
     <ul>
-      <li>\(G_0 \geq 0\): ordenando os valores de \(G_0\) de forma crescente para encontrar os valores mais próximos de zero para \(G_0\) positivo.</li>
-      <li>\(G_0 \leq 0\): ordenando os valores de \(G_0\) de forma decrescente para encontrar os valores mais próximos de zero para \(G_0\) negativo.</li>
+      <li>\(G_0 \geq 0\): ordenando os valores de \(G_0\) de forma crescente para encontrar os valores positivos mais próximos de zero.</li>
+      <li>\(G_0 \leq 0\): ordenando os valores de \(G_0\) de forma decrescente para encontrar os valores negativos mais próximos de zero.</li>
     </ul>
   </li>
-  <li>Histogramas Sobrepostos: as distribuições das variáveis \(R_0\) e \(S_0\) são comparadas visualmente, com o objetivo de analisar como essas variáveis influenciam o comportamento da função de estado limite \(G_0\).</li>
+  <li>Histogramas Sobrepostos: comparação visual das distribuições das variáveis \(R_0\) e \(S_0\).</li>
   <li>Listas de Confiabilidade: converter as variáveis \(p_f\) e \(\beta\) em listas Python para facilitar o processamento de múltiplas restrições.</li>
   <li>Iteração pelas Restrições: para cada coluna de \(p_f\) e \(\beta\), os valores são impressos, permitindo a análise detalhada dos resultados de confiabilidade.</li>
 </ul>
