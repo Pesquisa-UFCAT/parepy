@@ -148,7 +148,27 @@ print...bla bla bla
 Pós-Processamento dos Resultados
 {: .label .label-red }
 
-<p align="justify"> Após a simulação de Monte Carlo, é importante analisar os resultados para tomar decisões fundamentadas. Esta seção demonstra como processar os resultados da simulação armazenados no DataFrame <code>results</code>. As principais operações incluem visualizar a distribuição dos valores da função de estado limite (\(\boldsymbol{G}\)), identificar os pontos mais prováveis próximos à falha (\(G \approx 0\)) e visualizar variáveis aleatórias relacionadas (\(\boldsymbol{R}\) e \(\boldsymbol{S}\)) </p>
+<p align="justify"> Após a simulação de Monte Carlo, é importante analisar os resultados para tomar decisões fundamentadas. Esta seção demonstra como processar os resultados da simulação armazenados no DataFrame <code>results</code>. As principais operações incluem visualizar a distribuição dos valores da função de estado limite (\(\boldsymbol{G}\)), identificar os pontos mais prováveis próximos à falha (\(G \approx 0\)) e visualizar variáveis aleatórias relacionadas (\(\boldsymbol{R}\) e \(\boldsymbol{S}\)).</p>
+
+<h2>Histograma de \(G_0\)</h2>
+<p>Visualiza a frequência dos valores de \(G_0\), com o objetivo de entender a dispersão dessa função de estado limite.</p>
+
+<h2>Pontos Mais Prováveis Próximos de Falha</h2>
+<p>Os pontos mais próximos de \(G_0 = 0\) são identificados de duas maneiras:</p>
+<ul>
+    <li><strong>\(G_0 \geq 0\):</strong> Ordenando os valores de \(G_0\) de forma crescente para encontrar os valores mais próximos de zero para \(G_0\) positivo.</li>
+    <li><strong>\(G_0 \leq 0\):</strong> Ordenando os valores de \(G_0\) de forma decrescente para encontrar os valores mais próximos de zero para \(G_0\) negativo.</li>
+</ul>
+
+<h2>Histogramas Sobrepostos</h2>
+<p>As distribuições das variáveis \(R_0\) (resistência) e \(S_0\) (solicitação) são comparadas visualmente, com o objetivo de analisar como essas variáveis influenciam o comportamento da função de estado limite \(G_0\).</p>
+
+<h2>Listas de Confiabilidade</h2>
+<p>As variáveis \(p_f\) e \(\beta\) são convertidas em listas Python para facilitar o processamento de múltiplas restrições.</p>
+
+<h2>Iteração pelas Restrições</h2>
+<p>Para cada coluna de \(p_f\) e \(\beta\), os valores são impressos, permitindo a análise detalhada dos resultados de confiabilidade.</p>
+
 
 
 <h1>Reference list</h1>
