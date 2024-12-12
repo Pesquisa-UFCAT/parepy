@@ -151,16 +151,16 @@ Pós-Processamento dos Resultados
 <p align="justify"> Após a simulação de Monte Carlo, é importante analisar os resultados para tomar decisões fundamentadas. Esta seção demonstra como processar os resultados da simulação armazenados no DataFrame <code>results</code>. As principais operações incluem visualizar a distribuição dos valores da função de estado limite (\(\boldsymbol{G}\)), identificar os pontos mais prováveis próximos à falha (\(G \approx 0\)) e visualizar variáveis aleatórias relacionadas (\(\boldsymbol{R}\) e \(\boldsymbol{S}\)).</p>
 
 <ul>
-  <li><strong>Histograma de \(G_0\):</strong> Visualiza a frequência dos valores de \(G_0\), com o objetivo de entender a dispersão dessa função de estado limite.</li>
-  <li><strong>Pontos Mais Prováveis Próximos de Falha:</strong> Os pontos mais próximos de \(G_0 = 0\) são identificados de duas maneiras:
+  <li>Histograma de \(G_0\): plotagem da frequência dos valores de \(G_0\).</li>
+  <li>Pontos Mais Prováveis Próximos de Falha: Os pontos mais próximos de \(G_0 = 0\) são identificados de duas maneiras:
     <ul>
-      <li><strong>\(G_0 \geq 0\):</strong> Ordenando os valores de \(G_0\) de forma crescente para encontrar os valores mais próximos de zero para \(G_0\) positivo.</li>
-      <li><strong>\(G_0 \leq 0\):</strong> Ordenando os valores de \(G_0\) de forma decrescente para encontrar os valores mais próximos de zero para \(G_0\) negativo.</li>
+      <li>\(G_0 \geq 0\): ordenando os valores de \(G_0\) de forma crescente para encontrar os valores mais próximos de zero para \(G_0\) positivo.</li>
+      <li>\(G_0 \leq 0\): ordenando os valores de \(G_0\) de forma decrescente para encontrar os valores mais próximos de zero para \(G_0\) negativo.</li>
     </ul>
   </li>
-  <li><strong>Histogramas Sobrepostos:</strong> As distribuições das variáveis \(R_0\) (resistência) e \(S_0\) (solicitação) são comparadas visualmente, com o objetivo de analisar como essas variáveis influenciam o comportamento da função de estado limite \(G_0\).</li>
-  <li><strong>Listas de Confiabilidade:</strong> As variáveis \(p_f\) e \(\beta\) são convertidas em listas Python para facilitar o processamento de múltiplas restrições.</li>
-  <li><strong>Iteração pelas Restrições:</strong> Para cada coluna de \(p_f\) e \(\beta\), os valores são impressos, permitindo a análise detalhada dos resultados de confiabilidade.</li>
+  <li>Histogramas Sobrepostos: as distribuições das variáveis \(R_0\) e \(S_0\) são comparadas visualmente, com o objetivo de analisar como essas variáveis influenciam o comportamento da função de estado limite \(G_0\).</li>
+  <li>Listas de Confiabilidade: converter as variáveis \(p_f\) e \(\beta\) em listas Python para facilitar o processamento de múltiplas restrições.</li>
+  <li>Iteração pelas Restrições: para cada coluna de \(p_f\) e \(\beta\), os valores são impressos, permitindo a análise detalhada dos resultados de confiabilidade.</li>
 </ul>
 
 
