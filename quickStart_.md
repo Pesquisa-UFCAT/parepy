@@ -59,8 +59,8 @@ def my_function(x, none_variable):
 </p>
 
 <ul>
-    <li><code>x</code> (type list): list of design random variables. PAREpy generates this values</li>
-    <li><code>none_variable</code> (type None, list, float, dictionary, str or any): The user can define this variable. The user can input any value in this variable when calling the framework's main function</li>
+    <li><code>x</code> (type list): list of design random variables. <b>PAREpy generates this values;</b></li>
+    <li><code>none_variable</code> (type <code>None</code>, <code>list</code>, <code>float</code>, <code>dictionary</code>, <code>str</code> or <code>any</code>): The user can define this variable. The user can input any value in this variable when calling the framework's main function.</li>
 </ul>
 
 <p align="justify">
@@ -68,9 +68,9 @@ def my_function(x, none_variable):
 </p>
 
 <ul>
-    <li><code>r</code> (type list): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
-    <li><code>s</code> (type list): list of values. In structural problems, we recommend putting the demand in this variable;</li>
-    <li><code>g</code> (type list): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\).</li>
+    <li><code>r</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
+    <li><code>s</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the demand in this variable;</li>
+    <li><code>g</code> (type <code>list</code>): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\).</li>
 </ul>
 
 {: .important }
