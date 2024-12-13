@@ -76,12 +76,12 @@ Output variables
    </tr>
    <tr>
        <td><code>failure_prob_list</code></td>
-       <td>Placeholder value for failure probability (currently 0).</td>
+       <td>Placeholder value for failure probability.</td>
        <td>float</td>
    </tr>
    <tr>
        <td><code>beta_list</code></td>
-       <td>Placeholder value for reliability index (currently 0).</td>
+       <td>Placeholder value for reliability index.</td>
        <td>float</td>
    </tr>
 </table>
