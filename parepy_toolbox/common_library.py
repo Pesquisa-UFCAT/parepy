@@ -1,5 +1,5 @@
 """Common library for PAREpy toolbox"""
-from typing import Union, Callable, Tuple, List, Dict
+from typing import Union, Callable
 import re
 from datetime import datetime
 from scipy.integrate import quad
@@ -10,9 +10,9 @@ from numpy import sqrt, pi, exp
 import parepy_toolbox.distributions as parepydi
 
 
-def sampling(n_samples: int, model: Dict, variables_setup: List) -> np.ndarray:
+def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     """
-    This algorithm generates a set of random numbers according to a type of distribution and plots the distributions.
+    This algorithm generates a set of random numbers according to a type of distribution.
 
     Args:
         n_samples (Integer): Number of samples
@@ -191,7 +191,7 @@ def pf_equation(beta: float) -> float:
     """
 
     def integrand(x):
-        return 1/sqrt(2*np.pi) * np.exp(-x**2/2) 
+        return 1/sqrt(2*np.pi) * np.exp(-x**2/2)
 
     def integral_x(x):
         integral, _ = quad(integrand, 0, x)
