@@ -42,7 +42,6 @@ def nowak_collins_time_example(x, none_variable):
     id_analysis = int(x[-1])
     time_step = none_variable['time analysis']
     t_i = time_step[id_analysis]
-    print(t_i)
     # t_i is a time value from your list of times entered in the 'none variable' key.
     ###########################################
 
