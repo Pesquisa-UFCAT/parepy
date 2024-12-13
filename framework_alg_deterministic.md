@@ -13,12 +13,6 @@ title: deterministic_algorithm_structural_analysis
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-```html
-<!--Don't delete this script-->
-<script src = "https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<!--Don't delete this script-->
-
 <h3>deterministic_algorithm_structural_analysis</h3>
 <p align="justify">
     Solves the deterministic problem in structural reliability analysis using methods like First-Order Second-Moment (FOSM), FORM, and SORM. This function calculates reliability indices and failure probabilities based on the numerical model and variable settings provided.
