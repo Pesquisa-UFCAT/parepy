@@ -319,7 +319,7 @@ def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -
         return None, None, None
 
 
-def deterministic_algorithm_structural_analysis(setup: dict[str, Union[int, Callable, Dict[str, str], List[Dict[str, float]]]]) -> Tuple[pd.DataFrame, float, float]:
+def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, float, float]:
     """
     This function solves the deterministic problem in structural reliability problems.
     
@@ -331,80 +331,112 @@ def deterministic_algorithm_structural_analysis(setup: dict[str, Union[int, Call
         'variables settings' (List): Variables settings (key in setup dictionary)
         'number of iterations' (Integer): Number of iterations (key in setup dictionary)
     """
-    # General settings
-    initial_time = time.time()
-    n_iter = setup['number of iterations']
-    obj = setup['objective function']
-    grad_obj = setup['gradient objective function']
-    model = setup['numerical model']['model']
-    none_variable = setup['none variable']
-    x_initial_guess = setup['numerical model']['initial guess']
-    x_initial_guess = np.array([x_initial_guess])
-    g_sol = []
-    grad_sol = []
-    beta_sol = []
-    y_sol = []
-    x_sol = []
+    try:
+        # General settings
+        initial_time = time.time()
+        n_iter = setup['number of iterations']
+        obj = setup['objective function']
+        grad_obj = setup['gradient objective function']
+        model = setup['numerical model']['model']
+        none_variable = setup['none variable']
+        x_initial_guess = setup['numerical model']['initial guess']
+        x_initial_guess = np.array([x_initial_guess])
+    except KeyError as e:
+        raise KeyError(f"Missing required key in setup: {e}")
+    except Exception as e:
+        raise Exception(f"Error during setup initialization: {e}")
 
-    # Hasofer-Lind method part 1
-    locs = [d['loc'] for d in setup['variables settings']]
-    stds = [d['scale'] for d in setup['variables settings']]
-    jacobian_xy = np.diag(stds)
-    jacobian_xy_trans = np.transpose(jacobian_xy)
-    jacobian_yx = np.linalg.inv(jacobian_xy)
-    locs = np.array([locs])
-    length = len(setup['variables settings'])
-    print("Jxy: ", jacobian_xy)
-    print("JxyT ", jacobian_xy_trans)
-    print("Jyx: ", jacobian_yx)
+    try:
+        g_sol = []
+        grad_sol = []
+        beta_sol = []
+        y_sol = []
+        x_sol = []
 
-    if model.upper() == 'FOSM':
-        for i in range(n_iter):
-            if i == 0:
-                x = x_initial_guess.copy()
-            else:
-                x = x_new.copy()
-            # Hasofer-Lind method part 2
-            y = np.dot(jacobian_yx, np.transpose(x) - np.transpose(locs))
-            y_sol.append(np.transpose(y)[0].tolist())
-            x_sol.append(x[0].tolist())
-            g_y = obj(x[0].tolist(), none_variable)
-            g_diff_x = grad_obj(x[0].tolist(), none_variable)
-            g_diff_x = np.transpose(np.array([g_diff_x]))
-            g_diff_y = np.dot(jacobian_xy_trans, g_diff_x)
-            print('y: ', y)
-            print("g_y: ", g_y)
-            print("g_diff_x: ", g_diff_x)
-            print("g_diff_y: ", g_diff_y)
-            # Hasofer-Lind algorithm
-            y_new = parepyco.hasofer_lind_rackwitz_fiessler_algorithm(y, g_y, g_diff_y)
-            print("y_new: ", y_new)
-            x_new = np.transpose(np.dot(jacobian_xy, y_new) + np.transpose(locs))
-            print("x_new: ", x_new)
-            beta = np.linalg.norm(y_new)
-            g_sol.append(g_y)
-            grad_sol.append(np.linalg.norm(g_diff_y))
-            beta_sol.append(beta)
-        y_sol = np.array(y_sol)
-        x_sol = np.array(x_sol)
-        
-    elif model.upper() == 'FORM':
-        pass
-    elif model.upper() == 'SORM':
-        pass
+        # Hasofer-Lind method part 1
+        parameters = setup['variables settings']
+        locs = [d['parameters']['mean'] for d in parameters]
+        stds = [d['parameters']['sigma'] for d in parameters]
+        jacobian_xy = np.diag(stds)
+        jacobian_xy_trans = np.transpose(jacobian_xy)
+        jacobian_yx = np.linalg.inv(jacobian_xy)
+        locs = np.array([locs])
+        length = len(setup['variables settings'])
+        print("Jxy: ", jacobian_xy)
+        print("JxyT ", jacobian_xy_trans)
+        print("Jyx: ", jacobian_yx)
+    except KeyError as e:
+        raise KeyError(f"Missing required key in variables settings: {e}")
+    except ValueError as e:
+        raise ValueError(f"Error in variable setup or dimensions: {e}")
+    except Exception as e:
+        raise Exception(f"Error during matrix initialization: {e}")
 
-    results_about_data = {
-        "x0": x_sol[:, 0],
-        "x1": x_sol[:, 1],
-        #"x2": x_sol[:, 2],
-        "y0": y_sol[:, 0],
-        "y1": y_sol[:, 1],
-        #"y2": y_sol[:, 2],
-        "state limit function": g_sol,
-        "ϐ new": beta_sol
-    }
+    try:
+        if model.upper() == 'FOSM':
+            for i in range(n_iter):
+                try:
+                    if i == 0:
+                        x = x_initial_guess.copy()
+                    else:
+                        x = x_new.copy()
 
-    results_about_data = pd.DataFrame(results_about_data)
-    failure_prob_list, beta_list = 0, 0
+                    # Hasofer-Lind method part 2
+                    y = np.dot(jacobian_yx, np.transpose(x) - np.transpose(locs))
+                    y_sol.append(np.transpose(y)[0].tolist())
+                    x_sol.append(x[0].tolist())
+
+                    g_y = obj(x[0].tolist(), none_variable)
+                    g_diff_x = grad_obj(x[0].tolist(), none_variable)
+                    g_diff_x = np.transpose(np.array([g_diff_x]))
+                    g_diff_y = np.dot(jacobian_xy_trans, g_diff_x)
+
+                    print('y: ', y)
+                    print("g_y: ", g_y)
+                    print("g_diff_x: ", g_diff_x)
+                    print("g_diff_y: ", g_diff_y)
+
+                    # Hasofer-Lind algorithm
+                    y_new = parepyco.hasofer_lind_rackwitz_fiessler_algorithm(y, g_y, g_diff_y)
+                    print("y_new: ", y_new)
+                    x_new = np.transpose(np.dot(jacobian_xy, y_new) + np.transpose(locs))
+                    print("x_new: ", x_new)
+
+                    beta = np.linalg.norm(y_new)
+                    g_sol.append(g_y)
+                    grad_sol.append(np.linalg.norm(g_diff_y))
+                    beta_sol.append(beta)
+
+                except Exception as e:
+                    raise Exception(f"Error during iteration {i}: {e}")
+
+            y_sol = np.array(y_sol)
+            x_sol = np.array(x_sol)
+
+        elif model.upper() == 'FORM':
+            pass
+        elif model.upper() == 'SORM':
+            pass
+
+    except Exception as e:
+        raise Exception(f"Error during model execution: {e}")
+
+    try:
+        results_about_data = {
+            "x0": x_sol[:, 0],
+            "x1": x_sol[:, 1],
+            #"x2": x_sol[:, 2],
+            "y0": y_sol[:, 0],
+            "y1": y_sol[:, 1],
+            #"y2": y_sol[:, 2],
+            "state limit function": g_sol,
+            "ϐ new": beta_sol
+        }
+
+        results_about_data = pd.DataFrame(results_about_data)
+        failure_prob_list, beta_list = 0, 0
+
+    except Exception as e:
+        raise Exception(f"Error during result preparation: {e}")
 
     return results_about_data, failure_prob_list, beta_list

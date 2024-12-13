@@ -124,6 +124,7 @@ def grad_fosm_3(x, none_variable):
 def form_1(x, none_variable):
     x1 = x[0]
     x2 = x[1]
+    x3 = x[2]
     g = x1*x2 - 1400
     
     return g
@@ -132,6 +133,7 @@ def form_1(x, none_variable):
 def grad_form_1(x, none_variable):
     x1 = x[0]
     x2 = x[1]
-    g = [x2, x1] 
+    x3 = x[2]
+    g = [x2, x1, x3] 
     
     return g
