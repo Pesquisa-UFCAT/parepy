@@ -103,7 +103,6 @@ def form_1(x, none_variable):
     
     return g
 
-
 def grad_form_1(x, none_variable):
     x1 = x[0]
     x2 = x[1]
