@@ -2,18 +2,15 @@
 from typing import Union, Callable, Tuple, List, Dict
 import re
 from datetime import datetime
-from distfit import distfit
-from scipy.stats.distributions import norm, gumbel_r, gumbel_l, dweibull, gamma, beta, triang
 from scipy.integrate import quad
 import scipy.stats as stats
 import numpy as np
 import pandas as pd
 from numpy import sqrt, pi, exp
-import random
 import parepy_toolbox.distributions as parepydi
 
 
-def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
+def sampling(n_samples: int, model: Dict, variables_setup: List) -> np.ndarray:
     """
     This algorithm generates a set of random numbers according to a type of distribution and plots the distributions.
 
@@ -224,7 +221,7 @@ def beta_equation(pf: float) -> Union[float, str]:
         return beta_value
 
 
-def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict[str, str], n_constraints: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict[str, str], n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
     
@@ -434,169 +431,3 @@ def log_message(message: str) -> None:
     """
     current_time = datetime.now().strftime('%H:%M:%S')
     print(f'{current_time} - {message}')
-
-
-def sampling_uniform_distribution(sampling_min: float, sampling_max: float, n_samples: int, seed: int) -> list:
-    """
-    This function generates a list of random uniform samples according to a given distribution.
-
-    Args:
-        sampling_min (float): Minimum value of the distribution
-        sampling_max (float): Maximum value of the distribution
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation
-
-    Returns:
-        samples (List): list of random samples
-    """
-    np.random.seed(seed)
-    samples = np.random.uniform(sampling_min, sampling_max, n_samples).tolist()
-    
-    return samples 
-
-
-def uniform_lhs(n_samples: int, dimension: int, seed: int) -> np.ndarray:
-    """
-    This function generates a list of random samples according to a uniform distribution using the Latin Hypercube Sampling (LHS) method.
-
-    Args:
-        n_samples (int): Number of samples
-        dimension (int): Number of dimensions
-        seed (int): Seed for random number generation
-
-    Returns:
-        samples (np.array): Array of random samples
-    """
-    np.random.seed(seed)
-    r = np.zeros((n_samples, dimension))
-    p = np.zeros((n_samples, dimension))
-    lista_original = [i for i in range(1, n_samples+1)]
-    for i in range(dimension):
-        r[:, i] = np.random.uniform(0, 1, n_samples) * (1 / n_samples)
-        permutacao = lista_original.copy()
-        random.shuffle(permutacao)
-        if i == 0:
-            p[:, i] = [i for i in range(1, n_samples + 1)]
-        else:
-            p[:, i] = permutacao.copy()
-
-    p = p * (1 / n_samples)
-    u_1 = p - r
-
-    return u_1
-
-
-def inverse_normal_sampling(n_samples: int, mean: float, std: float, seed: int, method: str) -> list:
-    """
-    This function generates a list of random samples according to a normal distribution.
-    """
-
-    if method.upper() == 'MCS':
-        u_1 = sampling_uniform_distribution(0, 1, n_samples, seed)
-        u_2 = sampling_uniform_distribution(0, 1, n_samples, seed+1)
-    
-    elif method.upper() == 'LHS':
-        u_1 = uniform_lhs(n_samples, 1, seed)[:, 0]
-        u_2 = uniform_lhs(n_samples, 1, seed)[:, 0]
-
-    x_0 = []
-    for i in range(n_samples):
-        z_0 = np.sqrt(-2 * np.log(u_1[i])) * np.cos(2 * np.pi * u_2[i])
-        x_0.append(mean + std * z_0)
-
-    return x_0
-
-
-def inverse_gumbel_r(n_samples: int, mean: float, std: float, seed: int, method: str) -> list:
-
-    gamma = 1.1396
-    beta = np.sqrt(6) * std / np.pi
-    mu_n = mean - beta * gamma
-    
-    if method.upper() == 'MCS':
-        u_1 = sampling_uniform_distribution(0, 1, n_samples, seed)
-
-    elif method.upper() == 'LHS':
-        u_1 = uniform_lhs(n_samples, 1, seed)
-
-    x_0 = []
-    for i in range(n_samples):
-        x_0.append(mu_n - beta * np.log(-np.log(u_1[i])))
-
-    return x_0
-
-
-def inverse_gumbel_l(n_samples: int, mean: float, std: float, seed: int, method: str) -> list:
-
-    gamma = 0.577216
-    beta = np.sqrt(6) * std / np.pi
-    mu_n = mean + beta * gamma
-    
-    if method.upper() == 'MCS':
-        u_1 = sampling_uniform_distribution(0, 1, n_samples, seed)
-
-    elif method.upper() == 'LHS':
-        u_1 = uniform_lhs(n_samples, 1, seed)
-
-    x_0 = []
-    for i in range(n_samples):
-        x_0.append(mu_n + beta * np.log(-np.log(u_1[i])))
-
-    return x_0
-
-
-def triangular_inverse_cdf(n_samples: int, a_min: float, a_mean: float, a_max: float, seed: int, method: str) -> list:
-    """
-    This function generates a list of random samples according to a triangular distribution.
-
-    Args:
-        n_samples (int): Number of samples
-        a_min (float): Minimum value of the distribution
-        a_mean (float): Mean value of the distribution
-        a_max (float): Maximum value of the distribution
-        seed (int): Seed for random number generation
-
-    Returns:
-        x_0 (List): list of random samples
-    """
-
-    if method.upper() == 'MCS':
-        u_1 = sampling_uniform_distribution(0, 1, n_samples, seed)
-
-    elif method.upper() == 'LHS':
-        u_1 = uniform_lhs(n_samples, 1, seed)
-
-    x_0 = []
-    # Cálculo do ponto onde a PDF muda de forma
-    f_c = (a_max - a_min) / (a_mean - a_min)
-    for i in range(n_samples):
-        if u_1[i] < f_c:
-            x_0.append(a_min + np.sqrt(u_1[i] * (a_mean - a_min) * (a_max - a_min)))
-        else:
-            x_0.append(a_max - np.sqrt((1 - u_1[i]) * (a_max - a_mean) * (a_max - a_min)))
-
-    return x_0
-
-
-def inverse_lognormal_sampling(n_samples: int, mean: float, std: float, seed: int, method: str) -> list:
-    """
-    This function generates a list of random samples according to a lognormal distribution.
-    """
-
-    epsilon = np.sqrt(np.log(1 + (std/mean)**2))
-    lambdaa = np.log(mean) - 0.5 * epsilon**2
-
-    if method.upper() == 'MCS':
-        u_1 = sampling_uniform_distribution(0, 1, n_samples, seed)
-        u_2 = sampling_uniform_distribution(0, 1, n_samples, seed+1)
-
-    elif method.upper() == 'LHS':
-        u_1 = uniform_lhs(n_samples, 1, seed)[:, 0]
-        u_2 = uniform_lhs(n_samples, 1, seed)[:, 0]
-
-    x_0 = []
-    for i in range(n_samples):
-        z_0 = np.sqrt(-2 * np.log(u_1[i])) * np.cos(2 * np.pi * u_2[i])
-        x_0.append(np.exp(lambdaa + epsilon * z_0))
-
-    return x_0

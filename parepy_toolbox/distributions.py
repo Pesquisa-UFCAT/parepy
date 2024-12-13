@@ -1,4 +1,4 @@
-"""Distributions for this toolbox"""
+"""Function of probability distributions"""
 import numpy as np
 
 
