@@ -143,6 +143,3 @@ results_about_data, failure_prob_list, beta_list = deterministic_algorithm_struc
 Example Output:
 ```bash
 ```
-
-{: .important }
-> Ensure that all required keys and values are present in the `setup` dictionary to avoid `KeyError` or `ValueError` exceptions during execution.
