@@ -221,7 +221,7 @@ def beta_equation(pf: float) -> Union[float, str]:
         return beta_value
 
 
-def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict[str, str], n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
     
@@ -258,7 +258,7 @@ def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict[str
     return df_pf, df_beta
 
 
-def norm_array(ar: list[float]) -> float:
+def norm_array(ar: list) -> float:
     """
     Evaluates the norm of the array ar.
 
@@ -297,7 +297,7 @@ def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y
     return y_new
 
 
-def convergence_probability_failure(df: pd.DataFrame, column: str) -> Tuple[List[int], list[float], list[float], list[float], list[float]]:
+def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
     """
     This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
 
@@ -341,7 +341,7 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> Tuple[List
     return div, m, ci_l, ci_u, var
 
 
-def goodness_of_fit(data: Union[np.ndarray, list[float]], distributions: Union[str, list[str]] = 'all') -> dict[str, dict[str, Union[str, Tuple[float]]]]:
+def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = 'all') -> dict:
     """
     Evaluates the fit of distributions to the provided data.
 
@@ -381,7 +381,7 @@ def goodness_of_fit(data: Union[np.ndarray, list[float]], distributions: Union[s
     return top_3_distributions
 
 
-def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> Tuple[pd.DataFrame, list[List[str]]]:
+def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> tuple[pd.DataFrame, list]:
     """
     This function application first barrier failure algorithm.
 
