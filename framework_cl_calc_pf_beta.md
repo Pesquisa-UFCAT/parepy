@@ -13,7 +13,6 @@ title: calc_pf_beta
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>calc_pf_beta</h3>
 <p align = "justify">
     Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
 </p>

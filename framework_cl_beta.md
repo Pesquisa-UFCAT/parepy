@@ -13,7 +13,6 @@ title: beta_equation
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>beta_equation</h3>
 <p align = "justify">
     This function calculates the reliability index value for a given probability of failure (pf).
 </p>

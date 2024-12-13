@@ -13,8 +13,6 @@ title: uniform_sampling
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>Uniform Sampling</h3>
-
 <p align="justify">
     This function generates a Uniform sampling between \(a\) (minimum) and \(b\) (maximum).
 </p>

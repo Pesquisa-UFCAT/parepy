@@ -13,8 +13,6 @@ title: concat
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>Concatenate Sampling Algorithm for Structural Analysis</h3>
-<br>
 <p align="justify">
     This function concatenates DataFrames generated from `.txt` files in a folder and calculates the probability of failure and the Beta index for each limit state function (constraint) based on the specified model.
 </p>

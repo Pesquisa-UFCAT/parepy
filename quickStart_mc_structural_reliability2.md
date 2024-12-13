@@ -75,7 +75,7 @@ The limit state function for beam bending can be expressed as:
 </table>
 
 <p align="justify">
-Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\) <a href="#ref2">[2]</a>. Use 50 years to stochastic analysis (five time steps).
+Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\) <a href="#ref2">[2]</a>. Use 50 years to stochastic analysis (five time steps). Assume that \(W\) load is a stochastic process. 
 </p>
 
 <table style = "width:100%">
@@ -135,19 +135,22 @@ from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_time_example
 
 # Dataset
-f = {'type': 'normal', 
-    'parameters': {'mean': 40.3, 'sigma': 4.64}, 
-    'stochastic variable': False, 
+f = {
+        'type': 'normal', 
+        'parameters': {'mean': 40.3, 'sigma': 4.64}, 
+        'stochastic variable': False, 
     }
 
-p = {'type': 'gumbel max',
-    'parameters': {'mean': 10.2, 'sigma': 1.12}, 
-    'stochastic variable': False, 
+p = {
+        'type': 'gumbel max',
+        'parameters': {'mean': 10.2, 'sigma': 1.12}, 
+        'stochastic variable': False, 
     }
 
-w = {'type': 'lognormal',
-    'parameters': {'mean': 0.25, 'sigma': 0.025}, 
-    'stochastic variable': False, 
+w = {
+        'type': 'lognormal',
+        'parameters': {'mean': 0.25, 'sigma': 0.025}, 
+        'stochastic variable': True,  
     }
 
 # PAREpy setup

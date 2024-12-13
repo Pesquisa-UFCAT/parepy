@@ -13,8 +13,6 @@ title: lognormal_sampling
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>Lognormal Sampling</h3>
-
 <p align="justify">
     This function generates a Lognormal distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
 </p>

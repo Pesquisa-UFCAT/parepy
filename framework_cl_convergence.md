@@ -13,7 +13,6 @@ title: convergence_probability_failure
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>convergence_probability_failure</h3>
 <p align = "justify">
     This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the probability of failure or reliability index.
 </p>

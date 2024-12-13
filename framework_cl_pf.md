@@ -13,7 +13,6 @@ title: pf_equation
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>pf_equation</h3>
 <p align = "justify">
     This function calculates the probability of failure (pf) for a given reliability index (ϐ) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
 </p>

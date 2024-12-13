@@ -192,7 +192,7 @@ def example_function(x, none_variable):
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
 <p align="justify">
-See more details in following sections.
+See more details in following sections and verify how to can PAREpy in your problem.
 </p>
 
 <h1>Reference list</h1>
@@ -207,7 +207,7 @@ See more details in following sections.
     <tbody>
         <tr>
             <td><p align = "center" id = "ref1">[1]</p></td>
-            <td><p align = "left"><a href="https://doi.org/10.1007/s00521-016-2328-2" target="_blank" rel="noopener noreferrer">Beck AT. Confiabilidade e segurança das estruturas. Elsevier; 2019. ISBN 978-85-352-8895-7</a></p></td>
+            <td><p align = "left"><a href="https://www.amazon.com.br/Confiabilidade-Seguranca-Estruturas-Andre-Teofilo/dp/8535286888" target="_blank" rel="noopener noreferrer">Beck AT. Confiabilidade e segurança das estruturas. Elsevier; 2019. ISBN 978-85-352-8895-7</a></p></td>
         </tr>
     </tbody>
 </table>

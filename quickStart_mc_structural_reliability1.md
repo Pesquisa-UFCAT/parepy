@@ -16,9 +16,9 @@ Example 1 - CRUDE MONTE CARLO
 {: .label .label-blue }
 
 <p align="justify">
-<i>
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
-</i>
+    <i>
+        Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+    </i>
 </p>
 
 <table style = "width:100%; text-align: center;">
@@ -97,112 +97,48 @@ your_problem.ipynb
 
 ```python
 # Libraries
-import pandas as pd
-pd.set_option('display.max_columns', None)
-
 from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_example
 
-# Dataset
-f = {'type': 'normal', 
-    'parameters': {'mean': 40.3, 'sigma': 4.64}, 
-    'stochastic variable': False, 
+# Statement random variables
+f = {
+        'type': 'normal', 
+        'parameters': {'mean': 40.3, 'sigma': 4.64}, 
+        'stochastic variable': False, 
     }
 
-p = {'type': 'gumbel max',
-    'parameters': {'mean': 10.2, 'sigma': 1.12}, 
-    'stochastic variable': False, 
+p = {
+        'type': 'gumbel max',
+        'parameters': {'mean': 10.2, 'sigma': 1.12}, 
+        'stochastic variable': False, 
     }
 
-w = {'type': 'lognormal',
-    'parameters': {'mean': 0.25, 'sigma': 0.025}, 
-    'stochastic variable': False, 
+w = {
+        'type': 'lognormal',
+        'parameters': {'mean': 0.25, 'sigma': 0.025}, 
+        'stochastic variable': False, 
     }
 
 var = [f, p, w]
 
 # PAREpy setup
 setup = {
-             'number of samples': 70000, 
-             'numerical model': {'model sampling': 'mcs'}, 
-             'variables settings': var, 
-             'number of state limit functions or constraints': 1, 
-             'none variable': None,
-             'objective function': nowak_collins_example,
-             'name simulation': 'nowak_collins_example',
+            'number of samples': 70000, 
+            'numerical model': {'model sampling': 'mcs'}, 
+            'variables settings': var, 
+            'number of state limit functions or constraints': 1, 
+            'none variable': None,
+            'objective function': nowak_collins_example,
+            'name simulation': 'nowak_collins_example',
         }
 
 # Call algorithm
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-<!-- <h1>View results</h1>
 <p align="justify">
-Following instructions to see all results:
+    Check <a href="https://wmpjrufg.github.io/PAREPY/framework_alg_strumc.html" target="_blank" rel="noopener noreferrer"><code>sampling_algorithm_structural_analysis</code></a> for more details.
 </p>
-
-```python
-print...bla bla bla
-``` -->
-
-Pós-Processamento dos Resultados
-{: .label .label-red }
-
-<p align="justify"> Após a simulação de Monte Carlo, é importante analisar os resultados para tomar decisões fundamentadas. Esta seção demonstra algumas formas de como processar os resultados da simulação armazenados no DataFrame <code>results</code>. As principais operações incluem visualizar a distribuição dos valores da função de estado limite (\(\boldsymbol{G}\)), identificar os pontos mais prováveis próximos à falha (\(G \approx 0\)) e visualizar variáveis aleatórias relacionadas (\(\boldsymbol{R}\) e \(\boldsymbol{S}\)).</p>
-
-<ul>
-  <li>Histograma de \(G_0\): plotagem da frequência dos valores de \(G_0\).</li>
-  <li>Pontos Mais Prováveis Próximos de Falha: Os pontos mais próximos de \(G_0 = 0\) são identificados de duas maneiras:
-    <ul>
-      <li>\(G_0 \geq 0\): ordenando os valores de \(G_0\) de forma crescente para encontrar os valores positivos mais próximos de zero.</li>
-      <li>\(G_0 \leq 0\): ordenando os valores de \(G_0\) de forma decrescente para encontrar os valores negativos mais próximos de zero.</li>
-    </ul>
-  </li>
-  <li>Histogramas Sobrepostos: comparação visual das distribuições das variáveis \(R_0\) e \(S_0\).</li>
-  <li>Listas de Confiabilidade: converter as variáveis \(p_f\) e \(\beta\) em listas Python para facilitar o processamento de múltiplas restrições.</li>
-  <li>Iteração pelas Restrições: para cada coluna de \(p_f\) e \(\beta\), os valores são impressos, permitindo a análise detalhada dos resultados de confiabilidade.</li>
-</ul>
-
-```python
-import matplotlib.pyplot as plt
-import pandas as pd
-
-# 1. Plot histogram of G_0
-plt.hist(results['G_0'], bins=50, alpha=0.7, color='blue')
-plt.xlabel("Constraint Value (G_0)")
-plt.ylabel("Frequency")
-plt.legend()
-plt.show()
-
-# 2. Find the three most probable points near zero for G_0
-## 2.1 Sort the results by G_0 >=0
-sorted_positive = results[results['G_0'] >= 0].sort_values(by='G_0', ascending=True)
-print('Most Probable Points Near Failure (G_0 >= 0):')
-print(sorted_positive.head(3))
-
-## 2.2 Sort the results by G_0 <=0
-sorted_negative = results[results['G_0'] <= 0].sort_values(by='G_0', ascending=False)
-print('Most Probable Points Near Failure (G_0 <= 0):')
-print(sorted_negative.head(3))
-
-
-# 3. Overlay histograms for R_0 and S_0
-plt.hist(results['R_0'], bins=50, alpha=0.5, color='green', label='Resistance R_0')
-plt.hist(results['S_0'], bins=50, alpha=0.5, color='orange', label='Demand S_0')
-plt.xlabel("Value")
-plt.ylabel("Frequency")
-plt.legend()
-plt.show()
-
-# 4. Convert pf and beta to lists
-pf_list = pf.iloc[:, :].values.flatten().tolist()
-beta_list = beta.iloc[:, :].values.flatten().tolist()
-
-# 5. Iterate through reliability results for constraints
-for pf_column, beta_column, (pf_value, beta_value) in zip(pf.columns, beta.columns, zip(pf_list, beta_list)):
-    print(f"{pf_column} - p_f: {pf_value:.6f}, β: {beta_value:.6f}")
-```
-
 
 <h1>Reference list</h1>
 
