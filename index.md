@@ -6,7 +6,7 @@ nav_order: 1
 
 <table>
   <tr>
-    <td style="width:70%;"><p align="justify">The PAREpy (<b>Probabilistic Approach to Reliability Engineering</b>) framework is a software developed by the research group headed by Professor Wanderlei M. Pereira Junior in the FENG-UFCAT. It is a framework for applying probabilistic concepts to analyze a system containing random variables. The platform is built in Python and can be used in any environment that supports this programming language.</p></td>
+    <td style="width:70%;"><p align="justify">The PAREpy (<b>Probabilistic Approach to Reliability Engineering</b>) framework is a software developed by the research group headed by Professor Wanderlei M. Pereira Junior in Engineering College at Universidade Federal de Catalão. It is a framework for applying probabilistic concepts to analyze a system containing random variables. The platform is built in Python and can be used in any environment that supports this programming language.</p></td>
     <td style="width:50%;"><img src = "assets/images/logo.png"/></td>  
   </tr>
 </table>  

@@ -59,7 +59,7 @@ def my_function(x, none_variable):
 </p>
 
 <ul>
-    <li><code>x</code> (type list): list of design random variables. <b>PAREpy generates this values;</b></li>
+    <li><code>x</code> (type list): list of design random variables. <b>PAREpy automatically generates these values;</b></li>
     <li><code>none_variable</code> (type <code>None</code>, <code>list</code>, <code>float</code>, <code>dictionary</code>, <code>str</code> or <code>any</code>): The user can define this variable. The user can input any value in this variable when calling the framework's main function.</li>
 </ul>
 
@@ -70,11 +70,11 @@ def my_function(x, none_variable):
 <ul>
     <li><code>r</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
     <li><code>s</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the demand in this variable;</li>
-    <li><code>g</code> (type <code>list</code>): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\).</li>
+    <li><code>g</code> (type <code>list</code>): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\). <b>Mandatory function return</b>.</li>
 </ul>
 
 {: .important }
-> The lists `r`, `s` and `g` must have the same size and will be defined in the main function setup.
+> The lists `r`, `s`, and `g` must be the same size and will be defined in the main function setup (key `number of state limit functions or constraints`). Furthermore, the list `g` must necessarily be this function's last return variable.
 
 <p align="justify">
 To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a> example. The State Limit Function is given by:
@@ -86,6 +86,9 @@ To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a
         <td style="width: 10%;"><p align = "right" id = "eq1">(1)</p></td>
     </tr>
 </table>
+
+Option 1
+{: .label .label-red }
 
 ```python
 def example_function(x, none_variable):
@@ -103,9 +106,12 @@ def example_function(x, none_variable):
     g = r - s
 
     return [r], [s], [g]
+```
 
-# or
+Option 2
+{: .label .label-red }
 
+```python
 def example_function(x, none_variable):
     """Beck example
     """
@@ -119,9 +125,12 @@ def example_function(x, none_variable):
     g = r_d - d - l
 
     return [r_d], [d+l], [g]
+```
 
-# or
+Option 3
+{: .label .label-red }
 
+```python
 def example_function(x, none_variable):
     """Beck example
     """
@@ -130,7 +139,7 @@ def example_function(x, none_variable):
     r_d = x[0]
     d = x[1]
     l = x[2]
-
+See more details in following sections.
     # state limite function
     r = [r_d]
     s = [d + l]
@@ -182,6 +191,9 @@ def example_function(x, none_variable):
 
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
+<p align="justify">
+See more details in following sections.
+</p>
 
 <h1>Reference list</h1>
 
