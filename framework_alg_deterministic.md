@@ -89,7 +89,7 @@ Output variables
 EXAMPLE
 {: .label .label-blue }
 
-Here's an example of how to define the `setup` dictionary and run the `deterministic_algorithm_structural_analysis` function:
+This example demonstrates how to use the `deterministic_algorithm_structural_analysis` function to solve a structural reliability problem using the First-Order Second-Moment (FOSM) method.
 
 of_FILE.PY
 {: .label .label-red }
