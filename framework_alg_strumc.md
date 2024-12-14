@@ -567,7 +567,7 @@ import numpy as np
 from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_time_example
 
-# Dataset
+# Statement random variables
 f = {
         'type': 'normal', 
         'parameters': {'mean': 40.3, 'sigma': 4.64}, 
@@ -628,21 +628,21 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
 <ul>
     <li><code>X_i_t</code>: Random variables in specific time step;
     <li><code>STEP_t_</code>: Time step ID;
-    <li><code>R_</code>: First return in objective function (User defined) -  in specific time step;
-    <li><code>S_</code>: Second return in objective function (User defined) -  in specific time step;
-    <li><code>G_</code>: Second return in objective function (User defined) -  in specific time step;
-    <li><code>I_</code>: Indicator function (PAREpy generate) -  in specific time step.
+    <li><code>R_i_t</code>: First return in objective function (User defined) -  in specific time step;
+    <li><code>S_i_t</code>: Second return in objective function (User defined) -  in specific time step;
+    <li><code>G_i_t</code>: Second return in objective function (User defined) -  in specific time step;
+    <li><code>I_i_t</code>: Indicator function (PAREpy generate) -  in specific time step.
 </ul>
 
 <h4>Show \(p_f\) and \(\beta\) results</h4>
 
 <p align="justify">
-    Show \(p_f\) results in list format.
+    Show \(p_f\) results in list format. To view results about all time steps in \(G_0\) state limit function folliwing code:
 </p>
 
 ```python
 # Acess pf results
-pf_list = pf.values.flatten().tolist()
+pf_list = pf['G_0'].tolist()
 print(pf_list)
 ```
 
@@ -652,7 +652,7 @@ print(pf_list)
 
 ```python
 # Acess beta results
-beta_list = beta.values.flatten().tolist()
+beta_list = beta['G_0'].tolist()
 print(beta_list)
 ```
 
@@ -661,10 +661,10 @@ print(beta_list)
 </p>
 
 ```python
-pf_list = pf.values.flatten().tolist()
-beta_list = beta.values.flatten().tolist()
+pf_list = pf['G_0'].tolist()
+beta_list = beta['G_0'].tolist()
 for i, (p, b) in enumerate(zip(pf_list, beta_list)):
-    print(f"State Limite function (g): {i}, pf: {p:.6f}, beta: {b:.6f}")
+    print(f"Time step (id={i}, time={setup['none variable']['time analysis'][i]}), pf: {p:.6f}, beta: {b:.6f}")
 ```
 
 <h1>Reference list</h1>

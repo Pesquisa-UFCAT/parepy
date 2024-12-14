@@ -62,12 +62,12 @@ Output variables
    </thead>
    <tr>
        <td><code>df_pf</code></td>
-       <td>DataFrame containing the values for probability of failure for each 'I_' column</td>
+       <td>DataFrame containing the values for probability of failure for each 'G_' column</td>
        <td>DataFrame</td>
    </tr>
    <tr>
        <td><code>df_beta</code></td>
-       <td>DataFrame containing the values for beta for each 'I_' column</td>
+       <td>DataFrame containing the values for beta for each 'G_' column</td>
        <td>DataFrame</td>
    </tr>
 </table>
@@ -113,13 +113,13 @@ print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=Fal
 ```bash
 pf:
 +--------------------+---------------------+
-|        I_0         |         I_1         |
+|        G_0         |         G_1         |
 +--------------------+---------------------+
 | 0.2857142857142857 | 0.42857142857142855 |
 +--------------------+---------------------+
 ϐ:
 +-------------------+---------------------+
-|        I_0        |         I_1         |
+|        G_0        |         G_1         |
 +-------------------+---------------------+
 | 0.565948821932863 | 0.18001236979270438 |
 +-------------------+---------------------+
@@ -167,13 +167,13 @@ print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=Fal
 ```bash
 pf:
 +--------------------+---------------------+
-|        I_0         |         I_1         |
+|        G_0         |         G_1         |
 +--------------------+---------------------+
 | 0.2857142857142857 | 0.42857142857142855 |
 +--------------------+---------------------+
 ϐ:
 +-------------------+---------------------+
-|        I_0        |         I_1         |
+|        G_0        |         G_1         |
 +-------------------+---------------------+
 | 0.565948821932863 | 0.18001236979270438 |
 +-------------------+---------------------+
