@@ -150,6 +150,7 @@ w = {
         'parameters': {'mean': 0.25, 'sigma': 0.025}, 
         'stochastic variable': True,  
     }
+var = [f, p, w]
 
 # PAREpy setup
 setup = {

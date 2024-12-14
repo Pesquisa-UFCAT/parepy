@@ -139,7 +139,7 @@ def example_function(x, none_variable):
     r_d = x[0]
     d = x[1]
     l = x[2]
-See more details in following sections.
+
     # state limite function
     r = [r_d]
     s = [d + l]
@@ -187,7 +187,6 @@ def example_function(x, none_variable):
     r_1 = sigma_y * w
     s_1 = m
     g_1 = r_1 - s_1
-
 
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```

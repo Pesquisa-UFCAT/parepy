@@ -44,12 +44,12 @@ Input variables
     </tr>
     <tr>
         <td><code>numerical model</code></td>
-        <td>Numerical model settings (key in setup dictionary). See examples in <a href="#models">Table 1</a>.</td>
+        <td>Numerical model settings (key in setup dictionary). See examples in <a href="#models">Table 1</a></td>
         <td>Dictionary</td>
     </tr>
     <tr>
         <td><code>variables settings</code></td>
-        <td>Variables settings (key in setup dictionary). This variable is a list of dictionaries. See examples in <a href="#variables">Table 2</a>.</td>
+        <td>Variables settings (key in setup dictionary). This variable is a list of dictionaries. See examples in <a href="#variables">Table 2</a></td>
         <td>List</td>
     </tr>
     <tr>
@@ -178,7 +178,7 @@ t_i = time_step[id_analysis]
 </center>
 
 <p align="justify">
-More details about reliability method are shown in examples <a href="#example1">1</a> and <a href="#example2">2</a>.
+More details about the reliability method are shown in examples <a href="#example1">1</a> and <a href="#example2">2</a>.
 </p>
 
 <p align="justify" id="example1"></p>
@@ -289,7 +289,6 @@ w = {
         'parameters': {'mean': 0.25, 'sigma': 0.025}, 
         'stochastic variable': False, 
     }
-
 var = [f, p, w]
 
 # PAREpy setup
@@ -316,7 +315,7 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
 <h4>Show results - all samples</h4>
 
 <p align="justify">
-    Whats are columns name in results about Example 1?
+    What are the columns' names in the results of Example 1?
 </p>
 
 ```bash
@@ -337,11 +336,11 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
 <ul>
-    <li><code>X_</code>: Random variables;
-    <li><code>R_</code>: First return in objective function (User defined);
-    <li><code>S_</code>: Second return in objective function (User defined);
-    <li><code>G_</code>: Second return in objective function (User defined);
-    <li><code>I_</code>: Indicator function (PAREpy generate).
+    <li><code>X_</code>: Random variables;</li>
+    <li><code>R_</code>: First return in objective function (User defined);</li>
+    <li><code>S_</code>: Second return in objective function (User defined);</li>
+    <li><code>G_</code>: Second return in objective function (User defined);</li>
+    <li><code>I_</code>: Indicator function (PAREpy generate).</li>
 </ul>
 
 ```python
@@ -607,7 +606,7 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
 <h4>Show results - all samples</h4>
 
 <p align="justify">
-    Whats are columns name in results about Example 2?
+    What are the columns' names in the results of Example 2?
 </p>
 
 ```bash
@@ -626,12 +625,12 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
 <ul>
-    <li><code>X_i_t</code>: Random variables in specific time step;
-    <li><code>STEP_t_</code>: Time step ID;
-    <li><code>R_i_t</code>: First return in objective function (User defined) -  in specific time step;
-    <li><code>S_i_t</code>: Second return in objective function (User defined) -  in specific time step;
-    <li><code>G_i_t</code>: Second return in objective function (User defined) -  in specific time step;
-    <li><code>I_i_t</code>: Indicator function (PAREpy generate) -  in specific time step.
+    <li><code>X_i_t</code>: Random variables in specific time step;</li>
+    <li><code>STEP_t_</code>: Time step ID;</li>
+    <li><code>R_i_t</code>: First return in objective function (User defined) -  in specific time step;</li>
+    <li><code>S_i_t</code>: Second return in objective function (User defined) -  in specific time step;</li>
+    <li><code>G_i_t</code>: Second return in objective function (User defined) -  in specific time step;</li>
+    <li><code>I_i_t</code>: Indicator function (PAREpy generate) -  in specific time step.</li>
 </ul>
 
 <h4>Show \(p_f\) and \(\beta\) results</h4>
