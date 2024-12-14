@@ -166,12 +166,12 @@ t_i = time_step[id_analysis]
         </tr>
         <tr>
             <td><code>'parameters'</code></td>
-            <td>Parameters of the distribution. See the <a href="https://wmpjrufg.github.io/PAREPY/framework_distributions_.html" target="_blank" rel="noopener noreferrer">parameters </a>for each distribution.</td>
+            <td>Parameters of the distribution. See the <a href="https://wmpjrufg.github.io/PAREPY/framework_distributions_.html" target="_blank" rel="noopener noreferrer">parameters </a>for each distribution</td>
             <td><code>'parameters': {'mean': 40.3, 'sigma': 4.64},</code></td>
         </tr>
         <tr>
             <td><code>'stochastic variable'</code></td>
-            <td>Stochastic process (<code>'True' or 'False'</code>). Use <code>'True'</code> when you wish apply stochastic process.</td>
+            <td>Stochastic process (<code>'True' or 'False'</code>). Use <code>'True'</code> when you wish apply stochastic process</td>
             <td><code>'stochastic variable': False</code></td>
         </tr>
     </table>
@@ -507,7 +507,7 @@ The limit state function for beam bending can be expressed as:
 </table>
 
 <p align="justify">
-Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\) <a href="#ref2">[2]</a>. Use 50 years to stochastic analysis (five time steps). Assume that \(W\) load is a stochastic process. 
+Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\) <a href="#ref2">[2]</a>. Use 50 years to stochastic analysis (five time steps). Assume that \(P\) load is a stochastic process. 
 </p>
 
 <table style = "width:100%">
@@ -576,13 +576,13 @@ f = {
 p = {
         'type': 'gumbel max',
         'parameters': {'mean': 10.2, 'sigma': 1.12}, 
-        'stochastic variable': False, 
+        'stochastic variable': True, 
     }
 
 w = {
         'type': 'lognormal',
         'parameters': {'mean': 0.25, 'sigma': 0.025}, 
-        'stochastic variable': True, 
+        'stochastic variable': False, 
     }
 var = [f, p, w]
 

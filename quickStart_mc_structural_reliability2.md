@@ -142,13 +142,13 @@ f = {
 p = {
         'type': 'gumbel max',
         'parameters': {'mean': 10.2, 'sigma': 1.12}, 
-        'stochastic variable': False, 
+        'stochastic variable': True, 
     }
 
 w = {
         'type': 'lognormal',
         'parameters': {'mean': 0.25, 'sigma': 0.025}, 
-        'stochastic variable': True,  
+        'stochastic variable': False,  
     }
 var = [f, p, w]
 

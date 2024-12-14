@@ -22,7 +22,9 @@ pip install parepy-toolbox
 
 <h1>Files structure</h1>
 
-<p align="justify">Let's use the example of building a problem in PAREpy using Jupyter Notebook or <b>Python</b> file. Therefore, the basic file structure that you must assemble to use the library must be as follows:</p>
+<p align="justify">
+Let's use the example of building a problem in PAREpy using a Jupyter Notebook or <b>Python</b> file. Therefore, the basic file structure that you must assemble to use the library must be as follows:
+</p>
 
 ```bash
  .
@@ -39,7 +41,8 @@ pip install parepy-toolbox
        └── file n
 ```
 
-<p align="justify">The <code>of_file.py</code> file should contain the objective function of the problem. The <code>your_problem</code> file is the file that will contain the call to the main function and other settings necessary for the use of the algorithm.
+<p align="justify">
+The <code>of_file.py</code> file should contain the problem's objective function. The <code>your_problem</code> file is the file that will contain the call to the main function and other settings necessary for the use of the algorithm.
 </p>
 
 <h2><code>of_file.py</code></h2>
@@ -59,7 +62,7 @@ def my_function(x, none_variable):
 </p>
 
 <ul>
-    <li><code>x</code> (type list): list of design random variables. <b>PAREpy automatically generates these values;</b></li>
+    <li><code>x</code> (type list): list of design random variables. <b>PAREpy automatically generates these values</b>;</li>
     <li><code>none_variable</code> (type <code>None</code>, <code>list</code>, <code>float</code>, <code>dictionary</code>, <code>str</code> or <code>any</code>): The user can define this variable. The user can input any value in this variable when calling the framework's main function.</li>
 </ul>
 

@@ -2,7 +2,7 @@
 layout: home
 parent: common_library
 grand_parent: Framework
-nav_order: 4
+nav_order: 3
 has_children: false
 has_toc: false
 title: calc_pf_beta
@@ -14,7 +14,7 @@ title: calc_pf_beta
 <!--Don't delete ths script-->
 
 <p align = "justify">
-    Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
+    Calculates the probability of failure or reliability index values ​​from a data set. If a .txt file path with data is provided, this function also evaluates the failure probability and reliability index values.
 </p>
 
 ```python
@@ -39,8 +39,8 @@ Input variables
     </tr>
     <tr>
         <td><code>numerical_model</code></td>
-        <td>Containing the numerical model parameters</td>
-        <td>Dictionary</td>
+        <td>Containing the numerical model</td>
+        <td>String</td>
     </tr>
     <tr>
         <td><code>n_constraints</code></td>
@@ -80,6 +80,7 @@ Example 1
 </p>
 
 ```python
+# Liraries
 import pandas as pd
 
 from parepy_toolbox import calc_pf_beta
@@ -97,7 +98,7 @@ data =  {
 df = pd.DataFrame(data)
 
 # Call function
-pf_df, beta_df = calc_pf_beta(df, {'model sampling': 'mcs'}, 2)
+pf_df, beta_df = calc_pf_beta(df, 'mcs', 2)
 
 # Output details: Use the external module tabulate to print pretty
 # pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
@@ -146,6 +147,7 @@ X_0	X_1	X_2	G_0	G_1	I_0	I_1
 ```
 
 ```python
+# Libraries
 import pandas as pd
 
 from parepy_toolbox import calc_pf_beta
