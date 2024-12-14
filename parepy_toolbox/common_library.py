@@ -231,8 +231,8 @@ def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict, n_
         n_constraints (Integer): Number of state limit functions or constraints 
 
     Returns:
-        df_pf (DataFrame): DataFrame containing the values for probability of failure for each 'I_' column
-        df_beta (DataFrame): DataFrame containing the values for beta for each 'I_' column
+        df_pf (DataFrame): DataFrame containing the values for probability of failure for each 'G_' column
+        df_beta (DataFrame): DataFrame containing the values for beta for each 'G_' column
     """
 
     if isinstance(df_or_path, str) and df_or_path.endswith('.txt'):
@@ -252,8 +252,8 @@ def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict, n_
             filtered_df = df.filter(like=f'I_{i}', axis=1)
             pf_results = filtered_df.mean(axis=0)
             beta_results = [beta_equation(pf) for pf in pf_results.to_list()]
-            df_pf[f'I_{i}'] = pf_results.to_list()
-            df_beta[f'I_{i}'] = beta_results
+            df_pf[f'G_{i}'] = pf_results.to_list()
+            df_beta[f'G_{i}'] = beta_results
 
     return df_pf, df_beta
 

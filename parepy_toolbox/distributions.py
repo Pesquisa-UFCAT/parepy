@@ -130,7 +130,7 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
 
 def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a log-normal sampling with mean mu and standard deviation sigma.
+    This function generates a log-normal sampling with mean and standard deviation.
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
@@ -174,7 +174,7 @@ def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=
 
 def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Gumbel maximum distribution with a specified mean \(\mu\) and standard deviation \(\sigma\).
+    This function generates a Gumbel maximum distribution with a specified mean and standard deviation.
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
@@ -213,7 +213,7 @@ def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int
 
 def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Gumbel Minimum sampling with mean mu and standard deviation sigma.
+    This function generates a Gumbel Minimum sampling with mean and standard deviation.
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
@@ -253,7 +253,6 @@ def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int
 def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
     This function generates a triangular sampling with minimun a, mode c, and maximum b.
-    https://www.math.wm.edu/~leemis/chart/UDR/PDFs/TriangularV.pdf
 
     Args:
         parameters (dict): Dictionary of parameters. Keys 'a' (minimum [float]), 'c' (mode [float]), and 'b' (maximum [float])

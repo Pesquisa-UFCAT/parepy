@@ -6,3 +6,4 @@ poetry
 seaborn
 ipykernel
 openpyxl
+tabulate
