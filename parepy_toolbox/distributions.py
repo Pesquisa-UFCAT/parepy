@@ -7,25 +7,25 @@ def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
     This function generates a uniform sampling between 0 and 1.
 
     Args:
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation
 
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
     rng = np.random.default_rng(seed=seed)
-    
+
     return rng.random(n_samples).tolist()
 
 
 def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.ndarray:
     """
-    This function generates a uniform sampling between 0 and 1 using Latin Hypercube Sampling Algorithm.
+    This function generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling Algorithm.
 
     Args:
-        n_samples (int): Number of samples
-        dimension (int): Number of dimensions
-        seed (int): Seed for random number generation
+        n_samples (Integer): Number of samples
+        dimension (Integer): Number of dimensions
+        seed (Integer): Seed for random number generation
 
     Returns:
         u (np.array): Random samples
@@ -57,13 +57,13 @@ def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=No
     This function generates a Uniform sampling between a (minimum) and b (maximum).
 
     Args:
-        parameters (dictionary): Dictionary of parameters. Keys:  'min' (Minimum value of the uniform distribution [float]), 'max' (Maximum value of the uniform distribution [float])
-        method (string): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (integer): Number of samples
-        seed (integer): Seed for random number generation. Use None for a random seed
+        parameters (Dictionary): Dictionary of parameters. Keys:  'min' (Minimum value of the uniform distribution [float]), 'max' (Maximum value of the uniform distribution [float])
+        method (String): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation. Use None for a random seed
     
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
 
     # Random uniform sampling between 0 and 1
@@ -77,7 +77,7 @@ def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=No
             u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()
         elif seed is None:
             u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()
-    
+
     # PDF parameters and generation of samples    
     a = parameters['min']
     b = parameters['max']
@@ -91,13 +91,13 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
     This function generates a Normal or Gaussian sampling with mean (mu) and standard deviation (sigma).
 
     Args:
-        parameters (dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
-        method (string): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (integer): Number of samples
-        seed (integer): Seed for random number generation. Use None for a random seed
+        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
+        method (String): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation. Use None for a random seed
     
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
 
     # Random uniform sampling between 0 and 1
@@ -128,18 +128,18 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
     return u
 
 
-def covar_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float, method: str, n_samples: int, seed: int=None) -> list:
+def corr_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Normal or Gaussian sampling with mean (mu) and standard deviation (sigma) between random variable a and b, consider a correlation b.
+    This function generates a Normal or Gaussian sampling with mean (mu) and standard deviation (sigma). Variable g have a correlation rho_gb with b.
 
     Args:
-        parameters (dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
-        method (string): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (integer): Number of samples
-        seed (integer): Seed for random number generation. Use None for a random seed
+        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
+        method (String): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation. Use None for a random seed
     
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
 
     # Random uniform sampling between 0 and 1
@@ -165,12 +165,13 @@ def covar_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float,
     g = []
     for i in range(n_samples):
         if method.lower() == 'lhs':
-            z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
+            z_1 = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
+            z_2 = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.sin(2 * np.pi * u_aux1[i, 1]))
         elif method.lower() == 'mcs':
             z_1 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
             z_2 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.sin(2 * np.pi * u_aux2[i]))
         b.append(mean_b + std_b * z_1)
-        g.append(mean_g + pho_gb * std_g * z_1 + std_g * np.sqrt(1 - pho_gb**2) * z_2)
+        g.append(mean_g + std_g * (pho_gb * z_1 + z_2 * np.sqrt(1 - pho_gb ** 2)))
 
     return b, g
 
@@ -180,13 +181,13 @@ def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=
     This function generates a log-normal sampling with mean and standard deviation.
 
     Args:
-        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
-        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation
+        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
+        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation
     
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
 
     # Random uniform sampling between 0 and 1
@@ -224,13 +225,13 @@ def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int
     This function generates a Gumbel maximum distribution with a specified mean and standard deviation.
 
     Args:
-        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
-        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation
+        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
+        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation
     
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
 
     # Random uniform sampling between 0 and 1
@@ -263,13 +264,13 @@ def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int
     This function generates a Gumbel Minimum sampling with mean and standard deviation.
 
     Args:
-        parameters (dict): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
-        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation
+        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
+        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation
     
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
 
     # Random uniform sampling between 0 and 1
@@ -302,13 +303,13 @@ def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int
     This function generates a triangular sampling with minimun a, mode c, and maximum b.
 
     Args:
-        parameters (dict): Dictionary of parameters. Keys 'a' (minimum [float]), 'c' (mode [float]), and 'b' (maximum [float])
-        method (str): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (int): Number of samples
-        seed (int): Seed for random number generation
+        parameters (Dictionary): Dictionary of parameters. Keys 'a' (minimum [float]), 'c' (mode [float]), and 'b' (maximum [float])
+        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (Integer): Number of samples
+        seed (Integer): Seed for random number generation
     
     Returns:
-        u (list): Random samples
+        u (List): Random samples
     """
 
     # Random uniform sampling between 0 and 1
@@ -336,17 +337,3 @@ def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int
             u.append(b - np.sqrt((1 - u_aux[i]) * (b - a) * (b - c)))
 
     return u
-
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    B, G = covar_normal_sampling({'mean': 7, 'sigma': 2}, {'mean': 15, 'sigma': 3}, -0.30, 'mcs', 10000)
-    # Criando o histograma bidimensional 
-    plt.figure(figsize=(10, 6)) 
-    plt.hist2d(B, G, bins=50) 
-    plt.colorbar(label='Frequência') 
-    plt.title("Distribuição Condicional Normal - Heatmap") 
-    plt.xlabel("B")
-    plt.ylabel("G") 
-    plt.grid(True) 
-    plt.show()
