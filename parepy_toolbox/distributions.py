@@ -128,6 +128,53 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
     return u
 
 
+def covar_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    This function generates a Normal or Gaussian sampling with mean (mu) and standard deviation (sigma) between random variable a and b, consider a correlation b.
+
+    Args:
+        parameters (dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
+        method (string): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
+        n_samples (integer): Number of samples
+        seed (integer): Seed for random number generation. Use None for a random seed
+    
+    Returns:
+        u (list): Random samples
+    """
+
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux1 = crude_sampling_zero_one(n_samples, seed)
+            u_aux2 = crude_sampling_zero_one(n_samples, seed+1)
+        elif seed is None:
+            u_aux1 = crude_sampling_zero_one(n_samples)
+            u_aux2 = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
+        elif seed is None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2)
+
+    # PDF parameters and generation of samples  
+    mean_b = parameters_b['mean']
+    std_b = parameters_b['sigma']
+    mean_g = parameters_g['mean']
+    std_g = parameters_g['sigma']
+    b = []
+    g = []
+    for i in range(n_samples):
+        if method.lower() == 'lhs':
+            z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
+        elif method.lower() == 'mcs':
+            z_1 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
+            z_2 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.sin(2 * np.pi * u_aux2[i]))
+        b.append(mean_b + std_b * z_1)
+        g.append(mean_g + pho_gb * std_g * z_1 + std_g * np.sqrt(1 - pho_gb**2) * z_2)
+
+    return b, g
+
+
 def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
     This function generates a log-normal sampling with mean and standard deviation.
@@ -289,3 +336,17 @@ def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int
             u.append(b - np.sqrt((1 - u_aux[i]) * (b - a) * (b - c)))
 
     return u
+
+
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    B, G = covar_normal_sampling({'mean': 7, 'sigma': 2}, {'mean': 15, 'sigma': 3}, -0.30, 'mcs', 10000)
+    # Criando o histograma bidimensional 
+    plt.figure(figsize=(10, 6)) 
+    plt.hist2d(B, G, bins=50) 
+    plt.colorbar(label='Frequência') 
+    plt.title("Distribuição Condicional Normal - Heatmap") 
+    plt.xlabel("B")
+    plt.ylabel("G") 
+    plt.grid(True) 
+    plt.show()
