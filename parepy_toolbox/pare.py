@@ -25,7 +25,7 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
         'objective function' (Python function): Objective function. The PAREpy user defined this function (key in setup dictionary)
     
     Returns:    
-        results_about_data (Dataframe): Results about reliability analysis
+        results_about_data (DataFrame): Results about reliability analysis
     """
 
     # General settings
@@ -144,7 +144,7 @@ def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, l
         'name simulation' (String or None): Output filename (key in setup dictionary)
     
     Returns:    
-        results_about_data (Dataframe): Results about reliability analysis
+        results_about_data (DataFrame): Results about reliability analysis
         failure_prob_list (List): Failure probability list
         beta_list (List): Beta list
     """
@@ -227,7 +227,7 @@ def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, l
         # Failure probability and beta index calculation
         parepyco.log_message('Started evaluation beta reliability index and failure probability...')
         start_time = time.perf_counter()
-        failure_prob_list, beta_list = parepyco.calc_pf_beta(results_about_data, setup['numerical model'], setup['number of state limit functions or constraints'])
+        failure_prob_list, beta_list = parepyco.calc_pf_beta(results_about_data, algorithm.upper(), setup['number of state limit functions or constraints'])
         end_time = time.perf_counter()
         final_time = end_time - start_time
         parepyco.log_message(f'Finished evaluation beta reliability index and failure probability in {final_time:.2e} seconds!')
@@ -261,7 +261,7 @@ def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -
         'name simulation' (String): Output filename (key in setup dictionary)
     
     Returns:    
-        results_about_data (Dataframe): Results about reliability analysis
+        results_about_data (DataFrame): Results about reliability analysis
         failure_prob_list (List): Failure probability list
         beta_list (List): Beta list
     """

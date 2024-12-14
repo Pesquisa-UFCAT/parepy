@@ -2,11 +2,13 @@
 from typing import Union, Callable
 import re
 from datetime import datetime
+
 from scipy.integrate import quad
 import scipy.stats as stats
 import numpy as np
 import pandas as pd
 from numpy import sqrt, pi, exp
+
 import parepy_toolbox.distributions as parepydi
 
 
@@ -221,13 +223,13 @@ def beta_equation(pf: float) -> Union[float, str]:
         return beta_value
 
 
-def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
     
     Args:
         df_or_path (DataFrame or String): The DataFrame containing the columns with boolean values about indicator function, or a path to a .txt file
-        numerical_model (Dictionary): Containing the numerical model parameters
+        numerical_model (Dictionary): Containing the numerical model
         n_constraints (Integer): Number of state limit functions or constraints 
 
     Returns:
@@ -235,17 +237,20 @@ def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict, n_
         df_beta (DataFrame): DataFrame containing the values for beta for each 'G_' column
     """
 
+    # Read dataset
     if isinstance(df_or_path, str) and df_or_path.endswith('.txt'):
         df = pd.read_csv(df_or_path, delimiter='\t')
     else:
         df = df_or_path
-    if numerical_model['model sampling'].upper() in ['MCS', 'CRUDE MONTE CARLO', 'MONTE CARLO', 'CRUDE MCS']:
+
+    # Calculate pf and beta values
+    if numerical_model.upper() in ['MCS', 'LHS']:
         filtered_df = df.filter(like='I_', axis=1)
         pf_results = filtered_df.mean(axis=0)
         df_pf = pd.DataFrame([pf_results.to_list()], columns=pf_results.index)
         beta_results = [beta_equation(pf) for pf in pf_results.to_list()] 
         df_beta = pd.DataFrame([beta_results], columns=pf_results.index)
-    else:
+    elif numerical_model.upper() in ['TIME-MCS', 'TIME-LHS', 'TIME MCS', 'TIME LHS', 'MCS TIME', 'LHS TIME', 'MCS-TIME', 'LHS-TIME']:
         df_pf = pd.DataFrame()
         df_beta = pd.DataFrame()
         for i in range(n_constraints):
@@ -256,45 +261,6 @@ def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: dict, n_
             df_beta[f'G_{i}'] = beta_results
 
     return df_pf, df_beta
-
-
-def norm_array(ar: list) -> float:
-    """
-    Evaluates the norm of the array ar.
-
-    Args:
-        ar (float): A list of numerical values (floats) representing the array.
-
-    Returns:
-        float: The norm of the array.
-    """
-    norm_ar = [i ** 2 for i in ar]
-    norm_ar = sum(norm_ar) ** 0.5
-    return norm_ar
-
-
-def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -> np.ndarray:
-    """
-    This function calculates the y new value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
-    
-    Args:
-        y_k (Float): Current y value
-        g_y (Float): Objective function in point y_k
-        grad_y_k (Float): Gradient of the objective function in point y_k
-        
-    Returns:
-        y_new (Float): New y value
-    """
-
-    num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])
-    print("num: ", num)
-    num = num[0][0]
-    den = (np.linalg.norm(grad_y_k)) ** 2
-    print("den: ", den)
-    aux = num / den
-    y_new = aux * grad_y_k
-
-    return y_new
 
 
 def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
@@ -330,55 +296,15 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
         std = np.std(aux, ddof=1)
         n = len(aux)
         confidence_level = 0.95
-        t_critico = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
-        margin = t_critico * (std / np.sqrt(n))
-        intervalo_confianca = (mean - margin, mean + margin)
+        t_critic = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
+        margin = t_critic * (std / np.sqrt(n))
+        confidence_interval = (mean - margin, mean + margin)
         m.append(mean)
-        ci_u.append(intervalo_confianca[1])
-        ci_l.append(intervalo_confianca[0])
+        ci_u.append(confidence_interval[1])
+        ci_l.append(confidence_interval[0])
         var.append((mean * (1 - mean))/n)
 
     return div, m, ci_l, ci_u, var
-
-
-def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = 'all') -> dict:
-    """
-    Evaluates the fit of distributions to the provided data.
-
-    This function fits various distributions to the data using the distfit library and returns the top three distributions based on the fit score.
-
-    Args:
-        data (np.array or list): Data to which distributions will be fitted. It should be a list or array of numeric values.
-        distributions (str or list, optional): Distributions to be tested. If 'all', all available distributions will be tested. Otherwise, it should be a list of strings specifying the names of the distributions to test. The default is 'all'.
-
-    Returns:
-        dict: A dictionary containing the top three fitted distributions. Each entry is a dictionary with the following keys:
-            - 'rank': Ranking of the top three distributions based on the fit score.
-            - 'type' (str): The name of the fitted distribution.
-            - 'params' (tuple): Parameters of the fitted distribution.
-    
-    Raises:
-        ValueError: If the expected 'score' column is not present in the DataFrame returned by `dist.summary()`.
-    """
-
-    if distributions == 'all':
-        dist = distfit()
-    else:
-        dist = distfit(distr=distributions)
-    
-    dist.fit_transform(data)
-    summary_df = dist.summary
-    sorted_models = summary_df.sort_values(by='score').head(3)
-    
-    top_3_distributions = {
-        f'rank_{i+1}': {
-            'type': model['name'],
-            'params': model['params']
-        }
-        for i, model in sorted_models.iterrows()
-    }
-    
-    return top_3_distributions
 
 
 def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> tuple[pd.DataFrame, list]:
@@ -431,3 +357,82 @@ def log_message(message: str) -> None:
     """
     current_time = datetime.now().strftime('%H:%M:%S')
     print(f'{current_time} - {message}')
+
+
+def norm_array(ar: list) -> float:
+    """
+    Evaluates the norm of the array ar.
+
+    Args:
+        ar (float): A list of numerical values (floats) representing the array.
+
+    Returns:
+        float: The norm of the array.
+    """
+    norm_ar = [i ** 2 for i in ar]
+    norm_ar = sum(norm_ar) ** 0.5
+    return norm_ar
+
+
+def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -> np.ndarray:
+    """
+    This function calculates the y new value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
+    
+    Args:
+        y_k (Float): Current y value
+        g_y (Float): Objective function in point y_k
+        grad_y_k (Float): Gradient of the objective function in point y_k
+        
+    Returns:
+        y_new (Float): New y value
+    """
+
+    num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])
+    print("num: ", num)
+    num = num[0][0]
+    den = (np.linalg.norm(grad_y_k)) ** 2
+    print("den: ", den)
+    aux = num / den
+    y_new = aux * grad_y_k
+
+    return y_new
+
+
+# def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = 'all') -> dict:
+#     """
+#     Evaluates the fit of distributions to the provided data.
+
+#     This function fits various distributions to the data using the distfit library and returns the top three distributions based on the fit score.
+
+#     Args:
+#         data (np.array or list): Data to which distributions will be fitted. It should be a list or array of numeric values.
+#         distributions (str or list, optional): Distributions to be tested. If 'all', all available distributions will be tested. Otherwise, it should be a list of strings specifying the names of the distributions to test. The default is 'all'.
+
+#     Returns:
+#         dict: A dictionary containing the top three fitted distributions. Each entry is a dictionary with the following keys:
+#             - 'rank': Ranking of the top three distributions based on the fit score.
+#             - 'type' (str): The name of the fitted distribution.
+#             - 'params' (tuple): Parameters of the fitted distribution.
+    
+#     Raises:
+#         ValueError: If the expected 'score' column is not present in the DataFrame returned by `dist.summary()`.
+#     """
+
+#     if distributions == 'all':
+#         dist = distfit()
+#     else:
+#         dist = distfit(distr=distributions)
+    
+#     dist.fit_transform(data)
+#     summary_df = dist.summary
+#     sorted_models = summary_df.sort_values(by='score').head(3)
+    
+#     top_3_distributions = {
+#         f'rank_{i+1}': {
+#             'type': model['name'],
+#             'params': model['params']
+#         }
+#         for i, model in sorted_models.iterrows()
+#     }
+    
+#     return top_3_distributions
