@@ -49,7 +49,6 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
             params = variable['parameters']
 
             if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
-                print('normal', j)
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
@@ -62,41 +61,33 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
                 pho = params['corr']['pho']
                 m = params['corr']['var']
                 parameters_b = variables_setup[m]['parameters']
-                print('normal corrrrrr', j, m)
-                print('parameters_g', parameters_g)
-                print('parameters_b', parameters_b)
                 random_sampling[:, m], random_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'UNIFORM' and id_type[j] == 'g':
-                print('normal', j)
                 min_val = params['min']
                 max_val = params['max']
                 parameters = {'min': min_val, 'max': max_val}
                 random_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
-                print('normal', j)
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
                 random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
-                print('normal', j)
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
                 random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
-                print('normal', j)
                 mean = params['mean']
                 sigma = params['sigma']
                 parameters = {'mean': mean, 'sigma': sigma}
                 random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
 
             elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
-                print('normal', j)
                 min_val = params['min']
                 max_val = params['max']
                 mode = params['mode']
@@ -120,7 +111,6 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
                 params = variable['parameters']
 
                 if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
-                    print('normal', j)
                     mean = params['mean']
                     sigma = params['sigma']
                     parameters = {'mean': mean, 'sigma': sigma}
@@ -131,16 +121,12 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
                         temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
 
                 elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
-                    print('normal', j)
                     mean = params['mean']
                     sigma = params['sigma']
                     parameters_g = {'mean': mean, 'sigma': sigma}
                     pho = params['corr']['pho']
                     m = params['corr']['var']
                     parameters_b = variables_setup[m]['parameters']
-                    print('normal corrrrrr', j, m)
-                    print('parameters_g', parameters_g)
-                    print('parameters_b', parameters_b)
                     if sto is False:
                         temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
                         temporal_sampling[1:, j]
