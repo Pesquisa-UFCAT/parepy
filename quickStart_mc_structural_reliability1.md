@@ -16,9 +16,9 @@ Example 1 - CRUDE MONTE CARLO
 {: .label .label-blue }
 
 <p align="justify">
-<i>
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
-</i>
+    <i>
+        Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+    </i>
 </p>
 
 <table style = "width:100%; text-align: center;">
@@ -97,42 +97,47 @@ your_problem.ipynb
 
 ```python
 # Libraries
-import pandas as pd
-pd.set_option('display.max_columns', None)
-
 from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_example
 
-# Dataset
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'seed': None}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'seed': None}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'seed': None}
+# Statement random variables
+f = {
+        'type': 'normal', 
+        'parameters': {'mean': 40.3, 'sigma': 4.64}, 
+        'stochastic variable': False, 
+    }
+
+p = {
+        'type': 'gumbel max',
+        'parameters': {'mean': 10.2, 'sigma': 1.12}, 
+        'stochastic variable': False, 
+    }
+
+w = {
+        'type': 'lognormal',
+        'parameters': {'mean': 0.25, 'sigma': 0.025}, 
+        'stochastic variable': False, 
+    }
 var = [f, p, w]
 
 # PAREpy setup
 setup = {
-             'number of samples': 70000, 
-             'number of dimensions': len(var), 
-             'numerical model': {'model sampling': 'mcs'}, 
-             'variables settings': var, 
-             'number of state limit functions or constraints': 1, 
-             'none variable': None,
-             'objective function': nowak_collins_example,
-             'name simulation': 'nowak_collins_example',
+            'number of samples': 70000, 
+            'numerical model': {'model sampling': 'mcs'}, 
+            'variables settings': var, 
+            'number of state limit functions or constraints': 1, 
+            'none variable': None,
+            'objective function': nowak_collins_example,
+            'name simulation': 'nowak_collins_example',
         }
 
 # Call algorithm
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-<!-- <h1>View results</h1>
 <p align="justify">
-Following instructions to see all results:
+    Check <a href="https://wmpjrufg.github.io/PAREPY/framework_alg_strumc.html" target="_blank" rel="noopener noreferrer"><code>sampling_algorithm_structural_analysis</code></a> for more details.
 </p>
-
-```python
-print...bla bla bla
-``` -->
 
 <h1>Reference list</h1>
 

@@ -22,7 +22,9 @@ pip install parepy-toolbox
 
 <h1>Files structure</h1>
 
-<p align="justify">Let's use the example of building a problem in PAREpy using Jupyter Notebook or <b>Python</b> file. Therefore, the basic file structure that you must assemble to use the library must be as follows:</p>
+<p align="justify">
+Let's use the example of building a problem in PAREpy using a Jupyter Notebook or <b>Python</b> file. Therefore, the basic file structure that you must assemble to use the library must be as follows:
+</p>
 
 ```bash
  .
@@ -39,7 +41,8 @@ pip install parepy-toolbox
        └── file n
 ```
 
-<p align="justify">The <code>of_file.py</code> file should contain the objective function of the problem. The <code>your_problem</code> file is the file that will contain the call to the main function and other settings necessary for the use of the algorithm.
+<p align="justify">
+The <code>of_file.py</code> file should contain the problem's objective function. The <code>your_problem</code> file is the file that will contain the call to the main function and other settings necessary for the use of the algorithm.
 </p>
 
 <h2><code>of_file.py</code></h2>
@@ -59,8 +62,8 @@ def my_function(x, none_variable):
 </p>
 
 <ul>
-    <li><code>x</code> (type list): list of design random variables. PAREpy generates this values</li>
-    <li><code>none_variable</code> (type None, list, float, dictionary, str or any): The user can define this variable. The user can input any value in this variable when calling the framework's main function</li>
+    <li><code>x</code> (type list): list of design random variables. <b>PAREpy automatically generates these values</b>;</li>
+    <li><code>none_variable</code> (type <code>None</code>, <code>list</code>, <code>float</code>, <code>dictionary</code>, <code>str</code> or <code>any</code>): The user can define this variable. The user can input any value in this variable when calling the framework's main function.</li>
 </ul>
 
 <p align="justify">
@@ -68,13 +71,13 @@ def my_function(x, none_variable):
 </p>
 
 <ul>
-    <li><code>r</code> (type list): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
-    <li><code>s</code> (type list): list of values. In structural problems, we recommend putting the demand in this variable;</li>
-    <li><code>g</code> (type list): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\).</li>
+    <li><code>r</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
+    <li><code>s</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the demand in this variable;</li>
+    <li><code>g</code> (type <code>list</code>): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\). <b>Mandatory function return</b>.</li>
 </ul>
 
 {: .important }
-> The lists `r`, `s` and `g` must have the same size and will be defined in the main function setup.
+> The lists `r`, `s`, and `g` must be the same size and will be defined in the main function setup (key `number of state limit functions or constraints`). Furthermore, the list `g` must necessarily be this function's last return variable.
 
 <p align="justify">
 To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a> example. The State Limit Function is given by:
@@ -86,6 +89,9 @@ To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a
         <td style="width: 10%;"><p align = "right" id = "eq1">(1)</p></td>
     </tr>
 </table>
+
+Option 1
+{: .label .label-red }
 
 ```python
 def example_function(x, none_variable):
@@ -103,9 +109,12 @@ def example_function(x, none_variable):
     g = r - s
 
     return [r], [s], [g]
+```
 
-# or
+Option 2
+{: .label .label-red }
 
+```python
 def example_function(x, none_variable):
     """Beck example
     """
@@ -119,9 +128,12 @@ def example_function(x, none_variable):
     g = r_d - d - l
 
     return [r_d], [d+l], [g]
+```
 
-# or
+Option 3
+{: .label .label-red }
 
+```python
 def example_function(x, none_variable):
     """Beck example
     """
@@ -179,9 +191,11 @@ def example_function(x, none_variable):
     s_1 = m
     g_1 = r_1 - s_1
 
-
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
+<p align="justify">
+See more details in following sections and verify how to can PAREpy in your problem.
+</p>
 
 <h1>Reference list</h1>
 
@@ -195,7 +209,7 @@ def example_function(x, none_variable):
     <tbody>
         <tr>
             <td><p align = "center" id = "ref1">[1]</p></td>
-            <td><p align = "left"><a href="https://doi.org/10.1007/s00521-016-2328-2" target="_blank" rel="noopener noreferrer">Beck AT. Confiabilidade e segurança das estruturas. Elsevier; 2019. ISBN 978-85-352-8895-7</a></p></td>
+            <td><p align = "left"><a href="https://www.amazon.com.br/Confiabilidade-Seguranca-Estruturas-Andre-Teofilo/dp/8535286888" target="_blank" rel="noopener noreferrer">Beck AT. Confiabilidade e segurança das estruturas. Elsevier; 2019. ISBN 978-85-352-8895-7</a></p></td>
         </tr>
     </tbody>
 </table>

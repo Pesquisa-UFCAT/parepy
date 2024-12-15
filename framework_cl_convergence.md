@@ -2,7 +2,7 @@
 layout: home
 parent: common_library
 grand_parent: Framework
-nav_order: 5
+nav_order: 4
 has_children: false
 has_toc: false
 title: convergence_probability_failure
@@ -13,9 +13,8 @@ title: convergence_probability_failure
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>convergence_probability_failure</h3>
 <p align = "justify">
-    This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the probability of failure or reliability index.
+    This function calculates the convergence rate of a given column in a dataset. This function is used to check the convergence of the probability of failure or reliability index.
 </p>
 
 ```python
@@ -35,7 +34,7 @@ Input variables
     </thead>
     <tr>
         <td><code>df</code></td>
-        <td>DataFrame containing the data with indicator function column</td>
+        <td>Dataset containing indicator function column</td>
         <td>DataFrame</td>
     </tr>
     <tr>
@@ -94,13 +93,28 @@ from parepy_toolbox import sampling_algorithm_structural_analysis, convergence_p
 from obj_function import nowak_collins_example
 
 # Check structural reliability 
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'seed': None}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'seed': None}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'seed': None}
+f = {
+        'type': 'normal', 
+        'parameters': {'mean': 40.3, 'sigma': 4.64}, 
+        'stochastic variable': False, 
+    }
+
+p = {
+        'type': 'gumbel max',
+        'parameters': {'mean': 10.2, 'sigma': 1.12}, 
+        'stochastic variable': False, 
+    }
+
+w = {
+        'type': 'lognormal',
+        'parameters': {'mean': 0.25, 'sigma': 0.025}, 
+        'stochastic variable': False, 
+    }
 var = [f, p, w]
+
+# Run algorithm
 setup = {
              'number of samples': 100000, 
-             'number of dimensions': len(var), 
              'numerical model': {'model sampling': 'mcs'}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
@@ -115,8 +129,8 @@ x, m, l, u = convergence_probability_failure(results, 'I_0')
 ``` 
 
 <p align = "justify">
-    We can construct the convergence rate chart using the results <code>m</code>, <code>ci_l</code>, and <code>ci_u</code>. We using <code>x</code> in x-axis.
+    We can construct the convergence rate chart using the results <code>m</code>, <code>ci_l</code>, and <code>ci_u</code>. We use <code>x</code> as the x-axis.
 </p>
 
 <center><img src="assets/images/convergence_rate_chart.svg" width="90%"></center>
-<p align = "center"><b>Figure 1.</b> Failure probability - convergence rate.</p>
+<p align = "center"><b>Figure 1.</b> Probability of failure - convergence rate.</p>

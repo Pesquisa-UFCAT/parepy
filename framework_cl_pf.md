@@ -2,7 +2,7 @@
 layout: home
 parent: common_library
 grand_parent: Framework
-nav_order: 2
+nav_order: 1
 has_children: false
 has_toc: false
 title: pf_equation
@@ -13,9 +13,8 @@ title: pf_equation
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>pf_equation</h3>
 <p align = "justify">
-    This function calculates the probability of failure (pf) for a given reliability index (ϐ) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
+  This function calculates the probability of failure for a given reliability index using a standard normal cumulative distribution function. It performs the calculation by integrating the probability density function (PDF) of a standard normal distribution.
 </p>
 
 ```python
@@ -53,7 +52,7 @@ Output variables
    </thead>
    <tr>
        <td><code>pf_value</code></td>
-       <td>Probability of failure.</td>
+       <td>Probability of failure</td>
        <td>Float</td>
    </tr>
 </table>
@@ -66,8 +65,10 @@ Example 1
 </p>
 
 ```python
+# Library
 from parepy_toolbox import pf_equation
 
+# Calc pf
 beta = 3.5
 pf = pf_equation(beta)
 print(f"Probability of failure {pf:.5e}")

@@ -2,7 +2,7 @@
 layout: home
 parent: common_library
 grand_parent: Framework
-nav_order: 4
+nav_order: 3
 has_children: false
 has_toc: false
 title: calc_pf_beta
@@ -13,9 +13,8 @@ title: calc_pf_beta
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>calc_pf_beta</h3>
 <p align = "justify">
-    Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
+    Calculates the probability of failure or reliability index values ​​from a data set. If a .txt file path with data is provided, this function also evaluates the failure probability and reliability index values.
 </p>
 
 ```python
@@ -40,8 +39,8 @@ Input variables
     </tr>
     <tr>
         <td><code>numerical_model</code></td>
-        <td>Containing the numerical model parameters</td>
-        <td>Dictionary</td>
+        <td>Containing the numerical model</td>
+        <td>String</td>
     </tr>
     <tr>
         <td><code>n_constraints</code></td>
@@ -63,12 +62,12 @@ Output variables
    </thead>
    <tr>
        <td><code>df_pf</code></td>
-       <td>DataFrame containing the values for probability of failure for each 'I_' column</td>
+       <td>DataFrame containing the values for probability of failure for each 'G_' column</td>
        <td>DataFrame</td>
    </tr>
    <tr>
        <td><code>df_beta</code></td>
-       <td>DataFrame containing the values for beta for each 'I_' column</td>
+       <td>DataFrame containing the values for beta for each 'G_' column</td>
        <td>DataFrame</td>
    </tr>
 </table>
@@ -81,6 +80,7 @@ Example 1
 </p>
 
 ```python
+# Liraries
 import pandas as pd
 
 from parepy_toolbox import calc_pf_beta
@@ -98,7 +98,7 @@ data =  {
 df = pd.DataFrame(data)
 
 # Call function
-pf_df, beta_df = calc_pf_beta(df, {'model sampling': 'mcs'}, 2)
+pf_df, beta_df = calc_pf_beta(df, 'mcs', 2)
 
 # Output details: Use the external module tabulate to print pretty
 # pip install tabulate or pip install --upgrade tabulate # external library (visit: https://pypi.org/project/tabulate/)
@@ -114,13 +114,13 @@ print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=Fal
 ```bash
 pf:
 +--------------------+---------------------+
-|        I_0         |         I_1         |
+|        G_0         |         G_1         |
 +--------------------+---------------------+
 | 0.2857142857142857 | 0.42857142857142855 |
 +--------------------+---------------------+
 ϐ:
 +-------------------+---------------------+
-|        I_0        |         I_1         |
+|        G_0        |         G_1         |
 +-------------------+---------------------+
 | 0.565948821932863 | 0.18001236979270438 |
 +-------------------+---------------------+
@@ -147,6 +147,7 @@ X_0	X_1	X_2	G_0	G_1	I_0	I_1
 ```
 
 ```python
+# Libraries
 import pandas as pd
 
 from parepy_toolbox import calc_pf_beta
@@ -168,13 +169,13 @@ print(f'ϐ:\n{tabulate(beta_df, headers="keys", tablefmt="pretty", showindex=Fal
 ```bash
 pf:
 +--------------------+---------------------+
-|        I_0         |         I_1         |
+|        G_0         |         G_1         |
 +--------------------+---------------------+
 | 0.2857142857142857 | 0.42857142857142855 |
 +--------------------+---------------------+
 ϐ:
 +-------------------+---------------------+
-|        I_0        |         I_1         |
+|        G_0        |         G_1         |
 +-------------------+---------------------+
 | 0.565948821932863 | 0.18001236979270438 |
 +-------------------+---------------------+

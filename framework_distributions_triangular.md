@@ -44,7 +44,7 @@ Input variables
             </ul>
             </p>
         </td>
-        <td>dictionary</td>
+        <td>Dictionary</td>
     </tr>
     <tr>
         <td><code>method</code></td>
@@ -56,17 +56,17 @@ Input variables
             </ul>
             </p>
         </td>
-        <td>string</td>
+        <td>String</td>
     </tr>
     <tr>
         <td><code>n_samples</code></td>
         <td>Number of samples to generate</td>
-        <td>integer</td>
+        <td>Integer</td>
     </tr>
     <tr>
         <td><code>seed</code></td>
         <td>Seed for random number generation. Use <code>None</code> for a random seed</td>
-        <td>integer or none</td>
+        <td>Integer or None</td>
     </tr>
 </table>
 
@@ -84,7 +84,7 @@ Output variables
    <tr>
        <td><code>u</code></td>
        <td>Random samples</td>
-       <td>list</td>
+       <td>List</td>
    </tr>
 </table>
 
@@ -98,6 +98,9 @@ Example 1
 </p>
 
 ```python
+# Libraries
+import matplotlib.pyplot as plt
+
 from parepy_toolbox import triangular_sampling
 
 # Sampling
@@ -109,12 +112,12 @@ y = triangular_sampling({'min': 2, 'mode': 6, 'max': 7}, 'lhs', n)
 fig, axes = plt.subplots(1, 2, figsize=(7, 3))
 sns.histplot(x, kde=True, bins=30, color='blue', ax=axes[0], alpha=0.6, edgecolor='black')
 axes[0].set_title('MCS Sampling')
-axes[0].set_xlabel('Valores')
-axes[0].set_ylabel('Densidade')
+axes[0].set_xlabel('Values')
+axes[0].set_ylabel('Density')
 sns.histplot(y, kde=True, bins=30, color='green', ax=axes[1], alpha=0.6, edgecolor='black')
 axes[1].set_title('LHS Sampling')
-axes[1].set_xlabel('Valores')
-axes[1].set_ylabel('Densidade')
+axes[1].set_xlabel('Values')
+axes[1].set_ylabel('Density')
 plt.tight_layout()
 plt.show()
 ```
@@ -134,6 +137,7 @@ Example 2
 </p>
 
 ```python
+# Library
 from parepy_toolbox import triangular_sampling
 
 # Sampling
@@ -143,6 +147,10 @@ x1 = triangular_sampling({'min': 2, 'mode': 6, 'max': 7}, 'mcs', n, 25)
 x2 = triangular_sampling({'min': 2, 'mode': 6, 'max': 7}, 'mcs', n, 25)
 print(x0, '\n', x1, '\n', x2)
 ```
+
+<p align = "justify">
+    <i>Output details.</i>
+</p>
 
 ```bash
 [3.911914212156261, 2.763962517823044, 6.5574659216434235] 

@@ -13,7 +13,6 @@ title: sampling_algorithm_structural_analysis
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h3>sampling_algorithm_structural_analysis</h3>
 <p align = "justify">
     This function creates the samples and evaluates the limit state functions in structural reliability problems.
 </p>
@@ -44,18 +43,13 @@ Input variables
         <td>Integer</td>
     </tr>
     <tr>
-        <td><code>number of dimensions</code></td>
-        <td>Number of dimensions (key in setup dictionary)</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
         <td><code>numerical model</code></td>
-        <td>Numerical model settings (key in setup dictionary)</td>
+        <td>Numerical model settings (key in setup dictionary). See examples in <a href="#models">Table 1</a></td>
         <td>Dictionary</td>
     </tr>
     <tr>
         <td><code>variables settings</code></td>
-        <td>Variables settings (key in setup dictionary)</td>
+        <td>Variables settings (key in setup dictionary). This variable is a list of dictionaries. See examples in <a href="#variables">Table 2</a></td>
         <td>List</td>
     </tr>
     <tr>
@@ -76,7 +70,7 @@ Input variables
     <tr>
         <td><code>name simulation</code></td>
         <td>Output filename (key in setup dictionary)</td>
-        <td>String</td>
+        <td>String or None</td>
     </tr>
 </table>
 
@@ -110,15 +104,16 @@ Output variables
 </table>
 
 <p align="justify">
-To use the sample algorithm, you must choose the algorithm and variable types and correctly fill in the <code>'numerical model'</code> and <code>'variables settings'</code> keys. See the following examples and <a href="https://wmpjrufg.github.io/PAREPY/framework_cl_sampling.html" target="_blank">sampling function</a>.
+To use the sample algorithm, you must choose the algorithm and variable types and correctly fill in the <code>'numerical model'</code> and <code>'variables settings'</code> keys. See the following examples and <a href="https://wmpjrufg.github.io/PAREPY/framework_distributions_.html" target="_blank">distributions</a>.
 </p>
 
-<p align="justify" id="model"></p>
+<p align="justify" id="models"></p>
+<p align="left"><b>Table 1.</b> <code>'numerical model'</code> key.</p>
 <center>
     <table style = "width:100%">
         <thead>
             <tr>
-            <th>Example</th>
+            <th>Type</th>
             <th>Sintax</th>
             </tr>
         </thead>
@@ -127,35 +122,74 @@ To use the sample algorithm, you must choose the algorithm and variable types an
             <td><code>'numerical model': {'model sampling': 'mcs'}</code></td>
         </tr>
         <tr>
-            <td>Stochastic - Crude Monte Carlo (five steps)</td>
-            <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code>¹</li></ul></td>
+            <td>Latin Hypercube</td>
+            <td><code>'numerical model': {'model sampling': 'lhs'}</code></td>
+        </tr>
+        <tr>
+            <td>Stochastic - Crude Monte Carlo considering five time steps</td>
+            <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code><sup>1,2</sup></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
+        </tr>
+        <tr>
+            <td>Stochastic - Latin Hypercube considering five time steps</td>
+            <td><ul><li><code>'numerical model': {'model sampling': 'lhs-time', 'time steps': 5}</code><sup>1,2</sup></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
         </tr>
     </table>
-    <p align="center"><b>Table 1.</b> <code>'numerical model'</code> key - examples.</p>
 </center>
 
 {: .important }
 >¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. In this example, we use five time steps between 0 and 50 years. In this case, a user should import the **Numpy** library to use ```np. linspace```. Another library can be used to create a list.
 
 {: .important }
->¹When applying a stochastic procedure, use the following code on top of the objective function:    
+>²When applying a stochastic procedure, use the following code on top of the objective function:    
 
 ```python
 id_analysis = int(x[-1])
 time_step = none_variable['time analysis']
 t_i = time_step[id_analysis] 
 ```
+
+<p align="justify" id="variables"></p>
+<p align="left"><b>Table 2.</b> <code>'variable settings'</code> key. Dictionary details.</p>
+<center>
+    <table style = "width:100%">
+        <thead>
+            <tr>
+            <th>Key</th>
+            <th>Description</th>
+            <th>Example</th>
+            </tr>
+        </thead>
+        <tr>
+            <td><code>'type'</code></td>
+            <td>Type of the distribution</td>
+            <td><code>'type': 'normal',</code></td>
+        </tr>
+        <tr>
+            <td><code>'parameters'</code></td>
+            <td>Parameters of the distribution. See the <a href="https://wmpjrufg.github.io/PAREPY/framework_distributions_.html" target="_blank" rel="noopener noreferrer">parameters </a>for each distribution</td>
+            <td><code>'parameters': {'mean': 40.3, 'sigma': 4.64},</code></td>
+        </tr>
+        <tr>
+            <td><code>'stochastic variable'</code></td>
+            <td>Stochastic process (<code>'True' or 'False'</code>). Use <code>'True'</code> when you wish apply stochastic process</td>
+            <td><code>'stochastic variable': False</code></td>
+        </tr>
+    </table>
+</center>
+
 <p align="justify">
-More details in example <a href="#example2">2</a>.
+More details about the reliability method are shown in examples <a href="#example1">1</a> and <a href="#example2">2</a>.
 </p>
+
+<p align="justify" id="example1"></p>
 
 Example 1
 {: .label .label-blue }
 
 <p align="justify">
-<i>
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
-</i>
+    <i>
+        Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+    </i>
 </p>
 
 <table style = "width:100%; text-align: center;">
@@ -234,22 +268,32 @@ your_problem.ipynb
 
 ```python
 # Libraries
-import pandas as pd
-pd.set_option('display.max_columns', None)
-
 from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_example
 
-# Dataset
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'seed': None}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'seed': None}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'seed': None}
+# Statement random variables
+f = {
+        'type': 'normal', 
+        'parameters': {'mean': 40.3, 'sigma': 4.64}, 
+        'stochastic variable': False, 
+    }
+
+p = {
+        'type': 'gumbel max',
+        'parameters': {'mean': 10.2, 'sigma': 1.12}, 
+        'stochastic variable': False, 
+    }
+
+w = {
+        'type': 'lognormal',
+        'parameters': {'mean': 0.25, 'sigma': 0.025}, 
+        'stochastic variable': False, 
+    }
 var = [f, p, w]
 
 # PAREpy setup
 setup = {
-             'number of samples': 70000, 
-             'number of dimensions': len(var), 
+             'number of samples': 1000, 
              'numerical model': {'model sampling': 'mcs'}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
@@ -262,14 +306,142 @@ setup = {
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
 ```
 
-<!-- <h1>View results</h1>
+<h3>Post-processing</h3>
+
 <p align="justify">
-Following instructions to see all results:
+    The results of the sampling simulation need to be evaluated. This section demonstrates how to print, plot, and show these results. The results of the sampling simulation need to be assessed. This section demonstrates how to print, plot, and show these results. <b>Consider Example 1</b> to show examples of post-processing.
+</p>
+
+<h4>Show results - all samples</h4>
+
+<p align="justify">
+    What are the columns' names in the results of Example 1?
+</p>
+
+```bash
++-----+---------+----------+----------+---------+---------+------------+-------+
+|     |     X_0 |      X_1 |      X_2 |     R_0 |     S_0 |        G_0 |   I_0 |
+|-----+---------+----------+----------+---------+---------+------------+-------|
+|   0 | 33.9686 | 10.9885  | 0.289494 | 2717.48 | 2281.71 |  435.773   |     0 |
+|   1 | 41.6526 |  8.38575 | 0.242897 | 3332.21 | 1869.4  | 1462.8     |     0 |
+|   2 | 52.0513 |  9.42486 | 0.195777 | 4164.1  | 1650.72 | 2513.39    |     0 |
+|   3 | 37.6799 |  9.91397 | 0.254184 | 3014.39 | 2017.75 |  996.637   |     0 |
+|   4 | 31.1943 |  8.96956 | 0.250925 | 2495.54 | 1947.75 |  547.791   |     0 |
+|   5 | 36.3056 | 10.1379  | 0.242374 | 2904.45 | 1960.97 |  943.48    |     0 | 
+...
+| 997 | 41.493  |  9.64558 | 0.255638 | 3319.44 | 2011.74 | 1307.69    |     0 |
+| 998 | 55.8406 |  9.76341 | 0.284005 | 4467.25 | 2183.54 | 2283.7     |     0 |
+| 999 | 37.2467 | 10.9352  | 0.242343 | 2979.73 | 2003.85 |  975.886   |     0 |
++-----+---------+----------+----------+---------+---------+------------+-------+
+```
+
+<ul>
+    <li><code>X_</code>: Random variables;</li>
+    <li><code>R_</code>: First return in objective function (User defined);</li>
+    <li><code>S_</code>: Second return in objective function (User defined);</li>
+    <li><code>G_</code>: Second return in objective function (User defined);</li>
+    <li><code>I_</code>: Indicator function (PAREpy generate).</li>
+</ul>
+
+```python
+# Show results in notebook file (simply use the DataFrame's variable name in code cell) 
+results
+
+# or 
+# Show results in python file (using print function)
+print(results)
+```
+
+<p align="justify">
+    This problem presents one state limit function. How do we show columns that results respect a relation \(\boldsymbol{G} \geq 0 \)?
 </p>
 
 ```python
-print...bla bla bla
-``` -->
+# Libraries
+import pandas as pd
+
+# Analysis already realized
+sorted_positive = results[results['G_0'] >= 0].sort_values(by='G_0', ascending=True)
+
+# Show results in notebook file (simply use the DataFrame's variable name in code cell) 
+sorted_positive.head(3)
+
+# or 
+# Show results in python file (using print function)
+print(sorted_positive.head(3))
+```
+
+{: .important } 
+>
+> PAREpy is using the same ID sequence in your data frames. Therefore, any column starts with zero.
+
+<h4>Plot results - all samples</h4>
+
+<p align="justify">
+    How do we plot \(\boldsymbol{G}_0\) histogram?
+</p>
+
+```python
+# Libraries
+import matplotlib.pyplot as plt
+
+# Plot histogram of G_0
+plt.hist(results['G_0'], bins=50, alpha=0.7, color='blue')
+plt.xlabel("Constraint Value (G_0)")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
+```
+
+<p align="justify">
+    How do we plot \(\boldsymbol{S}_0\) and \(\boldsymbol{R}_0\) in unique histogram?
+</p>
+
+```python
+# Libraries
+import matplotlib.pyplot as plt
+
+# Plot histograms - R_0 and S_0
+plt.hist(results['R_0'], bins=50, alpha=0.5, color='green', label='Resistance R_0')
+plt.hist(results['S_0'], bins=50, alpha=0.5, color='orange', label='Demand S_0')
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
+```
+
+<h4>Show \(p_f\) and \(\beta\) results</h4>
+
+<p align="justify">
+    Show \(p_f\) results in list format.
+</p>
+
+```python
+# Acess pf results
+pf_list = pf.values.flatten().tolist()
+print(pf_list)
+```
+
+<p align="justify">
+    Show \(\beta\) results in list format.
+</p>
+
+```python
+# Acess beta results
+beta_list = beta.values.flatten().tolist()
+print(beta_list)
+```
+
+<p align="justify">
+    How do we print \(p_f\) and \(\beta\) together?
+</p>
+
+```python
+pf_list = pf.values.flatten().tolist()
+beta_list = beta.values.flatten().tolist()
+for i, (p, b) in enumerate(zip(pf_list, beta_list)):
+    print(f"State Limite function (g): {i}, pf: {p:.6f}, beta: {b:.6f}")
+```
 
 <p align="justify" id="example2"></p>
 Example 2
@@ -277,7 +449,7 @@ Example 2
 
 <p align="justify">
 <i>
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
+    Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load \(p\) and a uniformly distributed dead load \(w\). Assume \(\boldsymbol{P}\) (concentrated live load), \(\boldsymbol{W}\) (uniformly distributed dead load) and the yield stress, \(\boldsymbol{F_y}\), are random quantities; the length \(l\) and the plastic setion modulus \(z\) are assumed to be precisely know (deterministic). The distribution parameters for \(\boldsymbol{P}, \boldsymbol{W}\) and \(\boldsymbol{F_y}\) are given bellow:
 </i>
 </p>
 
@@ -335,7 +507,7 @@ The limit state function for beam bending can be expressed as:
 </table>
 
 <p align="justify">
-Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\) <a href="#ref2">[2]</a>. Use 50 years to stochastic analysis (five time steps).
+Consider equation <a href="#eq4">(4)</a> for resistance degradation \(\left(D\right)\) <a href="#ref2">[2]</a>. Use 50 years to stochastic analysis (five time steps). Assume that \(P\) load is a stochastic process. 
 </p>
 
 <table style = "width:100%">
@@ -394,16 +566,29 @@ import numpy as np
 from parepy_toolbox import sampling_algorithm_structural_analysis
 from obj_function import nowak_collins_time_example
 
-# Dataset
-f = {'type': 'normal', 'loc': 40.3, 'scale': 4.64, 'stochastic variable': False, 'seed': None}
-p = {'type': 'gumbel max', 'loc': 10.2, 'scale': 1.12, 'stochastic variable': True, 'seed': None}
-w = {'type': 'lognormal', 'loc': 0.25, 'scale': 0.025, 'stochastic variable': False, 'seed': None}
+# Statement random variables
+f = {
+        'type': 'normal', 
+        'parameters': {'mean': 40.3, 'sigma': 4.64}, 
+        'stochastic variable': False, 
+    }
+
+p = {
+        'type': 'gumbel max',
+        'parameters': {'mean': 10.2, 'sigma': 1.12}, 
+        'stochastic variable': True, 
+    }
+
+w = {
+        'type': 'lognormal',
+        'parameters': {'mean': 0.25, 'sigma': 0.025}, 
+        'stochastic variable': False, 
+    }
 var = [f, p, w]
 
 # PAREpy setup
 setup = {
-             'number of samples': 70000, 
-             'number of dimensions': len(var), 
+             'number of samples': 1000, 
              'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
@@ -414,6 +599,71 @@ setup = {
 
 # Call algorithm
 results, pf, beta = sampling_algorithm_structural_analysis(setup)
+```
+
+<h3>Post-processing</h3>
+
+<h4>Show results - all samples</h4>
+
+<p align="justify">
+    What are the columns' names in the results of Example 2?
+</p>
+
+```bash
++-----+-----------+-----------+-----------+-----------+-----------+-----------+------------+------------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+|     |   X_0_t=0 |   X_0_t=1 |   X_1_t=0 |   X_1_t=1 |   X_2_t=0 |   X_2_t=1 |   STEP_t_0 |   STEP_t_1 |   R_0_t=0 |   R_0_t=1 |   S_0_t=0 |   S_0_t=1 |   G_0_t=0 |   G_0_t=1 |   I_0_t=0 |   I_0_t=1 |
+|-----+-----------+-----------+-----------+-----------+-----------+-----------+------------+------------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------|
+|   0 |   36.5333 |   33.3011 |   9.14011 |   9.14011 |  0.228967 |  0.228967 |          0 |          1 |   2922.66 |   2663.98 |   1828.9  |   1828.9  | 1093.76   |  835.076  |         0 |         0 |
+|   1 |   43.268  |   41.0214 |   9.38534 |   9.38534 |  0.191533 |  0.191533 |          0 |          1 |   3461.44 |   3281.58 |   1623.83 |   1623.83 | 1837.61   | 1657.75   |         0 |         0 |
+|   2 |   46.7621 |   45.58   |   8.56684 |   8.56684 |  0.229873 |  0.229873 |          0 |          1 |   3740.96 |   3646.25 |   1803.23 |   1803.23 | 1937.73   | 1843.02   |         0 |         0 |
+|   3 |   40.9082 |   42.5734 |  11.2148  |  11.2148  |  0.270366 |  0.270366 |          0 |          1 |   3272.66 |   3405.74 |   2182.37 |   2182.37 | 1090.28   | 1223.36   |         0 |         0 |
+...
+| 997 |   38.9421 |   42.0164 |  10.7914  |  10.7914  |  0.224753 |  0.224753 |          0 |          1 |   3115.36 |   3361.18 |   1893.49 |   1893.49 | 1221.87   | 1467.69   |         0 |         0 |
+| 998 |   45.5127 |   38.2171 |   9.66603 |   9.66603 |  0.261417 |  0.261417 |          0 |          1 |   3641.02 |   3057.25 |   2046.55 |   2046.55 | 1594.47   | 1010.69   |         0 |         0 |
+| 999 |   36.0261 |   41.376  |   8.56939 |   8.56939 |  0.24753  |  0.24753  |          0 |          1 |   2882.09 |   3309.95 |   1906.34 |   1906.34 |  975.745  | 1403.61   |         0 |         0 |
++-----+-----------+-----------+-----------+-----------+-----------+-----------+------------+------------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+```
+
+<ul>
+    <li><code>X_i_t</code>: Random variables in specific time step;</li>
+    <li><code>STEP_t_</code>: Time step ID;</li>
+    <li><code>R_i_t</code>: First return in objective function (User defined) -  in specific time step;</li>
+    <li><code>S_i_t</code>: Second return in objective function (User defined) -  in specific time step;</li>
+    <li><code>G_i_t</code>: Second return in objective function (User defined) -  in specific time step;</li>
+    <li><code>I_i_t</code>: Indicator function (PAREpy generate) -  in specific time step.</li>
+</ul>
+
+<h4>Show \(p_f\) and \(\beta\) results</h4>
+
+<p align="justify">
+    Show \(p_f\) results in list format. To view results about all time steps in \(G_0\) state limit function folliwing code:
+</p>
+
+```python
+# Acess pf results
+pf_list = pf['G_0'].tolist()
+print(pf_list)
+```
+
+<p align="justify">
+    Show \(\beta\) results in list format.
+</p>
+
+```python
+# Acess beta results
+beta_list = beta['G_0'].tolist()
+print(beta_list)
+```
+
+<p align="justify">
+    How do we print \(p_f\) and \(\beta\) together?
+</p>
+
+```python
+pf_list = pf['G_0'].tolist()
+beta_list = beta['G_0'].tolist()
+for i, (p, b) in enumerate(zip(pf_list, beta_list)):
+    print(f"Time step (id={i}, time={setup['none variable']['time analysis'][i]}), pf: {p:.6f}, beta: {b:.6f}")
 ```
 
 <h1>Reference list</h1>
