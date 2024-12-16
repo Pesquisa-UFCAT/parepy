@@ -83,6 +83,28 @@ $$
 S_{T_i} = 1 - \frac{\mathrm{V}[E(Y|X_{\sim i})]}{\mathrm{V}(Y)} = 1 - \frac{y_B \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = 1 - \frac{(1/N) \sum_{j=1}^{N} y_B^{(j)} y_{C_i}^{(j)} - f_0^2 } {(1/N) \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
 $$
 
+ <h2>Interpretação dos Índices de Sobol</h2>
+
+
+<h3>1. Índice de Sobol de Primeira Ordem (Si)</h3>
+<p>O índice <em>S<sub>i</sub></em> indica quanto da variabilidade da saída de um modelo pode ser explicada pela variabilidade de uma única variável de entrada <em>X<sub>i</sub></em>, mantendo as outras variáveis fixas. Em termos simples, <em>S<sub>i</sub></em> reflete o <strong>efeito principal</strong> de uma variável no modelo, ou seja, quanto a variabilidade de <em>X<sub>i</sub></em> contribui para a variabilidade da saída. Se uma variável for dominante, <em>S<sub>i</sub></em> será grande, indicando que a sua variação tem um impacto considerável na resposta do modelo.</p>
+
+<h3>2. Índice de Sobol de Efeito Conjunto (S<sub>c</sub><sub>i1, i2, ..., is</sub>)</h3>
+<p>Os índices de Sobol de efeito conjunto, como <em>S<sub>c<sub>i1, i2, ..., is</sub></em></em>, medem a redução da variabilidade do modelo quando múltiplas variáveis de entrada são fixadas simultaneamente. Isso captura as <strong>interações</strong> entre as variáveis. Por exemplo, <em>S<sub>c<sub>i1, i2</sub></sub></em> indicaria o efeito conjunto de fixar as variáveis <em>X<sub>1</sub></em> e <em>X<sub>2</sub></em>, o que é útil para entender como as variáveis podem interagir para afetar a saída do modelo. Se <em>S<sub>c<sub>i1, i2</sub></sub></em> for grande, isso sugere que a interação entre essas variáveis tem um papel importante no comportamento do modelo.</p>
+
+<h3>3. Índice de Sobol de Efeito Total (S<sub>T</sub><sub>i</sub>)</h3>
+<p>O índice <em>S<sub>T<sub>i</sub></em></em> representa o efeito total de uma variável <em>X<sub>i</sub></em>, levando em consideração tanto o seu efeito direto (efeito principal) quanto as interações com outras variáveis. A relação entre <em>S<sub>T</sub></em> e <em>S<sub>i</sub></em> é importante: <em>S<sub>T<sub>i</sub></em> &ge; S<sub>i</sub></em>, sendo que a diferença <em>S<sub>T</sub><sub>i</sub> - S<sub>i</sub></em> reflete o grau de interação de <em>X<sub>i</sub></em> com outras variáveis. Se <em>S<sub>T</sub><sub>i</sub> = S<sub>i</sub></em>, isso significa que <em>X<sub>i</sub></em> não tem interações relevantes com outras variáveis e seu efeito é exclusivamente devido à sua variabilidade. Por outro lado, se <em>S<sub>T</sub><sub>i</sub></em> for muito maior que <em>S<sub>i</sub></em>, isso indica que <em>X<sub>i</sub></em> está envolvido em interações importantes, e sua contribuição para a variabilidade da saída não é completamente explicada por seu efeito direto.</p>
+
+<h3>4. Índice de Sobol Total (S<sub>T</sub><sub>i</sub> = 0)</h3>
+<p>Se <em>S<sub>T</sub><sub>i</sub> = 0</em>, isso significa que a variável <em>X<sub>i</sub></em> não tem efeito sobre a saída do modelo, nem por meio de efeitos principais nem por interações com outras variáveis. Ou seja, <em>X<sub>i</sub></em> pode ser fixada em qualquer valor dentro de seu domínio sem afetar a variabilidade da saída. Isso indica que <em>X<sub>i</sub></em> é irrelevante para o modelo e pode ser ignorada na análise.</p>
+
+<h3>5. Soma dos Índices de Sobol (Para Modelos Aditivos e Não Aditivos)</h3>
+<p>Para modelos aditivos, a soma dos índices de Sobol de primeira ordem <em>S<sub>i</sub></em> de todas as variáveis de entrada é igual a 1. Isso significa que a variabilidade da saída pode ser completamente explicada pela contribuição dos efeitos principais das variáveis de entrada. Para modelos não aditivos, a soma dos índices será menor que 1, indicando que a variabilidade da saída é parcialmente explicada por interações entre as variáveis. A diferença <em>1 - &sum; S<sub>i</sub></em> é uma medida do impacto das interações no modelo, refletindo o grau em que as variáveis interagem de forma não aditiva.</p>
+
+<h3>6. Soma dos Índices de Sobol de Efeito Total (S<sub>T</sub><sub>i</sub>)</h3>
+<p>A soma de todos os índices <em>S<sub>T</sub><sub>i</sub></em> é sempre maior que 1. Para modelos perfeitamente aditivos, a soma dos <em>S<sub>T</sub><sub>i</sub></em> será igual a 1. Caso contrário, a soma será maior que 1, indicando que o modelo contém interações entre as variáveis de entrada que aumentam a variabilidade da saída.</p>
+
+
 <!-- <h2>Exemplo</h2>
 
 <p align="justify">Considere um modelo simples onde a saída \(f(X)\) é uma função de duas variáveis \(X_1\) e \(X_2\), definidas como:</p>
