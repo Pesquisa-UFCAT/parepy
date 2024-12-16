@@ -1,5 +1,5 @@
 # folders
-parepy_test/
+env/
 __pycache__/
 parepy_toolbox/__pycache__/
 ambiente_parepy/
