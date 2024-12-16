@@ -47,7 +47,7 @@ $$
 <p align="justify"><strong>Criação da Matriz C:</strong> Para cada variável \(X_i\), é gerada uma matriz combinada \(C^{(i)}\) onde todas as colunas são copiadas de \(B\), exceto a \(i\)-ésima, que é copiada de \(A\).</p>
 
 $$
-C^{(i)} = 
+C_i = 
 \begin{bmatrix}
 x_{k+1}^{(1)} & x_{k+2}^{(1)} & \cdots & x_{i}^{(1)} & \cdots & x_{2k}^{(1)} \\
 x_{k+1}^{(2)} & x_{k+2}^{(2)} & \cdots & x_{i}^{(2)} & \cdots & x_{2k}^{(2)} \\
