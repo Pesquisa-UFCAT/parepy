@@ -63,18 +63,13 @@ Output variables
      </tr>
    </thead>
    <tr>
-       <td><code>s_i</code></td>
+       <td><code>data_sobol</code></td>
        <td>
-           A list containing the first-order Sobol sensitivity indices for each input variable.
+           A dictionary containing the first-order and total-order Sobol sensitivity indices for each input variable. 
        </td>
        <td>Dict</td>
    </tr>
    <tr>
-       <td><code>s_t</code></td>
-       <td>
-           A list containing the total-order Sobol sensitivity indices for each input variable.
-       </td>
-       <td>Dict</td>
    </tr>
 </table>
 
@@ -126,9 +121,7 @@ setup = {
         }
 
 # Call algorithm
-s_i, s_t = sobol_algorithm(setup)
-print(s_i)
-print(s_t)
+data_sobol = sobol_algorithm(setup)
 ```
 
 Example Output:
