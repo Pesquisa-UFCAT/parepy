@@ -1,4 +1,5 @@
 """Objective function file for the probabilistic problem."""
+import numpy as np
 
 def nowak_collins_example(x, none_variable):
     """Objective function for the Nowak example (tutorial).
@@ -15,6 +16,19 @@ def nowak_collins_example(x, none_variable):
     constraint = capacity - demand
 
     return [capacity], [demand], [constraint]
+
+def ishigami(x, none_variable):
+    """Objective function for the Nowak example (tutorial).
+    """
+    a = 7
+    b = 0.05
+    # Random variables
+    x_0 = x[0]
+    x_1 = x[1]
+    x_2 = x[2]
+    result = np.sin(x_0) + a * np.sin(x_1) ** 2 + b * (x_2 ** 4) * np.sin(x_0)
+
+    return [None], [None], [result]
 
 def nowak_collins_example1(x, none_variable):
     """Objective function for the Nowak example (tutorial).
