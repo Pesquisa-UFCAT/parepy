@@ -440,6 +440,7 @@ def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFra
 
     return results_about_data, failure_prob_list, beta_list
 
+
 def sobol_algorithm(setup):
     """
     This function calculates the Sobol indices in structural reliability problems.
