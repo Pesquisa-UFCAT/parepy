@@ -87,9 +87,9 @@ $$
 
 <p align="justify">Considere um modelo simples onde a saída \(f(X)\) é uma função de duas variáveis \(X_1\) e \(X_2\), definidas como:</p>
 
-\[
+$$
 f(X) = X_1^2 + X_2^2
-\]
+$$
 
 Onde \(X_1\) e \(X_2\) são as variáveis de entrada.
 
@@ -103,7 +103,7 @@ Aqui está um exemplo de como as matrizes \(A\) e \(B\) poderiam se parecer, ond
 
 Matriz \(A\) (com valores aleatórios):
 
-\[
+$$
 A = \begin{bmatrix}
 0.1 & 0.3 \\
 0.2 & 0.6 \\
@@ -111,11 +111,11 @@ A = \begin{bmatrix}
 \vdots & \vdots \\
 0.9 & 0.8 \\
 \end{bmatrix}
-\]
+$$
 
 Matriz \(B\) (com valores aleatórios):
 
-\[
+$$
 B = \begin{bmatrix}
 0.5 & 0.8 \\
 0.7 & 0.9 \\
@@ -123,13 +123,13 @@ B = \begin{bmatrix}
 \vdots & \vdots \\
 0.3 & 0.4 \\
 \end{bmatrix}
-\]
+$$
 
 2. **Criação da Matriz \(C^{(i)}\)**
 
 Para cada variável \(X_i\), criamos uma matriz combinada \(C^{(i)}\) onde todas as colunas de \(B\) são copiadas, exceto a coluna \(i\)-ésima, que vem de \(A\). Por exemplo, para \(i = 1\):
 
-\[
+$$
 C^{(1)} = \begin{bmatrix}
 0.1 & 0.8 \\
 0.2 & 0.9 \\
@@ -137,11 +137,11 @@ C^{(1)} = \begin{bmatrix}
 \vdots & \vdots \\
 0.9 & 0.4 \\
 \end{bmatrix}
-\]
+$$
 
 Para \(i = 2\), a matriz \(C^{(2)}\) seria:
 
-\[
+$$
 C^{(2)} = \begin{bmatrix}
 0.5 & 0.3 \\
 0.7 & 0.6 \\
@@ -149,7 +149,7 @@ C^{(2)} = \begin{bmatrix}
 \vdots & \vdots \\
 0.3 & 0.8 \\
 \end{bmatrix}
-\]
+$$
 
 3. **Cálculo da Saída do Modelo**
 
@@ -162,18 +162,18 @@ Agora, calculamos a saída do modelo para todas as entradas das matrizes \(A\), 
 
 Para cada linha da matriz \(A\), podemos calcular os valores de \(y_A\), \(y_B\) e \(y_{C_i}\), por exemplo:
 
-\[
+$$
 y_A^{(1)} = 0.1^2 + 0.3^2 = 0.01 + 0.09 = 0.1
-\]
-\[
+$$
+$$
 y_B^{(1)} = 0.5^2 + 0.8^2 = 0.25 + 0.64 = 0.89
-\]
-\[
+$$
+$$
 y_{C_1}^{(1)} = 0.1^2 + 0.8^2 = 0.01 + 0.64 = 0.65
-\]
-\[
+$$
+$$
 y_{C_2}^{(1)} = 0.5^2 + 0.3^2 = 0.25 + 0.09 = 0.34
-\]
+$$
 
 E assim por diante para todas as amostras.
 
@@ -181,15 +181,15 @@ E assim por diante para todas as amostras.
 
 Agora, podemos calcular os índices de sensibilidade de primeira ordem \(S_1\) e \(S_2\). Vamos usar a fórmula de \(S_i\) para a variável \(X_1\):
 
-\[
+$$
 S_1 = \frac{y_A \cdot y_{C_1} - f_0^2}{y_A \cdot y_A - f_0^2}
-\]
+$$
 
 Onde \(f_0^2\) é a média quadrática das saídas de \(y_A\):
 
-\[
+$$
 f_0^2 = \left( \frac{1}{N} \sum_{j=1}^{N} y_A^{(j)} \right)^2
-\]
+$$
 
 A soma de \(y_A\) seria realizada para todas as \(N\) amostras, e então calcularíamos \(f_0^2\).
 
@@ -197,8 +197,8 @@ Supondo que \(f_0^2 = 0.5\) (apenas um exemplo), podemos calcular \(S_1\).
 
 Além disso, o índice de efeito total \(S_{T_1}\) é dado por:
 
-\[
+$$
 S_{T_1} = 1 - \frac{y_B \cdot y_{C_1} - f_0^2}{y_A \cdot y_A - f_0^2}
-\]
+$$
 
 Esse procedimento seria repetido para todas as variáveis de entrada \(X_1\) e \(X_2\).
