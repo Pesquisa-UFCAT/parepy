@@ -66,7 +66,7 @@ $$
 <p align="justify"><strong>Cálculo dos Índices de Sensibilidade:</strong> Os índices de sensibilidade de primeira ordem \(S_i\) e de efeito total \(S_{T_i}\) são calculados para cada variável \(X_i\) usando as saídas do modelo:</p>
 
 $$
-S_i = \frac{\mathrm{V}[E(Y|X_i)]}{\mathrm{V}(Y)} = \frac{y_A \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = \frac{ \sum_{j=1}^{N} y_A^{(j)} y_{C_i}^{(j)} - f_0^2 } { \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
+S_i = \frac{\mathrm{V}[E(Y|X_i)]}{\mathrm{V}(Y)} = \frac{y_A \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = \frac{(1/N) \sum_{j=1}^{N} y_A^{(j)} y_{C_i}^{(j)} - f_0^2 } {(1/N) \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
 $$
 
 onde
@@ -80,10 +80,10 @@ $$
 <p align="justify"><strong>Cálculo dos Índices de Efeito Total:</strong> Os índices de efeito total são calculados como:</p>
 
 $$
-S_{T_i} = 1 - \frac{\mathrm{V}[E(Y|X_{\sim i})]}{\mathrm{V}(Y)} = 1 - \frac{y_B \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = 1 - \frac{\frac{1}{N} \sum_{j=1}^{N} y_B^{(j)} y_{C_i}^{(j)} - f_0^2 } {\frac{1}{N} \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
+S_{T_i} = 1 - \frac{\mathrm{V}[E(Y|X_{\sim i})]}{\mathrm{V}(Y)} = 1 - \frac{y_B \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = 1 - \frac{(1/N) \sum_{j=1}^{N} y_B^{(j)} y_{C_i}^{(j)} - f_0^2 } {(1/N) \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
 $$
 
-<h2>Exemplo</h2>
+<!-- <h2>Exemplo</h2>
 
 <p align="justify">Considere um modelo simples onde a saída \(f(X)\) é uma função de duas variáveis \(X_1\) e \(X_2\), definidas como:</p>
 
@@ -191,4 +191,4 @@ $$
 S_{T_1} = 1 - \frac{y_B \cdot y_{C_1} - f_0^2}{y_A \cdot y_A - f_0^2}
 $$
 
-<p align="justify">Esse procedimento seria repetido para todas as variáveis de entrada \(X_1\) e \(X_2\).</p>
+<p align="justify">Esse procedimento seria repetido para todas as variáveis de entrada \(X_1\) e \(X_2\).</p> -->
