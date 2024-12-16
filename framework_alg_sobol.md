@@ -67,14 +67,14 @@ Output variables
        <td>
            A list containing the first-order Sobol sensitivity indices for each input variable.
        </td>
-       <td>List</td>
+       <td>Dict</td>
    </tr>
    <tr>
        <td><code>s_t</code></td>
        <td>
            A list containing the total-order Sobol sensitivity indices for each input variable.
        </td>
-       <td>List</td>
+       <td>Dict</td>
    </tr>
 </table>
 
@@ -87,21 +87,18 @@ of_FILE.PY
 {: .label .label-red }
 
 ```python
-def nowak_collins_example(x, none_variable):
+def ishigami(x, none_variable):
     """Objective function for the Nowak example (tutorial).
     """
-
+    a = 7
+    b = 0.10
     # Random variables
-    f_y = x[0]
-    p_load = x[1]
-    w_load = x[2]
-    capacity = 80 * f_y
-    demand = 54 * p_load + 5832 * w_load
+    x_0 = x[0]
+    x_1 = x[1]
+    x_2 = x[2]
+    result = np.sin(x_0) + a * np.sin(x_1) ** 2 + b * (x_2 ** 4) * np.sin(x_0)
 
-    # State limit function
-    constraint = capacity - demand
-
-    return [capacity], [demand], [constraint]
+    return [None], [None], [result]
 ```
 
 YOUR_PROBLEM.IPYNB
@@ -118,20 +115,24 @@ var = [f, p, w]
 
 # PAREpy setup
 setup = {
-             'number of samples': 10000, 
+             'number of samples': 50000, 
              'number of dimensions': len(var), 
-             'numerical model': {'model sampling': 'mcs'}, 
+             'numerical model': {'model sampling': 'lhs'}, 
              'variables settings': var, 
              'number of state limit functions or constraints': 1, 
              'none variable': None,
-             'objective function': nowak_collins_example,
+             'objective function': ishigami,
              'name simulation': None,
         }
+
+# Call algorithm
 s_i, s_t = sobol_algorithm(setup)
-print(f"First-order Sobol indices: {s_i}")
-print(f"Total-order Sobol indices: {s_t}")
+print(s_i)
+print(s_t)
 ```
 
 Example Output:
 ```bash
+[-0.4364895442617733, 0.24087159929570906, -1.3529608667470359]
+[-0.1942959571784033, 2.453684230822736, 0.9118407402354742]
 ```
