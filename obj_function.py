@@ -21,7 +21,7 @@ def ishigami(x, none_variable):
     """Objective function for the Nowak example (tutorial).
     """
     a = 7
-    b = 0.05
+    b = 0.10
     # Random variables
     x_0 = x[0]
     x_1 = x[1]

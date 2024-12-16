@@ -41,12 +41,9 @@ def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.
         perms = original_ids.copy()
         r[:, i] = x[:n_samples]
         del x[:n_samples]
-        if i == 0:
-            p[:, i] = perms.copy()
-        else:
-            rng = np.random.default_rng(seed=seed)
-            rng.shuffle(perms)
-            p[:, i] = perms.copy()
+        rng = np.random.default_rng(seed=seed)
+        rng.shuffle(perms)
+        p[:, i] = perms.copy()
     u = (p - r) * (1 / n_samples)
 
     return u
