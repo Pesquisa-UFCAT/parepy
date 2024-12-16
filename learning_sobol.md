@@ -20,7 +20,7 @@ title: Sobol Indices
 
 <p align="justify">O procedimento numérico baseado em Monte Carlo para calcular os índices de sensibilidade de primeira ordem e os índices de efeito total para um modelo com \(k\) fatores de entrada são discutidos a seguir:</p>
 
-1. **Geração da Amostra Base**:  O procedimento começa com a geração de uma matriz \((N, 2k)\) de números aleatórios, onde \(k\) é o número de entradas e \(N\) é o tamanho da amostra base. Em termos práticos, \(N\) pode variar de algumas centenas a alguns milhares. A matriz é dividida em duas partes, \(A\) e \(B\), cada uma com \(N\) amostras e \(k\) variáveis. 
+**Geração da Amostra Base**:  O procedimento começa com a geração de uma matriz \((N, 2k)\) de números aleatórios, onde \(k\) é o número de entradas e \(N\) é o tamanho da amostra base. Em termos práticos, \(N\) pode variar de algumas centenas a alguns milhares. A matriz é dividida em duas partes, \(A\) e \(B\), cada uma com \(N\) amostras e \(k\) variáveis. 
 
 $$
 A = 
@@ -44,7 +44,7 @@ x_{k+1}^{(N)} & x_{k+2}^{(N)} & \cdots & x_{k+i}^{(N)} & \cdots & x_{2k}^{(N)}
 \end{bmatrix}
 $$
 
-2. **Criação da Matriz C**: Para cada variável \(X_i\), é gerada uma matriz combinada \(C^{(i)}\) onde todas as colunas são copiadas de \(B\), exceto a \(i\)-ésima, que é copiada de \(A\).
+**Criação da Matriz C**: Para cada variável \(X_i\), é gerada uma matriz combinada \(C^{(i)}\) onde todas as colunas são copiadas de \(B\), exceto a \(i\)-ésima, que é copiada de \(A\).
 
 $$
 C^{(i)} = 
@@ -57,13 +57,13 @@ x_{k+1}^{(N)} & x_{k+2}^{(N)} & \cdots & x_{i}^{(N)} & \cdots & x_{2k}^{(N)}
 \end{bmatrix}
 $$
 
-3. **Cálculo da Saída do Modelo**: Calcule a saída do modelo para todos os valores de entrada nas matrizes de amostra \(A\), \(B\) e \(C_i\), obtendo três vetores de saídas do modelo de dimensão \(N \times 1\):
+**Cálculo da Saída do Modelo**: Calcule a saída do modelo para todos os valores de entrada nas matrizes de amostra \(A\), \(B\) e \(C_i\), obtendo três vetores de saídas do modelo de dimensão \(N \times 1\):
 
 $$
 y_A = f(A), \quad y_B = f(B), \quad y_{C_i} = f(C_i)
 $$
 
-4. **Cálculo dos Índices de Sensibilidade**: Os índices de sensibilidade de primeira ordem \(S_i\) e de efeito total \(S_{T_i}\) são calculados para cada variável \(X_i\) usando as saídas do modelo:
+**Cálculo dos Índices de Sensibilidade**: Os índices de sensibilidade de primeira ordem \(S_i\) e de efeito total \(S_{T_i}\) são calculados para cada variável \(X_i\) usando as saídas do modelo:
 
 $$
 S_i = \frac{\mathrm{V}[E(Y|X_i)]}{\mathrm{V}(Y)} = \frac{y_A \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = \frac{ \sum_{j=1}^{N} y_A^{(j)} y_{C_i}^{(j)} - f_0^2 } { \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
@@ -77,7 +77,7 @@ $$
 
 é a média, e o símbolo (·) denota o produto escalar de dois vetores.
 
-5. **Cálculo dos Índices de Efeito Total**: Os índices de efeito total são calculados como:
+**Cálculo dos Índices de Efeito Total**: Os índices de efeito total são calculados como:
 
 $$
 S_{T_i} = 1 - \frac{\mathrm{V}[E(Y|X_{\sim i})]}{\mathrm{V}(Y)} = 1 - \frac{y_B \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = 1 - \frac{\frac{1}{N} \sum_{j=1}^{N} y_B^{(j)} y_{C_i}^{(j)} - f_0^2 } {\frac{1}{N} \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
@@ -163,16 +163,12 @@ Agora, calculamos a saída do modelo para todas as entradas das matrizes \(A\), 
 Para cada linha da matriz \(A\), podemos calcular os valores de \(y_A\), \(y_B\) e \(y_{C_i}\), por exemplo:
 
 $$
-y_A^{(1)} = 0.1^2 + 0.3^2 = 0.01 + 0.09 = 0.1
-$$
-$$
-y_B^{(1)} = 0.5^2 + 0.8^2 = 0.25 + 0.64 = 0.89
-$$
-$$
-y_{C_1}^{(1)} = 0.1^2 + 0.8^2 = 0.01 + 0.64 = 0.65
-$$
-$$
-y_{C_2}^{(1)} = 0.5^2 + 0.3^2 = 0.25 + 0.09 = 0.34
+\begin{align*}
+y_A^{(1)} & = 0.1^2 + 0.3^2 = 0.01 + 0.09 = 0.1 \\
+y_B^{(1)} & = 0.5^2 + 0.8^2 = 0.25 + 0.64 = 0.89 \\
+y_{C_1}^{(1)} & = 0.1^2 + 0.8^2 = 0.01 + 0.64 = 0.65 \\
+y_{C_2}^{(1)} & = 0.5^2 + 0.3^2 = 0.25 + 0.09 = 0.34
+\end{align*}
 $$
 
 E assim por diante para todas as amostras.
