@@ -132,7 +132,32 @@ print(s_t)
 ```
 
 Example Output:
-```bash
-[-0.4364895442617733, 0.24087159929570906, -1.3529608667470359]
-[-0.1942959571784033, 2.453684230822736, 0.9118407402354742]
-```
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>s_i</th>
+      <th>s_t</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.452220</td>
+      <td>1.741961</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.099413</td>
+      <td>1.235900</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.655008</td>
+      <td>1.363188</td>
+    </tr>
+  </tbody>
+</table>
+
+
