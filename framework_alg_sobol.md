@@ -127,31 +127,14 @@ data_sobol = sobol_algorithm(setup)
 OUTPUT
 {: .label .label-red }
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>s_i</th>
-      <th>s_t</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0.452220</td>
-      <td>1.741961</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>-0.099413</td>
-      <td>1.235900</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>-0.655008</td>
-      <td>1.363188</td>
-    </tr>
-  </tbody>
-</table>
+```bash
++----+-----------+-----------+
+|    |       s_i |       s_t |
+|----+-----------+-----------|
+|  0 |  0.290423 | -0.611217 |
+|  1 |  1.08608  | -0.405668 |
+|  2 | -0.426312 |  0.298219 |
++----+-----------+-----------+
+```
 
 
