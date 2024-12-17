@@ -91,11 +91,14 @@ $$
 f(x) = \sin(x_0) + a \cdot \sin^2(x_1) + b \cdot x_2^4 \cdot \sin(x_0)
 $$
 
-<p style="text-align: justify;">
-where:  
-- \( x = \{x_0, x_1, x_2\} \in [-\pi, \pi]^3 \) are the input variables, limited to the domain \([-\pi, \pi]\);  
-- \( a \) and \( b \) are adjustable parameters that control the relative impact of each term in the function.
-</p>
+<div style="text-align: justify;">
+<p>where:</p>
+<ul>
+    <li>\( x = \{x_0, x_1, x_2\} \in [-\pi, \pi]^3 \) are the input variables, limited to the domain \([-\pi, \pi]\);</li>
+    <li>\( a \) and \( b \) are adjustable parameters that control the relative impact of each term in the function.</li>
+</ul>
+</div>
+
 
 <p align="justify">
 This function is widely used to evaluate the influence of each input variable on the final output, as well as the interactions between them. It is particularly effective in global sensitivity analysis methods, such as the calculation of Sobol indices, providing a robust basis for investigating the individual and combined contributions of variables.</p>
