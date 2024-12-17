@@ -224,11 +224,12 @@ plt.legend()
 plt.show()
 ```
 
-<h4>Compare results</h4>
+Expected plot:
 
-<p align="justify">
-    To identify which variables have the most significant influence and interaction in the model, compare the <code>s_i</code> and <code>s_t</code> values. Variables with high <code>s_i</code> contribute strongly on their own, while variables with a large gap between <code>s_i</code> and <code>s_t</code> indicate significant interactions with other variables.
-</p>
+<center>
+    <img src="assets/images/sobol_output.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Sobol indices for the Ishigami function.</p>
+</center>
 
 <h4>Save results to a file</h4>
 
@@ -242,9 +243,4 @@ data_sobol.to_excel('sobol_indices.xlsx', index=False)
 
 print("Sobol indices saved to 'sobol_indices.xlsx'")
 ```
-
-<p align="justify">
-    By performing this analysis, we can effectively interpret the contributions and interactions of input variables in the model, providing insights for design optimization and uncertainty management.
-</p>
-
 
