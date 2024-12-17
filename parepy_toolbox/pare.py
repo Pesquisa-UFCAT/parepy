@@ -446,17 +446,13 @@ def sobol_algorithm(setup):
     This function calculates the Sobol indices in structural reliability problems.
 
     Args:
-        setup (Dictionary): Setup settings
+        setup (Dictionary): Setup settings.
         'number of samples' (Integer): Number of samples (key in setup dictionary)
-        'numerical model' (Dictionary): Numerical model settings (key in setup dictionary)
-        'variables settings' (List): Variables settings (key in setup dictionary)
-        'number of state limit functions or constraints' (Integer): Number of state limit functions or constraints  
-        'none_variable' (None, list, float, dictionary, str or any): None variable. User can use this variable in objective function (key in setup dictionary)           
         'objective function' (Python function): Objective function. The PAREpy user defined this function (key in setup dictionary)
-    
+        'none variable' (None, list, float, dictionary, str or any): None variable. User can use this variable in objective function (key in setup dictionary)
+
     Returns:
-        s_i (List): First order Sobol indices
-        s_t (List): Total order Sobol indices
+        dict_sobol (DataFrame): Sobol indices
     """
     n_samples = setup['number of samples']
     obj = setup['objective function']
@@ -464,7 +460,6 @@ def sobol_algorithm(setup):
 
     dist_a = sampling_algorithm_structural_analysis_kernel(setup)
     dist_b = sampling_algorithm_structural_analysis_kernel(setup)
-
     y_a = dist_a['G_0'].to_list()
     y_b = dist_b['G_0'].to_list()
     f_0_2 = (sum(y_a) / n_samples) ** 2
@@ -475,6 +470,7 @@ def sobol_algorithm(setup):
 
     s_i = []
     s_t = []
+    p_e = []
     for i in range(K):
         C = np.copy(B) 
         C[:, i] = A[:, i]
@@ -486,9 +482,14 @@ def sobol_algorithm(setup):
         y_a_dot_y_c_i = [y_a[m] * y_c_i[m] for m in range(n_samples)]
         y_b_dot_y_c_i = [y_b[m] * y_c_i[m] for m in range(n_samples)]
         y_a_dot_y_a = [y_a[m] * y_a[m] for m in range(n_samples)]
+        s_i.append((1/n_samples * sum(y_a_dot_y_c_i) - f_0_2) / (1/n_samples * sum(y_a_dot_y_a) - f_0_2))
+        s_t.append(1 - (1/n_samples * sum(y_b_dot_y_c_i) - f_0_2) / (1/n_samples * sum(y_a_dot_y_a) - f_0_2))
 
-        s_i.append((sum(y_a_dot_y_c_i) - f_0_2) / (sum(y_a_dot_y_a) - f_0_2))
-        s_t.append((sum(y_b_dot_y_c_i) - f_0_2) / (sum(y_a_dot_y_a) - f_0_2))
+    s_i = [float(i) for i in s_i]
+    s_t = [float(i) for i in s_t]
+    dict_sobol = pd.DataFrame(
+        {'s_i': s_i,
+         's_t': s_t}
+    )
 
-
-    return s_i, s_t
+    return dict_sobol
