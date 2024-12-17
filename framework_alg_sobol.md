@@ -81,6 +81,23 @@ This example demonstrates how to use the `sobol_algorithm` function to calculate
 of_FILE.PY
 {: .label .label-red }
 
+<p align="justify">
+The <strong>Ishigami function</strong> is commonly used as a test function for comparing global sensitivity analysis methods due to its nonlinear properties and the presence of variable interactions. This function is particularly valuable for benchmarking different sensitivity analysis methods, making it a classic example in this field. 
+<br><br>
+The function takes as input a vector \( x = [x_0, x_1, x_2] \), which represents three independent variables. Its analytical expression is defined as:
+</p>
+
+$$
+f(x) = \sin(x_0) + a \cdot \sin^2(x_1) + b \cdot x_2^4 \cdot \sin(x_0)
+$$
+
+where:  
+- \( x = \{x_0, x_1, x_2\} \in [-\pi, \pi]^3 \) are the input variables, limited to the domain \([-\pi, \pi]\);  
+- \( a \) and \( b \) are adjustable parameters that control the relative impact of each term in the function.
+
+<p align="justify">
+This function is widely used to evaluate the influence of each input variable on the final output, as well as the interactions between them. It is particularly effective in global sensitivity analysis methods, such as the calculation of Sobol indices, providing a robust basis for investigating the individual and combined contributions of variables.</p>
+
 ```python
 def ishigami(x, none_variable):
     """Objective function for the Nowak example (tutorial).
