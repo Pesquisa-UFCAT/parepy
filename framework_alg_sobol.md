@@ -172,10 +172,9 @@ print(data_sobol)
 </p>
 
 ```python
-# Convert Sobol indices to a DataFrame for better readability
-import pandas as pd
-sobol_df = pd.DataFrame(data_sobol, index=['x_0', 'x_1', 'x_2'])
-print(sobol_df)
+# Convert Sobol indices to a table
+from tabulate import tabulate
+print(tabulate(data_sobol, headers='keys', tablefmt='psql'))
 ```
 
 Expected output:
