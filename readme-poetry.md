@@ -119,3 +119,14 @@ Caso você queira deletar o ambiente virtual criado pelo Poetry, siga os passos 
    ```bash
    poetry install
    ```
+
+### 7. Publicando o pacote
+
+- **Build framework**:
+   ```bash
+   poetry buyld
+   ```
+- **Publish framework**
+   ```bash
+   poetry publish
+   ```
