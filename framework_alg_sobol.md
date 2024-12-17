@@ -146,17 +146,105 @@ setup = {
 data_sobol = sobol_algorithm(setup)
 ```
 
-OUTPUT
-{: .label .label-red }
+<h3>Post-processing Sobol Indices</h3>
+
+<p align="justify">
+    After executing the <code>sobol_algorithm</code>, it is essential to analyze the results, which include the first-order (\( s_i \)) and total-order (\( s_t \)) Sobol indices. This section demonstrates how to print, plot, and interpret these indices for a structural reliability problem. The analysis helps determine the relative contribution of input variables to the model output and their interactions. 
+</p>
+
+<h4>Show results - Sobol indices</h4>
+
+<p align="justify">
+    How do we display the Sobol indices calculated for the Ishigami function?
+</p>
+
+```python
+# Show results in notebook file (use the dictionary's variable name in the code cell)
+data_sobol
+
+# or 
+# Show results in Python file (using the print function)
+print(data_sobol)
+```
+
+<p align="justify">
+    To analyze the first-order and total-order Sobol indices for each variable:
+</p>
+
+```python
+# Convert Sobol indices to a DataFrame for better readability
+import pandas as pd
+sobol_df = pd.DataFrame(data_sobol, index=['x_0', 'x_1', 'x_2'])
+print(sobol_df)
+```
+
+Expected output:
 
 ```bash
-+----+-----------+-----------+
-|    |       s_i |       s_t |
-|----+-----------+-----------|
-|  0 |  0.290423 | -0.611217 |
-|  1 |  1.08608  | -0.405668 |
-|  2 | -0.426312 |  0.298219 |
-+----+-----------+-----------+
++----+-----------+----------+
+|    |       s_i |      s_t |
+|----+-----------+----------|
+|  0 | 0.312931  | 0.547654 |
+|  1 | 0.44652   | 0.433496 |
+|  2 | 0.0097489 | 0.220905 |
++----+-----------+----------+
 ```
+
+<ul>
+    <li><code>s_i</code>: First-order Sobol index, representing the individual contribution of the variable to the output variance.</li>
+    <li><code>s_t</code>: Total-order Sobol index, representing the overall contribution, including interactions with other variables.</li>
+</ul>
+
+<h4>Plot results - Sobol indices</h4>
+
+<p align="justify">
+    How do we visualize the Sobol indices as bar charts to interpret the results?
+</p>
+
+```python
+# Libraries
+import matplotlib.pyplot as plt
+
+# Extract values
+variables = ['x_0', 'x_1', 'x_2']
+s_i = [data_sobol.iloc[var]['s_i'] for var in range(len(variables))]
+s_t = [data_sobol.iloc[var]['s_t'] for var in range(len(variables))]
+
+# Plot bar chart for Sobol indices
+x = range(len(variables))
+width = 0.35
+
+plt.bar(x, s_i, width, label='First-order (s_i)', color='blue', alpha=0.7)
+plt.bar([p + width for p in x], s_t, width, label='Total-order (s_t)', color='orange', alpha=0.7)
+
+plt.xlabel("Variables")
+plt.ylabel("Sobol Indices")
+plt.xticks([p + width / 2 for p in x], variables)
+plt.legend()
+plt.show()
+```
+
+<h4>Compare results</h4>
+
+<p align="justify">
+    To identify which variables have the most significant influence and interaction in the model, compare the <code>s_i</code> and <code>s_t</code> values. Variables with high <code>s_i</code> contribute strongly on their own, while variables with a large gap between <code>s_i</code> and <code>s_t</code> indicate significant interactions with other variables.
+</p>
+
+<h4>Save results to a file</h4>
+
+<p align="justify">
+    To save the Sobol indices for further analysis or reporting:
+</p>
+
+```python
+# Save results to a CSV file
+data_sobol.to_excel('sobol_indices.xlsx', index=False)
+
+print("Sobol indices saved to 'sobol_indices.xlsx'")
+```
+
+<p align="justify">
+    By performing this analysis, we can effectively interpret the contributions and interactions of input variables in the model, providing insights for design optimization and uncertainty management.
+</p>
 
 
