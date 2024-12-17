@@ -4,3 +4,4 @@ __pycache__/
 parepy_toolbox/__pycache__/
 ambiente_parepy/
 *.txt
+!examples_folders/*.txt
