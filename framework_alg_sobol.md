@@ -124,7 +124,8 @@ setup = {
 data_sobol = sobol_algorithm(setup)
 ```
 
-Example Output:
+OUTPUT
+{: .label .label-red }
 
 <table border="1" class="dataframe">
   <thead>
