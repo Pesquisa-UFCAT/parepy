@@ -14,7 +14,7 @@ nav_order: 1
 {: .note-title }
 > Suggestions  
 >
-> If you have any suggestions or error reports regarding the algorithm's functioning, please inform us by email: `wanderlei_junior@ufcat.edu.br`. We will be happy to improve the framework.
+> If you have any suggestions or error reports regarding the algorithm's functioning, please email us at `wanderlei_junior@ufcat.edu.br`. We will be happy to improve the framework.
 
 {: .highlight-title }
 > Team
@@ -26,3 +26,8 @@ nav_order: 1
 > [Msc Murilo Carneiro Rodrigues](http://lattes.cnpq.br/6429652195589650)   
 > [Prof. PhD Iuri Fazolin](http://lattes.cnpq.br/3180484792983028)  
 > [Msc Matheus Henrique Morato Moraes](http://lattes.cnpq.br/8465474056220474)   
+
+{: .new-title }
+> Version 
+>
+> [1.1.0](https://pypi.org/project/parepy-toolbox/#history)

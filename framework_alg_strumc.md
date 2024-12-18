@@ -34,42 +34,42 @@ Input variables
     </thead>
     <tr>
         <td><code>setup</code></td>
-        <td>Setup settings.</td>
+        <td>Setup settings</td>
         <td>Dictionary</td>
     </tr>
     <tr>
-        <td><code>number of samples</code></td>
-        <td>Number of samples (key in setup dictionary)</td>
+        <td>dictionary key: <code>'number of samples'</code></td>
+        <td>Number of samples</td>
         <td>Integer</td>
     </tr>
     <tr>
-        <td><code>numerical model</code></td>
-        <td>Numerical model settings (key in setup dictionary). See examples in <a href="#models">Table 1</a></td>
+        <td>dictionary key: <code>'numerical model'</code></td>
+        <td>Numerical model settings. See examples in <a href="#models">Table 1</a></td>
         <td>Dictionary</td>
     </tr>
     <tr>
-        <td><code>variables settings</code></td>
-        <td>Variables settings (key in setup dictionary). This variable is a list of dictionaries. See examples in <a href="#variables">Table 2</a></td>
+        <td>dictionary key: <code>'variables settings'</code></td>
+        <td>Variables settings. This variable is a list of dictionaries. See examples in <a href="#variables">Table 2</a></td>
         <td>List</td>
     </tr>
     <tr>
-        <td><code>number of state limit functions or constraints</code></td>
+        <td>dictionary key: <code>'number of state limit functions or constraints'</code></td>
         <td>Number of state limit functions or constraints</td>
         <td>Integer</td>
     </tr>
     <tr>
-        <td><code>none_variable</code></td>
-        <td>None variable. User can use this variable in the objective function (key in setup dictionary)</td>
+        <td>dictionary key: <code>'none_variable'</code></td>
+        <td>None variable. User can use this variable in the objective function</td>
         <td>None, List, Float, Dictionary, String, or any</td>
     </tr>
     <tr>
-        <td><code>objective function</code></td>
-        <td>Objective function. The PAREpy user defines this function (key in setup dictionary)</td>
+        <td>dictionary key: <code>'objective function'</code></td>
+        <td>Objective function. The PAREpy user defines this function</td>
         <td>Python function</td>
     </tr>
     <tr>
-        <td><code>name simulation</code></td>
-        <td>Output filename (key in setup dictionary)</td>
+        <td>dictionary key: <code>'name simulation'</code></td>
+        <td>Output filename</td>
         <td>String or None</td>
     </tr>
 </table>
@@ -93,12 +93,12 @@ Output variables
     </tr>
     <tr>
         <td><code>failure_prob_list</code></td>
-        <td>Failure probability list</td>
+        <td>Failure Probability</td>
         <td>List</td>
     </tr>
     <tr>
         <td><code>beta_list</code></td>
-        <td>Beta list</td>
+        <td>Reliability index</td>
         <td>List</td>
     </tr>
 </table>
@@ -108,7 +108,7 @@ To use the sample algorithm, you must choose the algorithm and variable types an
 </p>
 
 <p align="justify" id="models"></p>
-<p align="left"><b>Table 1.</b> <code>'numerical model'</code> key.</p>
+<p align="left"><b>Table 1.</b> Details of <code>'numerical model'</code> key.</p>
 <center>
     <table style = "width:100%">
         <thead>
@@ -126,21 +126,21 @@ To use the sample algorithm, you must choose the algorithm and variable types an
             <td><code>'numerical model': {'model sampling': 'lhs'}</code></td>
         </tr>
         <tr>
-            <td>Stochastic - Crude Monte Carlo considering five time steps</td>
+            <td>Stochastic - Crude Monte Carlo. Considering five steps in this example</td>
             <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code><sup>1,2</sup></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
         </tr>
         <tr>
-            <td>Stochastic - Latin Hypercube considering five time steps</td>
+            <td>Stochastic - Latin Hypercube. Considering five steps in this example</td>
             <td><ul><li><code>'numerical model': {'model sampling': 'lhs-time', 'time steps': 5}</code><sup>1,2</sup></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
         </tr>
     </table>
 </center>
 
 {: .important }
->¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. In this example, we use five time steps between 0 and 50 years. In this case, a user should import the **Numpy** library to use ```np. linspace```. Another library can be used to create a list.
+>¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. We use five steps between 0 and 50 years in this example. In this case, a user should import the **Numpy** library to use ```np. linspace```. Another library can be used to create a list.
 
 {: .important }
->²When applying a stochastic procedure, use the following code on top of the objective function:    
+>²When applying a stochastic procedure, you must use the following code on top of the objective function:    
 
 ```python
 id_analysis = int(x[-1])
@@ -149,7 +149,7 @@ t_i = time_step[id_analysis]
 ```
 
 <p align="justify" id="variables"></p>
-<p align="left"><b>Table 2.</b> <code>'variable settings'</code> key. Dictionary details.</p>
+<p align="left"><b>Table 2.</b> Details of <code>'variable settings'</code> key.</p>
 <center>
     <table style = "width:100%">
         <thead>
@@ -162,12 +162,12 @@ t_i = time_step[id_analysis]
         <tr>
             <td><code>'type'</code></td>
             <td>Type of the distribution</td>
-            <td><code>'type': 'normal',</code></td>
+            <td><code>'type': 'normal'</code></td>
         </tr>
         <tr>
             <td><code>'parameters'</code></td>
             <td>Parameters of the distribution. See the <a href="https://wmpjrufg.github.io/PAREPY/framework_distributions_.html" target="_blank" rel="noopener noreferrer">parameters </a>for each distribution</td>
-            <td><code>'parameters': {'mean': 40.3, 'sigma': 4.64},</code></td>
+            <td><code>'parameters': {'mean': 40.3, 'sigma': 4.64}</code></td>
         </tr>
         <tr>
             <td><code>'stochastic variable'</code></td>

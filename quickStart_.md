@@ -13,7 +13,7 @@ title: Quick Start
 
 <h1>Install</h1>
 
-<p align="justify">To use the framework in an <b>Python</b> environment, use the following command:</p>
+<p align="justify">To use the framework in a <b>Python</b> environment, use the following command:</p>
 
 ```python
 pip install parepy-toolbox
@@ -42,7 +42,7 @@ Let's use the example of building a problem in PAREpy using a Jupyter Notebook o
 ```
 
 <p align="justify">
-The <code>of_file.py</code> file should contain the problem's objective function. The <code>your_problem</code> file is the file that will contain the call to the main function and other settings necessary for the use of the algorithm.
+The <code>of_file.py</code> file should contain the problem's objective function. The <code>your_problem</code> file will contain the call to the main function and other settings necessary for using the algorithm.
 </p>
 
 <h2><code>of_file.py</code></h2>
@@ -70,14 +70,20 @@ def my_function(x, none_variable):
 <code>of_file.py</code> has three returns: 
 </p>
 
+{: .important }
+> When you assemble this function, you must maintain this standard and input order.
+
 <ul>
-    <li><code>r</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the capacity in this variable;</li>
-    <li><code>s</code> (type <code>list</code>): list of values. In structural problems, we recommend putting the demand in this variable;</li>
+    <li><code>r</code> (type <code>list</code>): list of values. In structural problems, we recommend placing the capacity on this variable;</li>
+    <li><code>s</code> (type <code>list</code>): list of values. In structural problems, we recommend placing the demand on this variable;</li>
     <li><code>g</code> (type <code>list</code>): State limit function \(\mathbf{G} = \mathbf{R} - \mathbf{S}\). <b>Mandatory function return</b>.</li>
 </ul>
 
 {: .important }
 > The lists `r`, `s`, and `g` must be the same size and will be defined in the main function setup (key `number of state limit functions or constraints`). Furthermore, the list `g` must necessarily be this function's last return variable.
+
+{: .important }
+> After the run, all lists are shown in the data frame results.
 
 <p align="justify">
 To demostrate how to create a object function we use Beck <a href="#ref1">[1]</a> example. The State Limit Function is given by:
@@ -194,7 +200,7 @@ def example_function(x, none_variable):
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
 <p align="justify">
-See more details in following sections and verify how to can PAREpy in your problem.
+See more details in the following sections and verify how PAREpy can be used in your problem.
 </p>
 
 <h1>Reference list</h1>
