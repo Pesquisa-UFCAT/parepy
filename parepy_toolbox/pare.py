@@ -2,6 +2,7 @@
 import time
 import copy
 import os
+import itertools
 from datetime import datetime
 from multiprocessing import Pool
 
@@ -493,3 +494,18 @@ def sobol_algorithm(setup):
     )
 
     return dict_sobol
+
+def generate_factorial_design(dict):
+    """
+    This functions generates a factorial design DataFrame from the given dictionary.
+
+    Args:
+        dict (Dictionary): Dictionary where keys are factor names and values are lists of factor levels.
+
+    Returns:
+        DataFrame: DataFrame containing the factorial design.
+    """
+    combinations = list(itertools.product(*dict.values()))
+    df = pd.DataFrame(combinations, columns=dict.keys())
+
+    return df
