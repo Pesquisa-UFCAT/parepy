@@ -77,8 +77,6 @@ YOUR_PROBLEM.IPYNB
 
 ```python
 import numpy as np
-from tabulate import tabulate
-
 from parepy_toolbox import generate_factorial_design
 
 # Input Levels
