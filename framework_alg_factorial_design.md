@@ -13,7 +13,7 @@ title: generate_factorial_design
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete this script-->
 
-### Function Documentation: `generate_factorial_design`
+<h3>generate_factorial_design</h3>
 
 <p align="justify">
     Generates a full factorial design based on the input dictionary of variable levels. The function computes all possible combinations of the provided levels for each variable and returns them in a structured DataFrame.
@@ -23,7 +23,7 @@ title: generate_factorial_design
 df = generate_factorial_design(level_dict)
 ```
 
-#### Input Variables
+Input Variables
 {: .label .label-yellow }
 
 <table style="width:100%">
@@ -45,7 +45,7 @@ df = generate_factorial_design(level_dict)
 
 ---
 
-#### Output Variables
+Output Variables
 {: .label .label-yellow }
 
 <table style="width:100%">
