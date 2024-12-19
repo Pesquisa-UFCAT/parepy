@@ -40,10 +40,15 @@ Input variables
                 Dictionary containing the function settings. Keys include:
                 <ul>
                     <li><code>'model'</code>: The model used for analysis [String]</li>
+                    <br>
                     <li><code>'n_constraints'</code>: Number of limit state functions (constraints) [Integer]</li>
+                    <br>
                     <li><code>'folder_path'</code>: Path to the folder containing the files to be concatenated [String]</li>
+                    <br>
                     <li><code>'name_simulation'</code>: Name of the simulation to include in the output file name [String]</li>
+                    <br>
                     <li><code>'algorithm'</code>: Name of the algorithm used [String]</li>
+                    <br>
                     <li><code>'steps'</code>: Number of time steps for analysis, required if the model is 'MCS-TIME' [Integer]</li>
                 </ul>
                 </p>

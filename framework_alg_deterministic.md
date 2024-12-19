@@ -39,10 +39,15 @@ Input variables
             A dictionary containing the settings for the numerical model and analysis.
             <ul>
                 <li><code>'objective function'</code>: A Python function defining the state limit function.</li>
+                <br>
                 <li><code>'gradient objective function'</code>: A Python function defining the gradient of the objective function.</li>
+                <br>
                 <li><code>'numerical model'</code>: A dictionary containing the model type (<code>'model'</code>) and the initial guess (<code>'initial guess'</code>).</li>
+                <br>
                 <li><code>'variables settings'</code>: A list of dictionaries defining variable properties (<code>'mean'</code> and <code>'sigma'</code>).</li>
+                <br>
                 <li><code>'number of iterations'</code>: An integer defining the number of iterations to perform.</li>
+                <br>
                 <li><code>'none variable'</code>: Additional user-defined input, used in the objective and gradient functions.</li>
             </ul>
         </td>

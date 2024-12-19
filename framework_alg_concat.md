@@ -40,7 +40,9 @@ Input variables
                 Dictionary containing the main settings. Keys include:
                 <ul>
                     <li><code>'folder path'</code>: Path to the folder containing the .txt files [String]</li>
+                    <br>
                     <li><code>'number of state limit functions or constraints'</code>: Number of state limit functions or constraints [Integer]</li>
+                    <br>
                     <li><code>'simulation name'</code>: Name of the simulation [String]</li>
                 </ul>
                 </p>

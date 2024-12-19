@@ -40,10 +40,15 @@ Input variables
             A dictionary containing the settings for the numerical model and analysis.
             <ul>
                 <li><code>'number of samples'</code>: An integer defining the number of samples.</li>
+                <br>
                 <li><code>'objective function'</code>: A Python function defining the state limit function.</li>
+                <br>
                 <li><code>'numerical model'</code>: A dictionary containing the model type (<code>'model'</code>) and additional settings.</li>
+                <br>
                 <li><code>'variables settings'</code>: A list of dictionaries defining variable properties (e.g., <code>'mean'</code>, <code>'sigma'</code>).</li>
+                <br>
                 <li><code>'number of state limit functions or constraints'</code>: An integer specifying the number of state limit functions or constraints.</li>
+                <br>
                 <li><code>'none variable'</code>: Additional user-defined input, used in the objective function.</li>
             </ul>
         </td>
