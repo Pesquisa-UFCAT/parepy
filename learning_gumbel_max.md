@@ -12,7 +12,7 @@ title: Gumbel right distribution
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<h1>Gumbel Max (right)</h1>
+<h1>Gumbel Maximum (right)</h1>
 
 <p align="justify">A distribuição de Gumbel, também conhecida como distribuição de valores extremos do tipo I, é uma distribuição de probabilidade contínua amplamente utilizada para modelar eventos extremos, como máximos ou mínimos de um conjunto de dados. Quando a cauda superior da distribuição inicial \(X\) apresenta taxa de decrescimento exponencial, a distribuição dos máximos de \(X\) tende assintoticamente a uma distribuição de Gumbel. Distribuições com cauda exponencial incluem normal, exponencial e gamma.
 
