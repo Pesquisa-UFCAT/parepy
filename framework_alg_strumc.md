@@ -40,11 +40,17 @@ Input variables
                 Dictionary containing the main configurations. The keys include:
                 <ul>
                     <li><code>'number of samples'</code>: Number of samples [Integer]</li>
+                    <br>
                     <li><code>'numerical model'</code>: Numerical model settings [Dictionary]</li>
+                    <br>
                     <li><code>'variables settings'</code>: Variables settings, listed as dictionaries [List]</li>
+                    <br>
                     <li><code>'number of state limit functions or constraints'</code>: Number of state limit functions or constraints [Integer]</li>
+                    <br>
                     <li><code>'none_variable'</code>: Generic variable for use in the objective function [None, List, Float, Dictionary, String, or other type]</li>
+                    <br>
                     <li><code>'objective function'</code>: Objective function defined by the user [Python function]</li>
+                    <br>
                     <li><code>'name simulation'</code>: Output filename [String or None]</li>
                 </ul>
                 </p>
