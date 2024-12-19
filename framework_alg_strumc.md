@@ -247,7 +247,7 @@ of_file.py
 
 ```python
 def nowak_collins_example(x, none_variable):
-    """Objective function for the Nowak example (tutorial).
+    """Objective function for the Nowak Collins example (tutorial).
     """
 
     # Random variables
@@ -309,7 +309,7 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
 <h3>Post-processing</h3>
 
 <p align="justify">
-    The results of the sampling simulation need to be evaluated. This section demonstrates how to print, plot, and show these results. The results of the sampling simulation need to be assessed. This section demonstrates how to print, plot, and show these results. <b>Consider Example 1</b> to show examples of post-processing.
+    This section illustrates how to print, plot, and show these results. <b>Consider Example 1</b> to show examples of post-processing.
 </p>
 
 <h4>Show results - all samples</h4>
