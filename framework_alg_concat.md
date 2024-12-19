@@ -26,18 +26,30 @@ Input variables
 
 <table style="width:100%">
     <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+        </tr>
     </thead>
-    <tr>
-        <td><code>setup</code></td>
-        <td>A dictionary containing the settings for the numerical model, including the folder path with the .txt files, the number of state limit functions or constraints, and the simulation name.</td>
-        <td>Dictionary</td>
-    </tr>
+    <tbody>
+        <tr>
+            <td><code>setup</code></td>
+            <td>
+                <p align="justify">
+                Dictionary containing the main settings. Keys include:
+                <ul>
+                    <li><code>'folder path'</code>: Path to the folder containing the .txt files [String]</li>
+                    <li><code>'number of state limit functions or constraints'</code>: Number of state limit functions or constraints [Integer]</li>
+                    <li><code>'simulation name'</code>: Name of the simulation [String]</li>
+                </ul>
+                </p>
+            </td>
+            <td>Dictionary</td>
+        </tr>
+    </tbody>
 </table>
+
 
 Output variables
 {: .label .label-yellow }

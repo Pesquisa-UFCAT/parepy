@@ -26,54 +26,33 @@ Input variables
 
 <table style="width:100%">
     <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+        </tr>
     </thead>
-    <tr>
-        <td><code>setup</code></td>
-        <td>Setup settings.</td>
-        <td>Dictionary</td>
-    </tr>
-    <tr>
-        <td><code>number of samples</code></td>
-        <td>Number of samples (key in setup dictionary)</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
-        <td><code>numerical model</code></td>
-        <td>Numerical model settings (key in setup dictionary). See examples in <a href="#models">Table 1</a></td>
-        <td>Dictionary</td>
-    </tr>
-    <tr>
-        <td><code>variables settings</code></td>
-        <td>Variables settings (key in setup dictionary). This variable is a list of dictionaries. See examples in <a href="#variables">Table 2</a></td>
-        <td>List</td>
-    </tr>
-    <tr>
-        <td><code>number of state limit functions or constraints</code></td>
-        <td>Number of state limit functions or constraints</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
-        <td><code>none_variable</code></td>
-        <td>None variable. User can use this variable in the objective function (key in setup dictionary)</td>
-        <td>None, List, Float, Dictionary, String, or any</td>
-    </tr>
-    <tr>
-        <td><code>objective function</code></td>
-        <td>Objective function. The PAREpy user defines this function (key in setup dictionary)</td>
-        <td>Python function</td>
-    </tr>
-    <tr>
-        <td><code>name simulation</code></td>
-        <td>Output filename (key in setup dictionary)</td>
-        <td>String or None</td>
-    </tr>
+    <tbody>
+        <tr>
+            <td><code>setup</code></td>
+            <td>
+                <p align="justify">
+                Dictionary containing the main configurations. The keys include:
+                <ul>
+                    <li><code>'number of samples'</code>: Number of samples [Integer]</li>
+                    <li><code>'numerical model'</code>: Numerical model settings [Dictionary]</li>
+                    <li><code>'variables settings'</code>: Variables settings, listed as dictionaries [List]</li>
+                    <li><code>'number of state limit functions or constraints'</code>: Number of state limit functions or constraints [Integer]</li>
+                    <li><code>'none_variable'</code>: Generic variable for use in the objective function [None, List, Float, Dictionary, String, or other type]</li>
+                    <li><code>'objective function'</code>: Objective function defined by the user [Python function]</li>
+                    <li><code>'name simulation'</code>: Output filename [String or None]</li>
+                </ul>
+                </p>
+            </td>
+            <td>Dictionary</td>
+        </tr>
+    </tbody>
 </table>
-
 
 Output variables
 {: .label .label-yellow }

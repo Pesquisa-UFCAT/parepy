@@ -26,48 +26,33 @@ Input variables
 
 <table style="width:100%">
     <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-      </tr>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+        </tr>
     </thead>
-    <tr>
-        <td><code>setup</code></td>
-        <td>Dictionary containing the settings for the function.</td>
-        <td>Dictionary</td>
-    </tr>
-    <tr>
-        <td><code>setup['model']</code></td>
-        <td>The model used for analysis.</td>
-        <td>String</td>
-    </tr>
-    <tr>
-        <td><code>setup['n_constraints']</code></td>
-        <td>Number of limit state functions (constraints).</td>
-        <td>Integer</td>
-    </tr>
-    <tr>
-        <td><code>setup['folder_path']</code></td>
-        <td>Path to the folder containing the files to be concatenated.</td>
-        <td>String</td>
-    </tr>
-    <tr>
-        <td><code>setup['name_simulation']</code></td>
-        <td>Name of the simulation to include in the output file name.</td>
-        <td>String</td>
-    </tr>
-    <tr>
-        <td><code>setup['algorithm']</code></td>
-        <td>Name of the algorithm used.</td>
-        <td>String</td>
-    </tr>
-    <tr>
-        <td><code>setup['steps']</code></td>
-        <td>Number of time steps for analysis, required if the model is 'MCS-TIME'.</td>
-        <td>Integer</td>
-    </tr>
+    <tbody>
+        <tr>
+            <td><code>setup</code></td>
+            <td>
+                <p align="justify">
+                Dictionary containing the function settings. Keys include:
+                <ul>
+                    <li><code>'model'</code>: The model used for analysis [String]</li>
+                    <li><code>'n_constraints'</code>: Number of limit state functions (constraints) [Integer]</li>
+                    <li><code>'folder_path'</code>: Path to the folder containing the files to be concatenated [String]</li>
+                    <li><code>'name_simulation'</code>: Name of the simulation to include in the output file name [String]</li>
+                    <li><code>'algorithm'</code>: Name of the algorithm used [String]</li>
+                    <li><code>'steps'</code>: Number of time steps for analysis, required if the model is 'MCS-TIME' [Integer]</li>
+                </ul>
+                </p>
+            </td>
+            <td>Dictionary</td>
+        </tr>
+    </tbody>
 </table>
+
 
 Output variables
 {: .label .label-yellow }
