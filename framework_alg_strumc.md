@@ -14,7 +14,7 @@ title: sampling_algorithm_structural_analysis
 <!--Don't delete ths script-->
 
 <p align = "justify">
-    This function creates the samples and evaluates the limit state functions in structural reliability problems.
+    This function creates the samples and evaluates the limit state functions in structural reliability problems. Based on the data, it calculates probabilities of failure and reliability indexes.
 </p>
 
 ```python
@@ -112,17 +112,17 @@ To use the sample algorithm, you must choose the algorithm and variable types an
         </tr>
         <tr>
             <td>Stochastic - Crude Monte Carlo. Considering five steps in this example</td>
-            <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code><sup>1,2</sup></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
+            <td><ul><li><code>'numerical model': {'model sampling': 'mcs-time', 'time steps': 5}</code><sup>1,2</sup></li><br><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
         </tr>
         <tr>
             <td>Stochastic - Latin Hypercube. Considering five steps in this example</td>
-            <td><ul><li><code>'numerical model': {'model sampling': 'lhs-time', 'time steps': 5}</code><sup>1,2</sup></li><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
+            <td><ul><li><code>'numerical model': {'model sampling': 'lhs-time', 'time steps': 5}</code><sup>1,2</sup></li><br><li>and <code>'none variable': {'time analysis': list(np.linspace(0, 50, num=5, endpoint=True))}</code><sup>1,2</sup></li></ul></td>
         </tr>
     </table>
 </center>
 
 {: .important }
->¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. We use five steps between 0 and 50 years in this example. In this case, a user should import the **Numpy** library to use ```np. linspace```. Another library can be used to create a list.
+>¹When applying a stochastic procedure, use a list in ```'none variables'``` with the same length as ```'time steps'```. We use five steps between 0 and 50 years in this example. In this case, a user should import the Numpy library to use ```np. linspace```. Another library can be used to create a list.
 
 {: .important }
 >²When applying a stochastic procedure, you must use the following code on top of the objective function:    
@@ -328,6 +328,9 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
     <li><code>I_</code>: Indicator function (PAREpy generate).</li>
 </ul>
 
+{: .important }
+>If you use two constraints, the PAREpy output shows two `G_` columns, two `R_` and `S_` columns, and two `I_` columns. The behavior occurs for more constraints.
+
 ```python
 # Show results in notebook file (simply use the DataFrame's variable name in code cell) 
 results
@@ -355,10 +358,6 @@ sorted_positive.head(3)
 # Show results in python file (using print function)
 print(sorted_positive.head(3))
 ```
-
-{: .important } 
->
-> PAREpy is using the same ID sequence in your data frames. Therefore, any column starts with zero.
 
 <h4>Plot results - all samples</h4>
 
@@ -617,6 +616,10 @@ results, pf, beta = sampling_algorithm_structural_analysis(setup)
     <li><code>G_i_t</code>: Second return in objective function (User defined) -  in specific time step;</li>
     <li><code>I_i_t</code>: Indicator function (PAREpy generate) -  in specific time step.</li>
 </ul>
+
+
+{: .important }
+>If you use two constraints, the PAREpy output will show two G_ columns, two R_ and S_ columns, and two I_ columns. However, in time-dependent reliability cases, PAREpy uses first-barrier failure criteria to evaluate the probability of failure. Therefore, all outputs have the same user-specified time interval.
 
 <h4>Show \(p_f\) and \(\beta\) results</h4>
 

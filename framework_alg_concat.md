@@ -96,6 +96,9 @@ Output variables
     └── result_sampling_algorithm_structural_analysis_n.txt
 ```
 
+{: .important }
+>The function expects to find multiple `.txt` files in the `folder_path` directory. Ensure that the file format follows the described structure, with columns separated by tabs (`\t`) and necessary columns (`X_`, `G_`, `I_`). This format ensures that the function can correctly concatenate the data and perform the expected calculations.
+
 Example 1
 {: .label .label-blue }
 
@@ -119,10 +122,9 @@ setup = {
             'name simulation': 'new_simulation_results'  
         }
 
-results_about_data, failure_prob_list, beta_list = concatenates_txt_files_sampling_algorithm_structural_analysis(setup)
+results, pf, beta = concatenates_txt_files_sampling_algorithm_structural_analysis(setup)
 
-print(f'pf:\n{tabulate(failure_prob_list, headers="keys", tablefmt="pretty", showindex=False)}')
-print(f'ϐ:\n{tabulate(beta_list, headers="keys", tablefmt="pretty", showindex=False)}')
+pf
 ```
 
 <p align = "justify">
@@ -145,17 +147,9 @@ pf:
 | 0.0036321428571428572 |
 | 0.003939285714285715  |
 +-----------------------+
-ϐ:
-+--------------------+
-|        G_0         |
-+--------------------+
-| 2.8972675555698797 |
-| 2.8015539115836514 |
-| 2.7370121664846363 |
-| 2.684479412315009  |
-| 2.6572298171875497 |
-+--------------------+
 ```
 
-{: .important }
->The function expects to find multiple `.txt` files in the `folder_path` directory. Ensure that the file format follows the described structure, with columns separated by tabs (`\t`) and necessary columns (`X_`, `G_`, `I_`). This format ensures that the function can correctly concatenate the data and perform the expected calculations.
+{: .note-title }
+> Suggestions  
+>
+> Use this function when you need to divide your process among various computers. In the end, you can concatenate all data into a unique data frame and generate a probability of failure and reliability index for this full data.
