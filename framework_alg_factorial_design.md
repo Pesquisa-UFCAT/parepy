@@ -67,12 +67,16 @@ Output Variables
 
 ---
 
-EXAMPLE
+Example 1
 {: .label .label-blue }
 
-This example demonstrates how to generate a full factorial design for a given set of levels.
+<p align="justify">
+    <i>
+        This example demonstrates how to generate a full factorial design for a given set of levels.
+    </i>
+</p>
 
-YOUR_PROBLEM.IPYNB
+your_problem.ipynb
 {: .label .label-red }
 
 ```python
@@ -94,7 +98,9 @@ df = generate_factorial_design(setup)
 print(df)
 ```
 
-**Example Output**:
+<p align="justify">
+  Output details:
+</p>
 
 ```bash
 +----+----------+----------+----------+----------+
@@ -105,23 +111,6 @@ print(df)
 |  2 |        0 |        0 |        5 |       10 |
 |  3 |        0 |        0 |       15 |        0 |
 |  4 |        0 |        0 |       15 |        9 |
-|  5 |        0 |        0 |       15 |       10 |
-|  6 |        0 |        5 |        5 |        0 |
-|  7 |        0 |        5 |        5 |        9 |
-|  8 |        0 |        5 |        5 |       10 |
-|  9 |        0 |        5 |       15 |        0 |
-| 10 |        0 |        5 |       15 |        9 |
-| 11 |        0 |        5 |       15 |       10 |
-| 12 |        0 |       10 |        5 |        0 |
-| 13 |        0 |       10 |        5 |        9 |
-| 14 |        0 |       10 |        5 |       10 |
-| 15 |        0 |       10 |       15 |        0 |
-| 16 |        0 |       10 |       15 |        9 |
-| 17 |        0 |       10 |       15 |       10 |
-| 18 |        0 |       15 |        5 |        0 |
-| 19 |        0 |       15 |        5 |        9 |
-| 20 |        0 |       15 |        5 |       10 |
-| 21 |        0 |       15 |       15 |        0 |
 ...
 | 69 |       10 |       15 |       15 |        0 |
 | 70 |       10 |       15 |       15 |        9 |
