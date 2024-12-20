@@ -158,13 +158,9 @@ data_sobol = sobol_algorithm(setup)
 {: .important }
 >How the Sobol algorithm leverages the sampling_algorithm_structural_analysis is necessary assemble setup variable using same pattern that this function. See example (setup file)[sampling_algorithm_structural_analysis].
 
-<h3>Post-processing Sobol Indices</h3>
+<h3>Post-processing</h3>
 
-<p align="justify">
-    After executing the <code>sobol_algorithm</code>, it is essential to analyze the results, which include the first-order (\( s_i \)) and total-order (\( s_t \)) Sobol indices. This section demonstrates how to print, plot, and interpret these indices for a structural reliability problem. The analysis helps determine the relative contribution of input variables to the model output and their interactions. 
-</p>
-
-<h4>Show results - Sobol indices</h4>
+<h4>Show all results</h4>
 
 <p align="justify">
     How do we display the Sobol indices calculated for the Ishigami function?
@@ -180,16 +176,8 @@ print(data_sobol)
 ```
 
 <p align="justify">
-    To analyze the first-order and total-order Sobol indices for each variable:
+    Output details:
 </p>
-
-```python
-# Convert Sobol indices to a table
-from tabulate import tabulate
-print(tabulate(data_sobol, headers='keys', tablefmt='psql'))
-```
-
-Expected output:
 
 ```bash
 +----+-----------+----------+
@@ -206,7 +194,7 @@ Expected output:
     <li><code>s_t</code>: Total-order Sobol index, representing the overall contribution, including interactions with other variables.</li>
 </ul>
 
-<h4>Plot results - Sobol indices</h4>
+<h4>Plot results</h4>
 
 <p align="justify">
     How do we visualize the Sobol indices as bar charts to interpret the results?
@@ -221,21 +209,21 @@ variables = ['x_0', 'x_1', 'x_2']
 s_i = [data_sobol.iloc[var]['s_i'] for var in range(len(variables))]
 s_t = [data_sobol.iloc[var]['s_t'] for var in range(len(variables))]
 
-# Plot bar chart for Sobol indices
+# Plot bar chart for Sobol indixes
 x = range(len(variables))
 width = 0.35
-
 plt.bar(x, s_i, width, label='First-order (s_i)', color='blue', alpha=0.7)
 plt.bar([p + width for p in x], s_t, width, label='Total-order (s_t)', color='orange', alpha=0.7)
-
 plt.xlabel("Variables")
-plt.ylabel("Sobol Indices")
+plt.ylabel("Sobol Index")
 plt.xticks([p + width / 2 for p in x], variables)
 plt.legend()
 plt.show()
 ```
 
-Expected plot:
+<p align="justify">
+Output details:
+</p>
 
 <center>
     <img src="assets/images/sobol_output.png" height="auto">
