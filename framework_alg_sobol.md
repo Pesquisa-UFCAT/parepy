@@ -106,7 +106,7 @@ $$
 </ul>
 </div>
 
-of_gile.py
+of_file.py
 {: .label .label-red }
 
 ```python
@@ -226,7 +226,7 @@ Output details:
 </p>
 
 <center>
-    <img src="assets/images/sobol_output.png" height="auto">
+    <img src="assets/images/sobol_output.jpeg" height="auto">
     <p align="center"><b>Figure 1.</b> Sobol indices for the Ishigami function.</p>
 </center>
 
