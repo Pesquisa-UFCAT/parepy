@@ -300,7 +300,7 @@ def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -
         # Failure probability and beta index calculation
         parepyco.log_message('Started evaluation beta reliability index and failure probability...')
         start_time = time.perf_counter()
-        failure_prob_list, beta_list = parepyco.calc_pf_beta(results_about_data, setup['numerical model'], n_constraints)
+        failure_prob_list, beta_list = parepyco.calc_pf_beta(results_about_data, algorithm.upper(), n_constraints)
         end_time = time.perf_counter()
         final_time = end_time - start_time
         parepyco.log_message(f'Finished evaluation beta reliability index and failure probability in {end_time - start_time:.2e} seconds!')
@@ -499,6 +499,7 @@ def sobol_algorithm(setup):
     )
 
     return dict_sobol
+
 
 def generate_factorial_design(level_dict):
     """
