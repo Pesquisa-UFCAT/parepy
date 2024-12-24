@@ -41,9 +41,9 @@ Input variables
                 <ul>
                     <li><code>'number of samples'</code>: Number of samples [Integer]</li>
                     <br>
-                    <li><code>'numerical model'</code>: Numerical model settings [Dictionary]</li>
+                    <li><code>'numerical model'</code>: Numerical model settings [Dictionary]. See details in <a href="#models">Table 1</a></li>
                     <br>
-                    <li><code>'variables settings'</code>: Variables settings, listed as dictionaries [List]</li>
+                    <li><code>'variables settings'</code>: Variables settings, listed as dictionaries [List]. See details in <a href="#variables">Table 2</a></li>
                     <br>
                     <li><code>'number of state limit functions or constraints'</code>: Number of state limit functions or constraints [Integer]</li>
                     <br>

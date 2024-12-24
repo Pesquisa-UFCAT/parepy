@@ -30,4 +30,4 @@ nav_order: 1
 {: .new-title }
 > Version 
 >
-> [1.0.0](https://pypi.org/project/parepy-toolbox/#history)
+> [1.0.1](https://pypi.org/project/parepy-toolbox/#history)

@@ -43,6 +43,8 @@ Input variables
                     <br>
                     <li><code>'number of state limit functions or constraints'</code>: Number of state limit functions or constraints [Integer]</li>
                     <br>
+                    <li><code>'numerical model'</code>: Numerical model settings [Dictionary]. See this key in <a href="https://wmpjrufg.github.io/PAREPY/framework_alg_strumc.html" target="_blank" rel="noopener noreferrer"><code>sampling_algorithm_structural_analysis</code></a> documentation</li>
+                    <br>
                     <li><code>'simulation name'</code>: Name of the simulation [String]</li>
                 </ul>
                 </p>
