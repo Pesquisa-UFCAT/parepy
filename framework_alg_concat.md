@@ -105,7 +105,7 @@ Example 1
 {: .label .label-blue }
 
 <p align="justify">
-    <i>This example demonstrates how the <code>concatenates_txt_files_sampling_algorithm_structural_analysis</code> function processes a folder containing .txt files.</i>
+    <i>This example demonstrates how the <code>concatenates_txt_files_sampling_algorithm_structural_analysis</code> function processes a folder containing .txt files. Consider example 2 in <a href="https://wmpjrufg.github.io/PAREPY/framework_alg_strumc.html" target="_blank" rel="noopener noreferrer"><code>sampling_algorithm_structural_analysis</code>.</a> We generate samples three times (10000 samples) with this code.</i>
 </p>
 
 ```python
@@ -125,7 +125,6 @@ setup = {
         }
 
 results, pf, beta = concatenates_txt_files_sampling_algorithm_structural_analysis(setup)
-
 pf
 ```
 
@@ -155,3 +154,6 @@ pf:
 > Suggestions  
 >
 > Use this function when you need to divide your process among various computers. In the end, you can concatenate all data into a unique data frame and generate a probability of failure and reliability index for this full data.
+
+{: .important }
+>If three samples with 10,000 lines are generated, when to use `concatenates_txt_files_sampling_algorithm_structural_analysis`, the final dataset will have 30,000 lines.

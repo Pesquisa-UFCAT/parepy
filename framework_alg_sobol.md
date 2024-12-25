@@ -20,7 +20,7 @@ title: sobol_algorithm
 </p>
 
 ```python
-s_i, s_t = sobol_algorithm(setup)
+data_sobol = sobol_algorithm(setup)
 ```
 
 Input variables
@@ -89,9 +89,9 @@ Example 1
 </p>
 
 <p align="justify">
-Due to its nonlinear properties and the presence of variable interactions, the Ishigami function is commonly used as a test function for comparing global sensitivity analysis methods. This function is particularly valuable for benchmarking different sensitivity analysis methods, making it a classic example.
-<br><br>
-The function takes as input a vector \( x = [x_0, x_1, x_2] \), which represents three independent variables. Its analytical expression is defined as:
+    Due to its nonlinear properties and variable interactions, the Ishigami function is commonly used as a test function for comparing global sensitivity analysis methods. This function is particularly valuable for benchmarking different sensitivity analysis methods, making it a classic example.
+    <br><br>
+    The function takes as input a vector \( x = [x_0, x_1, x_2] \), which represents three independent variables. Its analytical expression is defined as:
 </p>
 
 $$
@@ -101,7 +101,7 @@ $$
 <div style="text-align: justify;">
 <p>where:</p>
 <ul>
-    <li>\( x = \{x_0, x_1, x_2\} are the input variables, uniformly distributed in \([-\pi, \pi]\);</li>
+    <li>\( x = \{x_0, x_1, x_2\}\) are the input variables, uniformly distributed in \([-\pi, \pi]\);</li>
     <li>\( a \) and \( b \) are adjustable parameters that control the relative impact of each term in the function. We use \( a=7.00 \) and \( b=0.10 \).</li>
 </ul>
 </div>
@@ -242,4 +242,3 @@ data_sobol.to_excel('sobol_indices.xlsx', index=False)
 
 print("Sobol indices saved to 'sobol_indices.xlsx'")
 ```
-
