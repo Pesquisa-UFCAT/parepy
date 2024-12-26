@@ -38,8 +38,9 @@ Input variables
             <p align="justify">
             Dictionary of parameters for uniform distribution. Keys:
             <ul>
-                <li><code>'min'</code>: Minimum value of the uniform distribution [float]</li>
-                <li><code>'max'</code>: Maximum value of the uniform distribution [float]</li>
+                <li><code>'min'</code>: Minimum value of the uniform distribution [Float]</li>
+                <br>
+                <li><code>'max'</code>: Maximum value of the uniform distribution [Float]</li>
             </ul>
             </p>
         </td>
@@ -51,6 +52,7 @@ Input variables
             <p align="justify">Sampling method. Supports the following values:
             <ul>
                 <li><code>'mcs'</code>: Crude Monte Carlo Sampling</li>
+                <br>
                 <li><code>'lhs'</code>: Latin Hypercube Sampling</li>
             </ul>
             </p>
