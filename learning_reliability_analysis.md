@@ -177,6 +177,7 @@ The example used to evaluate structural safety is a four floors plane frame, as 
         <td>V4</td>
         <td>20</td>
         <td>45</td>
+    </tr>
     <tr>
         <td>Column</td>
         <td>P1=P4</td>
