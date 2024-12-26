@@ -398,6 +398,14 @@ plt.ylabel("Frequency")
 plt.legend()
 plt.show()
 ```
+<p align="justify">
+Output details:
+</p>
+
+<center>
+    <img src="assets/images/plot_histogram_G_0.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Sobol indices for the Ishigami function.</p>
+</center>
 
 <p align="justify">
     How do we plot \(\boldsymbol{S}_0\) and \(\boldsymbol{R}_0\) in unique histogram?
@@ -415,6 +423,15 @@ plt.ylabel("Frequency")
 plt.legend()
 plt.show()
 ```
+
+<p align="justify">
+Output details:
+</p>
+
+<center>
+    <img src="assets/images/plot_histograms_R_0_and_S_0.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Sobol indices for the Ishigami function.</p>
+</center>
 
 <h4>Show \(p_f\) and \(\beta\) results</h4>
 
@@ -463,6 +480,18 @@ pf_list = pf.values.flatten().tolist()
 beta_list = beta.values.flatten().tolist()
 for i, (p, b) in enumerate(zip(pf_list, beta_list)):
     print(f"State Limite function (g): {i}, pf: {p:.6f}, beta: {b:.6f}")
+```
+
+<p align="justify">
+    Output details:
+</p>
+
+```bash
+State Limite function (g): 0, pf: 0.003000, beta: 2.747781
+State Limite function (g): 1, pf: 0.003000, beta: 2.747781
+State Limite function (g): 2, pf: 0.003000, beta: 2.747781
+State Limite function (g): 3, pf: 0.004000, beta: 2.652070
+State Limite function (g): 4, pf: 0.004000, beta: 2.652070
 ```
 
 <p align="justify" id="example2"></p>
@@ -669,6 +698,14 @@ print(pf_list)
 ```
 
 <p align="justify">
+    Output details:
+</p>
+
+```bash
+[0.003, 0.003, 0.003, 0.004, 0.004]
+```
+
+<p align="justify">
     Show \(\beta\) results in list format.
 </p>
 
@@ -676,6 +713,14 @@ print(pf_list)
 # Acess beta results
 beta_list = beta['G_0'].tolist()
 print(beta_list)
+```
+
+<p align="justify">
+    Output details:
+</p>
+
+```bash
+[2.7477813854449726, 2.7477813854449726, 2.7477813854449726, 2.652069807902187, 2.652069807902187]
 ```
 
 <p align="justify">
@@ -687,6 +732,18 @@ pf_list = pf['G_0'].tolist()
 beta_list = beta['G_0'].tolist()
 for i, (p, b) in enumerate(zip(pf_list, beta_list)):
     print(f"Time step (id={i}, time={setup['none variable']['time analysis'][i]}), pf: {p:.6f}, beta: {b:.6f}")
+```
+
+<p align="justify">
+    Output details:
+</p>
+
+```bash
+Time step (id=0, time=0.0), pf: 0.003000, beta: 2.747781
+Time step (id=1, time=12.5), pf: 0.003000, beta: 2.747781
+Time step (id=2, time=25.0), pf: 0.003000, beta: 2.747781
+Time step (id=3, time=37.5), pf: 0.004000, beta: 2.652070
+Time step (id=4, time=50.0), pf: 0.004000, beta: 2.652070
 ```
 
 <h1>Reference list</h1>
