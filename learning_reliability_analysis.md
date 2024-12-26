@@ -14,7 +14,8 @@ title: Reliability analysis of reinforced concrete frames subjected to post-cons
 
 <h1>Reliability analysis of reinforced concrete frames subjected to post-construction settlements</h1>
 
-<h2>Análise de confiabilidade de pórticos em concreto armado sujeitos a recalques pós construção</h2>
+<p>Análise de confiabilidade de pórticos em concreto armado sujeitos a recalques pós construção</p>
+
 <div class="authors">
     <p align="justify">
         <b>Wanderlei Malaquias Pereira Junior</b><sup>a</sup> 
@@ -92,5 +93,21 @@ $$
 \end{align*}
 $$
 
-<p align="justify">The requesting moment \(M_S\) indicates the maximum demand of bending moment on the cross-section, and in the case of this work, it was determined using a linear analysis. The resistant moment \(M_R\) indicates the resistant capacity of the cross-section of the reinforced concrete (RC) beam. \(A_s\) represents the steel’s area of the section, \(\lambda\) and \(\alpha_c\) are factors that depend on the characteristic compressive strength of concrete (\(f_c$)\). These factors can be consulted in section 17.2.2 of NBR 6118 [13]. \(f_y\) represents the yield strength of the passive reinforcement steel used. \(d\) and \(b_w\) represent the effective height and width of the RC section. \(E_R\) represents model error variable for beam bending.
+<p align="justify">The requesting moment \(M_S\) indicates the maximum demand of bending moment on the cross-section, and in the case of this work, it was determined using a linear analysis. The resistant moment \(M_R\) indicates the resistant capacity of the cross-section of the reinforced concrete (RC) beam. \(A_s\) represents the steel’s area of the section, \(\lambda\) and \(\alpha_c\) are factors that depend on the characteristic compressive strength of concrete (\(f_c)\). These factors can be consulted in section 17.2.2 of NBR 6118 [13]. \(f_y\) represents the yield strength of the passive reinforcement steel used. \(d\) and \(b_w\) represent the effective height and width of the RC section. \(E_R\) represents model error variable for beam bending.
 </p>
+
+<h2>2.1 Determination of internal loads</h2>
+
+<p align="justify">The effects of the loads on the frames studied are evaluated by employing a linear-elastic static analysis. The mechanical model is based on the matrix analysis of structures, with frame-type elements (see Figure 1) and three degrees of freedom per node. Static linear analysis is sufficient for an approximate study of the load distribution in frame structures, allowing the redistribution of loads once the equilibrium and ductility conditions of NBR 6118 [13] are satisfied. However, in this paper, the analyses were performed without considering the redistribution of internal forces.
+<br><br>
+The nodal displacement vector d is obtained by a system containing the global stiffness matrix K and the external forces vector (\(f\)). Thus, the system of equations that represents the discretized structural system will be given by equation (4).
+</p>
+
+\(K \cdot d = f \quad{(4)} \)
+
+<center>
+    <img src="assets/images/reliability_001.png" height="auto">
+    <p align="center"><b>Figure 1.</b> Frame element.</p>
+</center>
+
+<h2>3. STRUCTURAL RELIABILITY AND MONTE CARLO METHOD</h2>
