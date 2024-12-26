@@ -103,7 +103,9 @@ $$
 The nodal displacement vector d is obtained by a system containing the global stiffness matrix K and the external forces vector (\(f\)). Thus, the system of equations that represents the discretized structural system will be given by equation (4).
 </p>
 
-\(K \cdot d = f \quad{(4)} \)
+$$
+K \cdot d = f \quad{(4)}
+$$
 
 <center>
     <img src="assets/images/reliability_001.png" height="auto">
@@ -111,3 +113,85 @@ The nodal displacement vector d is obtained by a system containing the global st
 </center>
 
 <h2>3. STRUCTURAL RELIABILITY AND MONTE CARLO METHOD</h2>
+
+<p align="justify">In this section, the basic concepts of the reliability evaluation of a structure are presented. The Monte Carlo method, the reliability procedure employed in the analyses, are presented.
+<br><br>
+The basic reliability problem is represented by the multiple integral of equation (5), where \(p_f\) represents the failure probability of the structure, \(X\) is the n-dimensional vector representing the random variables of the system, \(f_x(x)\) represents the joint probability density function over the failure domain, and \(G(X)\) is the limit state equation.  \(G(X) ≤ 0\) represents a failure condition.
+</p>
+
+$$
+p_f = P(G(X) ≤ 0) = \int ... \int_{G(X) ≤ 0} f_x(x) dx \quad{(5)} 
+$$
+
+<p align="justify">The probability of failure is a complementary concept to structural reliability. Structural failure probability measures of the propensity of a structure or structural system to fail to satisfy the technical design requirements (function, strength, equilibrium) within a specified design life, respecting the operational and design conditions [2]. 
+<br><br>
+Several methods can be applied to solve equation (5). In the case of this work, the stochastic Monte Carlo method was applied. This algorithm was developed in the 1940s during the end of World War II and the beginning of the Cold War. It was initially employed by the mathematicians Stanislav Ulam and John von Neumann, who was working on developing the hydrogen bomb [14]. The model starts from the assumption of generating a random system of particles based on a given probability distribution.
+<br><br>
+There are several variations of the Monte Carlo method, the Simple Monte Carlo was used in this work, which consists of random tests with a certain number of samples. The failure probability calculation will be given by an approximation of equation (5). The estimation of the failure probability using the Monte Carlo method is given by equation (6). 
+</p>
+
+$$
+\begin{align*}
+    p_f = \frac{1}{n_s} \sum_{i=1}^{n_s} I[G(X)] = \frac{n_f}{n_s} \quad{(6)} \\
+    I[G(X)] = \begin{cases} 1, & \text{if } G(X_i) ≤ 0 \quad{(7)}\\ 0, & \text{otherwise} \quad{(8)} \end{cases}
+\end{align*}
+$$
+
+<p align="justify">In the case of equations (7) and (8), return 1 indicates failure of the Limit State function, i.e., it indicates that that structure has failed a due criterion, and return 0 indicates that the structure is in the safe evaluation region of the Limit State function. In equation (6), \(n_s\) indicates the number of samples and \(n_f\) indicates the number of system failure (IG(X)=1).
+<br><br>
+To ascertain the reliability measure (\(\beta_{MC}\)) of sampling, it is necessary to apply equation (9) which consists of the inverse function of the cumulative mean failure probability distribution (\(p_f\)). The numerical solution of this inverse function can be found in Beck [2].
+</p>
+
+$$
+\beta_{MC} = \Phi(1 - p_f)\quad{(9)}
+$$
+
+<h2>4. MODELING THE FRAME THROUGH RELIABILITY</h2>
+
+<p align="justify">This section presents the characteristics of the structural model used in the reliability analysis of a frame structure subjected to differential settlement and the numerical method employed in the reliability analysis.
+<br><br>
+The example used to evaluate structural safety is a four floors plane frame, as described in Facholli and Beck [4]. Figure 2 presents the geometry of the structural frame, which has four spans of 5 meters and a floor height of 3 meters. Table 2 shows the cross-section values for each element represented in Figure 2. 
+</p>
+
+<center>
+    <img src="assets/images/reliability_002.png" height="auto">
+    <p align="center"><b>Figure 2.</b> FPlane frame in reinforced concrete analyzed and nomenclature of the columns and beams.</p>
+</center>
+
+<table>
+    <title>Table 2. Geometric properties of the elements.</title>
+    <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>\(b_w\) (cm)</th>
+        <th>\(h\) (cm)</th>
+    </tr>
+    <tr>
+        <td>Beam</td>
+        <td>V1=V2=V3</td>
+        <td>20</td>
+        <td>45</td>
+    </tr>
+    <tr>
+        <td>Beam</td>
+        <td>V4</td>
+        <td>20</td>
+        <td>45</td>
+    <tr>
+        <td>Column</td>
+        <td>P1=P4</td>
+        <td>40</td>
+        <td>20</td>
+    </tr>
+    <tr>
+        <td>Column</td>
+        <td>P3=P3</td>
+        <td>50</td>
+        <td>20</td>
+    </tr>
+</table>
+
+<p align="justify">The imposed frame settlements are shown in Table 3. The created patterns aim to realize an angular distortion (\(\gamma\)) between columns of the building. The calculation of the angular distortion is performed by equation (11). In Table 3 probabilities (\(p\)) of occurrence of each of the established types of settlements are also arbitrated. These probabilities (\(p\)) are based on performance-based design where higher intensity events have lower probability of occurrence as described in Beck[2].
+<br><br>
+It is worth noting, that the settlement’s values stipulated follow traditional bibliographies on the subject, such as Skempton and MacDonald [17], Das [18], and Burland et al. [19]. In addition, the angular distortions established in Table 3 range from a less aggressive scale of rotation-to-rotation values that induce severe damage to the structure studied.
+</p>
