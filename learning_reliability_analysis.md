@@ -159,7 +159,7 @@ The example used to evaluate structural safety is a four floors plane frame, as 
 </center>
 
 <table>
-    <title>Table 2. Geometric properties of the elements.</title>
+    <!-- <title>Table 2. Geometric properties of the elements.</title> -->
     <tr>
         <th>Type</th>
         <th>Name</th>
