@@ -13,31 +13,32 @@ title: Reliability analysis of reinforced concrete frames subjected to post-cons
 <!--Don't delete this script-->
 
 <h1>Reliability analysis of reinforced concrete frames subjected to post-construction settlements</h1>
-    <h2>Análise de confiabilidade de pórticos em concreto armado sujeitos a recalques pós construção</h2>
-    <div class="authors">
-        <p align="justify">
-            <b>Wanderlei Malaquias Pereira Junior</b><sup>a</sup> 
-            <a href="https://orcid.org/0000-0002-7404-3666" target="_blank">https://orcid.org/0000-0002-7404-3666</a><br>
-            <b>Matheus Henrique Morato de Moraes</b><sup>b</sup> 
-            <a href="https://orcid.org/0000-0002-7285-1344" target="_blank">https://orcid.org/0000-0002-7285-1344</a><br>
-            <b>Daniel Lima de Araújo</b><sup>c</sup> 
-            <a href="https://orcid.org/0000-0002-6802-4637" target="_blank">https://orcid.org/0000-0002-6802-4637</a><br>
-            <b>Mauro Alexandre Paula de Sousa</b><sup>b</sup> 
-            <a href="https://orcid.org/0000-0002-5798-8553" target="_blank">https://orcid.org/0000-0002-5798-8553</a><br>
-            <b>Antover Panazzolo Sarmento</b><sup>c</sup> 
-            <a href="https://orcid.org/0000-0002-8533-1575" target="_blank">https://orcid.org/0000-0002-8533-1575</a><br>
-            <b>André Teófilo Beck</b><sup>d</sup> 
-            <a href="https://orcid.org/0000-0003-4127-5337" target="_blank">https://orcid.org/0000-0003-4127-5337</a>
-        </p>
-    </div>
-    <div class="affiliations">
-        <p align="justify">
-            <sup>a</sup>Federal University of Catalão - UFCAT, Engineering College, Department of Civil Engineering, Catalão, Goiás, Brasil<br>
-            <sup>b</sup>Federal University of São Carlos - UFSCar, Civil Engineering Graduate Program, Department of Civil Engineering, São Carlos, São Paulo, Brasil<br>
-            <sup>c</sup>Federal University of Goiás - UFG, Department of Civil Engineering, Goiânia, Goiás, Brasil<br>
-            <sup>d</sup>University of São Paulo - USP, Engineering School, Department of Engineering Structures, São Carlos, São Paulo, Brasil
-        </p>
-    </div>
+
+<h2>Análise de confiabilidade de pórticos em concreto armado sujeitos a recalques pós construção</h2>
+<div class="authors">
+    <p align="justify">
+        <b>Wanderlei Malaquias Pereira Junior</b><sup>a</sup> 
+        <a href="https://orcid.org/0000-0002-7404-3666" target="_blank">https://orcid.org/0000-0002-7404-3666</a><br>
+        <b>Matheus Henrique Morato de Moraes</b><sup>b</sup> 
+        <a href="https://orcid.org/0000-0002-7285-1344" target="_blank">https://orcid.org/0000-0002-7285-1344</a><br>
+        <b>Daniel Lima de Araújo</b><sup>c</sup> 
+        <a href="https://orcid.org/0000-0002-6802-4637" target="_blank">https://orcid.org/0000-0002-6802-4637</a><br>
+        <b>Mauro Alexandre Paula de Sousa</b><sup>b</sup> 
+        <a href="https://orcid.org/0000-0002-5798-8553" target="_blank">https://orcid.org/0000-0002-5798-8553</a><br>
+        <b>Antover Panazzolo Sarmento</b><sup>c</sup> 
+        <a href="https://orcid.org/0000-0002-8533-1575" target="_blank">https://orcid.org/0000-0002-8533-1575</a><br>
+        <b>André Teófilo Beck</b><sup>d</sup> 
+        <a href="https://orcid.org/0000-0003-4127-5337" target="_blank">https://orcid.org/0000-0003-4127-5337</a>
+    </p>
+</div>
+<div class="affiliations">
+    <p align="justify">
+        <sup>a</sup>Federal University of Catalão - UFCAT, Engineering College, Department of Civil Engineering, Catalão, Goiás, Brasil<br>
+        <sup>b</sup>Federal University of São Carlos - UFSCar, Civil Engineering Graduate Program, Department of Civil Engineering, São Carlos, São Paulo, Brasil<br>
+        <sup>c</sup>Federal University of Goiás - UFG, Department of Civil Engineering, Goiânia, Goiás, Brasil<br>
+        <sup>d</sup>University of São Paulo - USP, Engineering School, Department of Engineering Structures, São Carlos, São Paulo, Brasil
+    </p>
+</div>
 
 <p align="justify"><b>Abstract:</b> Most papers found in the literature address reliability analysis of isolated elements, like beams and columns. Yet, symmetry and regularity are often exploited in the construction of regular RC frames, resulting in the same or similar designs for all columns of a floor, and for all beams of a building. This leads to significant differences in member reliability, due to different axial load to bending moment ratios, in different parts of the structure. Moreover, load effects increase and symmetry is lost under individual support settlements. In this scenario, reliability analyses are performed, for an intact 4-story 4-bays RC frame; and considering different settlement conditions. Monte Carlo simulation is performed, considering uncertainties in dead and life loading, and steel and concrete strengths. The results show that a settlement of 5 mm, corresponding to an angular distortion of 1/1000, reduced the average reliability of the frame by only 7%, just the same, it reduced the reliability index of several cross-sections of the beams to up to 2.65,
 </p>
