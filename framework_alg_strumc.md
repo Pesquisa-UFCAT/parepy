@@ -404,7 +404,7 @@ Output details:
 
 <center>
     <img src="assets/images/plot_histogram_G_0.png" height="auto">
-    <p align="center"><b>Figure 1.</b> Sobol indices for the Ishigami function.</p>
+    <p align="center"><b>Figure 1.</b> Histogram of \(\boldsymbol{G}_0\).</p>
 </center>
 
 <p align="justify">
@@ -430,7 +430,7 @@ Output details:
 
 <center>
     <img src="assets/images/plot_histograms_R_0_and_S_0.png" height="auto">
-    <p align="center"><b>Figure 1.</b> Sobol indices for the Ishigami function.</p>
+    <p align="center"><b>Figure 2.</b> Histogram of \(\boldsymbol{R}_0\) and \(\boldsymbol{S}_0\).</p>
 </center>
 
 <h4>Show \(p_f\) and \(\beta\) results</h4>
