@@ -27,7 +27,9 @@ nav_order: 1
 > [Prof. PhD Iuri Fazolin Fraga](http://lattes.cnpq.br/3180484792983028)  
 > [Msc Matheus Henrique Morato Moraes](http://lattes.cnpq.br/8465474056220474)   
 > [Prof. PhD Mauro Alexandre Paula de Sousa](http://orcid.org/0000-0002-5798-8553)
+> <br>
 > [Prof. PhD Antover Panazzolo Sarmento](http://orcid.org/0000-0002-8533-1575)
+> <br>
 > [Dis. Luiz Henrique Ferreira Rezio](http://orcid.org/0009-0008-4084-2137)
 
 {: .new-title }
