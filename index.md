@@ -24,8 +24,11 @@ nav_order: 1
 > [Prof. PhD André Teófilo Beck](http://lattes.cnpq.br/4319075758352865)  
 > [Prof. PhD André Luis Christoforo](http://lattes.cnpq.br/7623383075429186)  
 > [Msc Murilo Carneiro Rodrigues](http://lattes.cnpq.br/6429652195589650)   
-> [Prof. PhD Iuri Fazolin](http://lattes.cnpq.br/3180484792983028)  
+> [Prof. PhD Iuri Fazolin Fraga](http://lattes.cnpq.br/3180484792983028)  
 > [Msc Matheus Henrique Morato Moraes](http://lattes.cnpq.br/8465474056220474)   
+> [Prof. PhD Mauro Alexandre Paula de Sousa](https://orcid.org/0000-0002-5798-8553)
+> [Prof. PhD Antover Panazzolo Sarmento](https://orcid.org/0000-0002-8533-1575)
+> [Dis. Luiz Henrique Ferreira Rezio](https://orcid.org/0009-0008-4084-2137)
 
 {: .new-title }
 > Version 
