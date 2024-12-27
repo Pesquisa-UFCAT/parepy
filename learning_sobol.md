@@ -12,15 +12,15 @@ title: Sobol Indices
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete this script-->
 
-<h1>Sobol Indices</h1>
+<h1>Sobol Index</h1>
 
-<p align="justify">A análise de sensibilidade baseada em variância ou índices de Sobol, é uma forma de análise de sensibilidade global que visam detectar as variáveis/parâmetros de entrada mais influentes em modelos de computador complexos. Nessas estruturas, os índices de Sobol são utilizados para quantificar como a variabilidade de uma entrada afeta a variabilidade de uma saída de um modelo, bem como para determinar interações entre as suas variáveis. A análise de Sobol é especialmente útil em modelos com múltiplos parâmetros, onde é necessário compreender quais variáveis contribuem mais para a incerteza do modelo.</p>
+<p align="justify">Variance-based sensitivity analysis, or Sobol index, is a form of global sensitivity analysis designed to identify the most influential input variables/parameters in complex computer models. In these frameworks, Sobol index are used to quantify how the variability of an input affects the variability of a model's output, as well as to determine interactions among variables. Sobol analysis is particularly useful in models with multiple parameters, where understanding which variables contribute most to the model's uncertainty is essential.</p>
 
-<h2>Procedimento de Cálculo dos Índices de Sensibilidade</h2>
+<h2>Procedure for Calculating Sensitivity Indices</h2>
 
-<p align="justify">O procedimento numérico baseado em Monte Carlo para calcular os índices de sensibilidade de primeira ordem e os índices de efeito total para um modelo com \(k\) fatores de entrada são discutidos a seguir:</p>
+<p align="justify">The numerical procedure based on Monte Carlo methods for calculating first-order sensitivity indices and total effect indices for a model with \(k\) input factors is discussed below:</p>
 
-<p align="justify"><strong>Geração da Amostra Base:</strong> O procedimento começa com a geração de uma matriz \((N, 2k)\) de números aleatórios, onde \(k\) é o número de entradas e \(N\) é o tamanho da amostra base. Em termos práticos, \(N\) pode variar de algumas centenas a alguns milhares. A matriz é dividida em duas partes, \(A\) e \(B\), cada uma com \(N\) amostras e \(k\) variáveis.</p>
+<p align="justify"><strong>Base Sample Generation:</strong> The procedure begins by generating a \((N, 2k)\) matrix of random numbers, where \(k\) is the number of inputs and \(N\) is the base sample size. In practical terms, \(N\) can range from a few hundred to several thousand. The matrix is divided into two parts, \(A\) and \(B\), each containing \(N\) samples and \(k\) variables.</p>
 
 $$
 A = 
@@ -44,7 +44,7 @@ x_{k+1}^{(N)} & x_{k+2}^{(N)} & \cdots & x_{k+i}^{(N)} & \cdots & x_{2k}^{(N)}
 \end{bmatrix}
 $$
 
-<p align="justify"><strong>Criação da Matriz C:</strong> Para cada variável \(X_i\), é gerada uma matriz combinada \(C^{(i)}\) onde todas as colunas são copiadas de \(B\), exceto a \(i\)-ésima, que é copiada de \(A\).</p>
+<p align="justify"><strong>Creation of Matrix \(C\):</strong> For each variable \(X_i\), a combined matrix \(C^{(i)}\) is generated, where all columns are copied from \(B\), except the \(i\)-th column, which is copied from \(A\).</p>
 
 $$
 C_i = 
@@ -57,34 +57,33 @@ x_{k+1}^{(N)} & x_{k+2}^{(N)} & \cdots & x_{i}^{(N)} & \cdots & x_{2k}^{(N)}
 \end{bmatrix}
 $$
 
-<p align="justify"><strong>Cálculo da Saída do Modelo:</strong> Calcule a saída do modelo para todos os valores de entrada nas matrizes de amostra \(A\), \(B\) e \(C_i\), obtendo três vetores de saídas do modelo de dimensão \(N \times 1\): </p>
+<p align="justify"><strong>Model Output Calculation:</strong> Compute the model output for all input values in the sample matrices \(A\), \(B\), and \(C_i\), obtaining three model output vectors of dimension \(N \times 1\):</p>
 
 $$
 y_A = f(A), \quad y_B = f(B), \quad y_{C_i} = f(C_i)
 $$
 
-<p align="justify"><strong>Cálculo dos Índices de Sensibilidade:</strong> Os índices de sensibilidade de primeira ordem \(S_i\) e de efeito total \(S_{T_i}\) são calculados para cada variável \(X_i\) usando as saídas do modelo:</p>
+<p align="justify"><strong>Calculation of Sensitivity Indices:</strong> The first-order sensitivity indices \(S_i\) and total effect indices \(S_{T_i}\) are calculated for each variable \(X_i\) using the model outputs:</p>
 
 $$
 S_i = \frac{\mathrm{V}[E(Y|X_i)]}{\mathrm{V}(Y)} = \frac{y_A \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = \frac{(1/N) \sum_{j=1}^{N} y_A^{(j)} y_{C_i}^{(j)} - f_0^2 } {(1/N) \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
 $$
 
-onde
+where
 
 $$
 f_0^2 = \left( \frac{1}{N} \sum_{j=1}^{N} y_A^{(j)} \right)^2
 $$
 
-é a média, e o símbolo (·) denota o produto escalar de dois vetores.
+is the mean, and the symbol (·) denotes the dot product of two vectors.
 
-<p align="justify"><strong>Cálculo dos Índices de Efeito Total:</strong> Os índices de efeito total são calculados como:</p>
+<p align="justify"><strong>Calculation of Total Effect Indices:</strong> The total effect indices are calculated as:</p>
 
 $$
 S_{T_i} = 1 - \frac{\mathrm{V}[E(Y|X_{\sim i})]}{\mathrm{V}(Y)} = 1 - \frac{y_B \cdot y_{C_i} - f_0^2}{y_A \cdot y_A - f_0^2} = 1 - \frac{(1/N) \sum_{j=1}^{N} y_B^{(j)} y_{C_i}^{(j)} - f_0^2 } {(1/N) \sum_{j=1}^{N} y_A^{(j)2} - f_0^2 }
 $$
 
- <h2>Interpretação dos Índices de Sobol</h2>
-
+<h2>Interpretação dos Índices de Sobol</h2>
 
 <h3>1. Índice de Sobol de Primeira Ordem (Si)</h3>
 <p>O índice <em>S<sub>i</sub></em> indica quanto da variabilidade da saída de um modelo pode ser explicada pela variabilidade de uma única variável de entrada <em>X<sub>i</sub></em>, mantendo as outras variáveis fixas. Em termos simples, <em>S<sub>i</sub></em> reflete o <strong>efeito principal</strong> de uma variável no modelo, ou seja, quanto a variabilidade de <em>X<sub>i</sub></em> contribui para a variabilidade da saída. Se uma variável for dominante, <em>S<sub>i</sub></em> será grande, indicando que a sua variação tem um impacto considerável na resposta do modelo.</p>
