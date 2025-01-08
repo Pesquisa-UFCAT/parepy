@@ -4,91 +4,94 @@ parent: Learning
 nav_order: 1
 has_children: true
 has_toc: true
-title: Uniform distribution
+title: Uniform Distributions
 ---
 
-<!--Don't delete ths script-->
-<script src = "https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<!--Don't delete ths script-->
+<!--Don't delete this script-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!--Don't delete this script-->
 
-<h1>Uniform distribution</h1>
+<h1>Uniform Distribution</h1>
 
-<p align="justify">A distribuição uniforme é um tipo de distribuição de probabilidade contínua que descreve eventos onde todos os valores dentro de um intervalo são igualmente prováveis. Assim, cada um dos \(n\) valores possíveis tem a mesma chance de ocorrer (\(1/n\)). A distribuição uniforme é caracterizada por dois parâmetros, o limite inferior (\(a\)) e o limite superior (\(b\)), que definem o intervalo de valores possíveis. A função densidade de probabilidade (PDF) da distribuição uniforme é constante dentro do intervalo \([a, b]\) e zero fora dele.</p>
+<p align="justify">
+The uniform distribution is a continuous probability distribution that describes events where all values within a given range are equally likely. Each of the <i>n</i> possible values has the same probability of occurring (<i>1/n</i>). The distribution is characterized by two parameters: the lower limit (<i>a</i>) and the upper limit (<i>b</i>), which define the range of possible outcomes. The probability density function (PDF) is constant within the interval <i>[a, b]</i> and zero outside this range <a href="#ref1">[1]</a>.
+</p>
 
-<p align="justify">Matematicamente, a função densidade de probabilidade (PDF) é definida como:</p>
+<h3>Probability Density Function (PDF)</h3>
 
-$$
-\begin{align*}
-f(x) &= \frac{1}{b-a}, \quad \text{para } a \leq x \leq b \\
-f(x) &= 0, \quad \text{para } x < a \text{ ou } x > b
-\end{align*}
-$$
+<p align="justify">
+The probability density function (PDF) of a uniform distribution provides the likelihood of any given value within the range \([a, b]\). Mathematically, the PDF is expressed in Equation (1), as defined by Ross <a href="#ref2">[2]</a>.
+</p>
 
-<h3 align="justify">Função de Distribuição Acumulada (CDF)</h3>
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            f(x) =
+            \begin{cases} 
+            \frac{1}{b - a}, & \text{if } a \leq x \leq b \\
+            0, & \text{otherwise}
+            \end{cases}
+            \]
+        </td>
+        <td style="width: 10%;">
+            <p align="right" id="eq1">(1)</p>
+        </td>
+    </tr>
+</table>
 
-<p align="justify">A função de distribuição acumulada (CDF) da distribuição uniforme, denotada por \(F(x)\), descreve a probabilidade acumulada até um ponto \(x\). Ela é definida como:</p>
+<h3>Cumulative Distribution Function (CDF)</h3>
 
-$$
-F(x) =
-\begin{cases}
-0, & \text{se } x < a, \\
-\frac{x - a}{b - a}, & \text{se } a \leq x \leq b, \\
-1, & \text{se } x > b.
-\end{cases}
-$$
+<p align="justify">
+The cumulative distribution function (CDF) of the uniform distribution, denoted as <i>F(x)</i>, describes the cumulative probability up to a value <i>x</i>. The CDF is particularly useful in determining the probability that a random variable will fall within a specific range <a href="#ref2">[2]</a>. It is defined in Equation (2).
+</p>
 
-<p align="justify">Assim, a CDF é uma função que cresce linearmente no intervalo \([a, b]\), com valores que variam de 0 a 1.</p>
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            F(x) =
+            \begin{cases}
+            0, & \text{if } x < a, \\
+            \frac{x - a}{b - a}, & \text{if } a \leq x \leq b, \\
+            1, & \text{if } x > b.
+            \end{cases}
+            \]
+        </td>
+        <td style="width: 10%;">
+            <p align="right" id="eq2">(2)</p>
+        </td>
+    </tr>
+</table>
 
-<h3 align="justify">Momentos</h3>
+<h3>Applications in Engineering</h3>
 
-<p align="justify">Além disso, essa distribuição possui momentos que são derivados diretamente de seus limites. O momento de ordem 1, ou seja, a média (\(\mu\)), é o ponto médio do intervalo, enquanto a variância (\(\sigma^2\)) descreve a dispersão dos valores ao redor da média. Esses momentos são calculados como:</p>
+<p align="justify">
+Uniform distributions frequently appear in engineering and physical sciences, modeling situations where outcomes are equally likely across a defined range. They are also discussed extensively in the context of probability and statistics, providing a foundational understanding for more advanced distributions (<a href=\"#ref1\">[1]</a>). Examples include modeling uncertainties in initial design parameters or in simulations where random sampling from a specific interval is needed (<a href="#ref3">[3]</a>).
+</p>
 
-$$
-\begin{align*}
-\mu &= \frac{a+b}{2} \\
-\sigma^2 &= \frac{(b-a)^2}{12}
-\end{align*}
-$$
+<h3>References</h3>
 
-<p align="justify">Os limites \(a\) e \(b\) podem ser determinados diretamente a partir da média e do desvio padrão (\(\sigma\)), o que torna a distribuição uniforme bastante conveniente para aplicações práticas. A relação é dada por:</p>
-
-$$
-\begin{align*}
-a &= \mu - \sqrt{3}\sigma \\
-b &= \mu + \sqrt{3}\sigma
-\end{align*}
-$$
-
-<h2>Exemplo</h2>
-
-<p align="justify">Para exemplificar a distribuição uniforme, considere um problema de engenharia onde a resistência de um material é modelada como uma variável aleatória uniformemente distribuída entre 50 e 100 MPa. A média e o desvio padrão da resistência são calculados como:</p>
-
-$$
-\mu = \frac{50+100}{2} = 75 \text{ MPa}
-$$
-
-$$
-\sigma = \sqrt{\frac{(100-50)^2}{12}} = 14.43 \text{ MPa}
-$$
-
-<p align="justify">Substituindo esses valores na relação entre os limites e os momentos, obtemos:</p>
-
-$$
-a = 75 - \sqrt{3} \times 14.43 = 60.71 \text{ MPa}
-$$
-
-$$
-b = 75 + \sqrt{3} \times 14.43 = 89.29 \text{ MPa}
-$$
-
-<p align="justify">Portanto, a resistência do material é modelada como uma variável aleatória uniformemente distribuída entre 60.71 e 89.29 MPa. A CDF correspondente para a resistência seria:</p>
-
-$$
-F(x) =
-\begin{cases}
-0, & \text{se } x < 60.71, \\
-\frac{x - 60.71}{89.29 - 60.71}, & \text{se } 60.71 \leq x \leq 89.29, \\
-1, & \text{se } x > 89.29.
-\end{cases}
-$$
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Reference</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><p align="center" id="ref1">[1]</p></td>
+            <td><p align="left"><a href="https://www.sciencedirect.com/book/9780123948113/introduction-to-probability-and-statistics-for-engineers-and-scientists" target="_blank" rel="noopener noreferrer">Ross, S. M. (2014). <i>Introduction to Probability and Statistics for Engineers and Scientists</i>. Fifth Edition. Academic Press.</a></p></td>
+        </tr>
+        <tr>
+            <td><p align="center" id="ref2">[2]</p></td>
+            <td><p align="left"><a href="https://www.pearson.com/en-us/subject-catalog/p/first-course-in-probability-a/P200000006334/9780137504589" target="_blank" rel="noopener noreferrer">Ross, S. M. (2014). <i>A First Course in Probability</i>. Tenth Edition. Pearson Education.</a></p></td>
+        </tr>
+        <tr>
+            <td><p align="center" id="ref3">[3]</p></td>
+            <td><p align="left"><a href="https://www.sciencedirect.com/book/9780123756862/introduction-to-probability-models" target="_blank" rel="noopener noreferrer">Ross, S. M. (2010). <i>Introduction to Probability Models</i>. Tenth Edition. Academic Press.</a></p></td>
+        </tr>
+    </tbody>
+</table>
