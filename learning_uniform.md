@@ -21,7 +21,7 @@ The uniform distribution is a continuous probability distribution that describes
 <h3>Probability Density Function (PDF)</h3>
 
 <p align="justify">
-The probability density function (PDF) of a uniform distribution provides the likelihood of any given value within the range \([a, b]\). Mathematically, the PDF is expressed in Equation (1), as defined by Ross <a href="#ref2">[2]</a>.
+The probability density function (PDF) of a uniform distribution provides the likelihood of any given value within the range \([a, b]\). Mathematically, the PDF is expressed in <a href="#eq1">Equation 1</a>, as defined by Ross <a href="#ref2">[2]</a>.
 </p>
 
 <table style="width:100%">
@@ -44,7 +44,7 @@ The probability density function (PDF) of a uniform distribution provides the li
 <h3>Cumulative Distribution Function (CDF)</h3>
 
 <p align="justify">
-The cumulative distribution function (CDF) of the uniform distribution, denoted as <i>F(x)</i>, describes the cumulative probability up to a value <i>x</i>. The CDF is particularly useful in determining the probability that a random variable will fall within a specific range <a href="#ref2">[2]</a>. It is defined in Equation (2).
+The cumulative distribution function (CDF) of the uniform distribution, denoted as <i>F(x)</i>, describes the cumulative probability up to a value <i>x</i>. The CDF is particularly useful in determining the probability that a random variable will fall within a specific range <a href="#ref2">[2]</a>. It is defined in <a href="#eq2">Equation 2</a>.
 </p>
 
 <table style="width:100%">
@@ -68,7 +68,7 @@ The cumulative distribution function (CDF) of the uniform distribution, denoted 
 <h3>Applications in Engineering</h3>
 
 <p align="justify">
-Uniform distributions frequently appear in engineering and physical sciences, modeling situations where outcomes are equally likely across a defined range. They are also discussed extensively in the context of probability and statistics, providing a foundational understanding for more advanced distributions (<a href=\"#ref1\">[1]</a>). Examples include modeling uncertainties in initial design parameters or in simulations where random sampling from a specific interval is needed (<a href="#ref3">[3]</a>).
+Uniform distributions frequently appear in engineering and physical sciences, modeling situations where outcomes are equally likely across a defined range. They are also discussed extensively in the context of probability and statistics, providing a foundational understanding for more advanced distributions <a href="#ref1">[1]</a>. Examples include modeling uncertainties in initial design parameters or in simulations where random sampling from a specific interval is needed <a href="#ref3">[3]</a>.
 </p>
 
 <h3>References</h3>
