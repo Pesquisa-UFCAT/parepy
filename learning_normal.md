@@ -180,6 +180,20 @@ The normal distribution is often used to model errors or deviations in manufactu
 The limits \(x_{\text{inf}}\) and \(x_{\text{sup}}\) are used as filters in quality control. For a confidence level of 95.5%, for example, components with dimensions \(x_i < \mu - 2\sigma\) or \(x_i > \mu + 2\sigma\) are considered out of specification. This helps prevent excessive variations from compromising the final product's quality.
 </p>
 
+<h3>Applications in Engineering</h3>
+
+<p align="justify">
+The normal distribution finds extensive applications in engineering, particularly in the fields of reliability analysis, quality control, and structural design. As highlighted by Choi et al. <a href="#ref3">[3]</a>, it is often used in modeling uncertainties in material properties, load capacities, and environmental conditions. 
+</p>
+
+<p align="justify">
+Montgomery and Runger <a href="#ref1">[1]</a> emphasize its critical role in statistical process control, where control charts based on the normal distribution help monitor manufacturing processes and detect deviations from expected performance. In structural engineering, reliability assessments use the normal distribution to estimate the probability of failure under various loading conditions.
+</p>
+
+<p align="justify">
+Wasserman <a href="#ref2">[2]</a> discusses the application of the normal distribution in machine learning and data analysis, particularly in Bayesian inference, where it serves as a key component of probabilistic models. These applications illustrate the versatility of the normal distribution in solving complex, real-world engineering problems.
+</p>
+
 <h3>References</h3>
 
 <table>
