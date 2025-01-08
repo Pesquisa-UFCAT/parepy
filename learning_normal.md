@@ -4,73 +4,203 @@ parent: Learning
 nav_order: 2
 has_children: true
 has_toc: true
-title: Normal distribution
+title: Normal Distribution
 ---
 
-<!--Don't delete ths script-->
-<script src = "https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<!--Don't delete ths script-->
+<!--Don't delete this script-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!--Don't delete this script-->
 
-<h1>Distribuição Normal</h1>
+<h1>Normal Distribution</h1>
 
-<p align="justify">A distribuição normal ou gaussiana é uma das mais importantes distribuições de probabilidade na estatística e em muitas áreas da ciência. Ela descreve variáveis contínuas que apresentam comportamento simétrico ao redor de sua média. A distribuição normal é caracterizada por sua curva em formato de sino, onde os valores próximos à média são os mais prováveis, enquanto os valores extremos são cada vez menos prováveis.</p>
+<p align="justify">
+The normal or Gaussian distribution is one of the most important probability distributions, widely used in statistics, engineering, and applied sciences. As noted by Montgomery and Runger in <a href="#ref1">[1]</a>, it is symmetric around its mean, with higher probabilities for values near the mean and decreasing probabilities for extreme values. Wasserman <a href="#ref2">[2]</a> emphasizes its relevance as a foundation for probabilistic models and statistical inference.
+</p>
 
-<p align="justify">A distribuição normal é completamente definida por dois parâmetros: a média (\(\mu\)), que indica o ponto central da distribuição, e o desvio padrão (\(\sigma\)), que mede a dispersão dos valores ao redor da média. A função densidade de probabilidade (PDF) da distribuição normal é dada pela fórmula:</p>
+<h3>Definitions</h3>
 
-$$
-f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right), \quad \text{para } -\infty < x < \infty.
-$$
+<p align="justify">
+The normal distribution is characterized by two parameters:
+</p>
 
-<p align="justify">onde \(\exp\) representa a função exponencial, \(\pi\) é uma constante matemática (aproximadamente 3,14159) e \(\sigma^2\) é a variância.</p>
+<ul>
+    <li>\(\mu\): the mean, which represents the central value of the distribution.</li>
+    <li>\(\sigma\): the standard deviation, which quantifies the spread of the distribution around the mean.</li>
+</ul>
 
-<p align="justify">A função de distribuição acumulada (CDF) da distribuição normal, denotada por \(F(x)\), calcula a probabilidade de uma variável assumir um valor menor ou igual a \(x\). A CDF é dada por:</p>
+<p align="justify">
+The variance, \(\sigma^2\), is the square of the standard deviation. The probability density function (PDF) and the cumulative distribution function (CDF) are essential for describing the normal distribution's behavior.
+</p>
 
-$$
-F(x) = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(t - \mu)^2}{2\sigma^2}\right) dt, \quad \text{para } -\infty < x < \infty.
-$$
+<h3>Probability Density Function (PDF)</h3>
 
-<p align="justify">Infelizmente, esta integral não possui uma solução analítica. Em geral, a CDF pode ser calculada numericamente, e é usada para determinar probabilidades acumuladas, como a área sob a curva da PDF até um ponto \(x\). Tais resultados são frequentemente apresentados em termos de uma distribuição normal padrão, que tem média 0 e desvio padrão 1. Qualquer variável aleatória \(X \sim N(\mu, \sigma^2)\) pode ser transformada em uma variável com distribuição normal padrão \(Y \sim N(0, 1)\) por meio da fórmula:</p>  
+<p align="justify">
+The probability density function (PDF) of the normal distribution quantifies the likelihood of a random variable, \(X\), taking on a specific value within its domain. The PDF is defined in <a href="#eq1">Equation 1</a> as follows:
+</p>
 
-$$
-Y = \frac{X - \mu}{\sigma}.
-$$
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right),
+            \quad \text{for } -\infty < x < \infty.
+            \]
+        </td>
+        <td style="width: 10%;">
+            <p align="right" id="eq1">(1)</p>
+        </td>
+    </tr>
+</table>
 
-<p align="justify">Para a variável normal padrão \(Y\), a função de densidade de probabilidade \( \phi(y) \) e a função de distribuição acumulada \( \Phi(y) \) são definidas como:</p>
+<h3>Standard Normal Distribution and Transformations</h3>
 
-$$
-\begin{align*}
-\phi(y) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{y^2}{2}\right), \quad \text{para } -\infty < y < \infty, \\
-\Phi(y) = \int_{-\infty}^{y} \phi(z) dz, \quad \text{para } -\infty < y < \infty.
-\end{align*}
-$$
+<p align="justify">
+The cumulative distribution function (CDF) of the normal distribution, as shown in <a href="#eq2">Equation 2</a>, often lacks a closed-form solution. Instead, results are typically presented in terms of a standard normal distribution, which has a mean of 0 and a standard deviation of 1. Any random variable \(X \sim N(\mu, \sigma^2)\) can be transformed into a standard normal variable \(Y \sim N(0, 1)\) using the formula shown in <a href="#eq3">Equation 3</a>:
+</p>
 
-<p align="justify">A PDF \(f(x)\) para uma variável \(X \sim N(\mu, \sigma)\) pode ser expressa em termos de \(\phi(y)\) da seguinte forma:</p>
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            F(x) = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi \sigma^2}} 
+            \exp\left(-\frac{(t - \mu)^2}{2\sigma^2}\right) dt,
+            \]
+        </td>
+        <td style="width: 10%;">
+            <p align="right" id="eq2">(2)</p>
+        </td>
+    </tr>
+</table>
 
-$$
-f(x) = \phi\left(\frac{x - \mu}{\sigma}\right).
-$$
+<p align="justify">The transformation formula is:</p>
 
-<p align="justify">A distribuição normal é frequentemente utilizada para modelar erros ou desvios em processos produtivos ou de fabricação. Intervalos de confiança são definidos em termos do fator \(k\), que é o número de desvios padrões a partir da média. Para um intervalo de confiança de \(k\) desvios padrão, temos:</p>
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            Y = \frac{X - \mu}{\sigma}.
+            \]
+        </td>
+        <td style="width: 10%;">
+            <p align="right" id="eq3">(3)</p>
+        </td>
+    </tr>
+</table>
 
-$$
-P(x_{\text{inf}} < x < x_{\text{sup}}) = P[\mu - k\sigma < x < \mu + k\sigma] = \int_{-k}^{k} \phi(y) dy = \Phi(k) - \Phi(-k).
-$$
+<p align="justify">
+For the standard normal variable \(Y\), the probability density function \(\phi(y)\) and the cumulative distribution function \(\Phi(y)\) are defined as follows:
+</p>
 
-<p align="justify">Os limites \(x_{\text{inf}}\) e \(x_{\text{sup}}\) são utilizados como filtros em controle de qualidade de produção. Para uma confiança de 95,5%, por exemplo, componentes com dimensões \(x_i < \mu - 2\sigma\) ou \(x_i > \mu + 2\sigma\) são considerados fora de especificação. Isto ajuda a evitar que variações excessivas comprometam a qualidade do produto final.</p>
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            \begin{align*}
+            \phi(y) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{y^2}{2}\right), \quad \text{for } -\infty < y < \infty, \\
+            \Phi(y) = \int_{-\infty}^{y} \phi(z) dz, \quad \text{for } -\infty < y < \infty.
+            \end{align*}
+            \]
+        </td>
+    </tr>
+</table>
 
-<h2>Exemplo</h2>
+<p align="justify">
+The PDF \(f(x)\) for a variable \(X \sim N(\mu, \sigma^2)\) can be expressed in terms of \(\phi(y)\) as follows:
+</p>
 
-<p align="justify">Considere uma variável que mede a altura de adultos em uma população, que segue uma distribuição normal com média \(\mu = 170\) cm e desvio padrão \(\sigma = 10\) cm. A função densidade de probabilidade é dada por:</p>
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            f(x) = \phi\left(\frac{x - \mu}{\sigma}\right).
+            \]
+        </td>
+    </tr>
+</table>
 
-$$
-f(x) = \frac{1}{\sqrt{2\pi(10)^2}} \exp\left(-\frac{(x - 170)^2}{2(10)^2}\right).
-$$
+<h3>Probability Intervals</h3>
 
-<p align="justify">Usando a regra empírica, podemos inferir que:</p>
+<p align="justify">
+Some useful results concerning a normal distribution are summarized below. These results, shown in <a href="#eq4">Equation 4</a>, define the probabilities of a normal random variable falling within specific intervals of the mean and standard deviation <a href="#ref2">[2]</a>:
+</p>
 
-- Aproximadamente 68% das alturas estão entre \(160\) cm e \(180\) cm (\(170 \pm 10\)).
-- Aproximadamente 95% das alturas estão entre \(150\) cm e \(190\) cm (\(170 \pm 2 \cdot 10\)).
-- Aproximadamente 99,7% das alturas estão entre \(140\) cm e \(200\) cm (\(170 \pm 3 \cdot 10\)).
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            \begin{align*}
+            P(\mu - \sigma < X < \mu + \sigma) &= 0.6827, \\
+            P(\mu - 2\sigma < X < \mu + 2\sigma) &= 0.9545, \\
+            P(\mu - 3\sigma < X < \mu + 3\sigma) &= 0.9973.
+            \end{align*}
+            \]
+        </td>
+        <td style="width: 10%;">
+            <p align="right" id="eq4">(4)</p>
+        </td>
+    </tr>
+</table>
 
-<p align="justify">A CDF dessa distribuição pode ser usada para calcular probabilidades acumuladas, como a probabilidade de uma pessoa ter altura menor que 165 cm (\(P(X \leq 165)\)) ou maior que 185 cm (\(P(X > 185)\)).</p>
+<p align="justify">
+Additionally, due to the symmetry of \(f(x)\), we have:
+</p>
+
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            P(X > \mu) = P(X < \mu) = 0.5.
+            \]
+        </td>
+    </tr>
+</table>
+
+<p align="justify">
+This demonstrates that for a normal distribution, approximately 68% of values fall within one standard deviation of the mean, 95% within two, and 99.7% within three, which is known as the empirical rule or the 68-95-99.7 rule <a href="#ref2">[2]</a>.
+</p>
+
+<h3>Confidence Intervals and Applications</h3>
+
+<p align="justify">
+The normal distribution is often used to model errors or deviations in manufacturing or production processes. Confidence intervals are defined in terms of the factor \(k\), which represents the number of standard deviations from the mean. For a confidence interval of \(k\) standard deviations, we have:
+</p>
+
+<table style="width:100%">
+    <tr>
+        <td style="width: 90%;">
+            \[
+            P(x_{\text{inf}} < x < x_{\text{sup}}) = P[\mu - k\sigma < x < \mu + k\sigma] = \int_{-k}^{k} \phi(y) dy = \Phi(k) - \Phi(-k).
+            \]
+        </td>
+    </tr>
+</table>
+
+<p align="justify">
+The limits \(x_{\text{inf}}\) and \(x_{\text{sup}}\) are used as filters in quality control. For a confidence level of 95.5%, for example, components with dimensions \(x_i < \mu - 2\sigma\) or \(x_i > \mu + 2\sigma\) are considered out of specification. This helps prevent excessive variations from compromising the final product's quality.
+</p>
+
+<h3>References</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Reference</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><p align="center" id="ref1">[1]</p></td>
+            <td><p align="left"><a href="https://www.amazon.com/Douglas-Montgomery-George-Runger-Probability/dp/B004VG3ZT2" target="_blank" rel="noopener noreferrer">Montgomery, D. C., & Runger, G. C. (2011). <i>Applied Statistics and Probability for Engineers</i>. Fifth Edition. John Wiley & Sons.</a></p></td>
+        </tr>
+        <tr>
+            <td><p align="center" id="ref2">[2]</p></td>
+            <td><p align="left"><a href="https://link.springer.com/book/10.1007/978-1-4612-2560-7" target="_blank" rel="noopener noreferrer">Wasserman, L. (2004). <i>All of Statistics: A Concise Course in Statistical Inference</i>. Springer.</a></p></td>
+        </tr>
+        <tr>
+            <td><p align="center" id="ref3">[3]</p></td>
+            <td><p align="left"><a href="https://link.springer.com/book/10.1007/978-1-84628-445-8" target="_blank" rel="noopener noreferrer">Choi, S. K., Grandhi, R. V., & Canfield, R. A. (2007). <i>Reliability-based Structural Design</i>. Springer.</a></p></td>
+        </tr>
+    </tbody>
+</table>
