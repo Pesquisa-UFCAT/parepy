@@ -16,11 +16,11 @@ title: sobol_algorithm
 <h3>sobol_algorithm</h3>
 
 <p align="justify">
-    Calculates the Sobol indices for structural reliability problems using Monte Carlo sampling. This function computes the first-order and total-order Sobol sensitivity indices for a given numerical model and variable settings.
+    This function calculates the Sobol-sensitive indexes for any function using sampling. This function computes the first-order and total-order Sobol indexes.
 </p>
 
 ```python
-s_i, s_t = sobol_algorithm(setup)
+data_sobol = sobol_algorithm(setup)
 ```
 
 Input variables
@@ -39,17 +39,18 @@ Input variables
         <td>
             A dictionary containing the settings for the numerical model and analysis.
             <ul>
-                <li><code>'number of samples'</code>: An integer defining the number of samples.</li>
+                <li><code>'number of samples'</code>: Number of samples [Integer]</li>
                 <br>
-                <li><code>'objective function'</code>: A Python function defining the state limit function.</li>
+                <li><code>'numerical model'</code>: Numerical model settings [Dictionary]</li>
                 <br>
-                <li><code>'numerical model'</code>: A dictionary containing the model type (<code>'model'</code>) and additional settings.</li>
+                <li><code>'variables settings'</code>: Variables settings, listed as dictionaries [List]</li>
                 <br>
-                <li><code>'variables settings'</code>: A list of dictionaries defining variable properties (e.g., <code>'mean'</code>, <code>'sigma'</code>).</li>
+                <li><code>'number of state limit functions or constraints'</code>: Number of state limit functions or constraints [Integer]</li>
                 <br>
-                <li><code>'number of state limit functions or constraints'</code>: An integer specifying the number of state limit functions or constraints.</li>
+                <li><code>'none_variable'</code>: Generic variable for use in the objective function [None, List, Float, Dictionary, String, or other type]</li>
                 <br>
-                <li><code>'none variable'</code>: Additional user-defined input, used in the objective function.</li>
+                <li><code>'objective function'</code>: Objective function defined by the user [Python function]</li>
+                <br>
             </ul>
         </td>
         <td>Dictionary</td>
@@ -70,7 +71,7 @@ Output variables
    <tr>
        <td><code>data_sobol</code></td>
        <td>
-           A dictionary containing the first-order and total-order Sobol sensitivity indices for each input variable. 
+           A dictionary containing the first-order and total-order Sobol sensitivity indixes for each input variable. 
        </td>
        <td>Dict</td>
    </tr>
@@ -78,18 +79,19 @@ Output variables
    </tr>
 </table>
 
-EXAMPLE
+Example 1
 {: .label .label-blue }
 
-This example demonstrates how to use the `sobol_algorithm` function to calculate the Sobol indices for a structural reliability problem.
-
-of_FILE.PY
-{: .label .label-red }
+<p align="justify">
+    <i>
+        This example demonstrates how to use the `sobol_algorithm` function to calculate the Sobol indixes for a structural reliability problem.
+    </i>
+</p>
 
 <p align="justify">
-The <strong>Ishigami function</strong> is commonly used as a test function for comparing global sensitivity analysis methods due to its nonlinear properties and the presence of variable interactions. This function is particularly valuable for benchmarking different sensitivity analysis methods, making it a classic example in this field. 
-<br><br>
-The function takes as input a vector \( x = [x_0, x_1, x_2] \), which represents three independent variables. Its analytical expression is defined as:
+    Due to its nonlinear properties and variable interactions, the Ishigami function is commonly used as a test function for comparing global sensitivity analysis methods. This function is particularly valuable for benchmarking different sensitivity analysis methods, making it a classic example.
+    <br><br>
+    The function takes as input a vector \( x = [x_0, x_1, x_2] \), which represents three independent variables. Its analytical expression is defined as:
 </p>
 
 $$
@@ -99,20 +101,19 @@ $$
 <div style="text-align: justify;">
 <p>where:</p>
 <ul>
-    <li>\( x = \{x_0, x_1, x_2\} \in [-\pi, \pi]^3 \) are the input variables, limited to the domain \([-\pi, \pi]\);</li>
-    <li>\( a \) and \( b \) are adjustable parameters that control the relative impact of each term in the function.</li>
+    <li>\( x = \{x_0, x_1, x_2\}\) are the input variables, uniformly distributed in \([-\pi, \pi]\);</li>
+    <li>\( a \) and \( b \) are adjustable parameters that control the relative impact of each term in the function. We use \( a=7.00 \) and \( b=0.10 \).</li>
 </ul>
 </div>
 
-
-<p align="justify">
-This function is widely used to evaluate the influence of each input variable on the final output, as well as the interactions between them. It is particularly effective in global sensitivity analysis methods, such as the calculation of Sobol indices, providing a robust basis for investigating the individual and combined contributions of variables.</p>
+of_file.py
+{: .label .label-red }
 
 ```python
 def ishigami(x, none_variable):
     """Objective function for the Nowak example (tutorial).
     """
-    a = 7
+    a = 7.00
     b = 0.10
     # Random variables
     x_0 = x[0]
@@ -123,7 +124,10 @@ def ishigami(x, none_variable):
     return [None], [None], [result]
 ```
 
-YOUR_PROBLEM.IPYNB
+{: .important }
+>How the Sobol algorithm leverages the sampling_algorithm_structural_analysis is necessary assemble objective function using same pattern that this function. See example (of_file)[sampling_algorithm_structural_analysis]. Put your function in last return.
+
+your_problem.ipynb
 {: .label .label-red }
 
 ```python
@@ -151,13 +155,12 @@ setup = {
 data_sobol = sobol_algorithm(setup)
 ```
 
-<h3>Post-processing Sobol Indices</h3>
+{: .important }
+>How the Sobol algorithm leverages the sampling_algorithm_structural_analysis is necessary assemble setup variable using same pattern that this function. See example (setup file)[sampling_algorithm_structural_analysis].
 
-<p align="justify">
-    After executing the <code>sobol_algorithm</code>, it is essential to analyze the results, which include the first-order (\( s_i \)) and total-order (\( s_t \)) Sobol indices. This section demonstrates how to print, plot, and interpret these indices for a structural reliability problem. The analysis helps determine the relative contribution of input variables to the model output and their interactions. 
-</p>
+<h3>Post-processing</h3>
 
-<h4>Show results - Sobol indices</h4>
+<h4>Show all results</h4>
 
 <p align="justify">
     How do we display the Sobol indices calculated for the Ishigami function?
@@ -173,16 +176,8 @@ print(data_sobol)
 ```
 
 <p align="justify">
-    To analyze the first-order and total-order Sobol indices for each variable:
+    Output details:
 </p>
-
-```python
-# Convert Sobol indices to a table
-from tabulate import tabulate
-print(tabulate(data_sobol, headers='keys', tablefmt='psql'))
-```
-
-Expected output:
 
 ```bash
 +----+-----------+----------+
@@ -199,7 +194,7 @@ Expected output:
     <li><code>s_t</code>: Total-order Sobol index, representing the overall contribution, including interactions with other variables.</li>
 </ul>
 
-<h4>Plot results - Sobol indices</h4>
+<h4>Plot results</h4>
 
 <p align="justify">
     How do we visualize the Sobol indices as bar charts to interpret the results?
@@ -214,24 +209,24 @@ variables = ['x_0', 'x_1', 'x_2']
 s_i = [data_sobol.iloc[var]['s_i'] for var in range(len(variables))]
 s_t = [data_sobol.iloc[var]['s_t'] for var in range(len(variables))]
 
-# Plot bar chart for Sobol indices
+# Plot bar chart for Sobol indixes
 x = range(len(variables))
 width = 0.35
-
 plt.bar(x, s_i, width, label='First-order (s_i)', color='blue', alpha=0.7)
 plt.bar([p + width for p in x], s_t, width, label='Total-order (s_t)', color='orange', alpha=0.7)
-
 plt.xlabel("Variables")
-plt.ylabel("Sobol Indices")
+plt.ylabel("Sobol Index")
 plt.xticks([p + width / 2 for p in x], variables)
 plt.legend()
 plt.show()
 ```
 
-Expected plot:
+<p align="justify">
+Output details:
+</p>
 
 <center>
-    <img src="assets/images/sobol_output.png" height="auto">
+    <img src="assets/images/sobol_output.jpeg" height="auto">
     <p align="center"><b>Figure 1.</b> Sobol indices for the Ishigami function.</p>
 </center>
 
@@ -247,4 +242,3 @@ data_sobol.to_excel('sobol_indices.xlsx', index=False)
 
 print("Sobol indices saved to 'sobol_indices.xlsx'")
 ```
-

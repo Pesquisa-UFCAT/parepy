@@ -38,9 +38,11 @@ Input variables
             <p align="justify">
             Dictionary of parameters for the triangular distribution. Keys:
             <ul>
-                <li><code>'min'</code>: Minimum value of the distribution [float]</li>
-                <li><code>'mode'</code>: Mode (most likely value) of the distribution [float]</li>
-                <li><code>'max'</code>: Maximum value of the distribution [float]</li>
+                <li><code>'min'</code>: Minimum value of the distribution [Float]</li>
+                <br>
+                <li><code>'mode'</code>: Mode (most likely value) of the distribution [Float]</li>
+                <br>
+                <li><code>'max'</code>: Maximum value of the distribution [Float]</li>
             </ul>
             </p>
         </td>
@@ -52,6 +54,7 @@ Input variables
             <p align="justify">Sampling method. Supports the following values:
             <ul>
                 <li><code>'mcs'</code>: Crude Monte Carlo Sampling</li>
+                <br>
                 <li><code>'lhs'</code>: Latin Hypercube Sampling</li>
             </ul>
             </p>

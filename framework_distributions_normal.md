@@ -38,8 +38,9 @@ Input variables
             <p align="justify">
             Dictionary of parameters for the normal distribution. Keys:
             <ul>
-                <li><code>'mean'</code>: Mean [float]</li>
-                <li><code>'sigma'</code>: Standard deviation [float]</li>
+                <li><code>'mean'</code>: Mean [Float]</li>
+                <br>
+                <li><code>'sigma'</code>: Standard deviation [Float]</li>
             </ul>
             </p>
         </td>
@@ -51,6 +52,7 @@ Input variables
             <p align="justify">Sampling method. Supports the following values:
             <ul>
                 <li><code>'mcs'</code>: Crude Monte Carlo Sampling</li>
+                <br>
                 <li><code>'lhs'</code>: Latin Hypercube Sampling</li>
             </ul>
             </p>
