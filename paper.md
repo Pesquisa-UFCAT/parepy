@@ -1,24 +1,41 @@
 ---
-title: 'PAREpy: A Probabilistic Approach to Reliability Engineering in Python'
-
+title: 'Gala: A Python package for galactic dynamics'
 tags:
   - Python
-  - Reliability
-  - Monte Carlo
-  - Sampling
-  - Structures
-
+  - astronomy
+  - dynamics
+  - galactic dynamics
+  - milky way
 authors:
   - name: Adrian M. Price-Whelan
-    orcid: 0000-0003-0872-7098
-    affiliation: 1
+    orcid: 0000-0000-0000-0000
+    equal-contrib: true
+    affiliation: "1, 2" # (Multiple affiliations must be quoted)
+  - name: Author Without ORCID
+    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
+    affiliation: 2
+  - name: Author with no affiliation
+    corresponding: true # (This is how to denote the corresponding author)
+    affiliation: 3
+  - given-names: Ludwig
+    dropping-particle: van
+    surname: Beethoven
+    affiliation: 3
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University
+ - name: Lyman Spitzer, Jr. Fellow, Princeton University, United States
    index: 1
-date: 10 January 2025
+   ror: 00hx57361
+ - name: Institution Name, Country
+   index: 2
+ - name: Independent Researcher, Country
+   index: 3
+date: 13 August 2017
 bibliography: paper.bib
 
-**1.** Engineering College, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** University Federal of Pernambuco, Campus of the Agreste, Brazil. **5.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **6.** Polytechnic Institute, State University of Rio de Janeiro, Brazil.  
+# Optional fields if submitting to a AAS journal too, see this blog post:
+# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
+aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
+aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Introduction
