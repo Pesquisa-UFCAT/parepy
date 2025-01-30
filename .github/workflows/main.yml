@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - paper
+  workflow_dispatch:
 
 jobs:
   paper:
