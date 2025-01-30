@@ -12,18 +12,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: paper  # 🔹 Garante que pega a branch correta
+
       - name: Build draft PDF
         uses: openjournals/openjournals-draft-action@master
         with:
           journal: joss
-          # This should be the path to the paper within your repo.
-          paper-path: paper.md
-          ref: paper
+          paper-path: paper.md  # 🔹 Certifique-se de que `paper.md` está na raiz
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: paper
-          # This is the output path where Pandoc will write the compiled
-          # PDF. Note, this should be the same directory as the input
-          # paper.md
-          path: paper.pdf
+          path: paper.pdf  # 🔹 Caminho onde o PDF será salvo
