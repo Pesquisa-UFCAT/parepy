@@ -18,18 +18,6 @@ affiliations:
 date: 10 January 2025
 bibliography: paper.bib
 
-[Prof. PhD Wanderlei Malaquias Pereira Junior](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4460682U0)$^1$, 
-[Msc Murilo Carneiro Rodrigues](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K1774858Z8)$^1$,
-[Msc Matheus Henrique Morato Moraes](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8214592P6)$^3$,
-[Prof. PhD Daniel de Lima Araújo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4768864J3)$^1$,
-[Prof. PhD André Teófilo Beck](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4790835Y8)$^2$,
-[Prof. PhD André Luis Christoforo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4706301Z5)$^3$,
-[Prof. PhD Iuri Fazolin](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K8085097P2)$^1$,
-[Prof. PhD Marcos Luiz Henrique](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4798716D4) $^4$,
-[Prof. Marcos Napoleão Rabelo](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4702141E9)$^1$,
-[Prof. PhD Fran Sergio Lobato](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4169590P3)$^5$,
-[Prof. PhD Gustavo Barbosa Libotte](https://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4930703A6)$^6$.
-
 **1.** Engineering College, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** University Federal of Pernambuco, Campus of the Agreste, Brazil. **5.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **6.** Polytechnic Institute, State University of Rio de Janeiro, Brazil.  
 ---
 
