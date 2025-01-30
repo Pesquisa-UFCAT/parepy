@@ -9,13 +9,12 @@ tags:
   - Structures
 
 authors:
-  - name: Wanderlei Malaquias Pereira Junior
-    equal-contrib: true
+  - name: Adrian M. Price-Whelan
+    orcid: 0000-0003-0872-7098
     affiliation: 1
-  - name: Wanderlei Malaquias Pereira Junior
-    equal-contrib: true
-    affiliation: 1
-
+affiliations:
+ - name: Lyman Spitzer, Jr. Fellow, Princeton University
+   index: 1
 date: 10 January 2025
 bibliography: paper.bib
 
@@ -34,8 +33,9 @@ bibliography: paper.bib
 **1.** Engineering College, Federal University of Catalão, Brazil. **2.** Department of Structures, São Carlos School of Engineering, Brazil. **3.** Federal University of São Carlos (UFSCar), Brazil. **4.** University Federal of Pernambuco, Campus of the Agreste, Brazil. **5.** School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil. **6.** Polytechnic Institute, State University of Rio de Janeiro, Brazil.  
 ---
 
-## Introduction
-The `PAREpy` (Probabilistic Approach to Reliability Engineering) framework is a library for applying probabilistic concepts to analyze a system containing random variables. The platform is built in Python and can be used in any environment that supports this programming language.  
+# Introduction
+
+The PAREpy (Probabilistic Approach to Reliability Engineering) framework is a library for applying probabilistic concepts to analyze a system containing random variables. The platform is built in Python and can be used in any environment that supports this programming language.  
   
 Tools often offer a certain complexity when building reliability analyses. This framework intends to be a faster library for building reliability problems. This version, it is able to assemble structural reliability problems using sampling methods and derivative methods.  
   
@@ -51,23 +51,38 @@ PAREPy offers the following functions:
   
 The documentation is available on the [PAREpy web site](https://wmpjrufg.github.io/PAREPY/). There, users can find some examples, learning and see application examples.  
   
-## Reliability Overview
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+# Reliability Overview
 
-## Quick Start
+Various factors influence the behavior of structures, most of which cannot be fully controlled. The different sources of uncertainty affecting these factors result in variability, making structural safety an inherently non-deterministic problem.  
 
-### Install
+In most cases, engineers need to check a structure's structural safety. Structural safety can be defined as an attribute that allows us to classify structures as safe or unsafe. A structure is safe when its ability (primarily concerning the possibility of causing harm to people) is higher than a previously accepted value as a minimum admissible and unsafe otherwise [@jacinto_segurancestrutural_2023].  
 
-To use the framework in a **Python** environment, use the following command:
+To check Structural safety, we should introduce the state limit function concept. Through this function, methods like FORM (First Order Reliability Method), SORM (Second Order Reliability Method), and Sampling methods can evaluate a quantitative measurement of structural safety. 
+
+If a structure or part of a structure exceeding a specific limit cannot perform a required performance, this particular limit is called a limit state. So, the function that defines this limit can be called the state limit function [@grandhi_structural_1999].
+
+The basic reliability problem is represented by the multiple integral of equation (1), where $p_f$ represents the failure probability of the structure, $\boldsymbol{X}$ is the n-dimensional vector representing the random variables of the system, $f_x(\boldsymbol{x})$ represents the joint probability density function over the failure domain, and $G(\boldsymbol{X})$ is the limit state equation. $G(\boldsymbol{X}) \leq 0$ represents a failure condition. 
+
+$$
+p_f = P(G(\boldsymbol{X}) \leq 0) = \int \dots \int\limits_{G(\boldsymbol{X}) \leq 0} f_{\mathbf{X}}(\boldsymbol{x}) \, d\mathbf{x} \tag{1}
+$$
+
+# Quick Start
+
+In this paper, we present the stable version 1.3.3 about PAREPy. Sampling was implemented in this version: (a) Monte Carlo Method and (b) Latin Hyper Cube Method.
+
+## Install
+
+To use the framework in a Python environment, use the following command:
 
 ```python
 pip install parepy-toolbox
 # or pip install --upgrade parepy-toolbox
 ```
 
-### Files Structure
+## Files Structure
 
-Let's use the example of building a problem in PAREpy using **Jupyter Notebook** file or a **Python** file. The basic file structure that you must assemble to use the library must be as follows:
+Let's use the example of building a problem in PAREpy using Jupyter Notebook file or a Python file. The basic file structure that you must assemble to use the library must be as follows:
 
 ```bash
  .
@@ -98,25 +113,25 @@ def my_function(x, none_variable):
 
 ### Parameters of `of_file.py`
 
-- **`x`** (type `list`): A list of design random variables $\left(\mathbf{X}\right)$. PAREpy generates these values.
+- **`x`** (type `list`): A list of design random variables $\left(\boldsymbol{X}\right)$. PAREpy generates these values.
 - **`none_variable`** (type `None`, `list`, `float`, `dict`, `str`, or `any`): The user can define this variable. The user can input any value into this variable when calling the framework's main function.
 
 ### Returns of `of_file.py`
 
 - `r` (type `list`): A list of values. In structural problems, we recommend putting the capacity in this variable.
 - `s` (type `list`): A list of values. In structural problems, we recommend putting the demand in this variable.
-- `g` (type `list`): State limit function $\mathbf{G}(\mathbf{X}) = \mathbf{R} - \mathbf{S}$.
+- `g` (type `list`): State limit function $\mathbf{G}(\boldsymbol{X}) = \boldsymbol{R} - \boldsymbol{S}$.
 
 > **Important**  
 > The lists `r`, `s`, and `g` must have the same size and will be defined in the main function setup. List `g` must always be the last value in the output tuple
 
-## Examples and capabilities
+# Examples and capabilities
 
-### Example 1: Creating an Objective Function
+## Example 1: Creating an Objective Function
 
 To demonstrate how to create an objective function, we use Beck [1] as an example. The State Limit Function is given by:
 
-$\mathbf{G}(\mathbf{X}) = \mathbf{R}_d - \mathbf{D} - \mathbf{L} $
+$$\mathbf{G}(\boldsymbol{X}) = \boldsymbol{R}_d - \boldsymbol{D} - \boldsymbol{L} \tag{2}$$
 
 Here are some implementations of the example function:
 
@@ -173,9 +188,9 @@ def example_function(x, none_variable):
 
 For example, consider two State Limit Functions:
 
-$\mathbf{G}_0 = \mathbf{R}_d - \mathbf{D} - \mathbf{L}$
+$$\mathbf{G}_0 = \boldsymbol{R}_d - \boldsymbol{D} - \boldsymbol{L} \tag{3}$$
 
-$\mathbf{G}_1 = \mathbf{\sigma_y} \cdot \mathbf{W} - \mathbf{M}$
+$$\mathbf{G}_1 = \boldsymbol{\sigma_y} \cdot \boldsymbol{W} - \boldsymbol{M} \tag{4}$$
 
 Here’s how to implement this:
 
@@ -206,8 +221,9 @@ def example_function(x, none_variable):
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
   
-## Conclusions
-A.M.K. was reponsible for conceptualization, methodology, software, testing and Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.  
+## Concluding remarks
+PAREpy represents a contribution to structural reliability engineering by offering an accessible, efficient, and extensible platform for probabilistic analysis. Its use in education and research will help advance the understanding and application of reliability concepts, supporting the development of safer and more robust structural designs.  
+
+The framework simplifies the complexity often associated with reliability analyses by offering intuitive functions for probability of failure estimation, reliability index calculation, and convergence assessment. Moreover, its modular structure allows users to define custom objective functions and integrate them seamlessly into their reliability studies.  
   
-## Contributions
-A.M.K. was reponsible for conceptualization, methodology, software, testing and validation, writing of manuscript, and visualization; A.D. was responsible for testing software and results in training machine learning models; A.M.B., W.F.R., Z-K.L. were responsible for funding acquisition, review, and editing. Z-K.L. was also supervising the work.
+Future developments of PAREpy aim to expand its capabilities by incorporating additional reliability methods, such as Subset Simulation and Importance Sampling, along with enhanced visualization tools for reliability analysis. Additionally, the platform intends to evolve by including predefined problems and functionalities, making it easier for users to apply the framework to common reliability scenarios. Furthermore, deterministic methods like FORM (First Order Reliability Method) and SORM (Second Order Reliability Method) will be integrated, allowing for a more comprehensive approach to structural reliability analysis.
