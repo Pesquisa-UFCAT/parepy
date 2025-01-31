@@ -1,35 +1,70 @@
 ---
-title: 'Galssssa: A Python package for galactic dynamics'
+title: 'PAREpy: A Probabilistic Approach to Reliability Engineering in Python'
 tags:
   - Python
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - Reliability
+  - Monte Carlo
+  - Sampling
+  - Structures
 authors:
-  - name: Adrian M. Price-Whelan
-    orcid: 0000-0000-0000-0000
+  - name: Prof. PhD Wanderlei Malaquias Pereira Junior
     equal-contrib: true
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
+    affiliation: 1
+
+  - name: Msc Murilo Carneiro Rodrigues
+    equal-contrib: true
+    affiliation: 1
+
+  - name: Msc Matheus Henrique Morato Moraes
+    equal-contrib: true
+    affiliation: 3
+
+  - name: Prof. PhD Daniel de Lima Araújo
+    equal-contrib: true 
+    affiliation: 1
+
+  - name: Prof. PhD André Teófilo Beck
+    equal-contrib: true
     affiliation: 2
-  - name: Author with no affiliation
-    corresponding: true # (This is how to denote the corresponding author)
+
+  - name: Prof. PhD André Luis Christoforo
+    equal-contrib: true
     affiliation: 3
-  - given-names: Ludwig
-    dropping-particle: van
-    surname: Beethoven
-    affiliation: 3
+
+  - name: Prof. PhD Iuri Fazolin
+    equal-contrib: true
+    affiliation: 1
+
+  - name: Prof. PhD Marcos Luiz Henrique
+    equal-contrib: true
+    affiliation: 4
+
+  - name: Prof. Marcos Napoleão Rabelo
+    equal-contrib: true
+    affiliation: 1
+
+  - name: Prof. PhD Fran Sergio Lobato
+    equal-contrib: true
+    affiliation: 5
+
+  - name: Disc. Luiz Henrique Ferreira Rezio
+    equal-contrib: true
+    affiliation: 1
+
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, United States
-   index: 1
-   ror: 00hx57361
- - name: Institution Name, Country
-   index: 2
- - name: Independent Researcher, Country
-   index: 3
-date: 13 August 2017
+  - name: Engineering College, Federal University of Catalão, Brazil.
+    index: 1
+  - name: Department of Structures, São Carlos School of Engineering, Brazil.
+    index: 2
+  - name: Federal University of São Carlos (UFSCar), Brazil.
+    index: 3
+  - name: University Federal of Pernambuco, Campus of the Agreste, Brazil.
+    index: 4
+  - name: School of Chemical Engineering, Federal University of Uberlândia, Center for Exact Sciences and Technology, Brazil.
+    index: 5
+  - name: Polytechnic Institute, State University of Rio de Janeiro, Brazil.
+    index: 6
+date: 10 January 2025
 bibliography: paper.bib
 
 # Optional fields if submitting to a AAS journal too, see this blog post:
