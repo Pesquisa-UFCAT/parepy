@@ -1,6 +1,6 @@
 """Function of probability distributions"""
 import numpy as np
-
+from scipy.stats import norm
 
 def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
     """
@@ -334,3 +334,78 @@ def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int
             u.append(b - np.sqrt((1 - u_aux[i]) * (b - a) * (b - c)))
 
     return u
+
+
+def cdf_gumbel_max(x, u, beta):
+    fx = np.exp(-np.exp((- beta * (x - u))))
+    return fx
+
+
+def cdf_gumbel_min(x, u, beta):
+    fx = 1 - np.exp(- np.exp((beta * (x - u))))
+    return fx
+
+
+def cdf_normal(x, u, sigma):
+    fx = norm.cdf(x, loc=u, scale=sigma)
+    return fx
+
+
+def pdf_gumbel_max(x, u, beta):
+    fx = beta * np.exp((- beta * (x - u))) - np.exp((- beta * (x - u)))
+    return fx
+
+def pdf_gumbel_min(x, u, beta):
+    fx = beta * np.exp((beta * (x - u))) - np.exp(beta * (x - u))
+    return fx
+
+def pdf_normal(x, u, sigma):
+    fx = norm.pdf(x, loc=u, scale=sigma)
+    return fx
+
+
+def non_normal_approach_normal(x, dist, params):
+    """
+    Calcula mu_t e sigma_t para uma distribuição especificada.
+
+    Parâmetros:
+        x (float): Valor de entrada.
+        dist (str): Nome da distribuição ('normal', 'gumbel max', 'gumbel min', 'log normal').
+        params (dict): Dicionário contendo os parâmetros necessários para a distribuição.
+
+    Retorna:
+        tuple: (mu_t, sigma_t) como floats.
+    """
+    if dist == 'normal':
+        loc = params.get('loc')  
+        scale = params.get('scale')  
+        cdf_x = cdf_normal(x, loc, scale)
+        pdf_temp = pdf_normal(x, loc, scale)
+    elif dist == 'gumbel max':
+        loc = params.get('loc')
+        scale = params.get('scale')
+        cdf_x = cdf_gumbel_max(x, loc, scale)
+        pdf_temp = pdf_gumbel_max(x, loc, scale)
+    elif dist == 'gumbel min':
+        loc = params.get('loc')
+        scale = params.get('scale')
+        cdf_x = cdf_gumbel_min(x, loc, scale)
+        pdf_temp = pdf_gumbel_min(x, loc, scale)
+    elif dist == 'log normal':
+        loc = params.get('loc')
+        scale = params.get('scale')
+        u_log, sigma_log = log_normal_teste(x, loc, scale)
+        cdf_x = cdf_normal(x, u_log, sigma_log)
+        pdf_temp = pdf_normal(x, u_log, sigma_log)
+    
+    icdf = norm.ppf(cdf_x, loc=0, scale=1)
+    sigma_t = norm.pdf(icdf, loc=0, scale=1) / pdf_temp
+    mu_t = x - sigma_t * icdf
+
+    return float(mu_t), float(sigma_t)
+
+
+def log_normal_teste(x, lamb, epsilon):
+    u = x * (1 - np.log(x) + lamb)
+    sigma = x * epsilon
+    return u, sigma
