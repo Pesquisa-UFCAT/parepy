@@ -432,7 +432,7 @@ def pdf_normal(x, u, sigma):
     return fx
 
 
-def log_normal_teste(x, lamb, epsilon):
+def log_normal(x, lambdaa, epsilon):
     """
     Calcula os parâmetros de locação (u) e escala (sigma) para uma distribuição Log-Normal.
 
@@ -446,9 +446,9 @@ def log_normal_teste(x, lamb, epsilon):
             - u (float): Parâmetro de locação.
             - sigma (float): Parâmetro de escala.
     """
-    u = x * (1 - np.log(x) + lamb)
+    loc = x * (1 - np.log(x) + lambdaa)
     sigma = x * epsilon
-    return u, sigma
+    return loc, sigma
 
 
 def non_normal_approach_normal(x, dist, params):
@@ -466,25 +466,24 @@ def non_normal_approach_normal(x, dist, params):
     """
 
     if dist == 'gumbel max':
-        loc = params.get('loc')
-        scale = params.get('scale')
-        cdf_x = cdf_gumbel_max(x, loc, scale)
-        pdf_temp = pdf_gumbel_max(x, loc, scale)
+        u = params.get('u')
+        beta = params.get('beta')
+        cdf_x = cdf_gumbel_max(x, u, beta)
+        pdf_temp = pdf_gumbel_max(x, u, beta)
     elif dist == 'gumbel min':
-        loc = params.get('loc')
-        scale = params.get('scale')
-        cdf_x = cdf_gumbel_min(x, loc, scale)
-        pdf_temp = pdf_gumbel_min(x, loc, scale)
-    elif dist == 'log normal':
-        loc = params.get('loc')
-        scale = params.get('scale')
-        u_log, sigma_log = log_normal_teste(x, loc, scale)
-        cdf_x = cdf_normal(x, u_log, sigma_log)
-        pdf_temp = pdf_normal(x, u_log, sigma_log)
+        u = params.get('u')
+        beta = params.get('beta')
+        cdf_x = cdf_gumbel_min(x, u, beta)
+        pdf_temp = pdf_gumbel_min(x, u, beta)
     
-    icdf = norm.ppf(cdf_x, loc=0, scale=1)
-    sigma_t = norm.pdf(icdf, loc=0, scale=1) / pdf_temp
-    mu_t = x - sigma_t * icdf
+    if dist == 'lognormal':
+        epsilon = params.get('epsilon')
+        lambdaa = params.get('lambda')
+        loc_eq, sigma_eq = log_normal(x, lambdaa, epsilon)
+    else:
+        icdf = norm.ppf(cdf_x, loc=0, scale=1)
+        sigma_eq = norm.pdf(icdf, loc=0, scale=1) / pdf_temp
+        loc_eq = x - sigma_eq * icdf
 
-    return float(mu_t), float(sigma_t)
+    return float(loc_eq), float(sigma_eq)
 
