@@ -337,31 +337,118 @@ def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int
 
 
 def cdf_gumbel_max(x, u, beta):
+    """
+    Calcula a função de distribuição acumulada (CDF) da distribuição Gumbel Máxima.
+
+    Parâmetros:
+        x (float): Valor de entrada para o qual a CDF será calculada.
+        u (float): Parâmetro de locação (moda) da distribuição Gumbel Máxima.
+        beta (float): Parâmetro de escala da distribuição Gumbel Máxima.
+
+    Retorna:
+        float: Valor da CDF no ponto x.
+    """
     fx = np.exp(-np.exp((- beta * (x - u))))
     return fx
 
 
 def cdf_gumbel_min(x, u, beta):
+    """
+    Calcula a função de distribuição acumulada (CDF) da distribuição Gumbel Mínima.
+
+    Parâmetros:
+        x (float): Valor de entrada para o qual a CDF será calculada.
+        u (float): Parâmetro de locação (moda) da distribuição Gumbel Mínima.
+        beta (float): Parâmetro de escala da distribuição Gumbel Mínima.
+
+    Retorna:
+        float: Valor da CDF no ponto x.
+    """
     fx = 1 - np.exp(- np.exp((beta * (x - u))))
     return fx
 
 
 def cdf_normal(x, u, sigma):
+    """
+    Calcula a função de distribuição acumulada (CDF) da distribuição Normal.
+
+    Parâmetros:
+        x (float): Valor de entrada para o qual a CDF será calculada.
+        u (float): Média (locação) da distribuição Normal.
+        sigma (float): Desvio padrão (escala) da distribuição Normal.
+
+    Retorna:
+        float: Valor da CDF no ponto x.
+    """
     fx = norm.cdf(x, loc=u, scale=sigma)
     return fx
 
 
 def pdf_gumbel_max(x, u, beta):
+    """
+    Calcula a função densidade de probabilidade (PDF) da distribuição Gumbel Máxima.
+
+    Parâmetros:
+        x (float): Valor de entrada para o qual a PDF será calculada.
+        u (float): Parâmetro de locação (moda) da distribuição Gumbel Máxima.
+        beta (float): Parâmetro de escala da distribuição Gumbel Máxima.
+
+    Retorna:
+        float: Valor da PDF no ponto x.
+    """
     fx = beta * np.exp((- beta * (x - u))) - np.exp((- beta * (x - u)))
     return fx
 
+
 def pdf_gumbel_min(x, u, beta):
+    """
+    Calcula a função densidade de probabilidade (PDF) da distribuição Gumbel Mínima.
+
+    Parâmetros:
+        x (float): Valor de entrada para o qual a PDF será calculada.
+        u (float): Parâmetro de locação (moda) da distribuição Gumbel Mínima.
+        beta (float): Parâmetro de escala da distribuição Gumbel Mínima.
+
+    Retorna:
+        float: Valor da PDF no ponto x.
+    """
     fx = beta * np.exp((beta * (x - u))) - np.exp(beta * (x - u))
     return fx
 
+
 def pdf_normal(x, u, sigma):
+    """
+    Calcula a função densidade de probabilidade (PDF) da distribuição Normal.
+
+    Parâmetros:
+        x (float): Valor de entrada para o qual a PDF será calculada.
+        u (float): Média (locação) da distribuição Normal.
+        sigma (float): Desvio padrão (escala) da distribuição Normal.
+
+    Retorna:
+        float: Valor da PDF no ponto x.
+    """
     fx = norm.pdf(x, loc=u, scale=sigma)
     return fx
+
+
+def log_normal_teste(x, lamb, epsilon):
+    """
+    Calcula os parâmetros de locação (u) e escala (sigma) para uma distribuição Log-Normal.
+
+    Parâmetros:
+        x (float): Valor de entrada.
+        lamb (float): Parâmetro de forma da distribuição Log-Normal.
+        epsilon (float): Parâmetro de escala da distribuição Log-Normal.
+
+    Retorna:
+        tuple: (u, sigma), onde:
+            - u (float): Parâmetro de locação.
+            - sigma (float): Parâmetro de escala.
+    """
+    u = x * (1 - np.log(x) + lamb)
+    sigma = x * epsilon
+    return u, sigma
 
 
 def non_normal_approach_normal(x, dist, params):
@@ -405,7 +492,3 @@ def non_normal_approach_normal(x, dist, params):
     return float(mu_t), float(sigma_t)
 
 
-def log_normal_teste(x, lamb, epsilon):
-    u = x * (1 - np.log(x) + lamb)
-    sigma = x * epsilon
-    return u, sigma
