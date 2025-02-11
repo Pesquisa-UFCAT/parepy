@@ -338,17 +338,33 @@ def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int
 
 def cdf_gumbel_max(x, u, beta):
     """
-    Calcula a função de distribuição acumulada (CDF) da distribuição Gumbel Máxima.
+    This function generates the CDF of Gumbel maximum distribution.
+
+    Args:
+        x (float): Random value.
+        u (float): Mode.
+        beta (float): Scale.
+
+    Retorns:
+        fx (float): CDF in point x.
+    """
+    fx = np.exp(-np.exp((- beta * (x - u))))
+    return fx
+
+
+def pdf_gumbel_max(x, u, beta):
+    """
+    Calcula a função densidade de probabilidade (PDF) da distribuição Gumbel Máxima.
 
     Parâmetros:
-        x (float): Valor de entrada para o qual a CDF será calculada.
+        x (float): Valor de entrada para o qual a PDF será calculada.
         u (float): Parâmetro de locação (moda) da distribuição Gumbel Máxima.
         beta (float): Parâmetro de escala da distribuição Gumbel Máxima.
 
     Retorna:
-        float: Valor da CDF no ponto x.
+        float: Valor da PDF no ponto x.
     """
-    fx = np.exp(-np.exp((- beta * (x - u))))
+    fx = beta * np.exp((- beta * (x - u))) - np.exp((- beta * (x - u)))
     return fx
 
 
@@ -381,22 +397,6 @@ def cdf_normal(x, u, sigma):
         float: Valor da CDF no ponto x.
     """
     fx = norm.cdf(x, loc=u, scale=sigma)
-    return fx
-
-
-def pdf_gumbel_max(x, u, beta):
-    """
-    Calcula a função densidade de probabilidade (PDF) da distribuição Gumbel Máxima.
-
-    Parâmetros:
-        x (float): Valor de entrada para o qual a PDF será calculada.
-        u (float): Parâmetro de locação (moda) da distribuição Gumbel Máxima.
-        beta (float): Parâmetro de escala da distribuição Gumbel Máxima.
-
-    Retorna:
-        float: Valor da PDF no ponto x.
-    """
-    fx = beta * np.exp((- beta * (x - u))) - np.exp((- beta * (x - u)))
     return fx
 
 
@@ -453,22 +453,19 @@ def log_normal_teste(x, lamb, epsilon):
 
 def non_normal_approach_normal(x, dist, params):
     """
-    Calcula mu_t e sigma_t para uma distribuição especificada.
+    This function convert non normal distribution to normal distribution.
 
     Parâmetros:
-        x (float): Valor de entrada.
-        dist (str): Nome da distribuição ('normal', 'gumbel max', 'gumbel min', 'log normal').
-        params (dict): Dicionário contendo os parâmetros necessários para a distribuição.
+        x (Float): Random variable
+        dist (String): Type of distribution: 'gumbel max', 'gumbel min', 'lognormal')
+        params (Dictionary): Parameters of distribution
 
     Retorna:
-        tuple: (mu_t, sigma_t) como floats.
+        mu_t (Float): mean normal model
+        sigma_t (Float): standard deviation normal model
     """
-    if dist == 'normal':
-        loc = params.get('loc')  
-        scale = params.get('scale')  
-        cdf_x = cdf_normal(x, loc, scale)
-        pdf_temp = pdf_normal(x, loc, scale)
-    elif dist == 'gumbel max':
+
+    if dist == 'gumbel max':
         loc = params.get('loc')
         scale = params.get('scale')
         cdf_x = cdf_gumbel_max(x, loc, scale)
@@ -490,5 +487,4 @@ def non_normal_approach_normal(x, dist, params):
     mu_t = x - sigma_t * icdf
 
     return float(mu_t), float(sigma_t)
-
 
