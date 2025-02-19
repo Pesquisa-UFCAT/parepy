@@ -1,6 +1,7 @@
 """Objective function file for the probabilistic problem."""
 import numpy as np
 
+
 def nowak_collins_example(x, none_variable):
     """Objective function for the Nowak example (tutorial).
     """
@@ -17,6 +18,7 @@ def nowak_collins_example(x, none_variable):
 
     return [capacity], [demand], [constraint]
 
+
 def ishigami(x, none_variable):
     """Objective function for the Nowak example (tutorial).
     """
@@ -29,6 +31,7 @@ def ishigami(x, none_variable):
     result = np.sin(x_0) + a * np.sin(x_1) ** 2 + b * (x_2 ** 4) * np.sin(x_0)
 
     return [None], [None], [result]
+
 
 def nowak_collins_example1(x, none_variable):
     """Objective function for the Nowak example (tutorial).
@@ -80,24 +83,19 @@ def nowak_collins_time_example(x, none_variable):
     return [capacity], [demand], [constraint]
 
 
-def beck_example(x, none_variable):
-    y_1 = x[0]
-    y_2 = x[1]
-    y_3 = x[2]
-    # g = 12.50 * y_1 * y_2 + 100 * y_2 + 250 * y_1 - 200 * y_3 + 1000
-    g = y_1 * y_2 - y_3
-    
-    return g
+def obj_form(x, none_variable=None):
+    simga_y = x[0]
+    w = x[1]
+    m = x[2]
+    return simga_y * w - m
 
 
-def grad_beck_example(x, none_variable):
-    y_1 = x[0]
-    y_2 = x[1]
-    y_3 = x[2]
-    # g_grad = [12.50 * y_2 + 250, 12.50 * y_1 + 100, -200]
-    g_grad = [y_2, y_1, -1]
-    
-    return g_grad
+def grad_obj_form(x, none_variable=None):
+    sigma_y = x[0]
+    w = x[1]
+    m = x[2]
+    grad_g = [w, sigma_y, -1]
+    return grad_g
 
 
 def beck_example_2(x, none_variable):

@@ -1,6 +1,10 @@
 """Function of probability distributions"""
 import numpy as np
 from scipy.stats import norm
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
 
 def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
     """
@@ -485,4 +489,7 @@ def non_normal_approach_normal(x, dist, params):
         loc_eq = x - sigma_eq * icdf
 
     return float(loc_eq), float(sigma_eq)
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev

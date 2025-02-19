@@ -322,129 +322,6 @@ def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -
         return None, None, None
 
 
-def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, float, float]:
-    """
-    This function solves the deterministic problem in structural reliability problems.
-    
-    Args:
-        setup (dict): Setup settings.
-        'objective function' (Python function [def]): Objective function. The Parepy user defined this function (key in setup dictionary)
-        'gradient objective function' (Python function [def]): Gradient objective function. The Parepy user defined this function (key in setup dictionary)
-        'numerical model' (Dictionary): Numerical model settings (key in setup dictionary)
-        'variables settings' (List): Variables settings (key in setup dictionary)
-        'number of iterations' (Integer): Number of iterations (key in setup dictionary)
-    """
-    try:
-        # General settings
-        initial_time = time.time()
-        n_iter = setup['number of iterations']
-        obj = setup['objective function']
-        grad_obj = setup['gradient objective function']
-        model = setup['numerical model']['model']
-        none_variable = setup['none variable']
-        x_initial_guess = setup['numerical model']['initial guess']
-        x_initial_guess = np.array([x_initial_guess])
-    except KeyError as e:
-        raise KeyError(f"Missing required key in setup: {e}")
-    except Exception as e:
-        raise Exception(f"Error during setup initialization: {e}")
-
-    try:
-        g_sol = []
-        grad_sol = []
-        beta_sol = []
-        y_sol = []
-        x_sol = []
-
-        # Hasofer-Lind method part 1
-        parameters = setup['variables settings']
-        locs = [d['parameters']['mean'] for d in parameters]
-        stds = [d['parameters']['sigma'] for d in parameters]
-        jacobian_xy = np.diag(stds)
-        jacobian_xy_trans = np.transpose(jacobian_xy)
-        jacobian_yx = np.linalg.inv(jacobian_xy)
-        locs = np.array([locs])
-        length = len(setup['variables settings'])
-        print("Jxy: ", jacobian_xy)
-        print("JxyT ", jacobian_xy_trans)
-        print("Jyx: ", jacobian_yx)
-    except KeyError as e:
-        raise KeyError(f"Missing required key in variables settings: {e}")
-    except ValueError as e:
-        raise ValueError(f"Error in variable setup or dimensions: {e}")
-    except Exception as e:
-        raise Exception(f"Error during matrix initialization: {e}")
-
-    try:
-        if model.upper() == 'FOSM':
-            for i in range(n_iter):
-                try:
-                    if i == 0:
-                        x = x_initial_guess.copy()
-                    else:
-                        x = x_new.copy()
-
-                    # Hasofer-Lind method part 2
-                    y = np.dot(jacobian_yx, np.transpose(x) - np.transpose(locs))
-                    y_sol.append(np.transpose(y)[0].tolist())
-                    x_sol.append(x[0].tolist())
-
-                    g_y = obj(x[0].tolist(), none_variable)
-                    g_diff_x = grad_obj(x[0].tolist(), none_variable)
-                    g_diff_x = np.transpose(np.array([g_diff_x]))
-                    g_diff_y = np.dot(jacobian_xy_trans, g_diff_x)
-
-                    print('y: ', y)
-                    print("g_y: ", g_y)
-                    print("g_diff_x: ", g_diff_x)
-                    print("g_diff_y: ", g_diff_y)
-
-                    # Hasofer-Lind algorithm
-                    y_new = parepyco.hasofer_lind_rackwitz_fiessler_algorithm(y, g_y, g_diff_y)
-                    print("y_new: ", y_new)
-                    x_new = np.transpose(np.dot(jacobian_xy, y_new) + np.transpose(locs))
-                    print("x_new: ", x_new)
-
-                    beta = np.linalg.norm(y_new)
-                    g_sol.append(g_y)
-                    grad_sol.append(np.linalg.norm(g_diff_y))
-                    beta_sol.append(beta)
-
-                except Exception as e:
-                    raise Exception(f"Error during iteration {i}: {e}")
-
-            y_sol = np.array(y_sol)
-            x_sol = np.array(x_sol)
-
-        elif model.upper() == 'FORM':
-            pass
-        elif model.upper() == 'SORM':
-            pass
-
-    except Exception as e:
-        raise Exception(f"Error during model execution: {e}")
-
-    try:
-        results_about_data = {
-            "x0": x_sol[:, 0],
-            "x1": x_sol[:, 1],
-            #"x2": x_sol[:, 2],
-            "y0": y_sol[:, 0],
-            "y1": y_sol[:, 1],
-            #"y2": y_sol[:, 2],
-            "state limit function": g_sol,
-            "ϐ new": beta_sol
-        }
-
-        results_about_data = pd.DataFrame(results_about_data)
-        failure_prob_list, beta_list = 0, 0
-
-    except Exception as e:
-        raise Exception(f"Error during result preparation: {e}")
-
-    return results_about_data, failure_prob_list, beta_list
-
-
 def sobol_algorithm(setup):
     """
     This function calculates the Sobol indices in structural reliability problems.
@@ -515,3 +392,178 @@ def generate_factorial_design(level_dict):
     df = pd.DataFrame(combinations, columns=level_dict.keys())
 
     return df
+
+
+def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, float, int]:
+    """
+    This function performs a deterministic structural reliability analysis using an iterative algorithm.
+    It calculates the reliability index (`beta`), the probability of failure (`pf`), and returns a DataFrame
+    containing the results of each iteration.
+
+    Args:
+        setup (Dictionary): setup settings.
+        'tolerance' (float): The convergence tolerance for the algorithm (key in setup dictionary).
+        'max iterations' (int): The maximum number of iterations allowed (key in setup dictionary).
+        'numerical model' (Any): The numerical model used for the analysis (user-defined) (key in setup dictionary).
+        'variables settings' (List[dict]): Variables settings, listed as dictionaries (key in setup dictionary).
+        'number of state limit functions or constraints' (int): Number of state limit functions or constraints (key in setup dictionary).
+        'none variable' (None, list, float, dictionary, str or any): None variable. User can use this variable in objective function (key in setup dictionary).
+        'objective function' (Python function): Objective function defined by the user (key in setup dictionary).
+        'gradient objective function' (Callable): The gradient of the objective function (key in setup dictionary). 
+        'name simulation' (str): A name or identifier for the simulation (key in setup dictionary).
+
+    Returns:
+        results_df (pd.DataFrame): A DataFrame with the results of each iteration.
+        pf (float): The probability of failure calculated using the final reliability index.
+        beta (int): The final reliability index.
+    """
+    try:
+        if not isinstance(setup, dict):
+            raise TypeError('The setup parameter must be a dictionary.')
+        
+        required_keys = [
+            'tolerance', 'max iterations', 'numerical model', 'variables settings',
+            'number of state limit functions or constraints', 'none variable',
+            'objective function', 'gradient objective function', 'name simulation'
+        ]
+        
+        for key in required_keys:
+            if key not in setup:
+                raise ValueError(f'The setup parameter must have the key: {key}.')
+        
+        variables = setup['variables settings']
+        if not isinstance(variables, list):
+            raise TypeError('The "variables settings" must be a list.')
+        
+        for i, var in enumerate(variables):
+            if not isinstance(var, dict):
+                raise TypeError('Each variable in "variables settings" must be a dictionary.')
+            
+            if 'parameters' not in var or not isinstance(var['parameters'], dict):
+                raise ValueError('Each variable must have a "parameters" key with a dictionary value.')
+            
+            if 'mean' not in var['parameters'] or 'sigma' not in var['parameters']:
+                raise ValueError('Each variable must have "mean" and "sigma" in its parameters.')
+            
+            if 'type' not in var:
+                raise ValueError('Each variable must have a "type" key.')
+            
+            if var['type'] not in ['normal', 'lognormal', 'gumbel max', 'gumbel min']:
+                raise ValueError('The variable type must be one of: "normal", "lognormal", "gumbel max", "gumbel min".')
+        
+
+        mu = []
+        sigma = []
+        tol = setup['tolerance']
+        max_iter = setup['max iterations']
+        none_variable = setup['none variable']
+        obj = setup['objective function']
+        grad_obj = setup['gradient objective function']
+        params_adapt = {}
+        
+        for i, var in enumerate(variables):
+            mean = var['parameters']['mean']
+            std = var['parameters']['sigma']
+            mu.append(mean)
+            sigma.append(std)
+            
+            if var['type'] == 'normal':
+                params_adapt[f'var{i}'] = {
+                    'type': 'normal',
+                    'params': {
+                        'mu': mean,
+                        'sigma': std
+                    }
+                }
+            elif var['type'] == 'lognormal':
+                epsilon = np.sqrt(np.log(1 + (std / mean) ** 2))
+                lambdaa = np.log(mean) - 0.5 * epsilon ** 2
+                params_adapt[f'var{i}'] = {
+                    'type': 'lognormal',
+                    'params': {
+                        'lambda': float(lambdaa),
+                        'epsilon': float(epsilon)
+                    }
+                }
+            elif var['type'] == 'gumbel max':
+                gamma = 0.577215665  
+                beta = np.pi / (np.sqrt(6) * std)
+                alpha = mean - gamma / beta
+                params_adapt[f'var{i}'] = {
+                    'type': 'gumbel max',
+                    'params': {
+                        'alpha': float(alpha),
+                        'beta': float(beta)
+                    }
+                }
+            elif var['type'] == 'gumbel min':
+                gamma = 0.577215665 
+                beta = np.pi / (np.sqrt(6) * std)
+                alpha = mean + gamma / beta
+                params_adapt[f'var{i}'] = {
+                    'type': 'gumbel min',
+                    'params': {
+                        'alpha': float(alpha),
+                        'beta': float(beta)
+                    }
+                }
+                 
+
+        # for index, value in params_adapt.items():
+        #     print(f"index: {index}, \nvalue: {value}")
+
+        # print(f"mu: {mean}, \nsigma: {std}, \ntol: {tol}, \nmax_iter: {max_iter}, \nnone_variable: {none_variable}")
+        
+        # Fixed in this algorithm
+        beta_list = [10000]
+        error = 1000
+        iter = 0
+        step = 1
+
+        x = np.transpose(np.array([mu.copy()]))
+        mu = x.copy()
+        jacobian_xy = np.diag(sigma)
+        jacobian_xy_trans = np.transpose(jacobian_xy)
+        jacobian_yx = np.linalg.inv(jacobian_xy)
+        y = jacobian_yx @ (x - mu)
+        x = jacobian_xy @ y + mu
+
+        while (error > tol and iter < max_iter):
+            beta = np.linalg.norm(y)
+            beta_list.append(beta)
+            g_y = obj(x.flatten().tolist())
+            grad_g_x = grad_obj(x.flatten().tolist())
+            grad_g_y = np.dot(jacobian_xy_trans, np.transpose(np.array([grad_g_x])))
+            num = (np.transpose(grad_g_y) @ y - g_y)
+            norm = np.linalg.norm(grad_g_y)
+            norm2 = norm ** 2
+            #alpha = grad_g_y / norm
+            #aux = g_y / norm
+            #y = -alpha * (beta + aux)
+            d = grad_g_y @ (num / norm2) - y
+            #step = minimize_scalar(f_alpha, bounds=(.001, 1), args=([y, d]), method='bounded')
+            #print(step.x)
+            #y += step.x * d
+            y += step * d
+            error = np.abs(beta_list[iter + 1] - beta_list[iter])
+            x = jacobian_xy @ y + mu
+
+            aux = {
+                'iteration': iter,
+                **{f'x_{i}': float(x_value.item()) for i, x_value in enumerate(x)},
+                'error': error,
+                'beta': beta
+            }
+            if iter == 0:
+                results_df = pd.DataFrame([aux])
+            else:
+                results_df = pd.concat([results_df, pd.DataFrame([aux])], ignore_index=True)
+
+            iter += 1
+        pf = parepyco.pf_equation(beta)
+        
+        return results_df, float(pf), float(beta)
+            
+    except (Exception, TypeError, ValueError) as e:
+        print(f"Error: {e}")
+        return None, None, None
