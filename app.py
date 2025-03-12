@@ -1,8 +1,9 @@
-from parepy_toolbox import sampling_algorithm_structural_analysis, convergence_probability_failure
+from parepy_toolbox import sampling_algorithm_structural_analysis, convergence_probability_failure, sobol_algorithm
 from io import BytesIO
 
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 
 import textwrap
 import json
@@ -90,7 +91,6 @@ model_sampling = st.selectbox("Método de amostragem", ["mcs"], index=0)
 
 if st.button("Executar Algoritmo"):
     function_str = generate_function(capacity_input, demand_input)
-    st.code(textwrap.dedent(function_str), language="python")
 
     from obj_functions import obj_function
     
@@ -104,28 +104,68 @@ if st.button("Executar Algoritmo"):
         'name simulation': None,
     }
 
-    # st.json(setup, expanded=False)
-    
-    # Call algorithm
     results, pf, beta = sampling_algorithm_structural_analysis(setup)
 
-    st.subheader("Resultados:")
+    # Gráficos
+    st.session_state.text_convergence = "Convergence Rate:"
+    div, m, ci_l, ci_u, var = convergence_probability_failure(results, 'G_0')
+    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    ax1.plot(div, m, label="Failure Probability Rate", color='b', linestyle='-')
+    ax1.fill_between(div, ci_l, ci_u, color='b', alpha=0.2, label="95% Confidence Interval")
+    ax1.set_xlabel("Sample Size (div)")
+    ax1.set_ylabel("Failure Probability Rate")
+    ax1.set_title("Convergence of Failure Probability")
+    ax1.legend()
+    ax1.grid(True)
+    st.session_state.fig1 = fig1
 
-    st.write(results)
-    st.write(pf)
-    st.write(beta)
+    st.session_state.text_sobol = "Sobol Sensitivity Analysis:"
+    data_sobol = sobol_algorithm(setup)
+    variables = ['x_0', 'x_1', 'x_2']
+    s_i = [data_sobol.iloc[var]['s_i'] for var in range(len(variables))]
+    s_t = [data_sobol.iloc[var]['s_t'] for var in range(len(variables))]
 
-    st.subheader('Convergence Rate:')
-    x, m, l, u = convergence_probability_failure(results, 'I_0')
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    x = range(len(variables))
+    width = 0.35
+    ax2.bar(x, s_i, width, label='First-order (s_i)', color='blue', alpha=0.7)
+    ax2.bar([p + width for p in x], s_t, width, label='Total-order (s_t)', color='orange', alpha=0.7)
+    ax2.set_xlabel("Variables")
+    ax2.set_ylabel("Sobol Index")
+    ax2.set_xticks([p + width / 2 for p in x])
+    ax2.set_xticklabels(variables)
+    ax2.legend()
+    ax2.grid(axis='y', linestyle='--', alpha=0.7)
+    st.session_state.fig2 = fig2
 
-    with open("obj_functions.py", "w") as f:
-        f.write(textwrap.dedent(""))
+    st.session_state.results = results
+    st.session_state.pf = pf
+    st.session_state.beta = beta
+    st.session_state.data_sobol = data_sobol
 
+# Re-rendering everything, checking session state to ensure content persists
+if "text_convergence" in st.session_state:
+    st.subheader(st.session_state.text_convergence)
+
+if "fig1" in st.session_state:
+    st.pyplot(st.session_state.fig1)
+
+if "text_sobol" in st.session_state:
+    st.subheader(st.session_state.text_sobol)
+
+if "fig2" in st.session_state:
+    st.pyplot(st.session_state.fig2)
+
+# Download
+if "results" in st.session_state:
+    results = st.session_state.results  # Access results from session state
     final_results = BytesIO()
     with pd.ExcelWriter(final_results, engine="xlsxwriter") as writer:
         results.to_excel(writer, index=False, sheet_name="Pareto Front")
     final_results.seek(0)
     st.download_button("Download Resultados", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+else:
+    st.error("Erro: os resultados não estão disponíveis para download. Verifique se o algoritmo foi executado corretamente.")
 
 
 
