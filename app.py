@@ -12,11 +12,6 @@ import json
 def generate_function(capacity_expr, demand_expr):
     function_code = f"""
     def obj_function(x, none_variable):
-        # Random variables
-        f_y = x[0]
-        p_load = x[1]
-        w_load = x[2]
-        
         capacity = {capacity_expr}
         demand = {demand_expr}
 
@@ -112,7 +107,7 @@ if st.button("Run Simulation"):
 
     # Gráficos
     st.session_state.text_convergence = "Convergence Rate:"
-    div, m, ci_l, ci_u, var = convergence_probability_failure(results, 'G_0')
+    div, m, ci_l, ci_u, var = convergence_probability_failure(results, 'I_0')
     fig1, ax1 = plt.subplots(figsize=(8, 6))
     ax1.plot(div, m, label="Failure Probability Rate", color='b', linestyle='-')
     ax1.fill_between(div, ci_l, ci_u, color='b', alpha=0.2, label="95% Confidence Interval")
@@ -168,8 +163,6 @@ if "results" in st.session_state:
         results.to_excel(writer, index=False, sheet_name="Results")
     final_results.seek(0)
     st.download_button("Download Resultados", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-else:
-    st.error("Erro: os resultados não estão disponíveis para download. Verifique se o algoritmo foi executado corretamente.")
 
 
 
