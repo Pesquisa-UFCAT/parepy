@@ -32,13 +32,23 @@ def generate_function(capacity_expr, demand_expr):
     return function_code
 
 st.title("PAREpy")
+st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet nisl quis quam mattis molestie. Aliquam efficitur, risus et fringilla pellentesque, est sapien finibus sapien, vitae scelerisque nisl nunc vel justo. Nullam ut ornare diam. Ut convallis ex velit, eu condimentum ligula porttitor nec. Sed id magna ut elit fermentum convallis. Curabitur tincidunt tellus tortor, et ultrices massa faucibus sit amet. Suspendisse aliquam, massa et posuere dictum, ipsum purus egestas leo, a placerat metus felis non magna. Fusce ac sem aliquam, egestas velit vel, laoreet mi. Nulla lacinia tortor id interdum faucibus. Ut laoreet felis at purus congue, eget viverra metus blandit. Donec placerat finibus laoreet. Quisque luctus sodales felis, in sollicitudin sem tristique eu. Aenean aliquet nunc sem, vel scelerisque nisi ornare eu. Nulla orci turpis, molestie non ex at, fringilla elementum enim. Cras dictum, dui nec tincidunt scelerisque, neque augue ullamcorper leo, sit amet vulputate ex diam vitae nisl.")
 
+st.subheader("Objective Function parameters")
 # Entrada do usuário
 capacity_input = st.text_area("Capacity:", "80 * x[0]")
 demand_input = st.text_area("Demand:", "54 * x[1] + 5832 * x[2]")
 
 
-st.subheader("Configuração do Modelo")
+# Configuração do setup
+st.subheader("")
+st.subheader("Setup Configuration")
+num_samples = st.number_input("Número de amostras", min_value=1, step=1, value=10000)
+model_sampling = st.selectbox("Método de amostragem", ["mcs"], index=0)
+
+
+st.subheader("")
+st.subheader("Model Configuration")
 
 # Lista para armazenar as variáveis
 if "var" not in st.session_state:
@@ -83,13 +93,7 @@ with st.container():
                 'parameters': parameters,
             }
 
-# Configuração do setup
-st.subheader("Configuração do PAREpy")
-num_samples = st.number_input("Número de amostras", min_value=1, step=1, value=1000)
-model_sampling = st.selectbox("Método de amostragem", ["mcs"], index=0)
-
-
-if st.button("Executar Algoritmo"):
+if st.button("Run Simulation"):
     function_str = generate_function(capacity_input, demand_input)
 
     from obj_functions import obj_function
@@ -161,7 +165,7 @@ if "results" in st.session_state:
     results = st.session_state.results  # Access results from session state
     final_results = BytesIO()
     with pd.ExcelWriter(final_results, engine="xlsxwriter") as writer:
-        results.to_excel(writer, index=False, sheet_name="Pareto Front")
+        results.to_excel(writer, index=False, sheet_name="Results")
     final_results.seek(0)
     st.download_button("Download Resultados", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 else:
