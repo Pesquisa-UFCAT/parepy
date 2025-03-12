@@ -34,6 +34,12 @@ st.subheader("Objective Function parameters")
 capacity_input = st.text_area("Capacity:", "80 * x[0]")
 demand_input = st.text_area("Demand:", "54 * x[1] + 5832 * x[2]")
 
+st.write("")
+none_variable_check = st.checkbox(f"Possui a variável None_Variable?")
+if none_variable_check:
+    none_variable = st.text_area("None_Variable:", "")
+else:
+    none_variable = None
 
 # Configuração do setup
 st.subheader("")
