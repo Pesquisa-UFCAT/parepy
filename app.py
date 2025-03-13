@@ -35,7 +35,7 @@ capacity_input = st.text_area("Capacity:", "80 * x[0]")
 demand_input = st.text_area("Demand:", "54 * x[1] + 5832 * x[2]")
 
 st.write("")
-none_variable_check = st.checkbox(f"Possui a variável None_Variable?")
+none_variable_check = st.checkbox(f"If None_Variable?")
 if none_variable_check:
     none_variable = st.text_area("None_Variable:", "")
 else:
@@ -44,8 +44,9 @@ else:
 # Configuração do setup
 st.subheader("")
 st.subheader("Setup Configuration")
-num_samples = st.number_input("Número de amostras", min_value=1, step=1, value=10000)
-model_sampling = st.selectbox("Método de amostragem", ["mcs"], index=0)
+num_samples = st.number_input("Number of samples", min_value=1, step=1, value=10000)
+model_sampling = st.selectbox("Model Sampling", ["mcs"], index=0) 
+
 
 
 st.subheader("")
@@ -56,7 +57,7 @@ if "var" not in st.session_state:
     st.session_state.var = []
 
 # Definir número de variáveis
-num_vars = st.number_input("Número de variáveis aleatórias", min_value=1, step=1, value=max(1, len(st.session_state.var)))
+num_vars = st.number_input("Number of Variables", min_value=1, step=1, value=max(1, len(st.session_state.var)))
 
 # Ajustar o número de variáveis armazenadas
 while len(st.session_state.var) < num_vars:
@@ -75,16 +76,16 @@ distribution_types = ["uniform", "normal", "lognormal", "gumbel max", "gumbel mi
 with st.container():
     for i in range(num_vars):
         with st.expander(f"Variável {i+1}"):
-            var_type = st.selectbox(f"Tipo da variável {i+1}", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
+            var_type = st.selectbox(f"Variable type {i+1}", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
             
             if var_type == "triangular":
-                min_val = st.number_input(f"Mínimo da variável {i+1}", key=f"min_{i}", value=st.session_state.var[i]['parameters'].get('min', 0.0))
-                mode = st.number_input(f"Moda da variável {i+1}", key=f"mode_{i}", value=st.session_state.var[i]['parameters'].get('mode', 0.0))
-                max_val = st.number_input(f"Máximo da variável {i+1}", key=f"max_{i}", value=st.session_state.var[i]['parameters'].get('max', 0.0))
+                min_val = st.number_input(f"Min {i+1}", key=f"min_{i}", value=st.session_state.var[i]['parameters'].get('min', 0.0))
+                mode = st.number_input(f"Mode {i+1}", key=f"mode_{i}", value=st.session_state.var[i]['parameters'].get('mode', 0.0))
+                max_val = st.number_input(f"Max {i+1}", key=f"max_{i}", value=st.session_state.var[i]['parameters'].get('max', 0.0))
                 parameters = {'min': min_val, 'mode': mode, 'max': max_val}
             else:
-                mean = st.number_input(f"Média da variável {i+1}", key=f"mean_{i}", value=st.session_state.var[i]['parameters'].get('mean', 0.0))
-                sigma = st.number_input(f"Sigma da variável {i+1}", key=f"sigma_{i}", value=st.session_state.var[i]['parameters'].get('sigma', 1.0))
+                mean = st.number_input(f"Mean {i+1}", key=f"mean_{i}", value=st.session_state.var[i]['parameters'].get('mean', 0.0))
+                sigma = st.number_input(f"Sigma {i+1}", key=f"sigma_{i}", value=st.session_state.var[i]['parameters'].get('sigma', 1.0))
                 parameters = {'mean': mean, 'sigma': sigma}
 
             
@@ -168,7 +169,7 @@ if "results" in st.session_state:
     with pd.ExcelWriter(final_results, engine="xlsxwriter") as writer:
         results.to_excel(writer, index=False, sheet_name="Results")
     final_results.seek(0)
-    st.download_button("Download Resultados", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    st.download_button("Download Results", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
 
