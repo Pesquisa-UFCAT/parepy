@@ -42,14 +42,14 @@ else:
     none_variable = None
 
 # Configuração do setup
-st.subheader("")
+st.write("")
 st.subheader("Setup Configuration")
 num_samples = st.number_input("Number of samples", min_value=1, step=1, value=10000)
 model_sampling = st.selectbox("Model Sampling", ["mcs"], index=0) 
 
 
 
-st.subheader("")
+st.write("")
 st.subheader("Model Configuration")
 
 # Lista para armazenar as variáveis
@@ -75,17 +75,17 @@ distribution_types = ["uniform", "normal", "lognormal", "gumbel max", "gumbel mi
 # Criar inputs para cada variável
 with st.container():
     for i in range(num_vars):
-        with st.expander(f"Variável {i+1}"):
-            var_type = st.selectbox(f"Variable type {i+1}", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
+        with st.expander(f"Variable {i+1}"):
+            var_type = st.selectbox(f"Type", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
             
             if var_type == "triangular":
-                min_val = st.number_input(f"Min {i+1}", key=f"min_{i}", value=st.session_state.var[i]['parameters'].get('min', 0.0))
-                mode = st.number_input(f"Mode {i+1}", key=f"mode_{i}", value=st.session_state.var[i]['parameters'].get('mode', 0.0))
-                max_val = st.number_input(f"Max {i+1}", key=f"max_{i}", value=st.session_state.var[i]['parameters'].get('max', 0.0))
+                min_val = st.number_input(f"Min", key=f"min_{i}", value=st.session_state.var[i]['parameters'].get('min', 0.0))
+                mode = st.number_input(f"Mode", key=f"mode_{i}", value=st.session_state.var[i]['parameters'].get('mode', 0.0))
+                max_val = st.number_input(f"Max", key=f"max_{i}", value=st.session_state.var[i]['parameters'].get('max', 0.0))
                 parameters = {'min': min_val, 'mode': mode, 'max': max_val}
             else:
-                mean = st.number_input(f"Mean {i+1}", key=f"mean_{i}", value=st.session_state.var[i]['parameters'].get('mean', 0.0))
-                sigma = st.number_input(f"Sigma {i+1}", key=f"sigma_{i}", value=st.session_state.var[i]['parameters'].get('sigma', 1.0))
+                mean = st.number_input(f"Mean", key=f"mean_{i}", value=st.session_state.var[i]['parameters'].get('mean', 0.0))
+                sigma = st.number_input(f"Sigma", key=f"sigma_{i}", value=st.session_state.var[i]['parameters'].get('sigma', 1.0))
                 parameters = {'mean': mean, 'sigma': sigma}
 
             
@@ -111,7 +111,7 @@ if st.button("Run Simulation"):
     }
 
     results, pf, beta = sampling_algorithm_structural_analysis(setup)
-
+    print(setup)
     # Gráficos
     st.session_state.text_convergence = "Convergence Rate:"
     div, m, ci_l, ci_u, var = convergence_probability_failure(results, 'I_0')
