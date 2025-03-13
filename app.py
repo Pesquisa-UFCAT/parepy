@@ -105,7 +105,7 @@ if st.button("Run Simulation"):
         'numerical model': {'model sampling': model_sampling},
         'variables settings': st.session_state.var,
         'number of state limit functions or constraints': 1,
-        'none variable': None,
+        'none variable': none_variable,
         'objective function': obj_function,
         'name simulation': None,
     }
