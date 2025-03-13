@@ -61,11 +61,7 @@ num_vars = st.number_input("Number of Variables", min_value=1, step=1, value=max
 
 # Ajustar o número de variáveis armazenadas
 while len(st.session_state.var) < num_vars:
-    st.session_state.var.append({
-        'type': 'normal',
-        'parameters': {'mean': 40.3, 'sigma': 4.64},
-        'stochastic variable': False
-    })
+    st.session_state.var.append({'type': 'normal', 'parameters': {}, 'stochastic variable': False})
 while len(st.session_state.var) > num_vars:
     st.session_state.var.pop()
 
@@ -78,17 +74,17 @@ with st.container():
         with st.expander(f"Variable {i+1}"):
             var_type = st.selectbox(f"Type", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
             
+            parameters = {}
             if var_type == "triangular":
-                min_val = st.number_input(f"Min", key=f"min_{i}", value=st.session_state.var[i]['parameters'].get('min', 0.0))
-                mode = st.number_input(f"Mode", key=f"mode_{i}", value=st.session_state.var[i]['parameters'].get('mode', 0.0))
-                max_val = st.number_input(f"Max", key=f"max_{i}", value=st.session_state.var[i]['parameters'].get('max', 0.0))
+                min_val = st.number_input(f"Min", key=f"min_{i}", value=None, placeholder="Enter value")
+                mode = st.number_input(f"Mode", key=f"mode_{i}", value=None, placeholder="Enter value")
+                max_val = st.number_input(f"Max", key=f"max_{i}", value=None, placeholder="Enter value")
                 parameters = {'min': min_val, 'mode': mode, 'max': max_val}
             else:
-                mean = st.number_input(f"Mean", key=f"mean_{i}", value=st.session_state.var[i]['parameters'].get('mean', 0.0))
-                sigma = st.number_input(f"Sigma", key=f"sigma_{i}", value=st.session_state.var[i]['parameters'].get('sigma', 1.0))
+                mean = st.number_input(f"Mean", key=f"mean_{i}", value=None, placeholder="Enter value")
+                sigma = st.number_input(f"Sigma", key=f"sigma_{i}", value=None, placeholder="Enter value")
                 parameters = {'mean': mean, 'sigma': sigma}
 
-            
             # Atualizar valores
             st.session_state.var[i] = {
                 'type': var_type,
@@ -112,6 +108,7 @@ if st.button("Run Simulation"):
 
     results, pf, beta = sampling_algorithm_structural_analysis(setup)
     print(setup)
+    print(results)
     # Gráficos
     st.session_state.text_convergence = "Convergence Rate:"
     div, m, ci_l, ci_u, var = convergence_probability_failure(results, 'I_0')
