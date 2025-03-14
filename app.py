@@ -5,8 +5,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import base64
 import textwrap
-import json
 
 
 def generate_function(capacity_expr, demand_expr):
@@ -27,8 +27,135 @@ def generate_function(capacity_expr, demand_expr):
     return function_code
 
 st.title("PAREpy")
-st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet nisl quis quam mattis molestie. Aliquam efficitur, risus et fringilla pellentesque, est sapien finibus sapien, vitae scelerisque nisl nunc vel justo. Nullam ut ornare diam. Ut convallis ex velit, eu condimentum ligula porttitor nec. Sed id magna ut elit fermentum convallis. Curabitur tincidunt tellus tortor, et ultrices massa faucibus sit amet. Suspendisse aliquam, massa et posuere dictum, ipsum purus egestas leo, a placerat metus felis non magna. Fusce ac sem aliquam, egestas velit vel, laoreet mi. Nulla lacinia tortor id interdum faucibus. Ut laoreet felis at purus congue, eget viverra metus blandit. Donec placerat finibus laoreet. Quisque luctus sodales felis, in sollicitudin sem tristique eu. Aenean aliquet nunc sem, vel scelerisque nisi ornare eu. Nulla orci turpis, molestie non ex at, fringilla elementum enim. Cras dictum, dui nec tincidunt scelerisque, neque augue ullamcorper leo, sit amet vulputate ex diam vitae nisl.")
 
+def image_to_base64(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+img_base64 = image_to_base64("assets/images/logo.png")
+img_html = f'<img src="data:image/png;base64,{img_base64}" width="150"/>'
+
+
+st.markdown(rf""" 
+<table>
+    <tr>
+        <td style="width:70%;"><p align="justify">
+            The PAREpy (<b>Probabilistic Approach to Reliability Engineering</b>) framework is a software developed by the research group headed by 
+            <a href="http://lattes.cnpq.br/2268506213083114" target="_blank" rel="noopener noreferrer">Professor Wanderlei M. Pereira Junior</a> 
+            in Engineering College at Universidade Federal de Catalão. It is a framework for applying probabilistic concepts to analyze a system containing random variables. 
+            The platform is built in Python and can be used in any environment that supports this programming language.
+        </p></td>
+        <td style="width:50%;">{img_html}</td>  
+    </tr>
+</table>
+""", unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <style>
+    .suggestions-box1 {
+        border: 2px solid #00008B;
+        background-color: #ADD8E6;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    </style>
+    
+    <div class="suggestions-box1">
+        <h4>Suggestions</h4>
+        <p>If you have any suggestions or error reports regarding the algorithm's functioning, 
+        please email us at <a href="mailto:wanderlei_junior@ufcat.edu.br">wanderlei_junior@ufcat.edu.br</a>. 
+        We will be happy to improve the framework.</p>
+    </div>
+    """,
+    unsafe_allow_html=True)
+
+st.write("")
+
+st.markdown(
+    """    
+    <style>
+    .suggestions-box {
+        border: 2px solid #FFA500;
+        background-color: #FFF3CD;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .suggestions-box p {
+        margin: 5px 0;
+    }
+    .suggestions-box a {
+        text-decoration: none;
+        color: #007BFF;
+        font-weight: bold;
+    }
+    </style>
+
+    <div class="suggestions-box">
+        <h4>Team</h4>
+        <p><a href="http://lattes.cnpq.br/2268506213083114" target="_blank">Prof. PhD Wanderlei Malaquias Pereira Junior</a></p>
+        <p><a href="http://lattes.cnpq.br/8801080897723883" target="_blank">Prof. PhD Daniel de Lima Araújo</a></p>
+        <p><a href="http://lattes.cnpq.br/4319075758352865" target="_blank">Prof. PhD André Teófilo Beck</a></p>
+        <p><a href="http://lattes.cnpq.br/7623383075429186" target="_blank">Prof. PhD André Luis Christoforo</a></p>
+        <p><a href="http://lattes.cnpq.br/6429652195589650" target="_blank">Msc Murilo Carneiro Rodrigues</a></p>
+        <p><a href="http://lattes.cnpq.br/3180484792983028" target="_blank">Prof. PhD Iuri Fazolin Fraga</a></p>
+        <p><a href="http://lattes.cnpq.br/8465474056220474" target="_blank">Msc Matheus Henrique Morato Moraes</a></p>
+        <p><a href="http://orcid.org/0000-0002-5798-8553" target="_blank">Prof. PhD Mauro Alexandre Paula de Sousa</a></p>
+        <p><a href="http://orcid.org/0000-0002-8533-1575" target="_blank">Prof. PhD Antover Panazzolo Sarmento</a></p>
+        <p><a href="http://orcid.org/0009-0008-4084-2137" target="_blank">Dis. Luiz Henrique Ferreira Rezio</a></p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+st.write("")
+st.markdown(
+    """    
+    <div class="suggestions-box1">
+        <p>Version</p>
+        <p><a href="https://pypi.org/project/parepy-toolbox/#history" target="_blank" style="text-decoration: none; color: blue;">1.0.1</a></p>
+    </div>
+    """,
+    unsafe_allow_html=True)
+
+st.write("")
+st.subheader("How to use")
+st.markdown("""
+To use PAREpy, you need to define a state limit function. In this case, fill the boxes with your capacity and demand functions. 
+This framework uses Python, so you need to start declaring your variables as x[0], x[1], and so on, depending on the number of variables in your problem. See an example:
+
+Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load $p$ and a uniformly distributed dead load $w$. 
+Assume $P$ (concentrated live load), $W$ (uniformly distributed dead load) and the yield stress, $F_y$, are random quantities; the length $l$ and the plastic setion modulus $z$ are assumed to be precisely know (deterministic). 
+The distribution parameters for $P$, $W$ and $F_y$ are given bellow:
+""", unsafe_allow_html=True)
+
+st.table({
+    'Variable': ['Yield stress $F_y$', 'Live load $(P)$', 'Dead load $(W)$'],
+    'Distribution': ['Normal', 'Gumbel max.', 'Log-normal'],
+    'Mean': [40.3, 10.2, 0.25],
+    'Coefficient of Variation (COV)': [0.115, 0.110, 0.100]
+        })
+
+st.write("")
+
+st.markdown(r"""
+    The limit state function for beam bending can be expressed as:
+    $$
+    \begin{align*}
+    R &= 80 \cdot F_y \tag{1} \\
+    S &= 54 \cdot P + 5832 \cdot W \tag{2} \\
+    G &= R - S \begin{cases}
+                    \leq 0, \text{failure} \\
+                    > 0, \text{safe}
+                \end{cases} \tag{3}
+    \end{align*}
+    $$
+""", unsafe_allow_html=True) 
+
+st.write("")
 st.subheader("Objective Function parameters")
 capacity_input = st.text_area("Capacity:", "80 * x[0]")
 demand_input = st.text_area("Demand:", "54 * x[1] + 5832 * x[2]")
@@ -57,7 +184,7 @@ distribution_types = ["uniform", "normal", "lognormal", "gumbel max", "gumbel mi
 
 with st.container():
     for i in range(num_vars):
-        with st.expander(f"Variable X_{i+1}"):
+        with st.expander(f"Variable [{i+1}]"):
             var_type = st.selectbox(f"Type", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
             
             parameters = {}
