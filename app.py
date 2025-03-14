@@ -30,48 +30,34 @@ st.title("PAREpy")
 st.write("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed laoreet nisl quis quam mattis molestie. Aliquam efficitur, risus et fringilla pellentesque, est sapien finibus sapien, vitae scelerisque nisl nunc vel justo. Nullam ut ornare diam. Ut convallis ex velit, eu condimentum ligula porttitor nec. Sed id magna ut elit fermentum convallis. Curabitur tincidunt tellus tortor, et ultrices massa faucibus sit amet. Suspendisse aliquam, massa et posuere dictum, ipsum purus egestas leo, a placerat metus felis non magna. Fusce ac sem aliquam, egestas velit vel, laoreet mi. Nulla lacinia tortor id interdum faucibus. Ut laoreet felis at purus congue, eget viverra metus blandit. Donec placerat finibus laoreet. Quisque luctus sodales felis, in sollicitudin sem tristique eu. Aenean aliquet nunc sem, vel scelerisque nisi ornare eu. Nulla orci turpis, molestie non ex at, fringilla elementum enim. Cras dictum, dui nec tincidunt scelerisque, neque augue ullamcorper leo, sit amet vulputate ex diam vitae nisl.")
 
 st.subheader("Objective Function parameters")
-# Entrada do usuário
 capacity_input = st.text_area("Capacity:", "80 * x[0]")
 demand_input = st.text_area("Demand:", "54 * x[1] + 5832 * x[2]")
-
-st.write("")
-none_variable_check = st.checkbox(f"If None_Variable?")
-if none_variable_check:
-    none_variable = st.text_area("None_Variable:", "")
-else:
-    none_variable = None
 
 # Configuração do setup
 st.write("")
 st.subheader("Setup Configuration")
 num_samples = st.number_input("Number of samples", min_value=1, step=1, value=10000)
-model_sampling = st.selectbox("Model Sampling", ["mcs"], index=0) 
-
-
+model_sampling = st.selectbox("Model Sampling", ["mcs", "lhs"], index=0) 
 
 st.write("")
 st.subheader("Model Configuration")
 
-# Lista para armazenar as variáveis
+
 if "var" not in st.session_state:
     st.session_state.var = []
 
-# Definir número de variáveis
 num_vars = st.number_input("Number of Variables", min_value=1, step=1, value=max(1, len(st.session_state.var)))
 
-# Ajustar o número de variáveis armazenadas
 while len(st.session_state.var) < num_vars:
     st.session_state.var.append({'type': 'normal', 'parameters': {}, 'stochastic variable': False})
 while len(st.session_state.var) > num_vars:
     st.session_state.var.pop()
 
-# Opções de distribuição
 distribution_types = ["uniform", "normal", "lognormal", "gumbel max", "gumbel min", "triangular"]
 
-# Criar inputs para cada variável
 with st.container():
     for i in range(num_vars):
-        with st.expander(f"Variable {i+1}"):
+        with st.expander(f"Variable X_{i+1}"):
             var_type = st.selectbox(f"Type", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
             
             parameters = {}
@@ -85,7 +71,6 @@ with st.container():
                 sigma = st.number_input(f"Sigma", key=f"sigma_{i}", value=None, placeholder="Enter value")
                 parameters = {'mean': mean, 'sigma': sigma}
 
-            # Atualizar valores
             st.session_state.var[i] = {
                 'type': var_type,
                 'parameters': parameters,
@@ -101,7 +86,7 @@ if st.button("Run Simulation"):
         'numerical model': {'model sampling': model_sampling},
         'variables settings': st.session_state.var,
         'number of state limit functions or constraints': 1,
-        'none variable': none_variable,
+        'none variable': None,
         'objective function': obj_function,
         'name simulation': None,
     }
