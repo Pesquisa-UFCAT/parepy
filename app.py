@@ -45,7 +45,7 @@ st.markdown(rf"""
             in Engineering College at Universidade Federal de Catalão. It is a framework for applying probabilistic concepts to analyze a system containing random variables. 
             The platform is built in Python and can be used in any environment that supports this programming language.
         </p></td>
-        <td style="width:50%;">{img_html}</td>  
+        <td style="width:100%; text-align: center;">{img_html}</td>  
     </tr>
 </table>
 """, unsafe_allow_html=True)
@@ -127,7 +127,7 @@ st.markdown("""
 To use PAREpy, you need to define a state limit function. In this case, fill the boxes with your capacity and demand functions. 
 This framework uses Python, so you need to start declaring your variables as x[0], x[1], and so on, depending on the number of variables in your problem. See an example:
 
-Consider the simply supported beam show in example 5.1 Nowak and Collins <a href="#ref1">[1]</a>. The beam is subjected to a concentrated live load $p$ and a uniformly distributed dead load $w$. 
+Consider the simply supported beam show in example 5.1 Nowak and Collins. The beam is subjected to a concentrated live load $p$ and a uniformly distributed dead load $w$. 
 Assume $P$ (concentrated live load), $W$ (uniformly distributed dead load) and the yield stress, $F_y$, are random quantities; the length $l$ and the plastic setion modulus $z$ are assumed to be precisely know (deterministic). 
 The distribution parameters for $P$, $W$ and $F_y$ are given bellow:
 """, unsafe_allow_html=True)
@@ -157,18 +157,14 @@ st.markdown(r"""
 
 st.write("")
 st.subheader("Objective Function parameters")
-capacity_input = st.text_area("Capacity:", "80 * x[0]")
-demand_input = st.text_area("Demand:", "54 * x[1] + 5832 * x[2]")
+capacity_input = st.text_area("Type your capacity function:", "80 * x[0]")
+demand_input = st.text_area("Type your demand function:", "54 * x[1] + 5832 * x[2]")
 
 # Configuração do setup
 st.write("")
-st.subheader("Setup Configuration")
+st.subheader("Setup")
 num_samples = st.number_input("Number of samples", min_value=1, step=1, value=10000)
 model_sampling = st.selectbox("Model Sampling", ["mcs", "lhs"], index=0) 
-
-st.write("")
-st.subheader("Model Configuration")
-
 
 if "var" not in st.session_state:
     st.session_state.var = []
@@ -184,7 +180,7 @@ distribution_types = ["uniform", "normal", "lognormal", "gumbel max", "gumbel mi
 
 with st.container():
     for i in range(num_vars):
-        with st.expander(f"Variable [{i+1}]"):
+        with st.expander(f"Variable x[{i+1}]"):
             var_type = st.selectbox(f"Type", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
             
             parameters = {}
