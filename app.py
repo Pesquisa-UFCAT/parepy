@@ -180,7 +180,7 @@ distribution_types = ["uniform", "normal", "lognormal", "gumbel max", "gumbel mi
 
 with st.container():
     for i in range(num_vars):
-        with st.expander(f"Variable x[{i+1}]"):
+        with st.expander(f"Variable x[{i}]"):
             var_type = st.selectbox(f"Type", distribution_types, key=f"type_{i}", index=distribution_types.index(st.session_state.var[i]['type']))
             
             parameters = {}
