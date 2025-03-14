@@ -99,12 +99,13 @@ st.markdown(
         <p><a href="http://lattes.cnpq.br/8801080897723883" target="_blank">Prof. PhD Daniel de Lima Araújo</a></p>
         <p><a href="http://lattes.cnpq.br/4319075758352865" target="_blank">Prof. PhD André Teófilo Beck</a></p>
         <p><a href="http://lattes.cnpq.br/7623383075429186" target="_blank">Prof. PhD André Luis Christoforo</a></p>
-        <p><a href="http://lattes.cnpq.br/6429652195589650" target="_blank">Msc Murilo Carneiro Rodrigues</a></p>
         <p><a href="http://lattes.cnpq.br/3180484792983028" target="_blank">Prof. PhD Iuri Fazolin Fraga</a></p>
-        <p><a href="http://lattes.cnpq.br/8465474056220474" target="_blank">Msc Matheus Henrique Morato Moraes</a></p>
-        <p><a href="http://orcid.org/0000-0002-5798-8553" target="_blank">Prof. PhD Mauro Alexandre Paula de Sousa</a></p>
-        <p><a href="http://orcid.org/0000-0002-8533-1575" target="_blank">Prof. PhD Antover Panazzolo Sarmento</a></p>
-        <p><a href="http://orcid.org/0009-0008-4084-2137" target="_blank">Dis. Luiz Henrique Ferreira Rezio</a></p>
+        <p><a href="http://lattes.cnpq.br/0067281135180613" target="_blank">Prof. PhD Marcos Napoleão Rabelo</a></p>
+        <p><a href="http://lattes.cnpq.br/3103828419121683" target="_blank">Prof. PhD Marcos Luiz Henrique</a></p>
+        <p><a href="https://cse.umn.edu/dsi/ketson-r-m-dos-santos" target="_blank">Prof. PhD Ketson Roberto Maximiano dos Santos</a></p>
+        <p><a href="http://lattes.cnpq.br/6429652195589650" target="_blank">Msc. Murilo Carneiro Rodrigues</a></p>
+        <p><a href="http://lattes.cnpq.br/8465474056220474" target="_blank">Msc. Matheus Henrique Morato Moraes</a></p>
+        <p><a href="http://orcid.org/0009-0008-4084-2137" target="_blank">Academic Luiz Henrique Ferreira Rezio</a></p>
     </div>
     """,
     unsafe_allow_html=True
@@ -157,10 +158,9 @@ st.markdown(r"""
 
 st.write("")
 st.subheader("Objective Function parameters")
-capacity_input = st.text_area("Type your capacity function:", "80 * x[0]")
-demand_input = st.text_area("Type your demand function:", "54 * x[1] + 5832 * x[2]")
+capacity_input = st.text_area("Type your caapcity using python language", "80 * x[0]")
+demand_input = st.text_area("Type your demand using python language:", "54 * x[1] + 5832 * x[2]")
 
-# Configuração do setup
 st.write("")
 st.subheader("Setup")
 num_samples = st.number_input("Number of samples", min_value=1, step=1, value=10000)
@@ -215,12 +215,55 @@ if st.button("Run Simulation"):
     }
 
     results, pf, beta = sampling_algorithm_structural_analysis(setup)
-    print(setup)
+    # print(setup)
     print(results)
-    # Gráficos
+    # print(pf['I_0'].values)
+    # print(beta['I_0'].values)
+
+    st.session_state.text_results = "Results:"
+    pf_values = pf['I_0'].values
+    beta_values = beta['I_0'].values
+    table_data = pd.DataFrame({
+        'Pf': pf_values,
+        'Beta': beta_values
+    })
+
+    # Histograma de X
+    st.session_state.text_histogram1 = "Histograms of Variables:"
+    x_columns = [col for col in results.columns if col.startswith('X_')] 
+    fig1, ax1 = plt.subplots(figsize=(10, 6))
+    for col in x_columns:
+        ax1.hist(results[col], bins=30, alpha=0.7, label=col)
+    
+    ax1.set_xlabel('Value')
+    ax1.set_ylabel('Frequency')
+    ax1.legend()
+    st.session_state.fig1 = fig1
+
+    # Histograma de R_0, S_0 e G_0
+    st.session_state.text_histogram2 = "Histograms of R_0, S_0 and G_0:"
+    fig2, axs = plt.subplots(1, 3, figsize=(15, 5))
+    
+    axs[0].hist(results['R_0'], bins=30, alpha=0.7, color='blue')
+    axs[0].set_title('Capacity')
+    axs[0].set_xlabel('R_0')
+    axs[0].set_ylabel('Frequency')
+
+    axs[1].hist(results['S_0'], bins=30, alpha=0.7, color='orange')
+    axs[1].set_title('Demand')
+    axs[1].set_xlabel('S_0')
+    axs[1].set_ylabel('Frequency')
+
+    axs[2].hist(results['G_0'], bins=30, alpha=0.7, color='green')
+    axs[2].set_title('State Limit Function')
+    axs[2].set_xlabel('G_0')
+    axs[2].set_ylabel('Frequency')
+    st.session_state.fig2 = fig2
+    
+    # Grafico de convergencia
     st.session_state.text_convergence = "Convergence Rate:"
     div, m, ci_l, ci_u, var = convergence_probability_failure(results, 'I_0')
-    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    fig3, ax1 = plt.subplots(figsize=(8, 6))
     ax1.plot(div, m, label="Failure Probability Rate", color='b', linestyle='-')
     ax1.fill_between(div, ci_l, ci_u, color='b', alpha=0.2, label="95% Confidence Interval")
     ax1.set_xlabel("Sample Size (div)")
@@ -228,7 +271,7 @@ if st.button("Run Simulation"):
     ax1.set_title("Convergence of Failure Probability")
     ax1.legend()
     ax1.grid(True)
-    st.session_state.fig1 = fig1
+    st.session_state.fig3 = fig3
 
     st.session_state.text_sobol = "Sobol Sensitivity Analysis:"
     data_sobol = sobol_algorithm(setup)
@@ -236,7 +279,7 @@ if st.button("Run Simulation"):
     s_i = [data_sobol.iloc[var]['s_i'] for var in range(len(variables))]
     s_t = [data_sobol.iloc[var]['s_t'] for var in range(len(variables))]
 
-    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    fig4, ax2 = plt.subplots(figsize=(8, 6))
     x = range(len(variables))
     width = 0.35
     ax2.bar(x, s_i, width, label='First-order (s_i)', color='blue', alpha=0.7)
@@ -247,34 +290,41 @@ if st.button("Run Simulation"):
     ax2.set_xticklabels(variables)
     ax2.legend()
     ax2.grid(axis='y', linestyle='--', alpha=0.7)
-    st.session_state.fig2 = fig2
+    st.session_state.fig4 = fig4
 
     st.session_state.results = results
     st.session_state.pf = pf
     st.session_state.beta = beta
     st.session_state.data_sobol = data_sobol
+    st.session_state.table_pf_beta = table_data
 
-# Re-rendering everything, checking session state to ensure content persists
-if "text_convergence" in st.session_state:
-    st.subheader(st.session_state.text_convergence)
+if "text_results" in st.session_state:
+    st.subheader(st.session_state.text_results)
+    st.table(st.session_state.table_pf_beta)
 
-if "fig1" in st.session_state:
+if "text_histogram1" and "fig1" in st.session_state:
+    st.subheader(st.session_state.text_histogram1)
     st.pyplot(st.session_state.fig1)
 
-if "text_sobol" in st.session_state:
-    st.subheader(st.session_state.text_sobol)
-
-if "fig2" in st.session_state:
+if "text_histogram2" and "fig2" in st.session_state:
+    st.subheader(st.session_state.text_histogram2)
     st.pyplot(st.session_state.fig2)
 
-# Download
+if "text_convergence" and "fig3" in st.session_state:
+    st.subheader(st.session_state.text_convergence)
+    st.pyplot(st.session_state.fig3)
+
+if "text_sobol" and "fig4" in st.session_state:
+    st.subheader(st.session_state.text_sobol)
+    st.pyplot(st.session_state.fig4)
+
 if "results" in st.session_state:
-    results = st.session_state.results  # Access results from session state
+    results = st.session_state.results  
     final_results = BytesIO()
     with pd.ExcelWriter(final_results, engine="xlsxwriter") as writer:
         results.to_excel(writer, index=False, sheet_name="Results")
     final_results.seek(0)
-    st.download_button("Download Results", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    st.download_button("Download Samples", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
 
