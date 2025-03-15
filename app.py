@@ -26,7 +26,7 @@ def generate_function(capacity_expr, demand_expr):
     
     return function_code
 
-st.title("PAREpy")
+st.title("Learning with PAREpy")
 
 def image_to_base64(image_path):
     with open(image_path, "rb") as img_file:
@@ -43,7 +43,8 @@ st.markdown(rf"""
             The PAREpy (<b>Probabilistic Approach to Reliability Engineering</b>) framework is a software developed by the research group headed by 
             <a href="http://lattes.cnpq.br/2268506213083114" target="_blank" rel="noopener noreferrer">Professor Wanderlei M. Pereira Junior</a> 
             in Engineering College at Universidade Federal de Catalão. It is a framework for applying probabilistic concepts to analyze a system containing random variables. 
-            The platform is built in Python and can be used in any environment that supports this programming language.
+            The platform is built in Python and can be used in any environment that supports this programming language.<br><br>
+            Check the framework developed by the research group on <a href="https://wmpjrufg.github.io/PAREPY/" target="_blank" rel="noopener noreferrer">PAREpy website</a>.
         </p></td>
         <td style="width:100%; text-align: center;">{img_html}</td>  
     </tr>
@@ -59,6 +60,27 @@ st.markdown(
         padding: 15px;
         border-radius: 10px;
         box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    ::-webkit-scrollbar {
+     width: 18px;
+    }
+
+    /* Estiliza o fundo da barra de rolagem */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    /* Estiliza o "thumb" da barra de rolagem */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+
+    /* Muda a cor quando hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
     </style>
     
@@ -117,7 +139,7 @@ st.markdown(
     """    
     <div class="suggestions-box1">
         <p>Version</p>
-        <p><a href="https://pypi.org/project/parepy-toolbox/#history" target="_blank" style="text-decoration: none; color: blue;">1.0.1</a></p>
+        <p><a href="https://pypi.org/project/parepy-toolbox/#history" target="_blank" style="text-decoration: none; color: blue;">2.0.1</a></p>
     </div>
     """,
     unsafe_allow_html=True)
@@ -136,8 +158,9 @@ The distribution parameters for $P$, $W$ and $F_y$ are given bellow:
 st.table({
     'Variable': ['Yield stress $F_y$', 'Live load $(P)$', 'Dead load $(W)$'],
     'Distribution': ['Normal', 'Gumbel max.', 'Log-normal'],
-    'Mean': [40.3, 10.2, 0.25],
-    'Coefficient of Variation (COV)': [0.115, 0.110, 0.100]
+    'Location': [40.3, 10.2, 0.25],
+    'Coefficient of Variation (COV)': [0.115, 0.110, 0.100],
+    'Scale': [4.63, 1.12, 0.025]
         })
 
 st.write("")
@@ -158,12 +181,12 @@ st.markdown(r"""
 
 st.write("")
 st.subheader("Objective Function parameters")
-capacity_input = st.text_area("Type your caapcity using python language", "80 * x[0]")
-demand_input = st.text_area("Type your demand using python language:", "54 * x[1] + 5832 * x[2]")
+capacity_input = st.text_area("Type your capacity using Python language", "80 * x[0]")
+demand_input = st.text_area("Type your demand using Python language:", "54 * x[1] + 5832 * x[2]")
 
 st.write("")
 st.subheader("Setup")
-num_samples = st.number_input("Number of samples", min_value=1, step=1, value=10000)
+num_samples = st.number_input("Number of samples", min_value=1, step=1, value=10)
 model_sampling = st.selectbox("Model Sampling", ["mcs", "lhs"], index=0) 
 
 if "var" not in st.session_state:
@@ -185,13 +208,13 @@ with st.container():
             
             parameters = {}
             if var_type == "triangular":
-                min_val = st.number_input(f"Min", key=f"min_{i}", value=None, placeholder="Enter value")
-                mode = st.number_input(f"Mode", key=f"mode_{i}", value=None, placeholder="Enter value")
-                max_val = st.number_input(f"Max", key=f"max_{i}", value=None, placeholder="Enter value")
-                parameters = {'min': min_val, 'mode': mode, 'max': max_val}
+                min_val = st.number_input(f"Min", key=f"min_{i}", value=None, placeholder="Enter value", format="%.3f")
+                mode = st.number_input(f"Mode", key=f"mode_{i}", value=None, placeholder="Enter value", format="%.3f")
+                max_val = st.number_input(f"Max", key=f"max_{i}", value=None, placeholder="Enter value", format="%.3f")
+                parameters = {'min': min_val, 'Mode': mode, 'max': max_val}
             else:
-                mean = st.number_input(f"Mean", key=f"mean_{i}", value=None, placeholder="Enter value")
-                sigma = st.number_input(f"Sigma", key=f"sigma_{i}", value=None, placeholder="Enter value")
+                mean = st.number_input(f"Mean", key=f"mean_{i}", value=None, placeholder="Enter value", format="%.3f")
+                sigma = st.number_input(f"Sigma", key=f"sigma_{i}", value=None, placeholder="Enter value", format="%.3f")
                 parameters = {'mean': mean, 'sigma': sigma}
 
             st.session_state.var[i] = {
@@ -216,76 +239,79 @@ if st.button("Run Simulation"):
 
     results, pf, beta = sampling_algorithm_structural_analysis(setup)
     # print(setup)
-    print(results)
+    # print(results)
     # print(pf['I_0'].values)
     # print(beta['I_0'].values)
 
-    st.session_state.text_results = "Results:"
+    st.session_state.text_results = "Results"
     pf_values = pf['I_0'].values
     beta_values = beta['I_0'].values
     table_data = pd.DataFrame({
-        'Pf': pf_values,
-        'Beta': beta_values
+        'Probability of Failure': pf_values,
+        'Reliability index': beta_values
     })
 
     # Histograma de X
-    st.session_state.text_histogram1 = "Histograms of Variables:"
+    st.session_state.histogram_figures = []
     x_columns = [col for col in results.columns if col.startswith('X_')] 
-    fig1, ax1 = plt.subplots(figsize=(10, 6))
-    for col in x_columns:
-        ax1.hist(results[col], bins=30, alpha=0.7, label=col)
-    
-    ax1.set_xlabel('Value')
-    ax1.set_ylabel('Frequency')
-    ax1.legend()
-    st.session_state.fig1 = fig1
+    for idx, col in enumerate(x_columns):
+        fig1, ax1 = plt.subplots(figsize=(6, 4))
+        ax1.hist(results[col], bins=30, alpha=0.7, label=f"$x_{idx}$", color='red')
+        ax1.set_xlabel('Value', fontsize=11)
+        ax1.set_ylabel('Frequency', fontsize=11)
+        ax1.tick_params(axis='both', labelsize=11)
+        ax1.legend()
+        st.session_state.histogram_figures.append(fig1)
 
     # Histograma de R_0, S_0 e G_0
-    st.session_state.text_histogram2 = "Histograms of R_0, S_0 and G_0:"
+    st.session_state.text_histogram2 = "Histograms of Capacity, Demand and State Limit function"
     fig2, axs = plt.subplots(1, 3, figsize=(15, 5))
     
     axs[0].hist(results['R_0'], bins=30, alpha=0.7, color='blue')
-    axs[0].set_title('Capacity')
-    axs[0].set_xlabel('R_0')
-    axs[0].set_ylabel('Frequency')
+    axs[0].set_title('Capacity', fontsize=18)
+    axs[0].set_xlabel('$R$', fontsize=14)
+    axs[0].set_ylabel('Frequency', fontsize=14)
+    axs[0].tick_params(axis='both', labelsize=14)
 
     axs[1].hist(results['S_0'], bins=30, alpha=0.7, color='orange')
-    axs[1].set_title('Demand')
-    axs[1].set_xlabel('S_0')
-    axs[1].set_ylabel('Frequency')
+    axs[1].set_title('Demand', fontsize=18)
+    axs[1].set_xlabel('$S$', fontsize=14)
+    axs[1].set_ylabel('Frequency', fontsize=14)
+    axs[1].tick_params(axis='both', labelsize=14)
 
     axs[2].hist(results['G_0'], bins=30, alpha=0.7, color='green')
-    axs[2].set_title('State Limit Function')
-    axs[2].set_xlabel('G_0')
-    axs[2].set_ylabel('Frequency')
+    axs[2].set_title('State Limit Function', fontsize=18)
+    axs[2].set_xlabel('$G$', fontsize=14)
+    axs[2].set_ylabel('Frequency', fontsize=14)
+    axs[2].tick_params(axis='both', labelsize=14)
     st.session_state.fig2 = fig2
     
     # Grafico de convergencia
-    st.session_state.text_convergence = "Convergence Rate:"
+    st.session_state.text_convergence = "Convergence of Failure Probability"
     div, m, ci_l, ci_u, var = convergence_probability_failure(results, 'I_0')
-    fig3, ax1 = plt.subplots(figsize=(8, 6))
-    ax1.plot(div, m, label="Failure Probability Rate", color='b', linestyle='-')
+    fig3, ax1 = plt.subplots(figsize=(8, 4))
+    ax1.plot(div, m, label="Probability of Failure", color='b', linestyle='-')
     ax1.fill_between(div, ci_l, ci_u, color='b', alpha=0.2, label="95% Confidence Interval")
-    ax1.set_xlabel("Sample Size (div)")
-    ax1.set_ylabel("Failure Probability Rate")
-    ax1.set_title("Convergence of Failure Probability")
+    ax1.set_xlabel("Sample Size", fontsize=14)
+    ax1.set_ylabel("Failure Probability Rate", fontsize=14)
+    ax1.tick_params(axis='both', labelsize=12)
     ax1.legend()
     ax1.grid(True)
     st.session_state.fig3 = fig3
 
-    st.session_state.text_sobol = "Sobol Sensitivity Analysis:"
+    st.session_state.text_sobol = "Sobol Sensitivity Analysis"
     data_sobol = sobol_algorithm(setup)
     variables = ['x_0', 'x_1', 'x_2']
     s_i = [data_sobol.iloc[var]['s_i'] for var in range(len(variables))]
     s_t = [data_sobol.iloc[var]['s_t'] for var in range(len(variables))]
-
-    fig4, ax2 = plt.subplots(figsize=(8, 6))
+    fig4, ax2 = plt.subplots(figsize=(6, 4))
     x = range(len(variables))
     width = 0.35
-    ax2.bar(x, s_i, width, label='First-order (s_i)', color='blue', alpha=0.7)
-    ax2.bar([p + width for p in x], s_t, width, label='Total-order (s_t)', color='orange', alpha=0.7)
-    ax2.set_xlabel("Variables")
-    ax2.set_ylabel("Sobol Index")
+    ax2.bar(x, s_i, width, label='First-order ($s_i$)', color='blue', alpha=0.7)
+    ax2.bar([p + width for p in x], s_t, width, label='Total-order ($s_t$)', color='orange', alpha=0.7)
+    ax2.set_xlabel("Variables", fontsize=11)
+    ax2.set_ylabel("Sobol Index", fontsize=11)
+    ax2.tick_params(axis='both', labelsize=11)
     ax2.set_xticks([p + width / 2 for p in x])
     ax2.set_xticklabels(variables)
     ax2.legend()
@@ -302,9 +328,10 @@ if "text_results" in st.session_state:
     st.subheader(st.session_state.text_results)
     st.table(st.session_state.table_pf_beta)
 
-if "text_histogram1" and "fig1" in st.session_state:
-    st.subheader(st.session_state.text_histogram1)
-    st.pyplot(st.session_state.fig1)
+if "histogram_figures" in st.session_state:
+    st.subheader("Histograms of Variables")
+    for fig in st.session_state.histogram_figures:
+        st.pyplot(fig)
 
 if "text_histogram2" and "fig2" in st.session_state:
     st.subheader(st.session_state.text_histogram2)
@@ -325,8 +352,3 @@ if "results" in st.session_state:
         results.to_excel(writer, index=False, sheet_name="Results")
     final_results.seek(0)
     st.download_button("Download Samples", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-
-
-
-
-

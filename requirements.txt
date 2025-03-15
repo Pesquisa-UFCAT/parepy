@@ -1,3 +1,4 @@
+parepy-toolbox
 numpy
 pandas
 scipy
@@ -7,5 +8,4 @@ seaborn
 ipykernel
 openpyxl
 tabulate
-parepy-toolbox
 xlsxwriter
