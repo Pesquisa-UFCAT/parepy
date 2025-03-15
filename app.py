@@ -351,4 +351,4 @@ if "results" in st.session_state:
     with pd.ExcelWriter(final_results, engine="xlsxwriter") as writer:
         results.to_excel(writer, index=False, sheet_name="Results")
     final_results.seek(0)
-    st.download_button("Download Samples", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    st.download_button("Download samples", final_results, file_name="results.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
