@@ -2,6 +2,7 @@ from parepy_toolbox import sampling_algorithm_structural_analysis, convergence_p
 from io import BytesIO
 
 import streamlit as st
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -244,8 +245,8 @@ if st.button("Run Simulation"):
     # print(beta['I_0'].values)
 
     st.session_state.text_results = "Results"
-    pf_values = pf['I_0'].values
-    beta_values = beta['I_0'].values
+    pf_values = np.round(pf['I_0'].values, 6)
+    beta_values = np.round(beta['I_0'].values, 6)
     table_data = pd.DataFrame({
         'Probability of Failure': pf_values,
         'Reliability index': beta_values
@@ -322,7 +323,7 @@ if st.button("Run Simulation"):
     st.session_state.pf = pf
     st.session_state.beta = beta
     st.session_state.data_sobol = data_sobol
-    st.session_state.table_pf_beta = table_data
+    st.session_state.table_pf_beta = table_data.applymap(lambda x: f"{x:.6f}")
 
 if "text_results" in st.session_state:
     st.subheader(st.session_state.text_results)
