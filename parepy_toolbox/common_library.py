@@ -93,7 +93,7 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
                 mode = params['mode']
                 parameters = {'min': min_val, 'max': max_val, 'mode': mode}
                 random_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-    elif model_sampling in ['TIME-MCS', 'TIME-LHS', 'TIME MCS', 'TIME LHS', 'MCS TIME', 'LHS TIME', 'MCS-TIME', 'LHS-TIME']:
+    elif model_sampling in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
         time_analysis = model['time steps']
         random_sampling = np.empty((0, len(variables_setup)))
         match = re.search(r'\b(MCS|LHS)\b', model_sampling.upper(), re.IGNORECASE)

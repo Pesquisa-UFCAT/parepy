@@ -47,7 +47,7 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     # Algorithm settings
     model = setup['numerical model']
     algorithm = model['model sampling']
-    if algorithm.upper() == 'MCS-TIME':
+    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
         time_analysis = model['time steps']
     else:
         time_analysis = None
@@ -55,7 +55,7 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     # Creating samples
     dataset_x = parepyco.sampling(n_samples=n_samples, model=model,
                                     variables_setup=variables_settings)
-    
+
     # Starting variables
     capacity = np.zeros((len(dataset_x), n_constraints))
     demand = np.zeros((len(dataset_x), n_constraints))
@@ -74,7 +74,7 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     results = np.hstack((dataset_x, capacity, demand, state_limit, indicator_function))
 
     # Transforming time results in dataframe X_i T_i R_i S_i G_i I_i
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
         tam = int(len(results) / n_samples)
         line_i = 0
         line_j = tam
@@ -89,38 +89,38 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
         results_about_data = pd.DataFrame(result_all)
     else:
         results_about_data = pd.DataFrame(results)
-   
+
     # Rename columns in dataframe
     column_names = []
     for i in range(n_dimensions):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
             for j in range(time_analysis):
                 column_names.append(f'X_{i}_t={j}')
         else:
             column_names.append(f'X_{i}')
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
         for i in range(time_analysis):
             column_names.append(f'STEP_t_{i}') 
     for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
             for j in range(time_analysis):
                 column_names.append(f'R_{i}_t={j}')
         else:
             column_names.append(f'R_{i}')
     for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
             for j in range(time_analysis):
                 column_names.append(f'S_{i}_t={j}')
         else:
             column_names.append(f'S_{i}')
     for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
             for j in range(time_analysis):
                 column_names.append(f'G_{i}_t={j}')
         else:
-            column_names.append(f'G_{i}') 
+            column_names.append(f'G_{i}')
     for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
             for j in range(time_analysis):
                 column_names.append(f'I_{i}_t={j}')
         else:
@@ -128,9 +128,9 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     results_about_data.columns = column_names
 
     # First Barrier Failure (FBF) or non-dependent time reliability analysis
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
         results_about_data, _ = parepyco.fbf(algorithm, n_constraints, time_analysis, results_about_data)
-              
+     
     return results_about_data
 
 
