@@ -187,7 +187,7 @@ demand_input = st.text_area("Type your demand using Python language:", "54 * x[1
 
 st.write("")
 st.subheader("Setup")
-num_samples = st.number_input("Number of samples", min_value=1, max_value=200000, step=1, value=10000)
+num_samples = st.number_input("Number of samples", min_value=1000, max_value=200000, step=1, value=10000)
 model_sampling = st.selectbox("Model Sampling", ["mcs", "lhs"], index=0) 
 
 if "var" not in st.session_state:
