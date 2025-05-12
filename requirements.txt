@@ -7,3 +7,5 @@ seaborn
 ipykernel
 openpyxl
 tabulate
+sphinx
+sphinxawesome-theme

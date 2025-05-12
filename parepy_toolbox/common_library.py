@@ -14,15 +14,13 @@ import parepy_toolbox.distributions as parepydi
 
 def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     """
-    This algorithm generates a set of random numbers according to a type of distribution.
+    Generates a set of random numbers according to a specified probability distribution model.
 
-    Args:
-        n_samples (Integer): Number of samples
-        model (Dictionary): Model parameters
-        variables_setup (List): Random variable parameters (list of dictionaries)
-    
-    Returns:
-        random_sampling (np.array): Random samples
+    :param n_samples: Number of samples to generate.
+    :param model: Dictionary containing the model parameters.
+    :param variables_setup: List of dictionaries, each containing parameters for a random variable.
+
+    :return: Numpy array with the generated random samples.
     """
 
     # Model settings
@@ -200,16 +198,14 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
 
 def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -> float:
     """
-    This function calculates the root of a function using the Newton-Raphson method.
+    Calculates the root of a function using the Newton-Raphson method.
 
-    Args:
-        f (Python function [def]): Function
-        df (Python function [def]): Derivative of the function
-        x0 (Float): Initial value
-        tol (Float): Tolerance
-    
-    Returns:
-        x0 (Float): Root of the function
+    :param f: Function for which the root is sought.
+    :param df: Derivative of the function.
+    :param x0: Initial guess for the root.
+    :param tol: Tolerance for convergence.
+
+    :return: Approximated root of the function.
     """
 
     if abs(f(x0)) < tol:
@@ -220,13 +216,10 @@ def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -> float:
 
 def pf_equation(beta: float) -> float:
     """
-    This function calculates the probability of failure (pf) for a given reliability index (ϐ) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
+    Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.
 
-    Args:
-        beta (Float): Reliability index
-    
-    Returns:
-        pf_value (Float): Probability of failure
+    :param beta: Reliability index (β).
+    :return: Probability of failure.
     """
 
     def integrand(x):
@@ -243,11 +236,12 @@ def beta_equation(pf: float) -> Union[float, str]:
     """
     This function calculates the reliability index value for a given probability of failure (pf).
 
-    Args:
-        pf (Float): Probability of failure
+    :param pf: Probability of failure (pf) value to be converted to beta.
 
-    Returns:
-        beta_value (Float or String): Beta value
+    :raises ValueError: If pf is not between 0 and 1.
+
+    :return: Beta value (β) corresponding to the given pf.
+
     """
 
     if pf > 0.5:
@@ -262,16 +256,19 @@ def beta_equation(pf: float) -> Union[float, str]:
 
 def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
-    
-    Args:
-        df_or_path (DataFrame or String): The DataFrame containing the columns with boolean values about indicator function, or a path to a .txt file
-        numerical_model (Dictionary): Containing the numerical model
-        n_constraints (Integer): Number of state limit functions or constraints 
+    Calculates the probability of failure (pf) and reliability index (β) based on the columns of a DataFrame
+    that start with 'I' (indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
 
-    Returns:
-        df_pf (DataFrame): DataFrame containing the values for probability of failure for each 'G_' column
-        df_beta (DataFrame): DataFrame containing the values for beta for each 'G_' column
+    :param df_or_path: A DataFrame containing boolean indicator columns prefixed with 'I', or a string path to a .txt file.
+
+    :param numerical_model: Dictionary containing the numerical model.
+
+    :param n_constraints: Number of limit state functions or constraints.
+
+    :return: Tuple of DataFrames:
+
+        - df_pf: probability of failure values for each column prefixed with 'G'.
+        - df_beta: reliability index values for each column prefixed with 'G'.
     """
 
     # Read dataset
@@ -304,16 +301,16 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     """
     This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
 
-    Args:
-        df (DataFrame): DataFrame containing the data with indicator function column
-        column (String): Name of the column to be analyzed
+    :param df: DataFrame containing the data with indicator function column
+    :param column: Name of the column to be analyzed.
 
-    Returns:
-        div (List): list containing sample sizes
-        m (List): list containing the mean values of the column. pf value rate
-        ci_l (List): list containing the lower confidence interval values of the column
-        ci_u (List): list containing the upper confidence interval values of the column
-        var (List): list containing the variance values of the column
+    :return: Tuple of lists:
+    
+        - div: List of sample sizes considered at each step.
+        - m: List of running mean values (estimated probability of failure).
+        - ci_l: List containing the lower confidence interval values of the column.
+        - ci_u: List containing the upper confidence interval values of the column.
+        - var: List containing the variance values of the column.
     """
     
     column_values = df[column].to_list()
@@ -348,14 +345,12 @@ def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_da
     """
     This function application first barrier failure algorithm.
 
-    Args:
-        algorithm (str): Name of the algorithm
-        n_constraints (int): Number of constraints analyzed
-        time_analysis (int): Time period for analysis
-        results_about_data (pd.DataFrame): DataFrame containing the results to be processed 
+    :param algorithm: Name of the algorithm.
+    :param n_constraints: Number of constraints analyzed.
+    :param time_analysis: Time period for analysis.
+    :param results_about_data: DataFrame containing the results to be processed.
 
-    Returns:
-        results_about_data: Updated DataFrame after processing
+    :return: Updated DataFrame after processing.
     """
 
     if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
@@ -386,11 +381,9 @@ def log_message(message: str) -> None:
     """
     Logs a message with the current time.
 
-    Args:
-        message (str): The message to log.
+    :param message: The message to log.
     
-    Returns:
-        None
+    :return: None
     """
     current_time = datetime.now().strftime('%H:%M:%S')
     print(f'{current_time} - {message}')
@@ -400,11 +393,9 @@ def norm_array(ar: list) -> float:
     """
     Evaluates the norm of the array ar.
 
-    Args:
-        ar (float): A list of numerical values (floats) representing the array.
+    :param ar: A list of numerical values (floats) representing the array.
 
-    Returns:
-        float: The norm of the array.
+    :return: The norm of the array.
     """
     norm_ar = [i ** 2 for i in ar]
     norm_ar = sum(norm_ar) ** 0.5
@@ -413,15 +404,13 @@ def norm_array(ar: list) -> float:
 
 def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -> np.ndarray:
     """
-    This function calculates the y new value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
-    
-    Args:
-        y_k (Float): Current y value
-        g_y (Float): Objective function in point y_k
-        grad_y_k (Float): Gradient of the objective function in point y_k
-        
-    Returns:
-        y_new (Float): New y value
+    Calculates the new y value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
+
+    :param y_k: Current y value.
+    :param g_y: Objective function at point `y_k`.
+    :param grad_y_k: Gradient of the objective function at point `y_k`.
+
+    :return: New y value.
     """
 
     num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])
@@ -435,7 +424,21 @@ def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y
     return y_new
 
 
-def cornell_algorithm_structural_analysis(setup):
+def cornell_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Applies the Cornell reliability algorithm to evaluate the probability of failure and reliability index.
+
+    :param setup: Dictionary containing the input settings, including:
+    
+        - 'variables settings': list of variable configurations with 'mean' and 'sigma' values,
+        - 'objective function': function that returns a list of g values,
+        - 'none variable': additional fixed parameters for the objective function.
+
+    :return: Tuple of two DataFrames:
+
+        - pf_dataframe: DataFrame containing the probability of failure (pf) for each limit state.
+        - beta_dataframe: DataFrame containing the reliability index (β) for each limit state.
+    """
     sigma = []  # 'mean'
     var = []    # 'sigma'
 
@@ -466,6 +469,8 @@ def cornell_algorithm_structural_analysis(setup):
     beta_dataframe = pd.DataFrame([beta_list], columns=beta_columns)
 
     return pf_dataframe, beta_dataframe
+
+
 # def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = 'all') -> dict:
 #     """
 #     Evaluates the fit of distributions to the provided data.

@@ -5,14 +5,12 @@ from scipy.stats import norm
 
 def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
     """
-    This function generates a uniform sampling between 0 and 1.
+    Generates a uniform sampling between 0 and 1.
 
-    Args:
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation.
 
-    Returns:
-        u (List): Random samples
+    :return: List of random samples.
     """
     rng = np.random.default_rng(seed=seed)
 
@@ -21,15 +19,13 @@ def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
 
 def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.ndarray:
     """
-    This function generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling Algorithm.
+    Generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling algorithm.
 
-    Args:
-        n_samples (Integer): Number of samples
-        dimension (Integer): Number of dimensions
-        seed (Integer): Seed for random number generation
+    :param n_samples: Number of samples.
+    :param dimension: Number of dimensions.
+    :param seed: Seed for random number generation.
 
-    Returns:
-        u (np.array): Random samples
+    :return: Array of random samples.
     """
     r = np.zeros((n_samples, dimension))
     p = np.zeros((n_samples, dimension))
@@ -52,17 +48,20 @@ def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.
 
 def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Uniform sampling between a (minimum) and b (maximum).
+    Generates a uniform sampling between a minimum (a) and maximum (b) value.
 
-    Args:
-        parameters (Dictionary): Dictionary of parameters. Keys:  'min' (Minimum value of the uniform distribution [float]), 'max' (Maximum value of the uniform distribution [float])
-        method (String): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation. Use None for a random seed
-    
-    Returns:
-        u (List): Random samples
+    :param parameters: Dictionary of parameters, including:
+
+        - 'min': Minimum value of the uniform distribution.
+        - 'max': Maximum value of the uniform distribution.
+
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation. Use None for a random seed.
+
+    :return: List of random samples.
     """
+
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
@@ -86,17 +85,21 @@ def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=No
 
 def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Normal or Gaussian sampling with mean (mu) and standard deviation (sigma).
+    Generates a normal (Gaussian) sampling with specified mean (mu) and standard deviation (sigma).
 
-    Args:
-        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
-        method (String): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation. Use None for a random seed
+    :param parameters: Dictionary of parameters, including:
     
-    Returns:
-        u (List): Random samples
+        - 'mu': Mean of the normal distribution.
+        - 'sigma': Standard deviation of the normal distribution.
+
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation. Use None for a random seed.
+
+    :return: List of random samples.
     """
+
+
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
@@ -128,17 +131,23 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
 
 def corr_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Normal or Gaussian sampling with mean (mu) and standard deviation (sigma). Variable g have a correlation rho_gb with b.
+    Generates a normal (Gaussian) sampling with specified mean (mu) and standard deviation (sigma).
 
-    Args:
-        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (Mean [float]), 'sigma' (Standard deviation [float])
-        method (String): Sampling method. Supports the following values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation. Use None for a random seed
-    
-    Returns:
-        u (List): Random samples
+    Variable g has a correlation `rho_gb` with b.
+
+    :param parameters: Dictionary of parameters, including:
+
+        - 'mu': Mean of the normal distribution.
+        - 'sigma': Standard deviation of the normal distribution.
+
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation. Use None for a random seed.
+
+    :return: List of random samples.
     """
+
+
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
@@ -176,17 +185,21 @@ def corr_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float, 
 
 def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a log-normal sampling with mean and standard deviation.
+    Generates a log-normal sampling with specified mean and standard deviation.
 
-    Args:
-        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
-        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation
-    
-    Returns:
-        u (List): Random samples
+    :param parameters: Dictionary of parameters, including:
+
+        - 'mu': Mean of the underlying normal distribution.
+        - 'sigma': Standard deviation of the underlying normal distribution.
+
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation.
+
+    :return: List of random samples.
     """
+
+
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
@@ -220,18 +233,19 @@ def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=
 
 def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Gumbel maximum distribution with a specified mean and standard deviation.
+    Generates a Gumbel maximum distribution with specified mean and standard deviation.
 
-    Args:
-        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
-        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation
-    
-    Returns:
-        u (List): Random samples
+    :param parameters: Dictionary of parameters, including:
+
+        - 'mu': Mean of the Gumbel distribution.
+        - 'sigma': Standard deviation of the Gumbel distribution.
+
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation.
+
+    :return: List of random samples.
     """
-
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
         if seed is not None:
@@ -259,17 +273,20 @@ def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int
 
 def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a Gumbel Minimum sampling with mean and standard deviation.
+    Generates a Gumbel minimum distribution with specified mean and standard deviation.
 
-    Args:
-        parameters (Dictionary): Dictionary of parameters. Keys 'mu' (mean [float]), 'sigma' (standard deviation [float])
-        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation
-    
-    Returns:
-        u (List): Random samples
+    :param parameters: Dictionary of parameters, including:
+
+        - 'mu': Mean of the Gumbel distribution.
+        - 'sigma': Standard deviation of the Gumbel distribution.
+
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation.
+
+    :return: List of random samples.
     """
+
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
@@ -298,17 +315,21 @@ def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int
 
 def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
     """
-    This function generates a triangular sampling with minimun a, mode c, and maximum b.
+    Generates a triangular sampling with minimum a, mode c, and maximum b.
 
-    Args:
-        parameters (Dictionary): Dictionary of parameters. Keys 'a' (minimum [float]), 'c' (mode [float]), and 'b' (maximum [float])
-        method (String): Sampling method. Can use 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling)
-        n_samples (Integer): Number of samples
-        seed (Integer): Seed for random number generation
-    
-    Returns:
-        u (List): Random samples
+    :param parameters: Dictionary of parameters, including:
+
+        - 'a': Minimum value of the distribution.
+        - 'c': Mode (most likely value) of the distribution.
+        - 'b': Maximum value of the distribution.
+
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation.
+
+    :return: List of random samples.
     """
+
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
@@ -341,13 +362,11 @@ def cdf_gumbel_max(x: float, u: float, beta: float) -> float:
     """
     Calculates the cumulative distribution function (CDF) of the Maximum Gumbel distribution.
 
-    Parameters:
-        x (Float): Input value for which the CDF will be calculated.
-        u (Float): Location parameter (mode) of the Maximum Gumbel distribution.
-        beta (Float): Scale parameter of the Maximum Gumbel distribution.
+    :param x: Input value for which the CDF will be calculated.
+    :param u: Location parameter (mode) of the Maximum Gumbel distribution.
+    :param beta: Scale parameter of the Maximum Gumbel distribution.
 
-    Returns:
-        fx (Float): Value of the CDF at point x.
+    :return: Value of the CDF at point x.
     """
     fx = np.exp(-np.exp((- beta * (x - u))))
     return fx
@@ -357,13 +376,11 @@ def pdf_gumbel_max(x: float, u: float, beta: float) -> float:
     """
     Calculates the probability density function (PDF) of the Maximum Gumbel distribution.
 
-    Parameters:
-        x (Float): Input value for which the PDF will be calculated.
-        u (Float): Location parameter (mode) of the Maximum Gumbel distribution.
-        beta (Float): Scale parameter of the Maximum Gumbel distribution.
+    :param x: Input value for which the PDF will be calculated.
+    :param u: Location parameter (mode) of the Maximum Gumbel distribution.
+    :param beta: Scale parameter of the Maximum Gumbel distribution.
 
-    Returns:
-        fx (Float): Value of the PDF at point x.
+    :return: Value of the PDF at point x.
     """
     fx = beta * np.exp((- beta * (x - u))) - np.exp((- beta * (x - u)))
     return fx
@@ -373,13 +390,11 @@ def cdf_gumbel_min(x: float, u: float, beta: float) -> float:
     """
     Calculates the cumulative distribution function (CDF) of the Minimum Gumbel distribution.
 
-    Parameters:
-        x (Float): Input value for which the CDF will be calculated.
-        u (Float): Location parameter (mode) of the Minimum Gumbel distribution.
-        beta (Float): Scale parameter of the Minimum Gumbel distribution.
+    :param x: Input value for which the CDF will be calculated.
+    :param u: Location parameter (mode) of the Minimum Gumbel distribution.
+    :param beta: Scale parameter of the Minimum Gumbel distribution.
 
-    Returns:
-        fx (Float): Value of the CDF at point x.
+    :return: Value of the CDF at point x.
     """
     fx = 1 - np.exp(- np.exp((beta * (x - u))))
     return fx
@@ -389,13 +404,11 @@ def pdf_gumbel_min(x: float, u: float, beta: float) -> float:
     """
     Calculates the probability density function (PDF) of the Minimum Gumbel distribution.
 
-    Parameters:
-        x (float): Input value for which the PDF will be calculated.
-        u (float): Location parameter (mode) of the Minimum Gumbel distribution.
-        beta (float): Scale parameter of the Minimum Gumbel distribution.
+    :param x: Input value for which the PDF will be calculated.
+    :param u: Location parameter (mode) of the Minimum Gumbel distribution.
+    :param beta: Scale parameter of the Minimum Gumbel distribution.
 
-    Returns:
-        fx (float): Value of the PDF at point x.
+    :return: Value of the PDF at point x.
     """
     fx = beta * np.exp((beta * (x - u))) - np.exp(beta * (x - u))
     return fx
@@ -405,13 +418,11 @@ def cdf_normal(x: float, u: float, sigma: float) -> float:
     """
     Calculates the cumulative distribution function (CDF) of the Normal distribution.
 
-    Parameters:
-        x (float): Input value for which the CDF will be calculated.
-        u (float): Mean (location) of the Normal distribution.
-        sigma (float): Standard deviation (scale) of the Normal distribution.
+    :param x: Input value for which the CDF will be calculated.
+    :param u: Mean (location) of the Normal distribution.
+    :param sigma: Standard deviation (scale) of the Normal distribution.
 
-    Returns:
-        fx (float): Value of the CDF at point x.
+    :return: Value of the CDF at point x.
     """
     fx = norm.cdf(x, loc=u, scale=sigma)
     return fx
@@ -421,13 +432,11 @@ def pdf_normal(x: float, u: float, sigma: float) -> float:
     """
     Calculates the probability density function (PDF) of the Normal distribution.
 
-    Parameters:
-        x (Float): Input value for which the PDF will be calculated.
-        u (Float): Mean (location) of the Normal distribution.
-        sigma (Float): Standard deviation (scale) of the Normal distribution.
+    :param x: Input value for which the PDF will be calculated.
+    :param u: Mean (location) of the Normal distribution.
+    :param sigma: Standard deviation (scale) of the Normal distribution.
 
-    Returns:
-        fx (Float): Value of the PDF at point x.
+    :return: Value of the PDF at point x.
     """
     fx = norm.pdf(x, loc=u, scale=sigma)
     return fx
@@ -437,14 +446,13 @@ def log_normal(x: float, lambdaa: float, epsilon: float) -> tuple[float, float]:
     """
     Calculates the location (u) and scale (sigma) parameters for a Log-Normal distribution.
 
-    Parameters:
-        x (Float): Input value.
-        lambdaa (Float): Shape parameter of the Log-Normal distribution.
-        epsilon (Float): Scale parameter of the Log-Normal distribution.
+    :param x: Input value.
+    :param lambdaa: Shape parameter of the Log-Normal distribution.
+    :param epsilon: Scale parameter of the Log-Normal distribution.
 
-    Returns:
-        u (Float): Location parameter.
-        sigma (Float): Scale parameter.
+    :return: Tuple containing:
+        - u: Location parameter.
+        - sigma: Scale parameter.
     """
     loc = x * (1 - np.log(x) + lambdaa)
     sigma = x * epsilon
@@ -453,18 +461,19 @@ def log_normal(x: float, lambdaa: float, epsilon: float) -> tuple[float, float]:
 
 def non_normal_approach_normal(x, dist, params):
     """
-    This function convert non normal distribution to normal distribution.
+    Converts a non-normal distribution to an equivalent normal distribution.
 
-    Parameters:
-        x (Float): Random variable
-        dist (String): Type of distribution: 'gumbel max', 'gumbel min', 'lognormal')
-        params (Dictionary): Parameters of distribution
+    :param x: Random variable.
+    :param dist: Type of distribution. Supported values: 'gumbel max', 'gumbel min', 'lognormal'.
+    :param params: Dictionary of distribution parameters, depending on the selected distribution type.
 
-    Returns:
-        mu_t (Float): mean normal model
-        sigma_t (Float): standard deviation normal model
+        - For 'gumbel max' or 'gumbel min': {'mu': location, 'sigma': scale}
+        - For 'lognormal': {'lambda': shape, 'epsilon': scale}
+
+    :return: Tuple containing:
+        - mu_t: Mean of the equivalent normal distribution.
+        - sigma_t: Standard deviation of the equivalent normal distribution.
     """
-
     if dist == 'gumbel max':
         u = params.get('u')
         beta = params.get('beta')

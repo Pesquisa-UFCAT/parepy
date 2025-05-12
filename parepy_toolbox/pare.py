@@ -14,24 +14,25 @@ import parepy_toolbox.common_library as parepyco
 
 def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
     """
-    This function creates the samples and evaluates the limit state functions in structural reliability problems. Based on the data, it calculates probabilities of failure and reliability indexes.
+    Creates the samples and evaluates the limit state functions in structural reliability problems.
 
-    Args:
-        setup (Dictionary): Setup settings
-        'number of samples' (Integer): Number of samples (key in setup dictionary)
-        'numerical model' (Dictionary): Numerical model settings (key in setup dictionary)
-        'variables settings' (List): Variables settings, listed as dictionaries (key in setup dictionary)
-        'number of state limit functions or constraints' (Integer): Number of state limit functions or constraints (key in setup dictionary)
-        'none variable' (None, list, float, dictionary, str or any): None variable. User can use this variable in objective function (key in setup dictionary)
-        'objective function' (Python function): Objective function. The PAREpy user defined this function (key in setup dictionary)
-        'name simulation' (String or None): Output filename (key in setup dictionary)
+    Based on the data provided in the setup, this function calculates the probabilities of failure and reliability indexes.
 
-    Returns:
-        results_about_data (DataFrame): Results about reliability analysis
-        failure_prob_list (List): Failure probability list
-        beta_list (List): Beta list
+    :param setup: Dictionary with the following keys:
+
+        - 'number of samples': Integer. Number of samples to be generated.
+        - 'numerical model': Dictionary. Contains the model configuration.
+        - 'variables settings': List of dictionaries with variable definitions (e.g., distribution, parameters).
+        - 'number of state limit functions or constraints': Integer. Number of limit state functions (constraints).
+        - 'none variable': Auxiliary input used in the objective function (can be None, list, float, dict, str, etc.).
+        - 'objective function': Python function defined by the user to evaluate the limit state(s).
+        - 'name simulation': String or None. Output filename for saving results.
+
+    :return: Tuple containing:
+        - results_about_data: DataFrame with the reliability analysis results.
+        - failure_prob_list: List of failure probabilities.
+        - beta_list: List of reliability indexes.
     """
-        
 
     # General settings
     obj = setup['objective function']
@@ -136,24 +137,24 @@ def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
 
 def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, list, list]:
     """
-    This function creates the samples and evaluates the limit state functions in structural reliability problems.
+    Creates the samples and evaluates the limit state functions in structural reliability problems.
 
-    Args:
-        setup (Dictionary): Setup settings.
-        'number of samples' (Integer): Number of samples (key in setup dictionary)
-        'numerical model' (Dictionary): Numerical model settings (key in setup dictionary)
-        'variables settings' (List): Variables settings (key in setup dictionary)
-        'number of state limit functions or constraints' (Integer): Number of state limit functions or constraints  
-        'none_variable' (None, list, float, dictionary, str or any): None variable. User can use this variable in objective function (key in setup dictionary)           
-        'objective function' (Python function): Objective function. The PAREpy user defined this function (key in setup dictionary)
-        'name simulation' (String or None): Output filename (key in setup dictionary)
-    
-    Returns:    
-        results_about_data (DataFrame): Results about reliability analysis
-        failure_prob_list (List): Failure probability list
-        beta_list (List): Beta list
+    :param setup: Dictionary containing the input settings, including:
+
+        - 'number of samples': Number of samples.
+        - 'numerical model': Numerical model settings.
+        - 'variables settings': List of variable definitions.
+        - 'number of state limit functions or constraints': Number of limit state functions or constraints.
+        - 'none_variable': Auxiliary variable used in the objective function (can be None, list, float, dict, str, etc.).
+        - 'objective function': User-defined function to evaluate the limit state(s).
+        - 'name simulation': Output filename (string or None).
+
+    :return: Tuple containing:
+
+        - results_about_data: DataFrame with the reliability analysis results.
+        - failure_prob_list: List of failure probabilities.
+        - beta_list: List of reliability indexes.
     """
-
     try:
         # Setup verification
         if not isinstance(setup, dict):
@@ -256,19 +257,22 @@ def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, l
 
 def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, list, list]:
     """
-    Concatenates .txt files generated by the sampling_algorithm_structural_analysis algorithm, and calculates probabilities of failure and reliability indexes based on the data.
+    Concatenates .txt files generated by the sampling_algorithm_structural_analysis algorithm and calculates
+    probabilities of failure and reliability indexes based on the data.
 
-    Args:
-        setup (Dictionary): Setup settings.
-        'folder_path' (String): Path to the folder containing the .txt files (key in setup dictionary)
-        'number of state limit functions or constraints' (Integer): Number of state limit functions or constraints  
-        'simulation name' (String or None): Name of the simulation (key in setup dictionary)
-    
-    Returns:    
-        results_about_data (DataFrame): A DataFrame containing the concatenated results from the .txt files.
-        failure_prob_list (List): A list containing the calculated failure probabilities for each indicator function.
-        beta_list (List): A list containing the calculated reliability indices (beta) for each indicator function.
+    :param setup: Dictionary containing the input settings, including:
+
+        - 'folder_path': Path to the folder containing the .txt files.
+        - 'number of state limit functions or constraints': Number of limit state functions or constraints.
+        - 'simulation name': Name of the simulation (string or None).
+
+    :return: Tuple containing:
+
+        - results_about_data: DataFrame with the concatenated results from the .txt files.
+        - failure_prob_list: List of calculated failure probabilities for each indicator function.
+        - beta_list: List of calculated reliability indexes (beta) for each indicator function.
     """
+
 
     try:
         # General settings
@@ -324,19 +328,19 @@ def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -
 
 def sobol_algorithm(setup):
     """
-    This function calculates the Sobol indices in structural reliability problems.
+    Calculates the Sobol sensitivity indices in structural reliability problems.
 
-    Args:
-        setup (Dictionary): Setup settings.
-        'number of samples' (Integer): Number of samples (key in setup dictionary)
-        'variables settings' (List): Variables settings, listed as dictionaries (key in setup dictionary)
-        'number of state limit functions or constraints' (Integer): Number of state limit functions or constraints (key in setup dictionary)
-        'none variable' (None, list, float, dictionary, str or any): None variable. User can use this variable in objective function (key in setup dictionary)
-        'objective function' (Python function): Objective function defined by the user (key in setup dictionary)
+    :param setup: Dictionary containing the input settings, including:
 
-    Returns:
-        dict_sobol (DataFrame): A dictionary containing the first-order and total-order Sobol sensitivity indixes for each input variable.
+        - 'number of samples': Number of samples.
+        - 'variables settings': List of variable definitions (as dictionaries).
+        - 'number of state limit functions or constraints': Number of limit state functions or constraints.
+        - 'none variable': Auxiliary variable used in the objective function (can be None, list, float, dict, str, etc.).
+        - 'objective function': User-defined function to evaluate the limit state(s).
+
+    :return: Dictionary containing the first-order and total-order Sobol sensitivity indices for each input variable.
     """
+
     n_samples = setup['number of samples']
     obj = setup['objective function']
     none_variable = setup['none variable']
@@ -380,14 +384,20 @@ def sobol_algorithm(setup):
 
 def generate_factorial_design(level_dict):
     """
-    Generates a full factorial design based on the input dictionary of variable levels. The function computes all possible combinations of the provided levels for each variable and returns them in a structured DataFrame.
+    Generates a full factorial design based on the input dictionary of variable levels.
 
-    Args:
-        level_dict (Dictionary): A dictionary where keys represent variable names, and values are lists, arrays, or sequences representing the levels of each variable.
+    Computes all possible combinations of the provided levels for each variable and returns them in a structured DataFrame.
 
-    Returns:
-        DataFrame: A dictionary containing all possible combinations of the levels provided in the input dictionary. Each column corresponds to a variable defined in level_dict. And each row represents one combination of the factorial design.
+    :param level_dict: Dictionary where:
+    
+        - Keys represent variable names.
+        - Values are lists, arrays, or sequences representing the levels of each variable.
+
+    :return: DataFrame containing all possible combinations of the levels provided in the input dictionary.
+             Each column corresponds to a variable defined in level_dict, and each row represents one combination
+             of the factorial design.
     """
+
     combinations = list(itertools.product(*level_dict.values()))
     df = pd.DataFrame(combinations, columns=level_dict.keys())
 
@@ -396,26 +406,28 @@ def generate_factorial_design(level_dict):
 
 def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, float, int]:
     """
-    This function performs a deterministic structural reliability analysis using an iterative algorithm.
-    It calculates the reliability index (`beta`), the probability of failure (`pf`), and returns a DataFrame
+    Performs a deterministic structural reliability analysis using an iterative algorithm.
+
+    Calculates the reliability index (`beta`), the probability of failure (`pf`), and returns a DataFrame
     containing the results of each iteration.
 
-    Args:
-        setup (Dictionary): setup settings.
-        'tolerance' (float): The convergence tolerance for the algorithm (key in setup dictionary).
-        'max iterations' (int): The maximum number of iterations allowed (key in setup dictionary).
-        'numerical model' (Any): The numerical model used for the analysis (user-defined) (key in setup dictionary).
-        'variables settings' (List[dict]): Variables settings, listed as dictionaries (key in setup dictionary).
-        'number of state limit functions or constraints' (int): Number of state limit functions or constraints (key in setup dictionary).
-        'none variable' (None, list, float, dictionary, str or any): None variable. User can use this variable in objective function (key in setup dictionary).
-        'objective function' (Python function): Objective function defined by the user (key in setup dictionary).
-        'gradient objective function' (Callable): The gradient of the objective function (key in setup dictionary). 
-        'name simulation' (str): A name or identifier for the simulation (key in setup dictionary).
+    :param setup: Dictionary containing the input settings, including:
+    
+        - 'tolerance': Convergence tolerance for the algorithm.
+        - 'max iterations': Maximum number of iterations allowed.
+        - 'numerical model': Numerical model used for the analysis (user-defined).
+        - 'variables settings': List of variable definitions (as dictionaries).
+        - 'number of state limit functions or constraints': Number of limit state functions or constraints.
+        - 'none variable': Auxiliary variable used in the objective function (can be None, list, float, dict, str, etc.).
+        - 'objective function': User-defined function to evaluate the limit state(s).
+        - 'gradient objective function': Callable function that computes the gradient of the objective function.
+        - 'name simulation': Name or identifier for the simulation.
 
-    Returns:
-        results_df (pd.DataFrame): A DataFrame with the results of each iteration.
-        pf (float): The probability of failure calculated using the final reliability index.
-        beta (int): The final reliability index.
+    :return: Tuple containing:
+
+        - results_df: DataFrame with the results of each iteration.
+        - pf: Probability of failure calculated using the final reliability index.
+        - beta: Final reliability index.
     """
     try:
         if not isinstance(setup, dict):
