@@ -1,16 +1,61 @@
-"""PAREpy toolbox: Probabilistic Approach to Reliability Engineering"""
+"""Probabilistic Approach to Reliability Engineering (PAREPY)"""
 import time
 import copy
 import os
 import itertools
 from datetime import datetime
 from multiprocessing import Pool
-from typing import Callable, Any, List, Dict, Tuple, Optional
+from typing import Callable, List, Dict, Tuple, Optional
 
 import numpy as np
 import pandas as pd
 
 import parepy_toolbox.common_library as parepyco
+
+
+def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args: Optional[Tuple] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Computes the Cornell reliability index and probability of failure.
+
+    :param obj: Objective function that returns a list of limit state function (g) values.
+    :param vars: Random variables configurations. Expect keys in each dictionary: "type", "parameters".
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Results of reliability analysis.
+            - pf_dataframe: Probability of Failure (pd.DataFrame)
+            - beta_dataframe: Reliability Index (pd.DataFrame)
+    """
+
+    # Extract statistical parameters from variable configurations
+    sigma = []
+    var = []
+    for var_config in vars:
+        sigma.append(var_config['parameters']['mean'])
+        var.append(var_config['parameters']['sigma'])
+
+    # Evaluate limit-state function
+    if args is not None:
+        g_list = obj(sigma, args)
+    else:
+        g_list = obj(sigma)
+
+    # Compute reliability metrics
+    beta_list = []
+    pf_list = []
+    std_safety_margin = np.sqrt(sum(std ** 2 for std in var))
+    for g_i in g_list:
+        beta_i = g_i / std_safety_margin
+        pf_i = parepyco.pf_equation(beta_i)
+        beta_list.append(beta_i)
+        pf_list.append(pf_i)
+
+    # Results as DataFrames
+    pf_columns = [f'pf_{i}' for i in range(len(pf_list))]
+    beta_columns = [f'beta_{i}' for i in range(len(beta_list))]
+    pf_dataframe = pd.DataFrame([pf_list], columns=pf_columns)
+    beta_dataframe = pd.DataFrame([beta_list], columns=beta_columns)
+
+    return pf_dataframe, beta_dataframe
 
 
 def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
@@ -580,48 +625,3 @@ def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFra
     except (Exception, TypeError, ValueError) as e:
         print(f"Error: {e}")
         return None, None, None
-
-
-def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args: Optional[Tuple] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Computes the Cornell reliability index and estimates the probability of failure.
-
-    :param obj: Objective function that returns a list of `g` values (limit-state functions).
-                It must accept at least one argument (x), and optionally *args.
-    :param vars: List of random variables as dictionaries with "mean" and "sigma".
-    :param args: Optional tuple of extra arguments to pass to the objective function.
-
-    :return: Tuple of two DataFrames: (pf_dataframe, beta_dataframe)
-    """
-
-    # Extrair parâmetros
-    sigma = []
-    var = []
-    for var_config in vars:
-        sigma.append(var_config['parameters']['mean'])
-        var.append(var_config['parameters']['sigma'])
-
-
-    if args is not None:
-        g_list = obj(sigma, *args)
-    else:
-        g_list = obj(sigma)
-
-    # Cálculos
-    beta_list = []
-    pf_list = []
-    std_safety_margin = np.sqrt(sum(std ** 2 for std in var))
-
-    for g_i in g_list:
-        beta_i = g_i / std_safety_margin
-        pf_i = parepyco.pf_equation(beta_i)
-        beta_list.append(beta_i)
-        pf_list.append(pf_i)
-
-    # DataFrames
-    pf_columns = [f'pf_{i}' for i in range(len(pf_list))]
-    beta_columns = [f'beta_{i}' for i in range(len(beta_list))]
-    pf_dataframe = pd.DataFrame([pf_list], columns=pf_columns)
-    beta_dataframe = pd.DataFrame([beta_list], columns=beta_columns)
-
-    return pf_dataframe, beta_dataframe
