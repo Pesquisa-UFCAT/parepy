@@ -5,7 +5,7 @@ import os
 import itertools
 from datetime import datetime
 from multiprocessing import Pool
-from typing import Callable, Any, List, Dict, Tuple
+from typing import Callable, Any, List, Dict, Tuple, Optional
 
 import numpy as np
 import pandas as pd
@@ -582,40 +582,43 @@ def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFra
         return None, None, None
 
 
-def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], *args: Tuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args: Optional[Tuple] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
-    This function computes the Cornell reliability index and estimates the probability of failure.
+    Computes the Cornell reliability index and estimates the probability of failure.
 
-    :param obj: Objective function returning a list of `g` (limit-state function) values.
-    :param vars: Random variable configs (list of dicts with "type", "mean" and "sigma").
-    :param args: Additional arguments passed to `obj` (optional).
+    :param obj: Objective function that returns a list of `g` values (limit-state functions).
+                It must accept at least one argument (x), and optionally *args.
+    :param vars: List of random variables as dictionaries with "mean" and "sigma".
+    :param args: Optional tuple of extra arguments to pass to the objective function.
 
-    :return: Tuple of two DataFrames:  
-        - pf_dataframe: Contains the probability of failure (pf) for each limit state.
-        - beta_dataframe: Contains the reliability index (β) for each limit state.
+    :return: Tuple of two DataFrames: (pf_dataframe, beta_dataframe)
     """
 
-    # Extracting parameters from the random variables and computting the state limit values
+    # Extrair parâmetros
     sigma = []
     var = []
     for var_config in vars:
         sigma.append(var_config['parameters']['mean'])
         var.append(var_config['parameters']['sigma'])
-    g_list = obj(sigma, *args)
 
-    # Standard deviation of the limit state function
+
+    if args is not None:
+        g_list = obj(sigma, *args)
+    else:
+        g_list = obj(sigma)
+
+    # Cálculos
     beta_list = []
     pf_list = []
     std_safety_margin = np.sqrt(sum(std ** 2 for std in var))
 
-    # Computing the reliability index and probability of failure
     for g_i in g_list:
         beta_i = g_i / std_safety_margin
         pf_i = parepyco.pf_equation(beta_i)
         beta_list.append(beta_i)
         pf_list.append(pf_i)
 
-    # Creating DataFrames for the results
+    # DataFrames
     pf_columns = [f'pf_{i}' for i in range(len(pf_list))]
     beta_columns = [f'beta_{i}' for i in range(len(beta_list))]
     pf_dataframe = pd.DataFrame([pf_list], columns=pf_columns)
