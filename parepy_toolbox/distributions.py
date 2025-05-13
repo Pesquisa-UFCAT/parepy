@@ -1,4 +1,4 @@
-"""Function of probability distributions"""
+"""Probability distributions"""
 import numpy as np
 from scipy.stats import norm
 
