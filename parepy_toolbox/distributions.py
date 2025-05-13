@@ -62,7 +62,6 @@ def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=No
     :return: List of random samples.
     """
 
-
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
         if seed is not None:
@@ -98,8 +97,6 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
 
     :return: List of random samples.
     """
-
-
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':
@@ -146,8 +143,6 @@ def corr_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float, 
 
     :return: List of random samples.
     """
-
-
 
     # Random uniform sampling between 0 and 1
     if method.lower() == 'mcs':

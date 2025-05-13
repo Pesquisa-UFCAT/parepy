@@ -5,6 +5,7 @@ import os
 import itertools
 from datetime import datetime
 from multiprocessing import Pool
+from typing import Callable, Any, List, Dict, Tuple
 
 import numpy as np
 import pandas as pd
@@ -579,3 +580,45 @@ def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFra
     except (Exception, TypeError, ValueError) as e:
         print(f"Error: {e}")
         return None, None, None
+
+
+def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], *args: Tuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    This function computes the Cornell reliability index and estimates the probability of failure.
+
+    :param obj: Objective function returning a list of `g` (limit-state function) values.
+    :param vars: Random variable configs (list of dicts with "type", "mean" and "sigma").
+    :param args: Additional arguments passed to `obj` (optional).
+
+    :return: Tuple of two DataFrames:  
+        - pf_dataframe: Contains the probability of failure (pf) for each limit state.
+        - beta_dataframe: Contains the reliability index (β) for each limit state.
+    """
+
+    # Extracting parameters from the random variables and computting the state limit values
+    sigma = []
+    var = []
+    for var_config in vars:
+        sigma.append(var_config['parameters']['mean'])
+        var.append(var_config['parameters']['sigma'])
+    g_list = obj(sigma, *args)
+
+    # Standard deviation of the limit state function
+    beta_list = []
+    pf_list = []
+    std_safety_margin = np.sqrt(sum(std ** 2 for std in var))
+
+    # Computing the reliability index and probability of failure
+    for g_i in g_list:
+        beta_i = g_i / std_safety_margin
+        pf_i = parepyco.pf_equation(beta_i)
+        beta_list.append(beta_i)
+        pf_list.append(pf_i)
+
+    # Creating DataFrames for the results
+    pf_columns = [f'pf_{i}' for i in range(len(pf_list))]
+    beta_columns = [f'beta_{i}' for i in range(len(beta_list))]
+    pf_dataframe = pd.DataFrame([pf_list], columns=pf_columns)
+    beta_dataframe = pd.DataFrame([beta_list], columns=beta_columns)
+
+    return pf_dataframe, beta_dataframe

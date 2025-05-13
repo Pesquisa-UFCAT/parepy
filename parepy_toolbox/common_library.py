@@ -424,52 +424,6 @@ def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y
     return y_new
 
 
-def cornell_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Applies the Cornell reliability algorithm to evaluate the probability of failure and reliability index.
-
-    :param setup: Dictionary containing the input settings, including:
-    
-        - 'variables settings': list of variable configurations with 'mean' and 'sigma' values,
-        - 'objective function': function that returns a list of g values,
-        - 'none variable': additional fixed parameters for the objective function.
-
-    :return: Tuple of two DataFrames:
-
-        - pf_dataframe: DataFrame containing the probability of failure (pf) for each limit state.
-        - beta_dataframe: DataFrame containing the reliability index (β) for each limit state.
-    """
-    sigma = []  # 'mean'
-    var = []    # 'sigma'
-
-    for var_config in setup['variables settings']:
-        mean = var_config['parameters']['mean']
-        std = var_config['parameters']['sigma']
-        sigma.append(mean)
-        var.append(std)
-
-    g_list = setup['objective function'](sigma, setup['none variable'])
-
-    beta_list = []
-    pf_list = []
-
-    total_variance = sum(std ** 2 for std in var)
-    sigma_total = sqrt(total_variance)
-
-    for g_i in g_list:
-        beta_i = g_i / sigma_total
-        pf_i = pf_equation(beta_i)
-        beta_list.append(beta_i)
-        pf_list.append(pf_i)
-
-    pf_columns = [f'pf_{i}' for i in range(len(pf_list))]
-    beta_columns = [f'beta_{i}' for i in range(len(beta_list))]
-
-    pf_dataframe = pd.DataFrame([pf_list], columns=pf_columns)
-    beta_dataframe = pd.DataFrame([beta_list], columns=beta_columns)
-
-    return pf_dataframe, beta_dataframe
-
 
 # def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = 'all') -> dict:
 #     """
