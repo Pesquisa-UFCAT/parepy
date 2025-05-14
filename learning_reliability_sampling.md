@@ -4,8 +4,8 @@ nav_order: 1
 has_children: false
 has_toc: false
 title: Sampling methods
-parent: Learning
-grand_parent: Structural reliability
+parent: Structural reliability
+grand_parent: Learning
 ---
 
 <!--Don't delete this script-->
