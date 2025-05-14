@@ -526,4 +526,3 @@ def generate_factorial_design(level_dict):
     df = pd.DataFrame(combinations, columns=level_dict.keys())
 
     return df
-
