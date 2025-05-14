@@ -93,8 +93,8 @@ def deterministic_algorithm_structural_analysis(obj: Callable, vars: List[Dict],
                     loc = mu[i] - np.sqrt(6)*(0.5772/np.pi)*std[i]
                     scale = np.sqrt(6)*std[i]/np.pi
                     z_aux = gumbel_r.ppf(norm.cdf(z[i]), loc, scale)
-                elif var == 'gumbel min':  # Novo caso para Gumbel mínimos
-                    loc = mu[i] + np.sqrt(6) * (0.5772 / np.pi) * std[i]  # Sinal invertido
+                elif var == 'gumbel min':
+                    loc = mu[i] + np.sqrt(6) * (0.5772 / np.pi) * std[i]
                     scale = np.sqrt(6) * std[i] / np.pi
                     z_aux = gumbel_l.ppf(norm.cdf(z[i]), loc=loc, scale=scale)
                 else:
@@ -116,6 +116,10 @@ def deterministic_algorithm_structural_analysis(obj: Callable, vars: List[Dict],
                     loc = mu[i] - np.sqrt(6)*(0.5772/np.pi)*std[i]
                     scale = np.sqrt(6)*std[i]/np.pi
                     z_aux = gumbel_r.ppf(norm.cdf(z[i]), loc, scale)
+                elif var == 'gumbel min':
+                    loc = mu[i] + np.sqrt(6) * (0.5772 / np.pi) * std[i]
+                    scale = np.sqrt(6) * std[i] / np.pi
+                    z_aux = gumbel_l.ppf(norm.cdf(z[i]), loc=loc, scale=scale)
                 else:
                     z_aux = norm.ppf(norm.cdf(z[i]), mu[i], std[i])
                 y.append(z_aux)
