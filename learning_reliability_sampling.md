@@ -1,10 +1,11 @@
 ---
 layout: home
+nav_order: 1
+has_children: false
+has_toc: false
+title: Sampling methods
 parent: Learning
-nav_order: 7
-has_children: true
-has_toc: true
-title: Structural Reliability and Monte Carlo Method
+grand_parent: Structural reliability
 ---
 
 <!--Don't delete this script-->

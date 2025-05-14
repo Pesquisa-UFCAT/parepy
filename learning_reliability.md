@@ -1,9 +1,10 @@
 ---
 layout: home
-nav_order: 4
+nav_order: 2
 has_children: true
 has_toc: true
-title: Learning
+title: Structural reliability
+parent: Learning
 ---
 
 <!--Don't delete ths script-->
@@ -11,4 +12,4 @@ title: Learning
 <script id = "MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <!--Don't delete ths script-->
 
-<p align="justify">This section covers the theoretical foundations and mathematical concepts used in the framework.</p>
+<p align="justify">In this section, we present the sctructural reliability methods used in this framework.</p>

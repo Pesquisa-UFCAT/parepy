@@ -1,10 +1,11 @@
 ---
 layout: home
-parent: Learning
 nav_order: 4
-has_children: true
-has_toc: true
-title: Gumbel right distribution
+has_children: false
+has_toc: false
+title: Gumbel right
+parent: Distributions
+grand_parent: Learning
 ---
 
 <!--Don't delete ths script-->

@@ -1,10 +1,11 @@
 ---
 layout: home
-parent: Learning
 nav_order: 3
-has_children: true
-has_toc: true
-title: Log-normal distribution
+has_children: false
+has_toc: false
+title: Log-normal
+parent: Distributions
+grand_parent: Learning
 ---
 
 <!--Don't delete ths script-->

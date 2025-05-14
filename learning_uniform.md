@@ -1,10 +1,11 @@
 ---
 layout: home
-parent: Learning
 nav_order: 1
-has_children: true
-has_toc: true
-title: Uniform Distributions
+has_children: false
+has_toc: false
+title: Uniform
+parent: Distributions
+grand_parent: Learning
 ---
 
 <!--Don't delete this script-->

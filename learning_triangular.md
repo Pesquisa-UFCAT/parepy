@@ -1,10 +1,11 @@
 ---
 layout: home
-parent: Learning
 nav_order: 5
-has_children: true
-has_toc: true
-title: Triangular distribution
+has_children: false
+has_toc: false
+title: Triangular
+parent: Distributions
+grand_parent: Learning
 ---
 
 <!--Don't delete ths script-->
