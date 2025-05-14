@@ -9,11 +9,13 @@ from typing import Callable, List, Dict, Tuple, Optional
 
 import numpy as np
 import pandas as pd
+from scipy.stats import norm, lognorm, gumbel_r, gumbel_l
+from scipy.optimize import minimize
 
 import parepy_toolbox.common_library as parepyco
 
 
-def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args: Optional[Tuple] = None) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args: Optional[Tuple] = None) -> Tuple[float, float]:
     """
     Computes the Cornell reliability index and probability of failure.
 
@@ -22,8 +24,8 @@ def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args:
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Results of reliability analysis.
-            - pf_dataframe: Probability of Failure (pd.DataFrame)
-            - beta_dataframe: Reliability Index (pd.DataFrame)
+            - pf_value: Probability of Failure (float).
+            - beta_value: Reliability Index (float).
     """
 
     # Extract statistical parameters from variable configurations
@@ -35,27 +37,99 @@ def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args:
 
     # Evaluate limit-state function
     if args is not None:
-        g_list = obj(sigma, args)
+        g = obj(sigma, args)
     else:
-        g_list = obj(sigma)
+        g = obj(sigma)
 
     # Compute reliability metrics
-    beta_list = []
-    pf_list = []
     std_safety_margin = np.sqrt(sum(std ** 2 for std in var))
-    for g_i in g_list:
-        beta_i = g_i / std_safety_margin
-        pf_i = parepyco.pf_equation(beta_i)
-        beta_list.append(beta_i)
-        pf_list.append(pf_i)
+    beta_value = g / std_safety_margin
+    pf_value = norm.cdf(-beta_value)
 
-    # Results as DataFrames
-    pf_columns = [f'pf_{i}' for i in range(len(pf_list))]
-    beta_columns = [f'beta_{i}' for i in range(len(beta_list))]
-    pf_dataframe = pd.DataFrame([pf_list], columns=pf_columns)
-    beta_dataframe = pd.DataFrame([beta_list], columns=beta_columns)
+    return float(pf_value), float(beta_value)
 
-    return pf_dataframe, beta_dataframe
+
+def deterministic_algorithm_structural_analysis(obj: Callable, vars: List[Dict], tolerance: float, z0: List, args: Optional[Tuple] = None) -> Tuple[float, float]:
+    """
+    Computes the reliability index and probability of failure using FORM (First Order Reliability Method).
+
+    :param obj: Objective function that returns a list of limit state function (g) values.
+    :param vars: Random variables configurations. Expect keys in each dictionary: "type", "parameters".
+    :param tolerance: Tolerance for convergence.
+    :param z0: Initial guess.
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Results of reliability analysis.
+            - pf_value: Probability of Failure (float).
+            - beta_value: Reliability Index (float).
+    """
+
+    # Extract statistical parameters from variable configurations
+    pdf_type = []
+    mu = []
+    std = []
+    for var_config in vars:
+        pdf_type.append(var_config['type'])
+        mu.append(var_config['parameters']['mean'])
+        std.append(var_config['parameters']['sigma'])
+
+    # Optimization function
+    def funobj(z):
+        d = np.sqrt(sum(z**2))
+        return d
+
+    # Transform random variables to standard normal space
+    if args is not None:
+        args_sbjto = (pdf_type, mu, std, args, obj)
+        def sbjto(z, type, mu, std, args, obj):
+            y = []
+            for i, var in enumerate(type):
+                if var == 'lognormal':
+                    sigma_log_r = np.sqrt(np.log(1 + (std[i]**2) / (mu[i]**2)))
+                    mu_log_r = np.log(mu[i]) - (sigma_log_r**2) / 2
+                    scale_r = np.exp(mu_log_r)
+                    z_aux = lognorm.ppf(norm.cdf(z[i]), s=sigma_log_r, scale=scale_r)
+                elif var == 'gumbel max':
+                    loc = mu[i] - np.sqrt(6)*(0.5772/np.pi)*std[i]
+                    scale = np.sqrt(6)*std[i]/np.pi
+                    z_aux = gumbel_r.ppf(norm.cdf(z[i]), loc, scale)
+                elif var == 'gumbel min':  # Novo caso para Gumbel mínimos
+                    loc = mu[i] + np.sqrt(6) * (0.5772 / np.pi) * std[i]  # Sinal invertido
+                    scale = np.sqrt(6) * std[i] / np.pi
+                    z_aux = gumbel_l.ppf(norm.cdf(z[i]), loc=loc, scale=scale)
+                else:
+                    z_aux = norm.ppf(norm.cdf(z[i]), mu[i], std[i])
+                y.append(z_aux)
+            g = obj(y, args)
+            return g
+    else:
+        args_sbjto = (pdf_type, mu, std, obj)
+        def sbjto(z, type, mu, std, obj):
+            y = []
+            for i, var in enumerate(type):
+                if var == 'lognormal':
+                    sigma_log_r = np.sqrt(np.log(1 + (std[i]**2) / (mu[i]**2)))
+                    mu_log_r = np.log(mu[i]) - (sigma_log_r**2) / 2
+                    scale_r = np.exp(mu_log_r)
+                    z_aux = lognorm.ppf(norm.cdf(z[i]), s=sigma_log_r, scale=scale_r)
+                elif var == 'gumbel max':
+                    loc = mu[i] - np.sqrt(6)*(0.5772/np.pi)*std[i]
+                    scale = np.sqrt(6)*std[i]/np.pi
+                    z_aux = gumbel_r.ppf(norm.cdf(z[i]), loc, scale)
+                else:
+                    z_aux = norm.ppf(norm.cdf(z[i]), mu[i], std[i])
+                y.append(z_aux)
+            g = obj(y)
+            return g
+
+    # Optimization procedure
+    cons = {'type': 'eq', 'fun': sbjto, 'args': args_sbjto}
+    res = minimize(funobj, z0, method='SLSQP', constraints=cons, tol=tolerance)
+    z = res.x
+    beta_value = res.fun
+    pf_value = norm.cdf(-beta_value)
+
+    return float(pf_value), float(beta_value)
 
 
 def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
@@ -449,179 +523,3 @@ def generate_factorial_design(level_dict):
 
     return df
 
-
-def deterministic_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, float, int]:
-    """
-    Performs a deterministic structural reliability analysis using an iterative algorithm.
-
-    Calculates the reliability index (`beta`), the probability of failure (`pf`), and returns a DataFrame
-    containing the results of each iteration.
-
-    :param setup: Dictionary containing the input settings, including:
-    
-        - 'tolerance': Convergence tolerance for the algorithm.
-        - 'max iterations': Maximum number of iterations allowed.
-        - 'numerical model': Numerical model used for the analysis (user-defined).
-        - 'variables settings': List of variable definitions (as dictionaries).
-        - 'number of state limit functions or constraints': Number of limit state functions or constraints.
-        - 'none variable': Auxiliary variable used in the objective function (can be None, list, float, dict, str, etc.).
-        - 'objective function': User-defined function to evaluate the limit state(s).
-        - 'gradient objective function': Callable function that computes the gradient of the objective function.
-        - 'name simulation': Name or identifier for the simulation.
-
-    :return: Tuple containing:
-
-        - results_df: DataFrame with the results of each iteration.
-        - pf: Probability of failure calculated using the final reliability index.
-        - beta: Final reliability index.
-    """
-    try:
-        if not isinstance(setup, dict):
-            raise TypeError('The setup parameter must be a dictionary.')
-        
-        required_keys = [
-            'tolerance', 'max iterations', 'numerical model', 'variables settings',
-            'number of state limit functions or constraints', 'none variable',
-            'objective function', 'gradient objective function', 'name simulation'
-        ]
-        
-        for key in required_keys:
-            if key not in setup:
-                raise ValueError(f'The setup parameter must have the key: {key}.')
-        
-        variables = setup['variables settings']
-        if not isinstance(variables, list):
-            raise TypeError('The "variables settings" must be a list.')
-        
-        for i, var in enumerate(variables):
-            if not isinstance(var, dict):
-                raise TypeError('Each variable in "variables settings" must be a dictionary.')
-            
-            if 'parameters' not in var or not isinstance(var['parameters'], dict):
-                raise ValueError('Each variable must have a "parameters" key with a dictionary value.')
-            
-            if 'mean' not in var['parameters'] or 'sigma' not in var['parameters']:
-                raise ValueError('Each variable must have "mean" and "sigma" in its parameters.')
-            
-            if 'type' not in var:
-                raise ValueError('Each variable must have a "type" key.')
-            
-            if var['type'] not in ['normal', 'lognormal', 'gumbel max', 'gumbel min']:
-                raise ValueError('The variable type must be one of: "normal", "lognormal", "gumbel max", "gumbel min".')
-        
-
-        mu = []
-        sigma = []
-        tol = setup['tolerance']
-        max_iter = setup['max iterations']
-        none_variable = setup['none variable']
-        obj = setup['objective function']
-        grad_obj = setup['gradient objective function']
-        params_adapt = {}
-        
-        for i, var in enumerate(variables):
-            mean = var['parameters']['mean']
-            std = var['parameters']['sigma']
-            mu.append(mean)
-            sigma.append(std)
-            
-            if var['type'] == 'normal':
-                params_adapt[f'var{i}'] = {
-                    'type': 'normal',
-                    'params': {
-                        'mu': mean,
-                        'sigma': std
-                    }
-                }
-            elif var['type'] == 'lognormal':
-                epsilon = np.sqrt(np.log(1 + (std / mean) ** 2))
-                lambdaa = np.log(mean) - 0.5 * epsilon ** 2
-                params_adapt[f'var{i}'] = {
-                    'type': 'lognormal',
-                    'params': {
-                        'lambda': float(lambdaa),
-                        'epsilon': float(epsilon)
-                    }
-                }
-            elif var['type'] == 'gumbel max':
-                gamma = 0.577215665  
-                beta = np.pi / (np.sqrt(6) * std)
-                alpha = mean - gamma / beta
-                params_adapt[f'var{i}'] = {
-                    'type': 'gumbel max',
-                    'params': {
-                        'alpha': float(alpha),
-                        'beta': float(beta)
-                    }
-                }
-            elif var['type'] == 'gumbel min':
-                gamma = 0.577215665 
-                beta = np.pi / (np.sqrt(6) * std)
-                alpha = mean + gamma / beta
-                params_adapt[f'var{i}'] = {
-                    'type': 'gumbel min',
-                    'params': {
-                        'alpha': float(alpha),
-                        'beta': float(beta)
-                    }
-                }
-                 
-
-        # for index, value in params_adapt.items():
-        #     print(f"index: {index}, \nvalue: {value}")
-
-        # print(f"mu: {mean}, \nsigma: {std}, \ntol: {tol}, \nmax_iter: {max_iter}, \nnone_variable: {none_variable}")
-        
-        # Fixed in this algorithm
-        beta_list = [10000]
-        error = 1000
-        iter = 0
-        step = 1
-
-        x = np.transpose(np.array([mu.copy()]))
-        mu = x.copy()
-        jacobian_xy = np.diag(sigma)
-        jacobian_xy_trans = np.transpose(jacobian_xy)
-        jacobian_yx = np.linalg.inv(jacobian_xy)
-        y = jacobian_yx @ (x - mu)
-        x = jacobian_xy @ y + mu
-
-        while (error > tol and iter < max_iter):
-            beta = np.linalg.norm(y)
-            beta_list.append(beta)
-            g_y = obj(x.flatten().tolist())
-            grad_g_x = grad_obj(x.flatten().tolist())
-            grad_g_y = np.dot(jacobian_xy_trans, np.transpose(np.array([grad_g_x])))
-            num = (np.transpose(grad_g_y) @ y - g_y)
-            norm = np.linalg.norm(grad_g_y)
-            norm2 = norm ** 2
-            #alpha = grad_g_y / norm
-            #aux = g_y / norm
-            #y = -alpha * (beta + aux)
-            d = grad_g_y @ (num / norm2) - y
-            #step = minimize_scalar(f_alpha, bounds=(.001, 1), args=([y, d]), method='bounded')
-            #print(step.x)
-            #y += step.x * d
-            y += step * d
-            error = np.abs(beta_list[iter + 1] - beta_list[iter])
-            x = jacobian_xy @ y + mu
-
-            aux = {
-                'iteration': iter,
-                **{f'x_{i}': float(x_value.item()) for i, x_value in enumerate(x)},
-                'error': error,
-                'beta': beta
-            }
-            if iter == 0:
-                results_df = pd.DataFrame([aux])
-            else:
-                results_df = pd.concat([results_df, pd.DataFrame([aux])], ignore_index=True)
-
-            iter += 1
-        pf = parepyco.pf_equation(beta)
-        
-        return results_df, float(pf), float(beta)
-            
-    except (Exception, TypeError, ValueError) as e:
-        print(f"Error: {e}")
-        return None, None, None
