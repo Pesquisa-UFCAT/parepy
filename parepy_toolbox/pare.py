@@ -13,248 +13,451 @@ import pandas as pd
 import parepy_toolbox.common_library as parepyco
 
 
-def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
+# def sampling_algorithm_structural_analysis_kernel(setup: dict) -> pd.DataFrame:
+#     """
+#     Creates the samples and evaluates the limit state functions in structural reliability problems.
+
+#     Based on the data provided in the setup, this function calculates the probabilities of failure and reliability indexes.
+
+#     :param setup: Dictionary with the following keys:
+
+#         - 'number of samples': Integer. Number of samples to be generated.
+#         - 'numerical model': Dictionary. Contains the model configuration.
+#         - 'variables settings': List of dictionaries with variable definitions (e.g., distribution, parameters).
+#         - 'number of state limit functions or constraints': Integer. Number of limit state functions (constraints).
+#         - 'none variable': Auxiliary input used in the objective function (can be None, list, float, dict, str, etc.).
+#         - 'objective function': Python function defined by the user to evaluate the limit state(s).
+#         - 'name simulation': String or None. Output filename for saving results.
+
+#     :return: Tuple containing:
+#         - results_about_data: DataFrame with the reliability analysis results.
+#         - failure_prob_list: List of failure probabilities.
+#         - beta_list: List of reliability indexes.
+#     """
+
+#     # General settings
+#     obj = setup['objective function']
+#     n_samples = setup['number of samples']
+#     variables_settings = setup['variables settings']
+#     for i in variables_settings:
+#         if 'seed' not in i:
+#             i['seed'] = None
+#     n_dimensions = len(variables_settings)
+#     n_constraints = setup['number of state limit functions or constraints']
+#     none_variable = setup['none variable']
+
+#     # Algorithm settings
+#     model = setup['numerical model']
+#     algorithm = model['model sampling']
+#     if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#         time_analysis = model['time steps']
+#     else:
+#         time_analysis = None
+
+#     # Creating samples
+#     dataset_x = parepyco.sampling(n_samples=n_samples, model=model,
+#                                     variables_setup=variables_settings)
+
+#     # Starting variables
+#     capacity = np.zeros((len(dataset_x), n_constraints))
+#     demand = np.zeros((len(dataset_x), n_constraints))
+#     state_limit = np.zeros((len(dataset_x), n_constraints))
+#     indicator_function = np.zeros((len(dataset_x), n_constraints))
+
+#     # Singleprocess Objective Function evaluation
+#     for id, sample in enumerate(dataset_x):
+#         capacity_i, demand_i, state_limit_i = obj(list(sample), none_variable)
+#         capacity[id, :] = capacity_i.copy()
+#         demand[id, :] = demand_i.copy()
+#         state_limit[id, :] = state_limit_i.copy()
+#         indicator_function[id, :] = [1 if value <= 0 else 0 for value in state_limit_i]
+
+#     # Storage all results (horizontal stacking)
+#     results = np.hstack((dataset_x, capacity, demand, state_limit, indicator_function))
+
+#     # Transforming time results in dataframe X_i T_i R_i S_i G_i I_i
+#     if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#         tam = int(len(results) / n_samples)
+#         line_i = 0
+#         line_j = tam
+#         result_all = []
+#         for i in range(n_samples):
+#             i_sample_in_temp = results[line_i:line_j, :]
+#             i_sample_in_temp = i_sample_in_temp.T
+#             line_i += tam
+#             line_j += tam
+#             i_sample_in_temp = i_sample_in_temp.flatten().tolist()
+#             result_all.append(i_sample_in_temp)
+#         results_about_data = pd.DataFrame(result_all)
+#     else:
+#         results_about_data = pd.DataFrame(results)
+
+#     # Rename columns in dataframe
+#     column_names = []
+#     for i in range(n_dimensions):
+#         if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#             for j in range(time_analysis):
+#                 column_names.append(f'X_{i}_t={j}')
+#         else:
+#             column_names.append(f'X_{i}')
+#     if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#         for i in range(time_analysis):
+#             column_names.append(f'STEP_t_{i}') 
+#     for i in range(n_constraints):
+#         if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#             for j in range(time_analysis):
+#                 column_names.append(f'R_{i}_t={j}')
+#         else:
+#             column_names.append(f'R_{i}')
+#     for i in range(n_constraints):
+#         if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#             for j in range(time_analysis):
+#                 column_names.append(f'S_{i}_t={j}')
+#         else:
+#             column_names.append(f'S_{i}')
+#     for i in range(n_constraints):
+#         if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#             for j in range(time_analysis):
+#                 column_names.append(f'G_{i}_t={j}')
+#         else:
+#             column_names.append(f'G_{i}')
+#     for i in range(n_constraints):
+#         if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#             for j in range(time_analysis):
+#                 column_names.append(f'I_{i}_t={j}')
+#         else:
+#             column_names.append(f'I_{i}')
+#     results_about_data.columns = column_names
+
+#     # First Barrier Failure (FBF) or non-dependent time reliability analysis
+#     if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#         results_about_data, _ = parepyco.fbf(algorithm, n_constraints, time_analysis, results_about_data)
+     
+#     return results_about_data
+
+
+# def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, list, list]:
+#     """
+#     Creates the samples and evaluates the limit state functions in structural reliability problems.
+
+#     :param setup: Dictionary containing the input settings, including:
+
+#         - 'number of samples': Number of samples.
+#         - 'numerical model': Numerical model settings.
+#         - 'variables settings': List of variable definitions.
+#         - 'number of state limit functions or constraints': Number of limit state functions or constraints.
+#         - 'none_variable': Auxiliary variable used in the objective function (can be None, list, float, dict, str, etc.).
+#         - 'objective function': User-defined function to evaluate the limit state(s).
+#         - 'name simulation': Output filename (string or None).
+
+#     :return: Tuple containing:
+
+#         - results_about_data: DataFrame with the reliability analysis results.
+#         - failure_prob_list: List of failure probabilities.
+#         - beta_list: List of reliability indexes.
+#     """
+#     try:
+#         # Setup verification
+#         if not isinstance(setup, dict):
+#             raise TypeError('The setup parameter must be a dictionary.')
+
+#         # Keys verification
+#         for key in setup.keys():
+#             if key not in ['objective function',
+#                            'number of samples',
+#                            'numerical model',
+#                            'variables settings',
+#                            'number of state limit functions or constraints',
+#                            'none variable',
+#                            'type process',
+#                            'name simulation'
+#                           ]:
+#                 raise ValueError("""The setup parameter must have the following keys:
+#                                     - objective function;
+#                                     - number of samples;
+#                                     - numerical model;
+#                                     - variables settings;
+#                                     - number of state limit functions or constraints;
+#                                     - none variable;
+#                                     - type process;
+#                                     - name simulation"""
+#                                 )
+
+#         # Number of samples verification
+#         if not isinstance(setup['number of samples'], int):
+#             raise TypeError('The key "number of samples" must be an integer.')
+
+#         # Numerical model verification
+#         if not isinstance(setup['numerical model'], dict):
+#             raise TypeError('The key "numerical model" must be a dictionary.')
+
+#         # Variables settings verification
+#         if not isinstance(setup['variables settings'], list):
+#             raise TypeError('The key "variables settings" must be a list.')
+
+#         # Number of state limit functions or constraints verification
+#         if not isinstance(setup['number of state limit functions or constraints'], int):
+#             raise TypeError('The key "number of state limit functions or constraints" must be an integer.')
+        
+#         # Objective function verification
+#         if not callable(setup['objective function']):
+#             raise TypeError('The key "objective function" must be Python function.')        
+        
+#         # Name simulation verification
+#         if not isinstance(setup['name simulation'], (str, type(None))):
+#             raise TypeError('The key "name simulation" must be a None or string.')
+#         parepyco.log_message('Checking inputs completed!')
+
+#         # Multiprocessing sampling algorithm
+#         parepyco.log_message('Started State Limit Function evaluation (g)...')
+#         total_samples = setup['number of samples']
+#         algorithm = setup['numerical model']['model sampling']
+#         div = total_samples // 10
+#         mod = total_samples % 10
+#         setups = []
+#         for i in range(10):
+#             new_setup = copy.deepcopy(setup)
+#             if i == 9:
+#                 samples = div + mod
+#             else:
+#                 samples = div
+#             new_setup['number of samples'] = samples
+#             setups.append(new_setup)
+#         start_time = time.perf_counter()
+#         with Pool() as pool:
+#             results = pool.map(sampling_algorithm_structural_analysis_kernel, setups)
+#         end_time = time.perf_counter()
+#         results_about_data = pd.concat(results, ignore_index=True)
+#         final_time = end_time - start_time
+#         parepyco.log_message(f'Finished State Limit Function evaluation (g) in {final_time:.2e} seconds!')
+
+#         # Failure probability and beta index calculation
+#         parepyco.log_message('Started evaluation beta reliability index and failure probability...')
+#         start_time = time.perf_counter()
+#         failure_prob_list, beta_list = parepyco.calc_pf_beta(results_about_data, algorithm.upper(), setup['number of state limit functions or constraints'])
+#         end_time = time.perf_counter()
+#         final_time = end_time - start_time
+#         parepyco.log_message(f'Finished evaluation beta reliability index and failure probability in {final_time:.2e} seconds!')
+
+#         # Save results in .txt file
+#         if setup['name simulation'] is not None:
+#             name_simulation = setup['name simulation']
+#             file_name = str(datetime.now().strftime('%Y%m%d-%H%M%S'))
+#             file_name_txt = f'{name_simulation}_{algorithm.upper()}_{file_name}.txt'
+#             results_about_data.to_csv(file_name_txt, sep='\t', index=False)
+#             parepyco.log_message(f'Voilà!!!!....simulation results are saved in {file_name_txt}')
+#         else:
+#             parepyco.log_message('Voilà!!!!....simulation results were not saved in a text file!')
+
+#         return results_about_data, failure_prob_list, beta_list
+
+#     except (Exception, TypeError, ValueError) as e:
+#         print(f"Error: {e}")
+#         return None, None, None
+
+
+def sampling_algorithm_structural_analysis_kernel(objective_function: callable, number_of_samples: int, numerical_model: dict, variables_settings: list, number_of_limit_functions: int, none_variable = None) -> pd.DataFrame:
     """
-    Creates the samples and evaluates the limit state functions in structural reliability problems.
+    Creates samples and evaluates the limit state functions in structural reliability problems.
 
-    Based on the data provided in the setup, this function calculates the probabilities of failure and reliability indexes.
+    :param objective_function: User-defined Python function to evaluate the limit state(s).
+    :param number_of_samples: Number of samples to generate.
+    :param numerical_model: Dictionary with model configuration (e.g., sampling type).
+    :param variables_settings: List of variable definitions with distribution parameters.
+    :param number_of_limit_functions: Number of limit state functions or constraints.
+    :param none_variable: Optional auxiliary input to be passed to the objective function.
 
-    :param setup: Dictionary with the following keys:
-
-        - 'number of samples': Integer. Number of samples to be generated.
-        - 'numerical model': Dictionary. Contains the model configuration.
-        - 'variables settings': List of dictionaries with variable definitions (e.g., distribution, parameters).
-        - 'number of state limit functions or constraints': Integer. Number of limit state functions (constraints).
-        - 'none variable': Auxiliary input used in the objective function (can be None, list, float, dict, str, etc.).
-        - 'objective function': Python function defined by the user to evaluate the limit state(s).
-        - 'name simulation': String or None. Output filename for saving results.
-
-    :return: Tuple containing:
-        - results_about_data: DataFrame with the reliability analysis results.
-        - failure_prob_list: List of failure probabilities.
-        - beta_list: List of reliability indexes.
+    :return: DataFrame with reliability analysis results.
     """
 
-    # General settings
-    obj = setup['objective function']
-    n_samples = setup['number of samples']
-    variables_settings = setup['variables settings']
-    for i in variables_settings:
-        if 'seed' not in i:
-            i['seed'] = None
+    # Ensure all variables have seeds
+    for var in variables_settings:
+        if 'seed' not in var:
+            var['seed'] = None
+
     n_dimensions = len(variables_settings)
-    n_constraints = setup['number of state limit functions or constraints']
-    none_variable = setup['none variable']
+    algorithm = numerical_model['model sampling']
+    is_time_analysis = algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']
+    time_analysis = numerical_model['time steps'] if is_time_analysis else None
 
-    # Algorithm settings
-    model = setup['numerical model']
-    algorithm = model['model sampling']
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-        time_analysis = model['time steps']
-    else:
-        time_analysis = None
+    # Generate samples
+    dataset_x = parepyco.sampling(
+        n_samples=number_of_samples,
+        model=numerical_model,
+        variables_setup=variables_settings
+    )
 
-    # Creating samples
-    dataset_x = parepyco.sampling(n_samples=n_samples, model=model,
-                                    variables_setup=variables_settings)
+    # Initialize output arrays
+    capacity = np.zeros((len(dataset_x), number_of_limit_functions))
+    demand = np.zeros((len(dataset_x), number_of_limit_functions))
+    state_limit = np.zeros((len(dataset_x), number_of_limit_functions))
+    indicator_function = np.zeros((len(dataset_x), number_of_limit_functions))
 
-    # Starting variables
-    capacity = np.zeros((len(dataset_x), n_constraints))
-    demand = np.zeros((len(dataset_x), n_constraints))
-    state_limit = np.zeros((len(dataset_x), n_constraints))
-    indicator_function = np.zeros((len(dataset_x), n_constraints))
+    # Evaluate objective function
+    for idx, sample in enumerate(dataset_x):
+        c_i, d_i, g_i = objective_function(list(sample), none_variable)
+        capacity[idx, :] = c_i
+        demand[idx, :] = d_i
+        state_limit[idx, :] = g_i
+        indicator_function[idx, :] = [1 if val <= 0 else 0 for val in g_i]
 
-    # Singleprocess Objective Function evaluation
-    for id, sample in enumerate(dataset_x):
-        capacity_i, demand_i, state_limit_i = obj(list(sample), none_variable)
-        capacity[id, :] = capacity_i.copy()
-        demand[id, :] = demand_i.copy()
-        state_limit[id, :] = state_limit_i.copy()
-        indicator_function[id, :] = [1 if value <= 0 else 0 for value in state_limit_i]
-
-    # Storage all results (horizontal stacking)
+    # Stack all results
     results = np.hstack((dataset_x, capacity, demand, state_limit, indicator_function))
 
-    # Transforming time results in dataframe X_i T_i R_i S_i G_i I_i
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-        tam = int(len(results) / n_samples)
-        line_i = 0
-        line_j = tam
-        result_all = []
-        for i in range(n_samples):
-            i_sample_in_temp = results[line_i:line_j, :]
-            i_sample_in_temp = i_sample_in_temp.T
-            line_i += tam
-            line_j += tam
-            i_sample_in_temp = i_sample_in_temp.flatten().tolist()
-            result_all.append(i_sample_in_temp)
-        results_about_data = pd.DataFrame(result_all)
+    # Format results into DataFrame
+    if is_time_analysis:
+        block_size = int(len(results) / number_of_samples)
+        all_rows = []
+        for i in range(number_of_samples):
+            block = results[i * block_size:(i + 1) * block_size, :].T.flatten().tolist()
+            all_rows.append(block)
+        results_about_data = pd.DataFrame(all_rows)
     else:
         results_about_data = pd.DataFrame(results)
 
-    # Rename columns in dataframe
+    # Create column names
     column_names = []
+
     for i in range(n_dimensions):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-            for j in range(time_analysis):
-                column_names.append(f'X_{i}_t={j}')
+        if is_time_analysis:
+            for t in range(time_analysis):
+                column_names.append(f'X_{i}_t={t}')
         else:
             column_names.append(f'X_{i}')
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-        for i in range(time_analysis):
-            column_names.append(f'STEP_t_{i}') 
-    for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-            for j in range(time_analysis):
-                column_names.append(f'R_{i}_t={j}')
+
+    if is_time_analysis:
+        for t in range(time_analysis):
+            column_names.append(f'STEP_t_{t}')
+
+    for i in range(number_of_limit_functions):
+        if is_time_analysis:
+            for t in range(time_analysis):
+                column_names.append(f'R_{i}_t={t}')
         else:
             column_names.append(f'R_{i}')
-    for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-            for j in range(time_analysis):
-                column_names.append(f'S_{i}_t={j}')
+
+    for i in range(number_of_limit_functions):
+        if is_time_analysis:
+            for t in range(time_analysis):
+                column_names.append(f'S_{i}_t={t}')
         else:
             column_names.append(f'S_{i}')
-    for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-            for j in range(time_analysis):
-                column_names.append(f'G_{i}_t={j}')
+
+    for i in range(number_of_limit_functions):
+        if is_time_analysis:
+            for t in range(time_analysis):
+                column_names.append(f'G_{i}_t={t}')
         else:
             column_names.append(f'G_{i}')
-    for i in range(n_constraints):
-        if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-            for j in range(time_analysis):
-                column_names.append(f'I_{i}_t={j}')
+
+    for i in range(number_of_limit_functions):
+        if is_time_analysis:
+            for t in range(time_analysis):
+                column_names.append(f'I_{i}_t={t}')
         else:
             column_names.append(f'I_{i}')
+
     results_about_data.columns = column_names
 
-    # First Barrier Failure (FBF) or non-dependent time reliability analysis
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-        results_about_data, _ = parepyco.fbf(algorithm, n_constraints, time_analysis, results_about_data)
-     
+    # First Barrier Failure (FBF) adjustment if time-dependent
+    if is_time_analysis:
+        results_about_data, _ = parepyco.fbf(
+            algorithm,
+            number_of_limit_functions,
+            time_analysis,
+            results_about_data
+        )
+
     return results_about_data
 
 
-def sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, list, list]:
+def sampling_algorithm_structural_analysis(objective_function: callable, number_of_samples: int, numerical_model: dict, variables_settings: list, number_of_limit_functions: int, none_variable = None,name_simulation: str = None, verbose: bool = False) -> tuple[pd.DataFrame, list, list]:
     """
-    Creates the samples and evaluates the limit state functions in structural reliability problems.
+    Creates samples and evaluates limit state functions for structural reliability problems.
 
-    :param setup: Dictionary containing the input settings, including:
+    :param objective_function: Python function to evaluate the limit state(s).
+    :param number_of_samples: Number of samples to generate.
+    :param numerical_model: Dictionary containing model configuration (e.g., sampling method).
+    :param variables_settings: List of random variable definitions (distributions and parameters).
+    :param number_of_limit_functions: Number of limit state functions or constraints.
+    :param none_variable: Auxiliary variable used inside the objective function (optional).
+    :param name_simulation: Optional output filename base (if saving is required).
+    :param verbose: Boolean flag to print log messages (default is False).
 
-        - 'number of samples': Number of samples.
-        - 'numerical model': Numerical model settings.
-        - 'variables settings': List of variable definitions.
-        - 'number of state limit functions or constraints': Number of limit state functions or constraints.
-        - 'none_variable': Auxiliary variable used in the objective function (can be None, list, float, dict, str, etc.).
-        - 'objective function': User-defined function to evaluate the limit state(s).
-        - 'name simulation': Output filename (string or None).
-
-    :return: Tuple containing:
-
-        - results_about_data: DataFrame with the reliability analysis results.
+    :return: 
+        - results_about_data: DataFrame with simulation results.
         - failure_prob_list: List of failure probabilities.
         - beta_list: List of reliability indexes.
     """
-    try:
-        # Setup verification
-        if not isinstance(setup, dict):
-            raise TypeError('The setup parameter must be a dictionary.')
+    if verbose:
+        parepyco.log_message('Checking input parameters...')
 
-        # Keys verification
-        for key in setup.keys():
-            if key not in ['objective function',
-                           'number of samples',
-                           'numerical model',
-                           'variables settings',
-                           'number of state limit functions or constraints',
-                           'none variable',
-                           'type process',
-                           'name simulation'
-                          ]:
-                raise ValueError("""The setup parameter must have the following keys:
-                                    - objective function;
-                                    - number of samples;
-                                    - numerical model;
-                                    - variables settings;
-                                    - number of state limit functions or constraints;
-                                    - none variable;
-                                    - type process;
-                                    - name simulation"""
-                                )
+    if not isinstance(number_of_samples, int):
+        raise TypeError('"number_of_samples" must be an integer.')
+    if not isinstance(numerical_model, dict):
+        raise TypeError('"numerical_model" must be a dictionary.')
+    if not isinstance(variables_settings, list):
+        raise TypeError('"variables_settings" must be a list.')
+    if not isinstance(number_of_limit_functions, int):
+        raise TypeError('"number_of_limit_functions" must be an integer.')
+    if not callable(objective_function):
+        raise TypeError('"objective_function" must be a Python function.')
+    if not isinstance(name_simulation, (str, type(None))):
+        raise TypeError('"name_simulation" must be a string or None.')
 
-        # Number of samples verification
-        if not isinstance(setup['number of samples'], int):
-            raise TypeError('The key "number of samples" must be an integer.')
+    if verbose:
+        parepyco.log_message('Input check passed.')
+        parepyco.log_message('Starting limit state function evaluation (g)...')
 
-        # Numerical model verification
-        if not isinstance(setup['numerical model'], dict):
-            raise TypeError('The key "numerical model" must be a dictionary.')
+    algorithm = numerical_model['model sampling']
+    div = number_of_samples // 10
+    mod = number_of_samples % 10
 
-        # Variables settings verification
-        if not isinstance(setup['variables settings'], list):
-            raise TypeError('The key "variables settings" must be a list.')
+    setups = []
+    for i in range(10):
+        samples = div + mod if i == 9 else div
+        setups.append((
+            objective_function,
+            samples,
+            numerical_model,
+            variables_settings,
+            number_of_limit_functions,
+            none_variable
+        ))
 
-        # Number of state limit functions or constraints verification
-        if not isinstance(setup['number of state limit functions or constraints'], int):
-            raise TypeError('The key "number of state limit functions or constraints" must be an integer.')
-        
-        # Objective function verification
-        if not callable(setup['objective function']):
-            raise TypeError('The key "objective function" must be Python function.')        
-        
-        # Name simulation verification
-        if not isinstance(setup['name simulation'], (str, type(None))):
-            raise TypeError('The key "name simulation" must be a None or string.')
-        parepyco.log_message('Checking inputs completed!')
+    start_time = time.perf_counter()
+    with Pool() as pool:
+        results = pool.starmap(sampling_algorithm_structural_analysis_kernel, setups)
+    end_time = time.perf_counter()
 
-        # Multiprocessing sampling algorithm
-        parepyco.log_message('Started State Limit Function evaluation (g)...')
-        total_samples = setup['number of samples']
-        algorithm = setup['numerical model']['model sampling']
-        div = total_samples // 10
-        mod = total_samples % 10
-        setups = []
-        for i in range(10):
-            new_setup = copy.deepcopy(setup)
-            if i == 9:
-                samples = div + mod
-            else:
-                samples = div
-            new_setup['number of samples'] = samples
-            setups.append(new_setup)
-        start_time = time.perf_counter()
-        with Pool() as pool:
-            results = pool.map(sampling_algorithm_structural_analysis_kernel, setups)
-        end_time = time.perf_counter()
-        results_about_data = pd.concat(results, ignore_index=True)
-        final_time = end_time - start_time
-        parepyco.log_message(f'Finished State Limit Function evaluation (g) in {final_time:.2e} seconds!')
+    results_about_data = pd.concat(results, ignore_index=True)
 
-        # Failure probability and beta index calculation
-        parepyco.log_message('Started evaluation beta reliability index and failure probability...')
-        start_time = time.perf_counter()
-        failure_prob_list, beta_list = parepyco.calc_pf_beta(results_about_data, algorithm.upper(), setup['number of state limit functions or constraints'])
-        end_time = time.perf_counter()
-        final_time = end_time - start_time
-        parepyco.log_message(f'Finished evaluation beta reliability index and failure probability in {final_time:.2e} seconds!')
+    if verbose:
+        parepyco.log_message(f'Finished (g) evaluation in {end_time - start_time:.2e} seconds.')
+        parepyco.log_message('Starting evaluation of failure probability and reliability index (beta)...')
 
-        # Save results in .txt file
-        if setup['name simulation'] is not None:
-            name_simulation = setup['name simulation']
-            file_name = str(datetime.now().strftime('%Y%m%d-%H%M%S'))
-            file_name_txt = f'{name_simulation}_{algorithm.upper()}_{file_name}.txt'
-            results_about_data.to_csv(file_name_txt, sep='\t', index=False)
-            parepyco.log_message(f'Voilà!!!!....simulation results are saved in {file_name_txt}')
-        else:
-            parepyco.log_message('Voilà!!!!....simulation results were not saved in a text file!')
+    start_time = time.perf_counter()
+    failure_prob_list, beta_list = parepyco.calc_pf_beta(
+        results_about_data,
+        algorithm.upper(),
+        number_of_limit_functions
+    )
+    end_time = time.perf_counter()
 
-        return results_about_data, failure_prob_list, beta_list
+    if verbose:
+        parepyco.log_message(f'Finished Pf and beta evaluation in {end_time - start_time:.2e} seconds.')
 
-    except (Exception, TypeError, ValueError) as e:
-        print(f"Error: {e}")
-        return None, None, None
+    if name_simulation:
+        file_name = datetime.now().strftime('%Y%m%d-%H%M%S')
+        file_name_txt = f'{name_simulation}_{algorithm.upper()}_{file_name}.txt'
+        results_about_data.to_csv(file_name_txt, sep='\t', index=False)
+        if verbose:
+            parepyco.log_message(f'Results saved in {file_name_txt}')
+    else:
+        if verbose:
+            parepyco.log_message('Simulation completed without saving.')
 
+    return results_about_data, failure_prob_list, beta_list
 
 def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, list, list]:
     """
