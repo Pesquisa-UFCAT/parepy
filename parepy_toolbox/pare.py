@@ -136,6 +136,61 @@ def deterministic_algorithm_structural_analysis(obj: Callable, vars: List[Dict],
     return float(pf_value), float(beta_value)
 
 
+def sampling_generator(number_of_samples: int, numerical_model: Dict, variables_settings: List) -> pd.DataFrame:
+    """
+    Generates random samples for design variables only (X variables).
+
+    :param number_of_samples: Number of samples to generate.
+    :param numerical_model: Dictionary with sampling configuration (e.g., method and time steps).
+    :param variables_settings: List of dictionaries defining the probabilistic distributions.
+
+    :return: Samples.
+    """
+    
+    # Assegura que todas variáveis tenham uma seed
+    for var in variables_settings:
+        if 'seed' not in var:
+            var['seed'] = None
+
+    n_dimensions = len(variables_settings)
+    algorithm = numerical_model['model sampling']
+    is_time_analysis = algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']
+    time_analysis = numerical_model.get('time steps', 1)
+
+    # Chamada da função sampling
+    results = parepyco.sampling(
+        n_samples=number_of_samples,
+        model=numerical_model,
+        variables_setup=variables_settings
+    )
+
+    # Processa resultados
+    if is_time_analysis:
+        # Remove a última coluna (STEP)
+        results = results[:, :-1]
+
+        # Separa e reestrutura por blocos de tempo
+        block_size = time_analysis
+        all_rows = []
+        for i in range(number_of_samples):
+            block = results[i * block_size:(i + 1) * block_size, :].T.flatten().tolist()
+            all_rows.append(block)
+        results_df = pd.DataFrame(all_rows)
+
+        # Nome das colunas X_{i}_t={t}
+        column_names = []
+        for i in range(n_dimensions):
+            for t in range(time_analysis):
+                column_names.append(f'X_{i}_t={t}')
+
+    else:
+        results_df = pd.DataFrame(results)
+        column_names = [f'X_{i}' for i in range(n_dimensions)]
+
+    results_df.columns = column_names
+    return results_df
+
+
 def sampling_algorithm_structural_analysis_kernel(objective_function: callable, number_of_samples: int, numerical_model: dict, variables_settings: list, number_of_limit_functions: int, none_variable = None) -> pd.DataFrame:
     """
     Creates samples and evaluates the limit state functions in structural reliability problems.
@@ -338,61 +393,6 @@ def sampling_algorithm_structural_analysis(objective_function: callable, number_
             parepyco.log_message('Simulation completed without saving.')
 
     return results_about_data, failure_prob_list, beta_list
-
-
-def sampling_generator(number_of_samples: int, numerical_model: dict, variables_settings: list) -> pd.DataFrame:
-    """
-    Generates random samples for design variables only (X variables), excluding R, S, G, and I columns.
-
-    :param number_of_samples: Number of samples to generate.
-    :param numerical_model: Dictionary with sampling configuration (e.g., method and time steps).
-    :param variables_settings: List of dictionaries defining the probabilistic distributions.
-
-    :return: DataFrame with generated samples.
-    """
-    
-    # Assegura que todas variáveis tenham uma seed
-    for var in variables_settings:
-        if 'seed' not in var:
-            var['seed'] = None
-
-    n_dimensions = len(variables_settings)
-    algorithm = numerical_model['model sampling']
-    is_time_analysis = algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']
-    time_analysis = numerical_model.get('time steps', 1)
-
-    # Chamada da função sampling
-    results = parepyco.sampling(
-        n_samples=number_of_samples,
-        model=numerical_model,
-        variables_setup=variables_settings
-    )
-
-    # Processa resultados
-    if is_time_analysis:
-        # Remove a última coluna (STEP)
-        results = results[:, :-1]
-
-        # Separa e reestrutura por blocos de tempo
-        block_size = time_analysis
-        all_rows = []
-        for i in range(number_of_samples):
-            block = results[i * block_size:(i + 1) * block_size, :].T.flatten().tolist()
-            all_rows.append(block)
-        results_df = pd.DataFrame(all_rows)
-
-        # Nome das colunas X_{i}_t={t}
-        column_names = []
-        for i in range(n_dimensions):
-            for t in range(time_analysis):
-                column_names.append(f'X_{i}_t={t}')
-
-    else:
-        results_df = pd.DataFrame(results)
-        column_names = [f'X_{i}' for i in range(n_dimensions)]
-
-    results_df.columns = column_names
-    return results_df
 
 
 def concatenates_txt_files_sampling_algorithm_structural_analysis(setup: dict) -> tuple[pd.DataFrame, list, list]:

@@ -1,31 +1,32 @@
 """Probability distributions"""
 import numpy as np
 from scipy.stats import norm
+from typing import Optional
 
 
-def crude_sampling_zero_one(n_samples: int, seed: int=None) -> list:
+def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
     """
     Generates a uniform sampling between 0 and 1.
 
     :param n_samples: Number of samples.
-    :param seed: Seed for random number generation.
+    :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
-    :return: List of random samples.
+    :return: Random samples.
     """
     rng = np.random.default_rng(seed=seed)
 
     return rng.random(n_samples).tolist()
 
 
-def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.ndarray:
+def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: Optional[int] = None) -> np.ndarray:
     """
     Generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling algorithm.
 
     :param n_samples: Number of samples.
     :param dimension: Number of dimensions.
-    :param seed: Seed for random number generation.
+    :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
-    :return: Array of random samples.
+    :return: Random samples.
     """
     r = np.zeros((n_samples, dimension))
     p = np.zeros((n_samples, dimension))
@@ -46,20 +47,16 @@ def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: int=None) -> np.
     return u
 
 
-def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: Optional[int] = None) -> list:
     """
     Generates a uniform sampling between a minimum (a) and maximum (b) value.
 
-    :param parameters: Dictionary of parameters, including:
-
-        - 'min': Minimum value of the uniform distribution.
-        - 'max': Maximum value of the uniform distribution.
-
+    :param parameters: Distribution parameters. (a) key 'min': Minimum value. (b) key 'max': Maximum value.
     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
     :param n_samples: Number of samples.
-    :param seed: Seed for random number generation. Use None for a random seed.
+    :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
-    :return: List of random samples.
+    :return: Random samples.
     """
 
     # Random uniform sampling between 0 and 1
@@ -93,7 +90,7 @@ def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=Non
 
     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
     :param n_samples: Number of samples.
-    :param seed: Seed for random number generation. Use None for a random seed.
+    :param seed: Seed for random number generation. Default is None for a random seed.
 
     :return: List of random samples.
     """
