@@ -13,6 +13,7 @@ def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
 
     :return: Random samples.
     """
+
     rng = np.random.default_rng(seed=seed)
 
     return rng.random(n_samples).tolist()
@@ -27,7 +28,29 @@ def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: Optional[int] = 
     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
     :return: Random samples.
+    
+    # Theory:
+    Latin hypercube sampling is a stratified sampling technique that produces random numbers in terms of the marginal CDF of a random input variable.
+    
+    ### PDF
+    $$
+    f(x) = \begin{cases} 
+                \frac{1}{b-a} & \text{se } a \leq x \leq b \\
+                0 & \text{caso contrário}
+            \end{cases}
+    $$
+    
+    ### CDF
+    
+    $$
+    F(x) = \begin{cases}
+                0 & \text{se } x < a \\
+                \frac{x-a}{b-a} & \text{se } a \leq x \leq b \\
+                1 & \text{se } x > b
+            \end{cases}
+    $$
     """
+
     r = np.zeros((n_samples, dimension))
     p = np.zeros((n_samples, dimension))
     original_ids = [i for i in range(1, n_samples+1)]
