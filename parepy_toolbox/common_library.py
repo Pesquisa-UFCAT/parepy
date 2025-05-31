@@ -12,6 +12,62 @@ import pandas as pd
 import parepy_toolbox.distributions as parepydi
 
 
+def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Extract D matrix and D^-1 matrix from a list of variables. Y to X or X to Y transformation.
+
+    :param std: Standard deviation parameters.
+
+    return: output[0] = D matrix, output[1] = D^-1 matrix
+    """
+
+    dneq = np.zeros((len(std), len(std)))
+    dneq1 = np.zeros((len(std), len(std)))
+    for i, sigma in enumerate(std):
+        dneq[i, i] = sigma
+        dneq1[i, i] = 1 / sigma
+    
+    return dneq, dneq1
+
+
+def x_to_y(x: np.ndarray, std: list, mean: list) -> np.ndarray:
+    """
+    Transforms a vector of random variables from the X space to the Y space.
+
+    :param x: Random variables in the X space.
+    :param std: Standard deviation parameters.
+    :param mean: Mean parameters.
+
+    :return: Transformed random variables in the Y space.
+    """
+
+    _, dneq1 = std_matrix(std)
+    mu_neq = np.zeros((len(mean), 1))
+    for i, mu in enumerate(mean):
+        mu_neq[i, 1] = mu
+
+    return dneq1 @ (x - mu_neq)
+
+
+def y_to_x(y: np.ndarray, std: list, mean: list) -> np.ndarray:
+    """
+    Transforms a vector of random variables from the Y space to the X space.
+
+    :param y: Random variables in the Y space.
+    :param std: Standard deviation parameters.
+    :param mean: Mean parameters.
+
+    :return: Transformed random variables in the X space.
+    """
+
+    dneq, _ = std_matrix(std)
+    mu_neq = np.zeros((len(mean), 1))
+    for i, mu in enumerate(mean):
+        mu_neq[i, 1] = mu
+
+    return dneq @ (y + mu_neq)
+
+
 def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     """
     Generates a set of random numbers according to a specified probability distribution model.
