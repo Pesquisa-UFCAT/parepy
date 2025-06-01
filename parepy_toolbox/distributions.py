@@ -9,7 +9,7 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
     """
     Convert user-provided distribution parameters to the format required by "scipy.stats".
 
-    :param parameters: Distribution parameters. 
+    :param parameters: Original distribution parameters.
 
     :return: Transformed parameters.
     """
@@ -18,6 +18,12 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
         parameters_scipy = {'loc': parameters['min'], 'scale': parameters['max'] - parameters['min']}
     elif dist.lower() == 'normal':
         parameters_scipy = {'loc': parameters['mean'], 'scale': parameters['std']}
+    elif dist.lower() == 'lognormal':
+        epsilon = np.sqrt(np.log(parameters['std']**2 / parameters['mean']**2 + 1))
+        lambdaa = np.log(parameters['mean']) - parameters['std']**2 / 2
+        lognorm_dist = np.random.lognormal(lambdaa, epsilon, 100000)
+        s, l, sca = sc.stats.lognorm.fit(lognorm_dist)
+        parameters_scipy = {'s': s, 'loc': l, 'scale': sca}
     elif dist.lower() == 'gumbel max':
         euler_gamma = 0.5772156649015329
         alpha = parameters['std'] * np.sqrt(6) / np.pi
@@ -27,12 +33,12 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
     return parameters_scipy
 
 
-def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) -> list:
+def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: int) -> list:
     """
     Generates random samples from a specified distribution.
 
     :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
-    :param parameters: distribution parameters according scipy.stats documentation.
+    :param parameters_scipy: Distribution parameters according scipy.stats documentation.
     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
 
@@ -41,7 +47,7 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     
     if dist.lower() == 'uniform':
         if method.lower() == 'mcs':
-            rv = sc.stats.uniform(loc=parameters['loc'], scale=parameters['scale'])
+            rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
             x = list(rv.rvs(size=n_samples))
         elif method.lower() == 'lhs':
             sampler = sc.stats.qmc.LatinHypercube(d=1)
@@ -49,17 +55,17 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
             x_aux = list(samples.flatten())
             x = []
             for i in x_aux:
-                x.append(sc.stats.uniform.ppf(i, loc=parameters['loc'], scale=parameters['scale']))
+                x.append(sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
         elif method.lower() == 'sobol':
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x_aux = list(samples.flatten())
             x = []
             for i in x_aux:
-                x.append(sc.stats.uniform.ppf(i, loc=parameters['loc'], scale=parameters['scale']))
+                x.append(sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
     elif dist.lower() == 'normal':
         if method.lower() == 'mcs':
-            rv = sc.stats.norm(loc=parameters['loc'], scale=parameters['scale'])
+            rv = sc.stats.norm(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
             x = list(rv.rvs(size=n_samples))
         elif method.lower() == 'lhs':
             sampler = sc.stats.qmc.LatinHypercube(d=1)
@@ -67,32 +73,32 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
             x_aux = list(samples.flatten())
             x = []
             for i in x_aux:
-                x.append(sc.stats.norm.ppf(i, loc=parameters['loc'], scale=parameters['scale']))
+                x.append(sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
         elif method.lower() == 'sobol':
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x_aux = list(samples.flatten())
             x = []
             for i in x_aux:
-                x.append(sc.stats.norm.ppf(i, loc=parameters['loc'], scale=parameters['scale']))
+                x.append(sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
 
     return x
 
 
-def normal_tail_approximation(dist, parameters: dict, x: float) -> tuple[float, float]:
+def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tuple[float, float]:
     """
     Converts non-normal distributions to normal approximations while preserving their statistical properties in x point.
 
     :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
-    :param parameters: distribution parameters according scipy.stats documentation.
+    :param parameters_scipy: Distribution parameters according scipy.stats documentation.
     :param x: Project point.
 
     return: output[0] = Mean of the normal approximation at point x, output[1] = standard deviation of the normal approximation at point x.
     """
 
     if dist.lower() == 'uniform':
-        loc = parameters['loc']
-        scale = parameters['scale'] - parameters['loc']
+        loc = parameters_scipy['loc']
+        scale = parameters_scipy['scale'] - parameters_scipy['loc']
         z_aux = sc.stats.uniform.cdf(x, loc=loc, scale=scale)
         z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)  
         num = sc.stats.norm.pdf(z, loc=0, scale=1)
@@ -100,11 +106,21 @@ def normal_tail_approximation(dist, parameters: dict, x: float) -> tuple[float, 
         std_eq = num / den
         mean_eq = x - std_eq * z
     elif dist.lower() == 'normal':
-        mean_eq = parameters['loc']
-        std_eq = parameters['scale']
+        mean_eq = parameters_scipy['loc']
+        std_eq = parameters_scipy['scale']
+    elif dist.lower() == 'lognormal':
+        s = parameters_scipy['s']
+        loc = parameters_scipy['loc']
+        scale = parameters_scipy['scale']
+        z_aux = sc.stats.lognorm.cdf(x, s=s, loc=loc, scale=scale)
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.lognorm.pdf(x, s=s, loc=loc, scale=scale)
+        std_eq = num / den
+        mean_eq = x - std_eq * z
     elif dist.lower() == 'gumbel max':
-        loc = parameters['loc']
-        scale = parameters['scale']
+        loc = parameters_scipy['loc']
+        scale = parameters_scipy['scale']
         z_aux = sc.stats.gumbel_r.cdf(x, loc=loc, scale=scale)
         z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
         num = sc.stats.norm.pdf(z, loc=0, scale=1)
@@ -115,70 +131,71 @@ def normal_tail_approximation(dist, parameters: dict, x: float) -> tuple[float, 
     return mean_eq, std_eq
 
 
-# def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
-#     """
-#     Generates a uniform sampling between 0 and 1.
 
-#     :param n_samples: Number of samples.
-#     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
+def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
+    """
+    Generates a uniform sampling between 0 and 1.
 
-#     :return: Random samples.
-#     """
+    :param n_samples: Number of samples.
+    :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
-#     rng = np.random.default_rng(seed=seed)
+    :return: Random samples.
+    """
 
-#     return rng.random(n_samples).tolist()
+    rng = np.random.default_rng(seed=seed)
+
+    return rng.random(n_samples).tolist()
 
 
-# def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: Optional[int] = None) -> np.ndarray:
-#     """
-#     Generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling algorithm.
+def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: Optional[int] = None) -> np.ndarray:
+    """
+    Generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling algorithm.
 
-#     :param n_samples: Number of samples.
-#     :param dimension: Number of dimensions.
-#     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
+    :param n_samples: Number of samples.
+    :param dimension: Number of dimensions.
+    :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
-#     :return: Random samples.
+    :return: Random samples.
     
-#     # Theory:
-#     Latin hypercube sampling is a stratified sampling technique that produces random numbers in terms of the marginal CDF of a random input variable.
+    # Theory:
+    Latin hypercube sampling is a stratified sampling technique that produces random numbers in terms of the marginal CDF of a random input variable.
     
-#     ### PDF
-#     $$
-#     f(x) = \begin{cases} 
-#                 \frac{1}{b-a} & \text{se } a \leq x \leq b \\
-#                 0 & \text{caso contrário}
-#             \end{cases}
-#     $$
+    ### PDF
+    $$
+    f(x) = \begin{cases} 
+                \frac{1}{b-a} & \text{se } a \leq x \leq b \\
+                0 & \text{caso contrário}
+            \end{cases}
+    $$
     
-#     ### CDF
+    ### CDF
     
-#     $$
-#     F(x) = \begin{cases}
-#                 0 & \text{se } x < a \\
-#                 \frac{x-a}{b-a} & \text{se } a \leq x \leq b \\
-#                 1 & \text{se } x > b
-#             \end{cases}
-#     $$
-#     """
+    $$
+    F(x) = \begin{cases}
+                0 & \text{se } x < a \\
+                \frac{x-a}{b-a} & \text{se } a \leq x \leq b \\
+                1 & \text{se } x > b
+            \end{cases}
+    $$
+    """
 
-#     r = np.zeros((n_samples, dimension))
-#     p = np.zeros((n_samples, dimension))
-#     original_ids = [i for i in range(1, n_samples+1)]
-#     if seed is not None:
-#         x = crude_sampling_zero_one(n_samples * dimension, seed)
-#     else:
-#         x = crude_sampling_zero_one(n_samples * dimension)
-#     for i in range(dimension):
-#         perms = original_ids.copy()
-#         r[:, i] = x[:n_samples]
-#         del x[:n_samples]
-#         rng = np.random.default_rng(seed=seed)
-#         rng.shuffle(perms)
-#         p[:, i] = perms.copy()
-#     u = (p - r) * (1 / n_samples)
+    r = np.zeros((n_samples, dimension))
+    p = np.zeros((n_samples, dimension))
+    original_ids = [i for i in range(1, n_samples+1)]
+    if seed is not None:
+        x = crude_sampling_zero_one(n_samples * dimension, seed)
+    else:
+        x = crude_sampling_zero_one(n_samples * dimension)
+    for i in range(dimension):
+        perms = original_ids.copy()
+        r[:, i] = x[:n_samples]
+        del x[:n_samples]
+        rng = np.random.default_rng(seed=seed)
+        rng.shuffle(perms)
+        p[:, i] = perms.copy()
+    u = (p - r) * (1 / n_samples)
 
-#     return u
+    return u
 
 
 # def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: Optional[int] = None) -> list:
@@ -309,52 +326,52 @@ def normal_tail_approximation(dist, parameters: dict, x: float) -> tuple[float, 
 #     return b, g
 
 
-# def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
-#     """
-#     Generates a log-normal sampling with specified mean and standard deviation.
+def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+    """
+    Generates a log-normal sampling with specified mean and standard deviation.
 
-#     :param parameters: Dictionary of parameters, including:
+    :param parameters: Dictionary of parameters, including:
 
-#         - 'mu': Mean of the underlying normal distribution.
-#         - 'sigma': Standard deviation of the underlying normal distribution.
+        - 'mu': Mean of the underlying normal distribution.
+        - 'sigma': Standard deviation of the underlying normal distribution.
 
-#     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
-#     :param n_samples: Number of samples.
-#     :param seed: Seed for random number generation.
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+    :param n_samples: Number of samples.
+    :param seed: Seed for random number generation.
 
-#     :return: List of random samples.
-#     """
+    :return: List of random samples.
+    """
 
 
 
-#     # Random uniform sampling between 0 and 1
-#     if method.lower() == 'mcs':
-#         if seed is not None:
-#             u_aux1 = crude_sampling_zero_one(n_samples, seed)
-#             u_aux2 = crude_sampling_zero_one(n_samples, seed+1)
-#         elif seed is None:
-#             u_aux1 = crude_sampling_zero_one(n_samples)
-#             u_aux2 = crude_sampling_zero_one(n_samples)
-#     elif method.lower() == 'lhs':
-#         if seed is not None:
-#             u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
-#         elif seed is None:
-#             u_aux1 = lhs_sampling_zero_one(n_samples, 2)
+    # Random uniform sampling between 0 and 1
+    if method.lower() == 'mcs':
+        if seed is not None:
+            u_aux1 = crude_sampling_zero_one(n_samples, seed)
+            u_aux2 = crude_sampling_zero_one(n_samples, seed+1)
+        elif seed is None:
+            u_aux1 = crude_sampling_zero_one(n_samples)
+            u_aux2 = crude_sampling_zero_one(n_samples)
+    elif method.lower() == 'lhs':
+        if seed is not None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
+        elif seed is None:
+            u_aux1 = lhs_sampling_zero_one(n_samples, 2)
 
-#     # PDF parameters and generation of samples  
-#     mean = parameters['mean']
-#     std = parameters['sigma']
-#     epsilon = np.sqrt(np.log(1 + (std/mean)**2))
-#     lambdaa = np.log(mean) - 0.5 * epsilon**2
-#     u = []
-#     for i in range(n_samples):
-#         if method.lower() == 'lhs':
-#             z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
-#         elif method.lower() == 'mcs':
-#             z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
-#         u.append(np.exp(lambdaa + epsilon * z))
+    # PDF parameters and generation of samples  
+    mean = parameters['mean']
+    std = parameters['sigma']
+    epsilon = np.sqrt(np.log(1 + (std/mean)**2))
+    lambdaa = np.log(mean) - 0.5 * epsilon**2
+    u = []
+    for i in range(n_samples):
+        if method.lower() == 'lhs':
+            z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
+        elif method.lower() == 'mcs':
+            z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
+        u.append(np.exp(lambdaa + epsilon * z))
 
-#     return u
+    return u
 
 
 # def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:

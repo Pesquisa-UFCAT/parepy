@@ -15,38 +15,31 @@ from scipy.optimize import minimize
 import parepy_toolbox.common_library as parepyco
 
 
-def cornell_algorithm_structural_analysis(obj: Callable, vars: List[Dict], args: Optional[Tuple] = None) -> Tuple[float, float]:
+def deterministic_algorithm_structural_analysis_(n_iter: int, variables: list, x0: list, args: Optional[tuple] = None) -> tuple[float, float]:
     """
-    Computes the Cornell reliability index and probability of failure.
-
-    :param obj: Objective function that returns a list of limit state function (g) values.
-    :param vars: Random variables configurations. Expect keys in each dictionary: "type", "parameters".
-    :param args: Extra arguments to pass to the objective function (optional).
-
-    :return: Results of reliability analysis.
-            - pf_value: Probability of Failure (float).
-            - beta_value: Reliability Index (float).
     """
 
-    # Extract statistical parameters from variable configurations
-    sigma = []
-    var = []
-    for var_config in vars:
-        sigma.append(var_config['parameters']['mean'])
-        var.append(var_config['parameters']['sigma'])
+    y_list = []
+    beta_list = []
+    mu_eq = []
+    sigma_eq = []
+    x = x0.copy()
+    for i in range(n_iter):
+        for i, var in enumerate(variables):
+            mean = var['parameters']['mean']
+            std = var['parameters']['std']
+            paras_scipy = convert_params_to_scipy(var['type'], var['parameters'])
+            m, s = normal_tail_approximation(var['type'], paras_scipy, x[i])
+            mu_eq.append(m)
+            sigma_eq.append(s)
+        y = x_to_y(np.array(x).reshape(-1, 1), sigma_eq, mu_eq)
+        print("y: ", y)
+        y_list.append(y)
+        beta = np.linalg.norm(y)
+        print(beta)
+        beta_list.append(beta)
 
-    # Evaluate limit-state function
-    if args is not None:
-        g = obj(sigma, args)
-    else:
-        g = obj(sigma)
-
-    # Compute reliability metrics
-    std_safety_margin = np.sqrt(sum(std ** 2 for std in var))
-    beta_value = g / std_safety_margin
-    pf_value = norm.cdf(-beta_value)
-
-    return float(pf_value), float(beta_value)
+    return 0, 0
 
 
 def deterministic_algorithm_structural_analysis(obj: Callable, vars: List[Dict], tolerance: float, z0: List, args: Optional[Tuple] = None) -> Tuple[float, float]:

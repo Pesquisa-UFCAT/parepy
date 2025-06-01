@@ -14,7 +14,7 @@ import parepy_toolbox.distributions as parepydi
 
 def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
     """
-    Extract D matrix and D^-1 matrix from a list of variables. Y to X or X to Y transformation.
+    Extract D matrix and D^-1 matrix from a list of variables. Used in Y to X or X to Y transformation.
 
     :param std: Standard deviation parameters.
 
@@ -44,7 +44,8 @@ def x_to_y(x: np.ndarray, std: list, mean: list) -> np.ndarray:
     _, dneq1 = std_matrix(std)
     mu_neq = np.zeros((len(mean), 1))
     for i, mu in enumerate(mean):
-        mu_neq[i, 1] = mu
+        mu_neq[i, 0] = mu
+    print(std, x, mu_neq)
 
     return dneq1 @ (x - mu_neq)
 
@@ -63,9 +64,9 @@ def y_to_x(y: np.ndarray, std: list, mean: list) -> np.ndarray:
     dneq, _ = std_matrix(std)
     mu_neq = np.zeros((len(mean), 1))
     for i, mu in enumerate(mean):
-        mu_neq[i, 1] = mu
+        mu_neq[i, 0] = mu
 
-    return dneq @ (y + mu_neq)
+    return dneq @ y + mu_neq
 
 
 def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
