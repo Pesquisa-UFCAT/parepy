@@ -88,7 +88,7 @@ def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: i
 
     :return: Random samples.
     """
-    
+
     if dist.lower() == 'uniform':
         if method.lower() == 'mcs':
             rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -129,71 +129,70 @@ def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: i
     return x
 
 
+# def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
+#     """
+#     Generates a uniform sampling between 0 and 1.
 
-def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
-    """
-    Generates a uniform sampling between 0 and 1.
+#     :param n_samples: Number of samples.
+#     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
-    :param n_samples: Number of samples.
-    :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
+#     :return: Random samples.
+#     """
 
-    :return: Random samples.
-    """
+#     rng = np.random.default_rng(seed=seed)
 
-    rng = np.random.default_rng(seed=seed)
-
-    return rng.random(n_samples).tolist()
+#     return rng.random(n_samples).tolist()
 
 
-def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: Optional[int] = None) -> np.ndarray:
-    """
-    Generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling algorithm.
+# def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: Optional[int] = None) -> np.ndarray:
+#     """
+#     Generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling algorithm.
 
-    :param n_samples: Number of samples.
-    :param dimension: Number of dimensions.
-    :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
+#     :param n_samples: Number of samples.
+#     :param dimension: Number of dimensions.
+#     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.
 
-    :return: Random samples.
+#     :return: Random samples.
     
-    # Theory:
-    Latin hypercube sampling is a stratified sampling technique that produces random numbers in terms of the marginal CDF of a random input variable.
+#     # Theory:
+#     Latin hypercube sampling is a stratified sampling technique that produces random numbers in terms of the marginal CDF of a random input variable.
     
-    ### PDF
-    $$
-    f(x) = \begin{cases} 
-                \frac{1}{b-a} & \text{se } a \leq x \leq b \\
-                0 & \text{caso contrário}
-            \end{cases}
-    $$
+#     ### PDF
+#     $$
+#     f(x) = \begin{cases} 
+#                 \frac{1}{b-a} & \text{se } a \leq x \leq b \\
+#                 0 & \text{caso contrário}
+#             \end{cases}
+#     $$
     
-    ### CDF
+#     ### CDF
     
-    $$
-    F(x) = \begin{cases}
-                0 & \text{se } x < a \\
-                \frac{x-a}{b-a} & \text{se } a \leq x \leq b \\
-                1 & \text{se } x > b
-            \end{cases}
-    $$
-    """
+#     $$
+#     F(x) = \begin{cases}
+#                 0 & \text{se } x < a \\
+#                 \frac{x-a}{b-a} & \text{se } a \leq x \leq b \\
+#                 1 & \text{se } x > b
+#             \end{cases}
+#     $$
+#     """
 
-    r = np.zeros((n_samples, dimension))
-    p = np.zeros((n_samples, dimension))
-    original_ids = [i for i in range(1, n_samples+1)]
-    if seed is not None:
-        x = crude_sampling_zero_one(n_samples * dimension, seed)
-    else:
-        x = crude_sampling_zero_one(n_samples * dimension)
-    for i in range(dimension):
-        perms = original_ids.copy()
-        r[:, i] = x[:n_samples]
-        del x[:n_samples]
-        rng = np.random.default_rng(seed=seed)
-        rng.shuffle(perms)
-        p[:, i] = perms.copy()
-    u = (p - r) * (1 / n_samples)
+#     r = np.zeros((n_samples, dimension))
+#     p = np.zeros((n_samples, dimension))
+#     original_ids = [i for i in range(1, n_samples+1)]
+#     if seed is not None:
+#         x = crude_sampling_zero_one(n_samples * dimension, seed)
+#     else:
+#         x = crude_sampling_zero_one(n_samples * dimension)
+#     for i in range(dimension):
+#         perms = original_ids.copy()
+#         r[:, i] = x[:n_samples]
+#         del x[:n_samples]
+#         rng = np.random.default_rng(seed=seed)
+#         rng.shuffle(perms)
+#         p[:, i] = perms.copy()
+#     u = (p - r) * (1 / n_samples)
 
-    return u
+#     return u
 
 
 # def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: Optional[int] = None) -> list:

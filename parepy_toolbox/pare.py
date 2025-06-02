@@ -9,6 +9,7 @@ from typing import Callable, List, Dict, Tuple, Optional
 
 import numpy as np
 import pandas as pd
+import scipy as sc
 
 import parepy_toolbox.common_library as parepyco
 import parepy_toolbox.distributions as parepydi
@@ -97,6 +98,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
         error = np.abs(beta_k1[0, 0] - beta_k) / beta_k
         iter_results.append(error)
 
+    hessian = np.array([[0.7009, 0],[0, 0]]) ####################
     if method.lower() == "sorm":
         beta_u = beta_k1[0, 0]
         mu_eq = []
@@ -123,7 +125,18 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
         g_diff_x = [(g_diff_x_p[i] - g_diff_x_r[i]) / (2 * H) for i in range(len(variables))]
         g_diff_y = np.matrix_transpose(dneq) @ np.array(g_diff_x).reshape(-1, 1)
         norm_gdiff = np.linalg.norm(g_diff_y)
-
+        m = len(x_k)
+        q = np.eye(m)
+        q[:, 0] = y_k.flatten().tolist()
+        q, _ = np.linalg.qr(q)
+        q = np.fliplr(q)
+        a = q.T @ hessian @ q
+        j = np.eye(m - 1) + beta_u * a[:m-1, :m-1] / norm_gdiff
+        det_j = np.linalg.det(j)
+        correction = 1 / np.sqrt(det_j)
+        pf_sorm = sc.stats.norm.cdf(-beta_u) * correction
+        beta_sorm = -sc.stats.norm.ppf(pf_sorm)
+            
     return results
 
 
