@@ -1,5 +1,5 @@
 """Probability distributions"""
-from typing import Optional
+from typing import Optional, Callable
 
 import numpy as np
 import scipy as sc
@@ -9,7 +9,7 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
     """
     Convert user-provided distribution parameters to the format required by "scipy.stats".
 
-    :param parameters: Original distribution parameters.
+    :param parameters: Original distribution parameters [mean and standard deviation].
 
     :return: Transformed parameters.
     """
@@ -19,11 +19,9 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
     elif dist.lower() == 'normal':
         parameters_scipy = {'loc': parameters['mean'], 'scale': parameters['std']}
     elif dist.lower() == 'lognormal':
-        epsilon = np.sqrt(np.log(parameters['std']**2 / parameters['mean']**2 + 1))
-        lambdaa = np.log(parameters['mean']) - parameters['std']**2 / 2
-        lognorm_dist = np.random.lognormal(lambdaa, epsilon, 100000)
-        s, l, sca = sc.stats.lognorm.fit(lognorm_dist)
-        parameters_scipy = {'s': s, 'loc': l, 'scale': sca}
+        epsilon = np.sqrt(np.log(1 + (parameters['std'] / parameters['mean'])**2))
+        lambdaa = np.log(parameters['mean']) - 0.50 * epsilon**2
+        parameters_scipy = {'lambda': lambdaa, 'epsilon': epsilon}
     elif dist.lower() == 'gumbel max':
         euler_gamma = 0.5772156649015329
         alpha = parameters['std'] * np.sqrt(6) / np.pi
@@ -31,6 +29,52 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
         parameters_scipy = {'loc': beta, 'scale': alpha}
 
     return parameters_scipy
+
+
+def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tuple[float, float]:
+    """
+    Converts non-normal distributions to normal approximations while preserving their statistical properties in x point.
+
+    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max'.
+    :param parameters_scipy: Distribution parameters according scipy.stats documentation.
+    :param x: Project point.
+
+    return: output[0] = Mean of the normal approximation at point x, output[1] = Standard deviation of the normal approximation at point x.
+    """
+
+    if dist.lower() == 'uniform':
+        loc = parameters_scipy['loc']
+        scale = parameters_scipy['scale'] - parameters_scipy['loc']
+        z_aux = sc.stats.uniform.cdf(x, loc=loc, scale=scale)
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.uniform.pdf(x, loc=loc, scale=scale)
+        std_eq = num / den
+        mean_eq = x - std_eq * z
+    elif dist.lower() == 'normal':
+        mean_eq = parameters_scipy['loc']
+        std_eq = parameters_scipy['scale']
+    elif dist.lower() == 'lognormal':
+        s = parameters_scipy['epsilon']
+        loc = 0
+        scale = np.exp(parameters_scipy['lambda'])
+        z_aux = sc.stats.lognorm.cdf(x, s=s, loc=loc, scale=scale)
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.lognorm.pdf(x, s=s, loc=loc, scale=scale)
+        std_eq = num / den
+        mean_eq = x - std_eq * z
+    elif dist.lower() == 'gumbel max':
+        loc = parameters_scipy['loc']
+        scale = parameters_scipy['scale']
+        z_aux = sc.stats.gumbel_r.cdf(x, loc=loc, scale=scale)
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.gumbel_r.pdf(x, loc=loc, scale=scale)
+        std_eq = num / den
+        mean_eq = x - std_eq * z
+
+    return mean_eq, std_eq
 
 
 def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: int) -> list:
@@ -83,52 +127,6 @@ def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: i
                 x.append(sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
 
     return x
-
-
-def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tuple[float, float]:
-    """
-    Converts non-normal distributions to normal approximations while preserving their statistical properties in x point.
-
-    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
-    :param parameters_scipy: Distribution parameters according scipy.stats documentation.
-    :param x: Project point.
-
-    return: output[0] = Mean of the normal approximation at point x, output[1] = standard deviation of the normal approximation at point x.
-    """
-
-    if dist.lower() == 'uniform':
-        loc = parameters_scipy['loc']
-        scale = parameters_scipy['scale'] - parameters_scipy['loc']
-        z_aux = sc.stats.uniform.cdf(x, loc=loc, scale=scale)
-        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)  
-        num = sc.stats.norm.pdf(z, loc=0, scale=1)
-        den = sc.stats.uniform.pdf(x, loc=loc, scale=scale)
-        std_eq = num / den
-        mean_eq = x - std_eq * z
-    elif dist.lower() == 'normal':
-        mean_eq = parameters_scipy['loc']
-        std_eq = parameters_scipy['scale']
-    elif dist.lower() == 'lognormal':
-        s = parameters_scipy['s']
-        loc = parameters_scipy['loc']
-        scale = parameters_scipy['scale']
-        z_aux = sc.stats.lognorm.cdf(x, s=s, loc=loc, scale=scale)
-        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
-        num = sc.stats.norm.pdf(z, loc=0, scale=1)
-        den = sc.stats.lognorm.pdf(x, s=s, loc=loc, scale=scale)
-        std_eq = num / den
-        mean_eq = x - std_eq * z
-    elif dist.lower() == 'gumbel max':
-        loc = parameters_scipy['loc']
-        scale = parameters_scipy['scale']
-        z_aux = sc.stats.gumbel_r.cdf(x, loc=loc, scale=scale)
-        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
-        num = sc.stats.norm.pdf(z, loc=0, scale=1)
-        den = sc.stats.gumbel_r.pdf(x, loc=loc, scale=scale)
-        std_eq = num / den
-        mean_eq = x - std_eq * z
-
-    return mean_eq, std_eq
 
 
 

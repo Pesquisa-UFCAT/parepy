@@ -26,45 +26,50 @@ def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
     for i, sigma in enumerate(std):
         dneq[i, i] = sigma
         dneq1[i, i] = 1 / sigma
-    
+
     return dneq, dneq1
 
 
-def x_to_y(x: np.ndarray, std: list, mean: list) -> np.ndarray:
+def mu_matrix(mean: list) -> np.ndarray:
+    """
+    Extract mean matrix from a list of variables. Used in Y to X or X to Y transformation.
+
+    :param mu: Mean parameters.
+
+    return: Mean matrix
+    """
+
+    mu_neq = np.zeros((len(mean), 1))
+    for i, mu in enumerate(mean):
+        mu_neq[i, 0] = mu
+
+    return mu_neq
+
+
+def x_to_y(x: np.ndarray, dneq1: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
     """
     Transforms a vector of random variables from the X space to the Y space.
 
     :param x: Random variables in the X space.
-    :param std: Standard deviation parameters.
-    :param mean: Mean parameters.
+    :param dneq1: D^-1 matrix.
+    :param mu_neq: Mean matrix.
 
     :return: Transformed random variables in the Y space.
     """
 
-    _, dneq1 = std_matrix(std)
-    mu_neq = np.zeros((len(mean), 1))
-    for i, mu in enumerate(mean):
-        mu_neq[i, 0] = mu
-    print(std, x, mu_neq)
-
     return dneq1 @ (x - mu_neq)
 
 
-def y_to_x(y: np.ndarray, std: list, mean: list) -> np.ndarray:
+def y_to_x(y: np.ndarray, dneq: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
     """
     Transforms a vector of random variables from the Y space to the X space.
 
     :param y: Random variables in the Y space.
-    :param std: Standard deviation parameters.
-    :param mean: Mean parameters.
+    :param dneq: D matrix.
+    :param mu_neq: Mean matrix.
 
     :return: Transformed random variables in the X space.
     """
-
-    dneq, _ = std_matrix(std)
-    mu_neq = np.zeros((len(mean), 1))
-    for i, mu in enumerate(mean):
-        mu_neq[i, 0] = mu
 
     return dneq @ y + mu_neq
 

@@ -9,124 +9,122 @@ from typing import Callable, List, Dict, Tuple, Optional
 
 import numpy as np
 import pandas as pd
-from scipy.stats import norm, lognorm, gumbel_r, gumbel_l
-from scipy.optimize import minimize
 
 import parepy_toolbox.common_library as parepyco
+import parepy_toolbox.distributions as parepydi
 
 
-def deterministic_algorithm_structural_analysis_(n_iter: int, variables: list, x0: list, args: Optional[tuple] = None) -> tuple[float, float]:
-    """
-    """
-
-    y_list = []
-    beta_list = []
-    mu_eq = []
-    sigma_eq = []
-    x = x0.copy()
-    for i in range(n_iter):
-        for i, var in enumerate(variables):
-            mean = var['parameters']['mean']
-            std = var['parameters']['std']
-            paras_scipy = convert_params_to_scipy(var['type'], var['parameters'])
-            m, s = normal_tail_approximation(var['type'], paras_scipy, x[i])
-            mu_eq.append(m)
-            sigma_eq.append(s)
-        y = x_to_y(np.array(x).reshape(-1, 1), sigma_eq, mu_eq)
-        print("y: ", y)
-        y_list.append(y)
-        beta = np.linalg.norm(y)
-        print(beta)
-        beta_list.append(beta)
-
-    return 0, 0
-
-
-def deterministic_algorithm_structural_analysis(obj: Callable, vars: List[Dict], tolerance: float, z0: List, args: Optional[Tuple] = None) -> Tuple[float, float]:
+def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, variables: list, x0: list, method: str = "form", args: Optional[tuple] = None) -> list:
     """
     Computes the reliability index and probability of failure using FORM (First Order Reliability Method).
 
-    :param obj: Objective function that returns a list of limit state function (g) values.
-    :param vars: Random variables configurations. Expect keys in each dictionary: "type", "parameters".
-    :param tolerance: Tolerance for convergence.
-    :param z0: Initial guess.
+    :param obj: Objective function that returns a limit state function (g) value.
+    :param tol: Tolerance for convergence.
+    :param max_iter: Maximum number of iterations allowed.
+    :param variables: Random variables configurations. Expect keys in each dictionary: "type", "parameters".
+    :param x0: Initial guess.
+    :param method: Method to use for reliability analysis. Supported values: "form" or "sorm".
     :param args: Extra arguments to pass to the objective function (optional).
 
-    :return: Results of reliability analysis.
-            - pf_value: Probability of Failure (float).
-            - beta_value: Reliability Index (float).
+    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
     """
 
-    # Extract statistical parameters from variable configurations
-    pdf_type = []
-    mu = []
-    std = []
-    for var_config in vars:
-        pdf_type.append(var_config['type'])
-        mu.append(var_config['parameters']['mean'])
-        std.append(var_config['parameters']['sigma'])
+    results = []
+    x_k = x0.copy()
+    error = 1/tol
+    iteration = 0
 
-    # Optimization function
-    def funobj(z):
-        d = np.sqrt(sum(z**2))
-        return d
+    # Iteration process
+    while (error > tol and iteration < max_iter):
+        iter_results = []
+        mu_eq = []
+        sigma_eq = []
 
-    # Transform random variables to standard normal space
-    if args is not None:
-        args_sbjto = (pdf_type, mu, std, args, obj)
-        def sbjto(z, type, mu, std, args, obj):
-            y = []
-            for i, var in enumerate(type):
-                if var == 'lognormal':
-                    sigma_log_r = np.sqrt(np.log(1 + (std[i]**2) / (mu[i]**2)))
-                    mu_log_r = np.log(mu[i]) - (sigma_log_r**2) / 2
-                    scale_r = np.exp(mu_log_r)
-                    z_aux = lognorm.ppf(norm.cdf(z[i]), s=sigma_log_r, scale=scale_r)
-                elif var == 'gumbel max':
-                    loc = mu[i] - np.sqrt(6)*(0.5772/np.pi)*std[i]
-                    scale = np.sqrt(6)*std[i]/np.pi
-                    z_aux = gumbel_r.ppf(norm.cdf(z[i]), loc, scale)
-                elif var == 'gumbel min':
-                    loc = mu[i] + np.sqrt(6) * (0.5772 / np.pi) * std[i]
-                    scale = np.sqrt(6) * std[i] / np.pi
-                    z_aux = gumbel_l.ppf(norm.cdf(z[i]), loc=loc, scale=scale)
-                else:
-                    z_aux = norm.ppf(norm.cdf(z[i]), mu[i], std[i])
-                y.append(z_aux)
-            g = obj(y, args)
-            return g
-    else:
-        args_sbjto = (pdf_type, mu, std, obj)
-        def sbjto(z, type, mu, std, obj):
-            y = []
-            for i, var in enumerate(type):
-                if var == 'lognormal':
-                    sigma_log_r = np.sqrt(np.log(1 + (std[i]**2) / (mu[i]**2)))
-                    mu_log_r = np.log(mu[i]) - (sigma_log_r**2) / 2
-                    scale_r = np.exp(mu_log_r)
-                    z_aux = lognorm.ppf(norm.cdf(z[i]), s=sigma_log_r, scale=scale_r)
-                elif var == 'gumbel max':
-                    loc = mu[i] - np.sqrt(6)*(0.5772/np.pi)*std[i]
-                    scale = np.sqrt(6)*std[i]/np.pi
-                    z_aux = gumbel_r.ppf(norm.cdf(z[i]), loc, scale)
-                elif var == 'gumbel min':
-                    loc = mu[i] + np.sqrt(6) * (0.5772 / np.pi) * std[i]
-                    scale = np.sqrt(6) * std[i] / np.pi
-                    z_aux = gumbel_l.ppf(norm.cdf(z[i]), loc=loc, scale=scale)
-                else:
-                    z_aux = norm.ppf(norm.cdf(z[i]), mu[i], std[i])
-                y.append(z_aux)
-            g = obj(y)
-            return g
+        # Conversion Non-normal to Normal
+        for i, var in enumerate(variables):
+            paras_scipy = parepydi.convert_params_to_scipy(var['type'], var['parameters'])
+            m, s = parepydi.normal_tail_approximation(var['type'], paras_scipy, x_k[i])
+            mu_eq.append(m)
+            sigma_eq.append(s)
 
-    # Optimization procedure
-    cons = {'type': 'eq', 'fun': sbjto, 'args': args_sbjto}
-    res = minimize(funobj, z0, method='SLSQP', constraints=cons, tol=tolerance)
-    z = res.x
-    beta_value = res.fun
-    pf_value = norm.cdf(-beta_value)
+        # yk
+        dneq, dneq1 = parepyco.std_matrix(sigma_eq)
+        mu_vars = parepyco.mu_matrix(mu_eq)
+        y_k = parepyco.x_to_y(np.array(x_k).reshape(-1, 1), dneq1, mu_vars)
+        beta_k = np.linalg.norm(y_k)
+        iter_results.append(x_k)
+        iter_results.append(y_k.flatten().tolist())
+        iter_results.append(beta_k)
 
-    return float(pf_value), float(beta_value)
+        # Numerical differentiation g(x) and g(y)
+        H = 1E-12
+        g_diff_x_p = []
+        g_diff_x_r = []
+        for i in range(len(variables)):
+            x_aux_p = x_k.copy()
+            x_aux_p[i] += H
+            x_aux_r = x_k.copy()
+            x_aux_r[i] -= H
+            g_diff_x_p.append(obj(x_aux_p))
+            g_diff_x_r.append(obj(x_aux_r))
+        g_diff_x = [(g_diff_x_p[i] - g_diff_x_r[i]) / (2 * H) for i in range(len(variables))]
+        g_diff_y = np.matrix_transpose(dneq) @ np.array(g_diff_x).reshape(-1, 1)
+
+        # alpha vector
+        norm_gdiff = np.linalg.norm(g_diff_y)
+        alpha = g_diff_y / norm_gdiff
+        iter_results.append(alpha.flatten().tolist())
+
+        # Beta update
+        g_y = obj(x_k)
+        beta_k1 = beta_k + g_y / (np.matrix_transpose(g_diff_y) @ alpha)
+        iter_results.append(beta_k1[0, 0])
+        
+        # yk and xk update
+        y_k1 = - alpha @ beta_k1
+        iter_results.append(y_k1.flatten().tolist())
+        x_k1 = parepyco.y_to_x(y_k1, dneq, mu_vars)
+        x_k1 = x_k1.flatten().tolist()
+        iter_results.append(x_k1)
+
+        # Storage and error
+        x_k = x_k1.copy()
+        y_k = y_k1.copy()
+        results.append(iter_results)
+        iteration += 1
+        if beta_k == 0.0:
+            beta_k = tol * 1E1
+        error = np.abs(beta_k1[0, 0] - beta_k) / beta_k
+        iter_results.append(error)
+
+    if method.lower() == "sorm":
+        beta_u = beta_k1[0, 0]
+        mu_eq = []
+        sigma_eq = []
+        # Conversion Non-normal to Normal
+        for i, var in enumerate(variables):
+            paras_scipy = parepydi.convert_params_to_scipy(var['type'], var['parameters'])
+            m, s = parepydi.normal_tail_approximation(var['type'], paras_scipy, x_k[i])
+            mu_eq.append(m)
+            sigma_eq.append(s)
+        dneq, dneq1 = parepyco.std_matrix(sigma_eq)
+        mu_vars = parepyco.mu_matrix(mu_eq)
+        # Numerical differentiation g(y)
+        H = 1E-12
+        g_diff_x_p = []
+        g_diff_x_r = []
+        for i in range(len(variables)):
+            x_aux_p = x_k.copy()
+            x_aux_p[i] += H
+            x_aux_r = x_k.copy()
+            x_aux_r[i] -= H
+            g_diff_x_p.append(obj(x_aux_p))
+            g_diff_x_r.append(obj(x_aux_r))
+        g_diff_x = [(g_diff_x_p[i] - g_diff_x_r[i]) / (2 * H) for i in range(len(variables))]
+        g_diff_y = np.matrix_transpose(dneq) @ np.array(g_diff_x).reshape(-1, 1)
+        norm_gdiff = np.linalg.norm(g_diff_y)
+
+    return results
 
 
 def sampling_generator(number_of_samples: int, numerical_model: Dict, variables_settings: List) -> pd.DataFrame:
