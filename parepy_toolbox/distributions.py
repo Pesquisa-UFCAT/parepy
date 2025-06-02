@@ -14,19 +14,54 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
     :return: Transformed parameters.
     """
 
+    mean = parameters['mean']
+    std = parameters['std']
+    euler_gamma = 0.5772156649015329
+
     if dist.lower() == 'uniform':
-        parameters_scipy = {'loc': parameters['min'], 'scale': parameters['max'] - parameters['min']}
+        # Para média e desvio padrão conhecidos:
+        # mean = (a + b) / 2
+        # std = (b - a) / sqrt(12)
+        half_range = std * np.sqrt(3)
+        loc = mean - half_range
+        scale = 2 * half_range
+        parameters_scipy = {'loc': loc, 'scale': scale}
+
     elif dist.lower() == 'normal':
-        parameters_scipy = {'loc': parameters['mean'], 'scale': parameters['std']}
+        parameters_scipy = {'loc': mean, 'scale': std}
+
     elif dist.lower() == 'lognormal':
-        epsilon = np.sqrt(np.log(1 + (parameters['std'] / parameters['mean'])**2))
-        lambdaa = np.log(parameters['mean']) - 0.50 * epsilon**2
-        parameters_scipy = {'lambda': lambdaa, 'epsilon': epsilon}
+        epsilon = np.sqrt(np.log(1 + (std / mean) ** 2))
+        lambdaa = np.log(mean) - 0.5 * epsilon ** 2
+        parameters_scipy = {'s': epsilon, 'scale': np.exp(lambdaa)}
+
     elif dist.lower() == 'gumbel max':
-        euler_gamma = 0.5772156649015329
-        alpha = parameters['std'] * np.sqrt(6) / np.pi
-        beta = parameters['mean'] - alpha * euler_gamma
+        alpha = std * np.sqrt(6) / np.pi
+        beta = mean - alpha * euler_gamma
         parameters_scipy = {'loc': beta, 'scale': alpha}
+
+    elif dist.lower() == 'gumbel min':
+        alpha = std * np.sqrt(6) / np.pi
+        beta = mean + alpha * euler_gamma
+        parameters_scipy = {'loc': beta, 'scale': alpha}
+
+    elif dist.lower() == 'triangular':
+        # Assume-se simetria (modo = média), então c = 0.5
+        # std = (b - a) * sqrt(1/24)
+        half_range = std * np.sqrt(24)
+        loc = mean - half_range / 2
+        scale = half_range
+        parameters_scipy = {'c': 0.5, 'loc': loc, 'scale': scale}
+
+    elif dist.lower() == 'gamma':
+        # mean = a * scale → a = (mean / scale)
+        # std = sqrt(a) * scale → scale = std² / mean
+        scale = std ** 2 / mean
+        a = mean / scale
+        parameters_scipy = {'a': a, 'loc': 0, 'scale': scale}
+
+    else:
+        raise ValueError(f"Distribuição '{dist}' não suportada.")
 
     return parameters_scipy
 
@@ -77,7 +112,7 @@ def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tu
     return mean_eq, std_eq
 
 
-def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: int) -> list:
+def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: int) -> list:
     """
     Generates random samples from a specified distribution.
 
@@ -89,6 +124,8 @@ def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: i
     :return: Random samples.
     """
 
+    parameters_scipy = convert_params_to_scipy(dist, parameters_user)
+
     if dist.lower() == 'uniform':
         if method.lower() == 'mcs':
             rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -96,17 +133,12 @@ def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: i
         elif method.lower() == 'lhs':
             sampler = sc.stats.qmc.LatinHypercube(d=1)
             samples = sampler.random(n=n_samples)
-            x_aux = list(samples.flatten())
-            x = []
-            for i in x_aux:
-                x.append(sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
+            x = [sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
         elif method.lower() == 'sobol':
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
-            x_aux = list(samples.flatten())
-            x = []
-            for i in x_aux:
-                x.append(sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
+            x = [sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+
     elif dist.lower() == 'normal':
         if method.lower() == 'mcs':
             rv = sc.stats.norm(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -114,19 +146,204 @@ def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: i
         elif method.lower() == 'lhs':
             sampler = sc.stats.qmc.LatinHypercube(d=1)
             samples = sampler.random(n=n_samples)
-            x_aux = list(samples.flatten())
-            x = []
-            for i in x_aux:
-                x.append(sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
+            x = [sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
         elif method.lower() == 'sobol':
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
-            x_aux = list(samples.flatten())
-            x = []
-            for i in x_aux:
-                x.append(sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']))
+            x = [sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+
+    elif dist.lower() == 'lognormal':
+        if method.lower() == 'mcs':
+            rv = sc.stats.lognorm(s=parameters_scipy['s'], scale=parameters_scipy['scale'])
+            x = list(rv.rvs(size=n_samples))
+        elif method.lower() == 'lhs':
+            sampler = sc.stats.qmc.LatinHypercube(d=1)
+            samples = sampler.random(n=n_samples)
+            x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+        elif method.lower() == 'sobol':
+            sampler = sc.stats.qmc.Sobol(d=1)
+            samples = sampler.random_base2(m=n_samples)
+            x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+
+    elif dist.lower() == 'gumbel max':
+        if method.lower() == 'mcs':
+            rv = sc.stats.gumbel_r(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+            x = list(rv.rvs(size=n_samples))
+        elif method.lower() == 'lhs':
+            sampler = sc.stats.qmc.LatinHypercube(d=1)
+            samples = sampler.random(n=n_samples)
+            x = [sc.stats.gumbel_r.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+        elif method.lower() == 'sobol':
+            sampler = sc.stats.qmc.Sobol(d=1)
+            samples = sampler.random_base2(m=n_samples)
+            x = [sc.stats.gumbel_r.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+
+    elif dist.lower() == 'gumbel min':
+        if method.lower() == 'mcs':
+            rv = sc.stats.gumbel_l(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+            x = list(rv.rvs(size=n_samples))
+        elif method.lower() == 'lhs':
+            sampler = sc.stats.qmc.LatinHypercube(d=1)
+            samples = sampler.random(n=n_samples)
+            x = [sc.stats.gumbel_l.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+        elif method.lower() == 'sobol':
+            sampler = sc.stats.qmc.Sobol(d=1)
+            samples = sampler.random_base2(m=n_samples)
+            x = [sc.stats.gumbel_l.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+
+    elif dist.lower() == 'triangular':
+        if method.lower() == 'mcs':
+            rv = sc.stats.triang(c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+            x = list(rv.rvs(size=n_samples))
+        elif method.lower() == 'lhs':
+            sampler = sc.stats.qmc.LatinHypercube(d=1)
+            samples = sampler.random(n=n_samples)
+            x = [sc.stats.triang.ppf(i, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+        elif method.lower() == 'sobol':
+            sampler = sc.stats.qmc.Sobol(d=1)
+            samples = sampler.random_base2(m=n_samples)
+            x = [sc.stats.triang.ppf(i, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+
+    elif dist.lower() == 'gamma':
+        if method.lower() == 'mcs':
+            rv = sc.stats.gamma(a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+            x = list(rv.rvs(size=n_samples))
+        elif method.lower() == 'lhs':
+            sampler = sc.stats.qmc.LatinHypercube(d=1)
+            samples = sampler.random(n=n_samples)
+            x = [sc.stats.gamma.ppf(i, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+        elif method.lower() == 'sobol':
+            sampler = sc.stats.qmc.Sobol(d=1)
+            samples = sampler.random_base2(m=n_samples)
+            x = [sc.stats.gamma.ppf(i, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+
+    else:
+        raise ValueError(f"Unsupported distribution: {dist}")
 
     return x
+
+
+# def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: int) -> list: # ORIGINAL SEM USAR A CONVERSAO
+#     """
+#     Generates random samples from a specified distribution.
+
+#     :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
+#     :param parameters_scipy: Distribution parameters according scipy.stats documentation.
+#     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
+#     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+
+#     :return: Random samples.
+#     """
+
+#     if dist.lower() == 'uniform':
+#         if method.lower() == 'mcs':
+#             rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+#             x = list(rv.rvs(size=n_samples))
+#         elif method.lower() == 'lhs':
+#             sampler = sc.stats.qmc.LatinHypercube(d=1)
+#             samples = sampler.random(n=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+#         elif method.lower() == 'sobol':
+#             sampler = sc.stats.qmc.Sobol(d=1)
+#             samples = sampler.random_base2(m=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+
+#     elif dist.lower() == 'normal':
+#         if method.lower() == 'mcs':
+#             rv = sc.stats.norm(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+#             x = list(rv.rvs(size=n_samples))
+#         elif method.lower() == 'lhs':
+#             sampler = sc.stats.qmc.LatinHypercube(d=1)
+#             samples = sampler.random(n=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+#         elif method.lower() == 'sobol':
+#             sampler = sc.stats.qmc.Sobol(d=1)
+#             samples = sampler.random_base2(m=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+
+#     elif dist.lower() == 'lognormal':
+#         if method.lower() == 'mcs':
+#             rv = sc.stats.lognorm(s=parameters_scipy['s'], scale=parameters_scipy['scale'])
+#             x = list(rv.rvs(size=n_samples))
+#         elif method.lower() == 'lhs':
+#             sampler = sc.stats.qmc.LatinHypercube(d=1)
+#             samples = sampler.random(n=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], scale=parameters_scipy['scale']) for i in x_aux]
+#         elif method.lower() == 'sobol':
+#             sampler = sc.stats.qmc.Sobol(d=1)
+#             samples = sampler.random_base2(m=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], scale=parameters_scipy['scale']) for i in x_aux]
+
+#     elif dist.lower() == 'gumbel max':
+#         if method.lower() == 'mcs':
+#             rv = sc.stats.gumbel_r(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+#             x = list(rv.rvs(size=n_samples))
+#         elif method.lower() == 'lhs':
+#             sampler = sc.stats.qmc.LatinHypercube(d=1)
+#             samples = sampler.random(n=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.gumbel_r.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+#         elif method.lower() == 'sobol':
+#             sampler = sc.stats.qmc.Sobol(d=1)
+#             samples = sampler.random_base2(m=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.gumbel_r.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+
+#     elif dist.lower() == 'gumbel min':
+#         if method.lower() == 'mcs':
+#             rv = sc.stats.gumbel_l(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+#             x = list(rv.rvs(size=n_samples))
+#         elif method.lower() == 'lhs':
+#             sampler = sc.stats.qmc.LatinHypercube(d=1)
+#             samples = sampler.random(n=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.gumbel_l.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+#         elif method.lower() == 'sobol':
+#             sampler = sc.stats.qmc.Sobol(d=1)
+#             samples = sampler.random_base2(m=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.gumbel_l.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+
+#     elif dist.lower() == 'triangular':
+#         if method.lower() == 'mcs':
+#             rv = sc.stats.triang(c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+#             x = list(rv.rvs(size=n_samples))
+#         elif method.lower() == 'lhs':
+#             sampler = sc.stats.qmc.LatinHypercube(d=1)
+#             samples = sampler.random(n=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.triang.ppf(i, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+#         elif method.lower() == 'sobol':
+#             sampler = sc.stats.qmc.Sobol(d=1)
+#             samples = sampler.random_base2(m=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.triang.ppf(i, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+
+#     elif dist.lower() == 'gamma':
+#         if method.lower() == 'mcs':
+#             rv = sc.stats.gamma(a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+#             x = list(rv.rvs(size=n_samples))
+#         elif method.lower() == 'lhs':
+#             sampler = sc.stats.qmc.LatinHypercube(d=1)
+#             samples = sampler.random(n=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.gamma.ppf(i, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+#         elif method.lower() == 'sobol':
+#             sampler = sc.stats.qmc.Sobol(d=1)
+#             samples = sampler.random_base2(m=n_samples)
+#             x_aux = list(samples.flatten())
+#             x = [sc.stats.gamma.ppf(i, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in x_aux]
+
+#     else:
+#         raise ValueError(f"Unsupported distribution: {dist}")
+
+#     return x
 
 
 # def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
