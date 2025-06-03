@@ -1,5 +1,5 @@
 """Common library for PAREpy toolbox"""
-from typing import Union, Callable
+from typing import Union, Optional, Callable
 import re
 from datetime import datetime
 
@@ -96,6 +96,20 @@ def beta_equation(pf: float) -> float:
     """
 
     return -sc.stats.norm.ppf(pf)
+
+
+def first_order_derivative_numerical_differentiation(func: Callable, x: list, method: str, h: float = 1e-12, args: Optional[tuple] = None) -> np.ndarray:
+    """
+    Computes the numerical derivative of a function at a given point using the central difference method.
+
+    :param func: Function to differentiate.
+    :param x: Point at which to evaluate the derivative.
+    :param h: Step size for the finite difference approximation (default is 1e-5).
+
+    :return: Numerical derivative of the function at point x.
+    """
+
+    return (func(x + h) - func(x - h)) / (2 * h)
 
 
 def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
