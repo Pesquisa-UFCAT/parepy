@@ -98,9 +98,6 @@ def beta_equation(pf: float) -> float:
     return -sc.stats.norm.ppf(pf)
 
 
-import numpy as np
-from typing import Callable, Optional
-
 def first_order_derivative_numerical_differentiation(func: Callable, x: list, method: str, h: float = 1e-12, args: Optional[tuple] = None) -> np.ndarray:
     """
     Computes the numerical first-order derivative (gradient) of a scalar function at a given point
