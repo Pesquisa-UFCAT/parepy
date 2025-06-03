@@ -98,18 +98,98 @@ def beta_equation(pf: float) -> float:
     return -sc.stats.norm.ppf(pf)
 
 
+import numpy as np
+from typing import Callable, Optional
+
 def first_order_derivative_numerical_differentiation(func: Callable, x: list, method: str, h: float = 1e-12, args: Optional[tuple] = None) -> np.ndarray:
     """
-    Computes the numerical derivative of a function at a given point using the central difference method.
+    Computes the numerical first-order derivative (gradient) of a scalar function at a given point
+    using finite difference methods.
 
-    :param func: Function to differentiate.
-    :param x: Point at which to evaluate the derivative.
-    :param h: Step size for the finite difference approximation (default is 1e-5).
+    :param func: Function to differentiate. Must return a scalar.
+    :param x: Point at which to evaluate the derivative (list or 1D array).
+    :param method: Method to use for differentiation ('central', 'forward', or 'backward').
+    :param h: Step size for the finite difference approximation (default is 1e-12).
+    :param args: Additional arguments to pass to the function.
 
-    :return: Numerical derivative of the function at point x.
+    :return: Numerical gradient (1D NumPy array) of the function at point x.
     """
+    x = np.array(x, dtype=float)
+    n = len(x)
+    grad = np.zeros(n)
 
-    return (func(x + h) - func(x - h)) / (2 * h)
+    for i in range(n):
+        x_forward = x.copy()
+        x_backward = x.copy()
+        
+        if method == "forward":
+            x_forward[i] += h
+            f_forward = func(x_forward, *args) if args else func(x_forward)
+            f_current = func(x, *args) if args else func(x)
+            grad[i] = (f_forward - f_current) / h
+        elif method == "backward":
+            x_backward[i] -= h
+            f_current = func(x, *args) if args else func(x)
+            f_backward = func(x_backward, *args) if args else func(x_backward)
+            grad[i] = (f_current - f_backward) / h
+        else:
+            raise ValueError(f"Unknown method '{method}'. Use 'forward', or 'backward'.")
+
+    return grad
+
+
+def second_order_derivative_numerical_differentiation(func: Callable, x: list, method: str, h: float = 1e-12, args: Optional[tuple] = None) -> np.ndarray:
+    """
+    Computes the first derivative of a scalar function using second-order finite difference formulas.
+
+    :param func: Function to differentiate (must return a scalar).
+    :param x: Point at which to evaluate the derivative.
+    :param method: 'central', 'forward', or 'backward'.
+    :param h: Step size.
+    :param args: Extra arguments to pass to the function.
+    
+    :return: Derivative vector as np.ndarray.
+    """
+    x = np.array(x, dtype=float)
+    n = len(x)
+    grad = np.zeros(n)
+
+    for i in range(n):
+        x_i = x.copy()
+
+        if method == "central":
+            x_forward = x.copy()
+            x_backward = x.copy()
+            x_forward[i] += h
+            x_backward[i] -= h
+            f_forward = func(x_forward, *args) if args else func(x_forward)
+            f_backward = func(x_backward, *args) if args else func(x_backward)
+            grad[i] = (f_forward - f_backward) / (2 * h)
+
+        elif method == "forward":
+            x1 = x.copy()
+            x2 = x.copy()
+            x1[i] += h
+            x2[i] += 2*h
+            f0 = func(x, *args) if args else func(x)
+            f1 = func(x1, *args) if args else func(x1)
+            f2 = func(x2, *args) if args else func(x2)
+            grad[i] = (-3*f0 + 4*f1 - f2) / (2*h)
+
+        elif method == "backward":
+            x1 = x.copy()
+            x2 = x.copy()
+            x1[i] -= h
+            x2[i] -= 2*h
+            f0 = func(x, *args) if args else func(x)
+            f1 = func(x1, *args) if args else func(x1)
+            f2 = func(x2, *args) if args else func(x2)
+            grad[i] = (3*f0 - 4*f1 + f2) / (2*h)
+
+        else:
+            raise ValueError("Method must be 'central', 'forward', or 'backward'.")
+
+    return grad
 
 
 def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
