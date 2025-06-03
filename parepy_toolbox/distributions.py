@@ -102,12 +102,12 @@ def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tu
     return mean_eq, std_eq
 
 
-def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: int) -> list:
+def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) -> list:
     """
     Generates random samples from a specified distribution.
 
     :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
-    :param parameters_user: Distribution parameters: (a) 'uniform': keys 'min' and 'max'. (b) 'normal': keys 'mean' and 'std'. (c) 'lognormal': keys 'mean' and 'std'. (d) 'gumbel max': keys 'mean' and 'std'. (e) 'gumbel min': keys 'mean' and 'std'. (f) 'triangular': keys 'min', 'mode' and 'max'. (g) 'gamma': keys 'mean' and 'std'.  
+    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max'. (b) 'normal': keys 'mean' and 'std'. (c) 'lognormal': keys 'mean' and 'std'. (d) 'gumbel max': keys 'mean' and 'std'. (e) 'gumbel min': keys 'mean' and 'std'. (f) 'triangular': keys 'min', 'mode' and 'max'. (g) 'gamma': keys 'mean' and 'std'.  
     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
 
@@ -115,7 +115,7 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
     """
 
     # Convert user parameters to scipy.stats format
-    parameters_scipy = convert_params_to_scipy(dist, parameters_user)
+    parameters_scipy = convert_params_to_scipy(dist, parameters)
 
     # Generate random samples based on the specified distribution and method
     if dist.lower() == 'uniform':
@@ -204,6 +204,35 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
             x = [sc.stats.gamma.ppf(i, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
 
     return x
+
+
+def sampling_kernell_without_time(random_var_settings: list, method: str, n_samples: int, args: Optional[tuple] = None) -> pd.DataFrame:
+    """
+    Generates random samples from a specified distribution using kernel density estimation.
+
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}.
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+
+    :return: Random samples.
+    """
+
+    random_data = {}
+
+    # Generate samples
+    for i, values in enumerate(random_var_settings):
+        random_data[f'x_{i}'] = random_sampling(values['type'], values['parameters'], method, n_samples)
+
+    # Evaluate objective function
+    state_limit = np.zeros((len(dataset_x), number_of_limit_functions))
+    for idx, sample in enumerate(dataset_x):
+        c_i, d_i, g_i = objective_function(list(sample), none_variable)
+        capacity[idx, :] = c_i
+        demand[idx, :] = d_i
+        state_limit[idx, :] = g_i
+        indicator_function[idx, :] = [1 if val <= 0 else 0 for val in g_i]
+
+    return pd.DataFrame(random_data)
 
 
 # def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: int) -> list: # ORIGINAL SEM USAR A CONVERSAO
