@@ -189,18 +189,6 @@ def second_order_derivative_numerical_differentiation(func: Callable, x: list, m
     return grad
 
 
-def obj(x):
-    # d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
-    # l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
-    # var = [d, l]
-    # number_of_limit_functions = 1
-    # method = 'mcs'
-    # n_samples = 1000
-    g_0 = 12.5 * x[0] ** 3 - x[1]
-    
-    return [g_0]
-
-
 def sampling_kernel_without_time(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, args: Optional[tuple] = None) -> pd.DataFrame:
     """
     Generates random samples from a specified distribution using kernel density estimation.
@@ -212,22 +200,31 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     :return: Random samples.
     """
 
-    random_data = np.zeros((n_samples, len(random_var_settings)))
+    n_vars = len(random_var_settings)
+    random_data = np.zeros((n_samples, n_vars))
+    
+    # Generate random samples for each variable
+    for i, dist_info in enumerate(random_var_settings):
+        random_data[:, i] = parepydi.random_sampling(
+            dist_info['type'], dist_info['parameters'], method, n_samples
+        )
 
-    # Generate samples
-    for i, values in enumerate(random_var_settings):
-        random_data[:, i] = parepydi.random_sampling(values['type'], values['parameters'], method, n_samples)
+    # Evaluate objective function for each sample
+    g_matrix = np.zeros((n_samples, number_of_limit_functions))
+    indicator_matrix = np.zeros_like(g_matrix)
 
-    # Evaluate objective function
-    state_limit = np.zeros((len(random_data), number_of_limit_functions))
     for idx, sample in enumerate(random_data):
-        g_i = obj(list(sample), none_variable)
-        for j in range(number_of_limit_functions):
-            random_data[f'g_{j}'] = g_i[j]
-        
-    indicator_function[idx, :] = [1 if g <= 0 else 0 for val in g_i]
+        g_values = obj(list(sample), *args) if args else obj(list(sample))
+        g_matrix[idx, :] = g_values
+        indicator_matrix[idx, :] = [1 if g <= 0 else 0 for g in g_values]
 
-    return pd.DataFrame(random_data)
+    # Build DataFrame
+    df = pd.DataFrame(random_data, columns=[f'X{i}' for i in range(n_vars)])
+    for j in range(number_of_limit_functions):
+        df[f'g_{j}'] = g_matrix[:, j]
+        df[f'I_{j}'] = indicator_matrix[:, j]
+
+    return df   
 
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
 #     """
