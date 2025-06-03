@@ -206,34 +206,6 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     return x
 
 
-def sampling_kernell_without_time(random_var_settings: list, method: str, n_samples: int, args: Optional[tuple] = None) -> pd.DataFrame:
-    """
-    Generates random samples from a specified distribution using kernel density estimation.
-
-    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}.
-    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
-    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
-
-    :return: Random samples.
-    """
-
-    random_data = {}
-
-    # Generate samples
-    for i, values in enumerate(random_var_settings):
-        random_data[f'x_{i}'] = random_sampling(values['type'], values['parameters'], method, n_samples)
-
-    # Evaluate objective function
-    state_limit = np.zeros((len(dataset_x), number_of_limit_functions))
-    for idx, sample in enumerate(dataset_x):
-        c_i, d_i, g_i = objective_function(list(sample), none_variable)
-        capacity[idx, :] = c_i
-        demand[idx, :] = d_i
-        state_limit[idx, :] = g_i
-        indicator_function[idx, :] = [1 if val <= 0 else 0 for val in g_i]
-
-    return pd.DataFrame(random_data)
-
 
 # def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: int) -> list: # ORIGINAL SEM USAR A CONVERSAO
 #     """

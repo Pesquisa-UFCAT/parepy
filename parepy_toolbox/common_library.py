@@ -192,323 +192,363 @@ def second_order_derivative_numerical_differentiation(func: Callable, x: list, m
     return grad
 
 
-def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
-    """
-    Generates a set of random numbers according to a specified probability distribution model.
-
-    :param n_samples: Number of samples to generate.
-    :param model: Dictionary containing the model parameters.
-    :param variables_setup: List of dictionaries, each containing parameters for a random variable.
-
-    :return: Numpy array with the generated random samples.
-    """
-
-    # Model settings
-    model_sampling = model['model sampling'].upper()
-    id_type = []
-    id_corr = []
-    for v in variables_setup:
-        if 'parameters' in v and 'corr' in v['parameters']:
-            id_type.append('g-corr-g_var')
-            id_corr.append(v['parameters']['corr']['var'])
-        else:
-            id_type.append('g')
-    for k in id_corr:
-        id_type[k] = 'g-corr-b_var'
-
-    if model_sampling in ['MCS', 'LHS']:
-        random_sampling = np.zeros((n_samples, len(variables_setup)))
-
-        for j, variable in enumerate(variables_setup):
-            if id_type[j] == 'g-corr-b_var':
-                continue
-            type_dist = variable['type'].upper()
-            seed_dist = variable['seed']
-            params = variable['parameters']
-
-            if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters_g = {'mean': mean, 'sigma': sigma}
-                pho = params['corr']['pho']
-                m = params['corr']['var']
-                parameters_b = variables_setup[m]['parameters']
-                random_sampling[:, m], random_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'UNIFORM' and id_type[j] == 'g':
-                min_val = params['min']
-                max_val = params['max']
-                parameters = {'min': min_val, 'max': max_val}
-                random_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
-                min_val = params['min']
-                max_val = params['max']
-                mode = params['mode']
-                parameters = {'min': min_val, 'max': max_val, 'mode': mode}
-                random_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-    elif model_sampling in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-        time_analysis = model['time steps']
-        random_sampling = np.empty((0, len(variables_setup)))
-        match = re.search(r'\b(MCS|LHS)\b', model_sampling.upper(), re.IGNORECASE)
-        model_sampling = match.group(1).upper()
-
-        for _ in range(n_samples):
-            temporal_sampling = np.zeros((time_analysis, len(variables_setup)))
-
-            for j, variable in enumerate(variables_setup):
-                if id_type[j] == 'g-corr-b_var':
-                    continue
-                type_dist = variable['type'].upper()
-                seed_dist = variable['seed']
-                sto = variable['stochastic variable']
-                params = variable['parameters']
-
-                if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters_g = {'mean': mean, 'sigma': sigma}
-                    pho = params['corr']['pho']
-                    m = params['corr']['var']
-                    parameters_b = variables_setup[m]['parameters']
-                    if sto is False:
-                        temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                        temporal_sampling[1:, m]
-                    else:
-                        temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'UNIFORM' and id_type[j] == 'g':
-                    min_val = params['min']
-                    max_val = params['max']
-                    parameters = {'min': min_val, 'max': max_val}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
-                    min_val = params['min']
-                    max_val = params['max']
-                    mode = params['mode']
-                    parameters = {'min': min_val, 'max': max_val, 'mode': mode}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-            random_sampling = np.concatenate((random_sampling, temporal_sampling), axis=0)  
-
-        time_sampling = np.zeros((time_analysis * n_samples, 1))
-        cont = 0
-        for _ in range(n_samples):
-            for m in range(time_analysis):
-                time_sampling[cont, 0] = int(m)
-                cont += 1
-        random_sampling = np.concatenate((random_sampling, time_sampling), axis=1)   
-
-    return random_sampling
-
-
-def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Calculates the probability of failure (pf) and reliability index (β) based on the columns of a DataFrame
-    that start with 'I' (indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
-
-    :param df_or_path: A DataFrame containing boolean indicator columns prefixed with 'I', or a string path to a .txt file.
-
-    :param numerical_model: Dictionary containing the numerical model.
-
-    :param n_constraints: Number of limit state functions or constraints.
-
-    :return: Tuple of DataFrames:
-
-        - df_pf: probability of failure values for each column prefixed with 'G'.
-        - df_beta: reliability index values for each column prefixed with 'G'.
-    """
-
-    # Read dataset
-    if isinstance(df_or_path, str) and df_or_path.endswith('.txt'):
-        df = pd.read_csv(df_or_path, delimiter='\t')
-    else:
-        df = df_or_path
-
-    # Calculate pf and beta values
-    if numerical_model.upper() in ['MCS', 'LHS']:
-        filtered_df = df.filter(like='I_', axis=1)
-        pf_results = filtered_df.mean(axis=0)
-        df_pf = pd.DataFrame([pf_results.to_list()], columns=pf_results.index)
-        beta_results = [beta_equation(pf) for pf in pf_results.to_list()] 
-        df_beta = pd.DataFrame([beta_results], columns=pf_results.index)
-    elif numerical_model.upper() in ['TIME-MCS', 'TIME-LHS', 'TIME MCS', 'TIME LHS', 'MCS TIME', 'LHS TIME', 'MCS-TIME', 'LHS-TIME']:
-        df_pf = pd.DataFrame()
-        df_beta = pd.DataFrame()
-        for i in range(n_constraints):
-            filtered_df = df.filter(like=f'I_{i}', axis=1)
-            pf_results = filtered_df.mean(axis=0)
-            beta_results = [beta_equation(pf) for pf in pf_results.to_list()]
-            df_pf[f'G_{i}'] = pf_results.to_list()
-            df_beta[f'G_{i}'] = beta_results
-
-    return df_pf, df_beta
-
-
-def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
-    """
-    This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
-
-    :param df: DataFrame containing the data with indicator function column
-    :param column: Name of the column to be analyzed.
-
-    :return: Tuple of lists:
+def obj(x):
+    # d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
+    # l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
+    # var = [d, l]
+    # number_of_limit_functions = 1
+    # method = 'mcs'
+    # n_samples = 1000
+    g_0 = 12.5 * x[0] ** 3 - x[1]
     
-        - div: List of sample sizes considered at each step.
-        - m: List of running mean values (estimated probability of failure).
-        - ci_l: List containing the lower confidence interval values of the column.
-        - ci_u: List containing the upper confidence interval values of the column.
-        - var: List containing the variance values of the column.
+    return [g_0]
+
+
+def sampling_kernel_without_time(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, args: Optional[tuple] = None) -> pd.DataFrame:
     """
+    Generates random samples from a specified distribution using kernel density estimation.
+
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}.
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+
+    :return: Random samples.
+    """
+
+    random_data = np.zeros((n_samples, len(random_var_settings)))
+
+    # Generate samples
+    for i, values in enumerate(random_var_settings):
+        random_data[:, i] = parepydi.random_sampling(values['type'], values['parameters'], method, n_samples)
+
+    # Evaluate objective function
+    state_limit = np.zeros((len(random_data), number_of_limit_functions))
+    for idx, sample in enumerate(random_data):
+        g_i = obj(list(sample), none_variable)
+        for j in range(number_of_limit_functions):
+            random_data[f'g_{j}'] = g_i[j]
+        
+    indicator_function[idx, :] = [1 if g <= 0 else 0 for val in g_i]
+
+    return pd.DataFrame(random_data)
+
+# def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
+#     """
+#     Generates a set of random numbers according to a specified probability distribution model.
+
+#     :param n_samples: Number of samples to generate.
+#     :param model: Dictionary containing the model parameters.
+#     :param variables_setup: List of dictionaries, each containing parameters for a random variable.
+
+#     :return: Numpy array with the generated random samples.
+#     """
+
+#     # Model settings
+#     model_sampling = model['model sampling'].upper()
+#     id_type = []
+#     id_corr = []
+#     for v in variables_setup:
+#         if 'parameters' in v and 'corr' in v['parameters']:
+#             id_type.append('g-corr-g_var')
+#             id_corr.append(v['parameters']['corr']['var'])
+#         else:
+#             id_type.append('g')
+#     for k in id_corr:
+#         id_type[k] = 'g-corr-b_var'
+
+#     if model_sampling in ['MCS', 'LHS']:
+#         random_sampling = np.zeros((n_samples, len(variables_setup)))
+
+#         for j, variable in enumerate(variables_setup):
+#             if id_type[j] == 'g-corr-b_var':
+#                 continue
+#             type_dist = variable['type'].upper()
+#             seed_dist = variable['seed']
+#             params = variable['parameters']
+
+#             if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters_g = {'mean': mean, 'sigma': sigma}
+#                 pho = params['corr']['pho']
+#                 m = params['corr']['var']
+#                 parameters_b = variables_setup[m]['parameters']
+#                 random_sampling[:, m], random_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'UNIFORM' and id_type[j] == 'g':
+#                 min_val = params['min']
+#                 max_val = params['max']
+#                 parameters = {'min': min_val, 'max': max_val}
+#                 random_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
+#                 min_val = params['min']
+#                 max_val = params['max']
+#                 mode = params['mode']
+#                 parameters = {'min': min_val, 'max': max_val, 'mode': mode}
+#                 random_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+#     elif model_sampling in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#         time_analysis = model['time steps']
+#         random_sampling = np.empty((0, len(variables_setup)))
+#         match = re.search(r'\b(MCS|LHS)\b', model_sampling.upper(), re.IGNORECASE)
+#         model_sampling = match.group(1).upper()
+
+#         for _ in range(n_samples):
+#             temporal_sampling = np.zeros((time_analysis, len(variables_setup)))
+
+#             for j, variable in enumerate(variables_setup):
+#                 if id_type[j] == 'g-corr-b_var':
+#                     continue
+#                 type_dist = variable['type'].upper()
+#                 seed_dist = variable['seed']
+#                 sto = variable['stochastic variable']
+#                 params = variable['parameters']
+
+#                 if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters_g = {'mean': mean, 'sigma': sigma}
+#                     pho = params['corr']['pho']
+#                     m = params['corr']['var']
+#                     parameters_b = variables_setup[m]['parameters']
+#                     if sto is False:
+#                         temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                         temporal_sampling[1:, m]
+#                     else:
+#                         temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'UNIFORM' and id_type[j] == 'g':
+#                     min_val = params['min']
+#                     max_val = params['max']
+#                     parameters = {'min': min_val, 'max': max_val}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
+#                     min_val = params['min']
+#                     max_val = params['max']
+#                     mode = params['mode']
+#                     parameters = {'min': min_val, 'max': max_val, 'mode': mode}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#             random_sampling = np.concatenate((random_sampling, temporal_sampling), axis=0)  
+
+#         time_sampling = np.zeros((time_analysis * n_samples, 1))
+#         cont = 0
+#         for _ in range(n_samples):
+#             for m in range(time_analysis):
+#                 time_sampling[cont, 0] = int(m)
+#                 cont += 1
+#         random_sampling = np.concatenate((random_sampling, time_sampling), axis=1)   
+
+#     return random_sampling
+
+
+# def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+#     """
+#     Calculates the probability of failure (pf) and reliability index (β) based on the columns of a DataFrame
+#     that start with 'I' (indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
+
+#     :param df_or_path: A DataFrame containing boolean indicator columns prefixed with 'I', or a string path to a .txt file.
+
+#     :param numerical_model: Dictionary containing the numerical model.
+
+#     :param n_constraints: Number of limit state functions or constraints.
+
+#     :return: Tuple of DataFrames:
+
+#         - df_pf: probability of failure values for each column prefixed with 'G'.
+#         - df_beta: reliability index values for each column prefixed with 'G'.
+#     """
+
+#     # Read dataset
+#     if isinstance(df_or_path, str) and df_or_path.endswith('.txt'):
+#         df = pd.read_csv(df_or_path, delimiter='\t')
+#     else:
+#         df = df_or_path
+
+#     # Calculate pf and beta values
+#     if numerical_model.upper() in ['MCS', 'LHS']:
+#         filtered_df = df.filter(like='I_', axis=1)
+#         pf_results = filtered_df.mean(axis=0)
+#         df_pf = pd.DataFrame([pf_results.to_list()], columns=pf_results.index)
+#         beta_results = [beta_equation(pf) for pf in pf_results.to_list()] 
+#         df_beta = pd.DataFrame([beta_results], columns=pf_results.index)
+#     elif numerical_model.upper() in ['TIME-MCS', 'TIME-LHS', 'TIME MCS', 'TIME LHS', 'MCS TIME', 'LHS TIME', 'MCS-TIME', 'LHS-TIME']:
+#         df_pf = pd.DataFrame()
+#         df_beta = pd.DataFrame()
+#         for i in range(n_constraints):
+#             filtered_df = df.filter(like=f'I_{i}', axis=1)
+#             pf_results = filtered_df.mean(axis=0)
+#             beta_results = [beta_equation(pf) for pf in pf_results.to_list()]
+#             df_pf[f'G_{i}'] = pf_results.to_list()
+#             df_beta[f'G_{i}'] = beta_results
+
+#     return df_pf, df_beta
+
+
+# def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
+#     """
+#     This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
+
+#     :param df: DataFrame containing the data with indicator function column
+#     :param column: Name of the column to be analyzed.
+
+#     :return: Tuple of lists:
     
-    column_values = df[column].to_list()
-    step = 1000
-    div = [i for i in range(step, len(column_values), step)]
-    m = []
-    ci_u = []
-    ci_l = []
-    var = []
-    for i in range(0, len(div)+1):
-        if i == len(div):
-            aux = column_values.copy()
-            div.append(len(column_values))
-        else:
-            aux = column_values[:div[i]]
-        mean = np.mean(aux)
-        std = np.std(aux, ddof=1)
-        n = len(aux)
-        confidence_level = 0.95
-        t_critic = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
-        margin = t_critic * (std / np.sqrt(n))
-        confidence_interval = (mean - margin, mean + margin)
-        m.append(mean)
-        ci_u.append(confidence_interval[1])
-        ci_l.append(confidence_interval[0])
-        var.append((mean * (1 - mean))/n)
-
-    return div, m, ci_l, ci_u, var
-
-
-def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> tuple[pd.DataFrame, list]:
-    """
-    This function application first barrier failure algorithm.
-
-    :param algorithm: Name of the algorithm.
-    :param n_constraints: Number of constraints analyzed.
-    :param time_analysis: Time period for analysis.
-    :param results_about_data: DataFrame containing the results to be processed.
-
-    :return: Updated DataFrame after processing.
-    """
-
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
-        i_columns = []
-        for i in range(n_constraints):
-            aux_column_names = []
-            for j in range(time_analysis):
-                aux_column_names.append('I_' + str(i) + '_t=' + str(j))
-            i_columns.append(aux_column_names)
-
-        for i in i_columns:
-            matrixx = results_about_data[i].values
-            for id, linha in enumerate(matrixx):
-                indice_primeiro_1 = np.argmax(linha == 1)
-                if linha[indice_primeiro_1] == 1:
-                    matrixx[id, indice_primeiro_1:] = 1
-            results_about_data = pd.concat([results_about_data.drop(columns=i),
-                                            pd.DataFrame(matrixx, columns=i)], axis=1)
-    else:
-        i_columns = []
-        for i in range(n_constraints):
-            i_columns.append(['I_' + str(i)])
+#         - div: List of sample sizes considered at each step.
+#         - m: List of running mean values (estimated probability of failure).
+#         - ci_l: List containing the lower confidence interval values of the column.
+#         - ci_u: List containing the upper confidence interval values of the column.
+#         - var: List containing the variance values of the column.
+#     """
     
-    return results_about_data, i_columns
+#     column_values = df[column].to_list()
+#     step = 1000
+#     div = [i for i in range(step, len(column_values), step)]
+#     m = []
+#     ci_u = []
+#     ci_l = []
+#     var = []
+#     for i in range(0, len(div)+1):
+#         if i == len(div):
+#             aux = column_values.copy()
+#             div.append(len(column_values))
+#         else:
+#             aux = column_values[:div[i]]
+#         mean = np.mean(aux)
+#         std = np.std(aux, ddof=1)
+#         n = len(aux)
+#         confidence_level = 0.95
+#         t_critic = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
+#         margin = t_critic * (std / np.sqrt(n))
+#         confidence_interval = (mean - margin, mean + margin)
+#         m.append(mean)
+#         ci_u.append(confidence_interval[1])
+#         ci_l.append(confidence_interval[0])
+#         var.append((mean * (1 - mean))/n)
+
+#     return div, m, ci_l, ci_u, var
 
 
-def log_message(message: str) -> None:
-    """
-    Logs a message with the current time.
+# def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> tuple[pd.DataFrame, list]:
+#     """
+#     This function application first barrier failure algorithm.
 
-    :param message: The message to log.
+#     :param algorithm: Name of the algorithm.
+#     :param n_constraints: Number of constraints analyzed.
+#     :param time_analysis: Time period for analysis.
+#     :param results_about_data: DataFrame containing the results to be processed.
+
+#     :return: Updated DataFrame after processing.
+#     """
+
+#     if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+#         i_columns = []
+#         for i in range(n_constraints):
+#             aux_column_names = []
+#             for j in range(time_analysis):
+#                 aux_column_names.append('I_' + str(i) + '_t=' + str(j))
+#             i_columns.append(aux_column_names)
+
+#         for i in i_columns:
+#             matrixx = results_about_data[i].values
+#             for id, linha in enumerate(matrixx):
+#                 indice_primeiro_1 = np.argmax(linha == 1)
+#                 if linha[indice_primeiro_1] == 1:
+#                     matrixx[id, indice_primeiro_1:] = 1
+#             results_about_data = pd.concat([results_about_data.drop(columns=i),
+#                                             pd.DataFrame(matrixx, columns=i)], axis=1)
+#     else:
+#         i_columns = []
+#         for i in range(n_constraints):
+#             i_columns.append(['I_' + str(i)])
     
-    :return: None
-    """
-    current_time = datetime.now().strftime('%H:%M:%S')
-    print(f'{current_time} - {message}')
+#     return results_about_data, i_columns
+
+
+# def log_message(message: str) -> None:
+#     """
+#     Logs a message with the current time.
+
+#     :param message: The message to log.
+    
+#     :return: None
+#     """
+#     current_time = datetime.now().strftime('%H:%M:%S')
+#     print(f'{current_time} - {message}')
 
 
 # def norm_array(ar: list) -> float:
