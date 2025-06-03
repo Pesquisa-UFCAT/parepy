@@ -17,7 +17,7 @@ import parepy_toolbox.distributions as parepydi
 
 def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, variables: list, x0: list, method: str = "form", args: Optional[tuple] = None) -> list:
     """
-    Computes the reliability index and probability of failure using FORM (First Order Reliability Method).
+    Computes the reliability index and probability of failure using FORM (First Order Reliability Method) or SORM (Second Order Reliability Method).
 
     :param obj: Objective function that returns a limit state function (g) value.
     :param tol: Tolerance for convergence.
@@ -98,44 +98,44 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
         error = np.abs(beta_k1[0, 0] - beta_k) / beta_k
         iter_results.append(error)
 
-    hessian = np.array([[0.7009, 0],[0, 0]]) ####################
-    if method.lower() == "sorm":
-        beta_u = beta_k1[0, 0]
-        mu_eq = []
-        sigma_eq = []
-        # Conversion Non-normal to Normal
-        for i, var in enumerate(variables):
-            paras_scipy = parepydi.convert_params_to_scipy(var['type'], var['parameters'])
-            m, s = parepydi.normal_tail_approximation(var['type'], paras_scipy, x_k[i])
-            mu_eq.append(m)
-            sigma_eq.append(s)
-        dneq, dneq1 = parepyco.std_matrix(sigma_eq)
-        mu_vars = parepyco.mu_matrix(mu_eq)
-        # Numerical differentiation g(y)
-        H = 1E-12
-        g_diff_x_p = []
-        g_diff_x_r = []
-        for i in range(len(variables)):
-            x_aux_p = x_k.copy()
-            x_aux_p[i] += H
-            x_aux_r = x_k.copy()
-            x_aux_r[i] -= H
-            g_diff_x_p.append(obj(x_aux_p))
-            g_diff_x_r.append(obj(x_aux_r))
-        g_diff_x = [(g_diff_x_p[i] - g_diff_x_r[i]) / (2 * H) for i in range(len(variables))]
-        g_diff_y = np.matrix_transpose(dneq) @ np.array(g_diff_x).reshape(-1, 1)
-        norm_gdiff = np.linalg.norm(g_diff_y)
-        m = len(x_k)
-        q = np.eye(m)
-        q[:, 0] = y_k.flatten().tolist()
-        q, _ = np.linalg.qr(q)
-        q = np.fliplr(q)
-        a = q.T @ hessian @ q
-        j = np.eye(m - 1) + beta_u * a[:m-1, :m-1] / norm_gdiff
-        det_j = np.linalg.det(j)
-        correction = 1 / np.sqrt(det_j)
-        pf_sorm = sc.stats.norm.cdf(-beta_u) * correction
-        beta_sorm = -sc.stats.norm.ppf(pf_sorm)
+    # hessian = np.array([[0.7009, 0],[0, 0]]) ####################
+    # if method.lower() == "sorm":
+    #     beta_u = beta_k1[0, 0]
+    #     mu_eq = []
+    #     sigma_eq = []
+    #     # Conversion Non-normal to Normal
+    #     for i, var in enumerate(variables):
+    #         paras_scipy = parepydi.convert_params_to_scipy(var['type'], var['parameters'])
+    #         m, s = parepydi.normal_tail_approximation(var['type'], paras_scipy, x_k[i])
+    #         mu_eq.append(m)
+    #         sigma_eq.append(s)
+    #     dneq, dneq1 = parepyco.std_matrix(sigma_eq)
+    #     mu_vars = parepyco.mu_matrix(mu_eq)
+    #     # Numerical differentiation g(y)
+    #     H = 1E-12
+    #     g_diff_x_p = []
+    #     g_diff_x_r = []
+    #     for i in range(len(variables)):
+    #         x_aux_p = x_k.copy()
+    #         x_aux_p[i] += H
+    #         x_aux_r = x_k.copy()
+    #         x_aux_r[i] -= H
+    #         g_diff_x_p.append(obj(x_aux_p))
+    #         g_diff_x_r.append(obj(x_aux_r))
+    #     g_diff_x = [(g_diff_x_p[i] - g_diff_x_r[i]) / (2 * H) for i in range(len(variables))]
+    #     g_diff_y = np.matrix_transpose(dneq) @ np.array(g_diff_x).reshape(-1, 1)
+    #     norm_gdiff = np.linalg.norm(g_diff_y)
+    #     m = len(x_k)
+    #     q = np.eye(m)
+    #     q[:, 0] = y_k.flatten().tolist()
+    #     q, _ = np.linalg.qr(q)
+    #     q = np.fliplr(q)
+    #     a = q.T @ hessian @ q
+    #     j = np.eye(m - 1) + beta_u * a[:m-1, :m-1] / norm_gdiff
+    #     det_j = np.linalg.det(j)
+    #     correction = 1 / np.sqrt(det_j)
+    #     pf_sorm = sc.stats.norm.cdf(-beta_u) * correction
+    #     beta_sorm = -sc.stats.norm.ppf(pf_sorm)
             
     return results
 

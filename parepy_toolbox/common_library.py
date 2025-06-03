@@ -74,6 +74,30 @@ def y_to_x(y: np.ndarray, dneq: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
     return dneq @ y + mu_neq
 
 
+def pf_equation(beta: float) -> float:
+    """
+    Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.
+
+    :param beta: Reliability index (β).
+    
+    :return: Probability of failure (pf).
+    """
+
+    return sc.stats.norm.cdf(-beta)
+
+
+def beta_equation(pf: float) -> float:
+    """
+    Calculates the reliability index value for a given probability of failure (pf), using the inverse cumulative distribution function (ICDF) of the standard normal distribution.
+
+    :param pf: Probability of failure (pf).
+
+    :return: Reliability index (β).
+    """
+
+    return -sc.stats.norm.ppf(pf)
+
+
 def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     """
     Generates a set of random numbers according to a specified probability distribution model.
@@ -258,50 +282,6 @@ def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
     return random_sampling
 
 
-def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -> float:
-    """
-    Calculates the root of a function using the Newton-Raphson method.
-
-    :param f: Function for which the root is sought.
-    :param df: Derivative of the function.
-    :param x0: Initial guess for the root.
-    :param tol: Tolerance for convergence.
-
-    :return: Approximated root of the function.
-    """
-
-    if abs(f(x0)) < tol:
-        return x0
-    else:
-        return newton_raphson(f, df, x0 - f(x0)/df(x0), tol)
-
-
-def pf_equation(beta: float) -> float:
-    """
-    Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.
-
-    :param beta: Reliability index (β).
-    
-    :return: Probability of failure (pf).
-    """
-
-    return sc.stats.norm.cdf(-beta)
-
-
-def beta_equation(pf: float) -> float:
-    """
-    This function calculates the reliability index value for a given probability of failure (pf).
-
-    :param pf: Probability of failure (pf).
-
-
-    :return: Reliability index (β).
-
-    """
-
-    return -sc.stats.norm.ppf(pf)
-
-
 def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Calculates the probability of failure (pf) and reliability index (β) based on the columns of a DataFrame
@@ -437,41 +417,39 @@ def log_message(message: str) -> None:
     print(f'{current_time} - {message}')
 
 
-def norm_array(ar: list) -> float:
-    """
-    Evaluates the norm of the array ar.
+# def norm_array(ar: list) -> float:
+#     """
+#     Evaluates the norm of the array ar.
 
-    :param ar: A list of numerical values (floats) representing the array.
+#     :param ar: A list of numerical values (floats) representing the array.
 
-    :return: The norm of the array.
-    """
-    norm_ar = [i ** 2 for i in ar]
-    norm_ar = sum(norm_ar) ** 0.5
-    return norm_ar
-
-
-def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -> np.ndarray:
-    """
-    Calculates the new y value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
-
-    :param y_k: Current y value.
-    :param g_y: Objective function at point `y_k`.
-    :param grad_y_k: Gradient of the objective function at point `y_k`.
-
-    :return: New y value.
-    """
-
-    num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])
-    print("num: ", num)
-    num = num[0][0]
-    den = (np.linalg.norm(grad_y_k)) ** 2
-    print("den: ", den)
-    aux = num / den
-    y_new = aux * grad_y_k
-
-    return y_new
+#     :return: The norm of the array.
+#     """
+#     norm_ar = [i ** 2 for i in ar]
+#     norm_ar = sum(norm_ar) ** 0.5
+#     return norm_ar
 
 
+# def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -> np.ndarray:
+#     """
+#     Calculates the new y value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
+
+#     :param y_k: Current y value.
+#     :param g_y: Objective function at point `y_k`.
+#     :param grad_y_k: Gradient of the objective function at point `y_k`.
+
+#     :return: New y value.
+#     """
+
+#     num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])
+#     print("num: ", num)
+#     num = num[0][0]
+#     den = (np.linalg.norm(grad_y_k)) ** 2
+#     print("den: ", den)
+#     aux = num / den
+#     y_new = aux * grad_y_k
+
+#     return y_new
 
 # def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = 'all') -> dict:
 #     """
@@ -511,3 +489,20 @@ def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y
 #     }
     
 #     return top_3_distributions
+
+# def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -> float:
+#     """
+#     Calculates the root of a function using the Newton-Raphson method.
+
+#     :param f: Function for which the root is sought.
+#     :param df: Derivative of the function.
+#     :param x0: Initial guess for the root.
+#     :param tol: Tolerance for convergence.
+
+#     :return: Approximated root of the function.
+#     """
+
+#     if abs(f(x0)) < tol:
+#         return x0
+#     else:
+#         return newton_raphson(f, df, x0 - f(x0)/df(x0), tol)

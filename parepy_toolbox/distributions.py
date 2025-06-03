@@ -9,59 +9,35 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
     """
     Convert user-provided distribution parameters to the format required by "scipy.stats".
 
-    :param parameters: Original distribution parameters [mean and standard deviation].
+    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max'. (b) 'normal': keys 'mean' and 'std'. (c) 'lognormal': keys 'mean' and 'std'. (d) 'gumbel max': keys 'mean' and 'std'. (e) 'gumbel min': keys 'mean' and 'std'. (f) 'triangular': keys 'min', 'mode' and 'max'. (g) 'gamma': keys 'mean' and 'std'.  
 
-    :return: Transformed parameters.
-    """
-
-    mean = parameters['mean']
-    std = parameters['std']
-    euler_gamma = 0.5772156649015329
+    :return: Distribution parameters according scipy.stats documentation.
+    """   
 
     if dist.lower() == 'uniform':
-        # Para média e desvio padrão conhecidos:
-        # mean = (a + b) / 2
-        # std = (b - a) / sqrt(12)
-        half_range = std * np.sqrt(3)
-        loc = mean - half_range
-        scale = 2 * half_range
-        parameters_scipy = {'loc': loc, 'scale': scale}
-
+        parameters_scipy = {'loc': parameters['min'], 'scale': parameters['max'] - parameters['min']}
     elif dist.lower() == 'normal':
-        parameters_scipy = {'loc': mean, 'scale': std}
-
+        parameters_scipy = {'loc': parameters['mean'], 'scale': parameters['std']}
     elif dist.lower() == 'lognormal':
-        epsilon = np.sqrt(np.log(1 + (std / mean) ** 2))
-        lambdaa = np.log(mean) - 0.5 * epsilon ** 2
-        parameters_scipy = {'s': epsilon, 'scale': np.exp(lambdaa)}
-
+        epsilon = np.sqrt(np.log(1 + (parameters['std'] / parameters['mean']) ** 2))
+        lambda_ = np.log(parameters['mean']) - 0.5 * epsilon ** 2
+        parameters_scipy = {'s': epsilon, 'loc': 0.0, 'scale': np.exp(lambda_)}
     elif dist.lower() == 'gumbel max':
-        alpha = std * np.sqrt(6) / np.pi
-        beta = mean - alpha * euler_gamma
+        gamma = 0.5772156649015329
+        alpha = parameters['std'] * np.sqrt(6) / np.pi
+        beta = parameters['mean'] - alpha * gamma
         parameters_scipy = {'loc': beta, 'scale': alpha}
-
     elif dist.lower() == 'gumbel min':
-        alpha = std * np.sqrt(6) / np.pi
-        beta = mean + alpha * euler_gamma
+        gamma = 0.5772156649015329
+        alpha = parameters['std'] * np.sqrt(6) / np.pi
+        beta = parameters['mean'] + alpha * gamma
         parameters_scipy = {'loc': beta, 'scale': alpha}
-
     elif dist.lower() == 'triangular':
-        # Assume-se simetria (modo = média), então c = 0.5
-        # std = (b - a) * sqrt(1/24)
-        half_range = std * np.sqrt(24)
-        loc = mean - half_range / 2
-        scale = half_range
-        parameters_scipy = {'c': 0.5, 'loc': loc, 'scale': scale}
-
+        parameters_scipy = {'c': (parameters['mode'] - parameters['min']) / (parameters['max'] - parameters['min']), 'loc': parameters['min'], 'scale': parameters['max'] - parameters['min']}
     elif dist.lower() == 'gamma':
-        # mean = a * scale → a = (mean / scale)
-        # std = sqrt(a) * scale → scale = std² / mean
-        scale = std ** 2 / mean
-        a = mean / scale
-        parameters_scipy = {'a': a, 'loc': 0, 'scale': scale}
-
-    else:
-        raise ValueError(f"Distribuição '{dist}' não suportada.")
+        a = (parameters['mean'] / parameters['std']) ** 2
+        scale = parameters['std'] ** 2 / parameters['mean']
+        parameters_scipy = {'a': a, 'loc': 0.0, 'scale': scale}
 
     return parameters_scipy
 
@@ -70,7 +46,7 @@ def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tu
     """
     Converts non-normal distributions to normal approximations while preserving their statistical properties in x point.
 
-    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max'.
+    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
     :param parameters_scipy: Distribution parameters according scipy.stats documentation.
     :param x: Project point.
 
@@ -78,34 +54,48 @@ def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tu
     """
 
     if dist.lower() == 'uniform':
-        loc = parameters_scipy['loc']
-        scale = parameters_scipy['scale'] - parameters_scipy['loc']
-        z_aux = sc.stats.uniform.cdf(x, loc=loc, scale=scale)
+        z_aux = sc.stats.uniform.cdf(x, loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
         z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
         num = sc.stats.norm.pdf(z, loc=0, scale=1)
-        den = sc.stats.uniform.pdf(x, loc=loc, scale=scale)
+        den = sc.stats.uniform.pdf(x, loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
         std_eq = num / den
         mean_eq = x - std_eq * z
     elif dist.lower() == 'normal':
         mean_eq = parameters_scipy['loc']
         std_eq = parameters_scipy['scale']
     elif dist.lower() == 'lognormal':
-        s = parameters_scipy['epsilon']
-        loc = 0
-        scale = np.exp(parameters_scipy['lambda'])
-        z_aux = sc.stats.lognorm.cdf(x, s=s, loc=loc, scale=scale)
+        z_aux = sc.stats.lognorm.cdf(x, s=parameters_scipy['s'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
         z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
         num = sc.stats.norm.pdf(z, loc=0, scale=1)
-        den = sc.stats.lognorm.pdf(x, s=s, loc=loc, scale=scale)
+        den = sc.stats.lognorm.pdf(x, s=parameters_scipy['s'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
         std_eq = num / den
         mean_eq = x - std_eq * z
     elif dist.lower() == 'gumbel max':
-        loc = parameters_scipy['loc']
-        scale = parameters_scipy['scale']
-        z_aux = sc.stats.gumbel_r.cdf(x, loc=loc, scale=scale)
+        z_aux = sc.stats.gumbel_r.cdf(x, loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
         z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
         num = sc.stats.norm.pdf(z, loc=0, scale=1)
-        den = sc.stats.gumbel_r.pdf(x, loc=loc, scale=scale)
+        den = sc.stats.gumbel_r.pdf(x, loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        std_eq = num / den
+        mean_eq = x - std_eq * z
+    elif dist.lower() == 'gumbel min':
+        z_aux = sc.stats.gumbel_l.cdf(x, loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.gumbel_l.pdf(x, loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        std_eq = num / den
+        mean_eq = x - std_eq * z
+    elif dist.lower() == 'triangular':
+        z_aux = sc.stats.triang.cdf(x, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.triang.pdf(x, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        std_eq = num / den
+        mean_eq = x - std_eq * z
+    elif dist.lower() == 'gamma':
+        z_aux = sc.stats.gamma.cdf(x, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.gamma.pdf(x, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
         std_eq = num / den
         mean_eq = x - std_eq * z
 
@@ -117,15 +107,17 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
     Generates random samples from a specified distribution.
 
     :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
-    :param parameters_scipy: Distribution parameters according scipy.stats documentation.
+    :param parameters_user: Distribution parameters: (a) 'uniform': keys 'min' and 'max'. (b) 'normal': keys 'mean' and 'std'. (c) 'lognormal': keys 'mean' and 'std'. (d) 'gumbel max': keys 'mean' and 'std'. (e) 'gumbel min': keys 'mean' and 'std'. (f) 'triangular': keys 'min', 'mode' and 'max'. (g) 'gamma': keys 'mean' and 'std'.  
     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
 
     :return: Random samples.
     """
 
+    # Convert user parameters to scipy.stats format
     parameters_scipy = convert_params_to_scipy(dist, parameters_user)
 
+    # Generate random samples based on the specified distribution and method
     if dist.lower() == 'uniform':
         if method.lower() == 'mcs':
             rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -138,7 +130,6 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x = [sc.stats.uniform.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
-
     elif dist.lower() == 'normal':
         if method.lower() == 'mcs':
             rv = sc.stats.norm(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -151,20 +142,18 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x = [sc.stats.norm.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
-
     elif dist.lower() == 'lognormal':
         if method.lower() == 'mcs':
-            rv = sc.stats.lognorm(s=parameters_scipy['s'], scale=parameters_scipy['scale'])
+            rv = sc.stats.lognorm(s=parameters_scipy['s'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
             x = list(rv.rvs(size=n_samples))
         elif method.lower() == 'lhs':
             sampler = sc.stats.qmc.LatinHypercube(d=1)
             samples = sampler.random(n=n_samples)
-            x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+            x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
         elif method.lower() == 'sobol':
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
-            x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], scale=parameters_scipy['scale']) for i in samples.flatten()]
-
+            x = [sc.stats.lognorm.ppf(i, s=parameters_scipy['s'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
     elif dist.lower() == 'gumbel max':
         if method.lower() == 'mcs':
             rv = sc.stats.gumbel_r(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -177,7 +166,6 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x = [sc.stats.gumbel_r.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
-
     elif dist.lower() == 'gumbel min':
         if method.lower() == 'mcs':
             rv = sc.stats.gumbel_l(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -190,7 +178,6 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x = [sc.stats.gumbel_l.ppf(i, loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
-
     elif dist.lower() == 'triangular':
         if method.lower() == 'mcs':
             rv = sc.stats.triang(c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -203,7 +190,6 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x = [sc.stats.triang.ppf(i, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
-
     elif dist.lower() == 'gamma':
         if method.lower() == 'mcs':
             rv = sc.stats.gamma(a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
@@ -216,9 +202,6 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x = [sc.stats.gamma.ppf(i, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
-
-    else:
-        raise ValueError(f"Unsupported distribution: {dist}")
 
     return x
 
@@ -540,52 +523,52 @@ def random_sampling(dist: str, parameters_user: dict, method: str, n_samples: in
 #     return b, g
 
 
-def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
-    """
-    Generates a log-normal sampling with specified mean and standard deviation.
+# def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
+#     """
+#     Generates a log-normal sampling with specified mean and standard deviation.
 
-    :param parameters: Dictionary of parameters, including:
+#     :param parameters: Dictionary of parameters, including:
 
-        - 'mu': Mean of the underlying normal distribution.
-        - 'sigma': Standard deviation of the underlying normal distribution.
+#         - 'mu': Mean of the underlying normal distribution.
+#         - 'sigma': Standard deviation of the underlying normal distribution.
 
-    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
-    :param n_samples: Number of samples.
-    :param seed: Seed for random number generation.
+#     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling) or 'mcs' (Crude Monte Carlo Sampling).
+#     :param n_samples: Number of samples.
+#     :param seed: Seed for random number generation.
 
-    :return: List of random samples.
-    """
+#     :return: List of random samples.
+#     """
 
 
 
-    # Random uniform sampling between 0 and 1
-    if method.lower() == 'mcs':
-        if seed is not None:
-            u_aux1 = crude_sampling_zero_one(n_samples, seed)
-            u_aux2 = crude_sampling_zero_one(n_samples, seed+1)
-        elif seed is None:
-            u_aux1 = crude_sampling_zero_one(n_samples)
-            u_aux2 = crude_sampling_zero_one(n_samples)
-    elif method.lower() == 'lhs':
-        if seed is not None:
-            u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
-        elif seed is None:
-            u_aux1 = lhs_sampling_zero_one(n_samples, 2)
+#     # Random uniform sampling between 0 and 1
+#     if method.lower() == 'mcs':
+#         if seed is not None:
+#             u_aux1 = crude_sampling_zero_one(n_samples, seed)
+#             u_aux2 = crude_sampling_zero_one(n_samples, seed+1)
+#         elif seed is None:
+#             u_aux1 = crude_sampling_zero_one(n_samples)
+#             u_aux2 = crude_sampling_zero_one(n_samples)
+#     elif method.lower() == 'lhs':
+#         if seed is not None:
+#             u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)
+#         elif seed is None:
+#             u_aux1 = lhs_sampling_zero_one(n_samples, 2)
 
-    # PDF parameters and generation of samples  
-    mean = parameters['mean']
-    std = parameters['sigma']
-    epsilon = np.sqrt(np.log(1 + (std/mean)**2))
-    lambdaa = np.log(mean) - 0.5 * epsilon**2
-    u = []
-    for i in range(n_samples):
-        if method.lower() == 'lhs':
-            z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
-        elif method.lower() == 'mcs':
-            z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
-        u.append(np.exp(lambdaa + epsilon * z))
+#     # PDF parameters and generation of samples  
+#     mean = parameters['mean']
+#     std = parameters['sigma']
+#     epsilon = np.sqrt(np.log(1 + (std/mean)**2))
+#     lambdaa = np.log(mean) - 0.5 * epsilon**2
+#     u = []
+#     for i in range(n_samples):
+#         if method.lower() == 'lhs':
+#             z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))
+#         elif method.lower() == 'mcs':
+#             z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))
+#         u.append(np.exp(lambdaa + epsilon * z))
 
-    return u
+#     return u
 
 
 # def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -> list:
