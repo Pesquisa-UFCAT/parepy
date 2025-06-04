@@ -9,7 +9,7 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
     """
     Convert user-provided distribution parameters to the format required by "scipy.stats".
 
-    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max'. (b) 'normal': keys 'mean' and 'std'. (c) 'lognormal': keys 'mean' and 'std'. (d) 'gumbel max': keys 'mean' and 'std'. (e) 'gumbel min': keys 'mean' and 'std'. (f) 'triangular': keys 'min', 'mode' and 'max'. (g) 'gamma': keys 'mean' and 'std'.  
+    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
 
     :return: Distribution parameters according scipy.stats documentation.
     """   
@@ -46,7 +46,7 @@ def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tu
     """
     Converts non-normal distributions to normal approximations while preserving their statistical properties in x point.
 
-    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
+    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', or 'gamma'.
     :param parameters_scipy: Distribution parameters according scipy.stats documentation.
     :param x: Project point.
 
@@ -106,8 +106,8 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     """
     Generates random samples from a specified distribution.
 
-    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', 'gamma'.
-    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max'. (b) 'normal': keys 'mean' and 'std'. (c) 'lognormal': keys 'mean' and 'std'. (d) 'gumbel max': keys 'mean' and 'std'. (e) 'gumbel min': keys 'mean' and 'std'. (f) 'triangular': keys 'min', 'mode' and 'max'. (g) 'gamma': keys 'mean' and 'std'.  
+    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', or 'gamma'.
+    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.    
     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
 

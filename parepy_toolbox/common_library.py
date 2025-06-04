@@ -4,9 +4,7 @@ import re
 from datetime import datetime
 
 import scipy as sc
-import scipy.stats as stats
 import numpy as np
-from numpy import sqrt, pi, exp
 import pandas as pd
 
 import parepy_toolbox.distributions as parepydi
@@ -98,133 +96,187 @@ def beta_equation(pf: float) -> float:
     return -sc.stats.norm.ppf(pf)
 
 
-def first_order_derivative_numerical_differentiation(func: Callable, x: list, method: str, h: float = 1e-12, args: Optional[tuple] = None) -> np.ndarray:
+def first_second_order_derivative_numerical_differentiation_unidimensional(obj: Callable, x: list, pos: str, method: str, order: str = 'first', h: float = 1e-10, args: Optional[tuple] = None) -> float:
     """
-    Computes the numerical first-order derivative (gradient) of a scalar function at a given point
-    using finite difference methods.
+    Computes the numerical derivative of a function at a given point in the given dimension using the central, backward and forward difference method.
 
-    :param func: Function to differentiate. Must return a scalar.
-    :param x: Point at which to evaluate the derivative (list or 1D array).
-    :param method: Method to use for differentiation ('central', 'forward', or 'backward').
-    :param h: Step size for the finite difference approximation (default is 1e-12).
-    :param args: Additional arguments to pass to the function.
-
-    :return: Numerical gradient (1D NumPy array) of the function at point x.
-    """
-    x = np.array(x, dtype=float)
-    n = len(x)
-    grad = np.zeros(n)
-
-    for i in range(n):
-        x_forward = x.copy()
-        x_backward = x.copy()
-        
-        if method == "forward":
-            x_forward[i] += h
-            f_forward = func(x_forward, *args) if args else func(x_forward)
-            f_current = func(x, *args) if args else func(x)
-            grad[i] = (f_forward - f_current) / h
-        elif method == "backward":
-            x_backward[i] -= h
-            f_current = func(x, *args) if args else func(x)
-            f_backward = func(x_backward, *args) if args else func(x_backward)
-            grad[i] = (f_current - f_backward) / h
-        else:
-            raise ValueError(f"Unknown method '{method}'. Use 'forward', or 'backward'.")
-
-    return grad
-
-
-def second_order_derivative_numerical_differentiation(func: Callable, x: list, method: str, h: float = 1e-12, args: Optional[tuple] = None) -> np.ndarray:
-    """
-    Computes the first derivative of a scalar function using second-order finite difference formulas.
-
-    :param func: Function to differentiate (must return a scalar).
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
     :param x: Point at which to evaluate the derivative.
-    :param method: 'central', 'forward', or 'backward'.
-    :param h: Step size.
-    :param args: Extra arguments to pass to the function.
-    
-    :return: Derivative vector as np.ndarray.
+    :param pos: Dimension in the list x where the derivative is to be calculated. When use order 'xy', pos is a str contain first and second dimension separated by a comma (e.g., '0,1' for the first and second dimensions). 
+    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
+    :param order: Order of the derivative to compute (default is first for first-order derivative). Supported values: 'first', 'second', or 'xy'.
+    :param h: Step size for the finite difference approximation (default is 1e-10).
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Numerical derivative of order n of the function at point x in dimension pos.
     """
-    x = np.array(x, dtype=float)
-    n = len(x)
-    grad = np.zeros(n)
 
-    for i in range(n):
-        x_i = x.copy()
-
-        if method == "central":
-            x_forward = x.copy()
-            x_backward = x.copy()
-            x_forward[i] += h
-            x_backward[i] -= h
-            f_forward = func(x_forward, *args) if args else func(x_forward)
-            f_backward = func(x_backward, *args) if args else func(x_backward)
-            grad[i] = (f_forward - f_backward) / (2 * h)
-
-        elif method == "forward":
-            x1 = x.copy()
-            x2 = x.copy()
-            x1[i] += h
-            x2[i] += 2*h
-            f0 = func(x, *args) if args else func(x)
-            f1 = func(x1, *args) if args else func(x1)
-            f2 = func(x2, *args) if args else func(x2)
-            grad[i] = (-3*f0 + 4*f1 - f2) / (2*h)
-
+    if order == 'first':
+        a = x.copy()
+        b = x.copy()
+        if method == "forward":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += h
+            den = h
         elif method == "backward":
-            x1 = x.copy()
-            x2 = x.copy()
-            x1[i] -= h
-            x2[i] -= 2*h
-            f0 = func(x, *args) if args else func(x)
-            f1 = func(x1, *args) if args else func(x1)
-            f2 = func(x2, *args) if args else func(x2)
-            grad[i] = (3*f0 - 4*f1 + f2) / (2*h)
+            for i in range(len(x)):
+                if i == int(pos):
+                    b[i] -= h
+            den = h
+        elif method == "center":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += h
+                    b[i] -= h
+            den = 2 * h
+        fa = obj(a, args) if args is not None else obj(a)
+        fb = obj(b, args) if args is not None else obj(b)
+        diff = (fa - fb) / den
+    elif order == 'second':
+        a = x.copy()
+        b = x.copy()
+        x_aux = x.copy()
+        den = h ** 2
+        if method == "forward":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += 2*h
+                    x_aux[i] += h
+            fa = obj(a, args) if args is not None else obj(a)
+            fx = obj(x_aux, args) if args is not None else obj(x_aux)
+            fb = obj(b, args) if args is not None else obj(b)
+        elif method == "backward":
+            for i in range(len(x)):
+                if i == int(pos):
+                    b[i] -= 2*h
+                    x_aux[i] -= h
+            fa = obj(a, args) if args is not None else obj(a)
+            fx = obj(x_aux, args) if args is not None else obj(x_aux)
+            fb = obj(b, args) if args is not None else obj(b)
+        elif method == "center":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += h
+                    b[i] -= h
+            fa = obj(a, args) if args is not None else obj(a)
+            fx = obj(x_aux, args) if args is not None else obj(x_aux)
+            fb = obj(b, args) if args is not None else obj(b)
+        diff = (fa - 2 * fx + fb) / den
+    elif order == 'xy':
+        pos_x = int(pos.split(',')[0])
+        pos_y = int(pos.split(',')[1])
+        a = x.copy()
+        a[pos_x] += h
+        a[pos_y] += h
+        b = x.copy()
+        b[pos_x] += h
+        b[pos_y] -= h
+        c = x.copy()
+        c[pos_x] -= h
+        c[pos_y] += h
+        d = x.copy()
+        d[pos_x] -= h
+        d[pos_y] -= h
+        fa = obj(a, args) if args is not None else obj(a)
+        fb = obj(b, args) if args is not None else obj(b)
+        fc = obj(c, args) if args is not None else obj(c)
+        fd = obj(d, args) if args is not None else obj(d)
+        diff = (fa - fb - fc + fd) / (4 * h ** 2)
 
-        else:
-            raise ValueError("Method must be 'central', 'forward', or 'backward'.")
+    return diff
 
-    return grad
+
+def jacobian_matrix(obj: Callable, x: list, method: str, h: float = 1e-10, args: Optional[tuple] = None) -> np.ndarray:
+    """
+    Computes Jacobian matrix of a vector-valued function using finite difference methods.
+
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param x: Point at which to evaluate the derivative.
+    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
+    :param h: Step size for the finite difference approximation (default is 1e-10).
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Numerical Jacobian matrix at point x.
+    """
+
+    jacob = np.zeros((len(x), 1))
+    for i in range(len(x)):
+        jacob[i, 0] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h, args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h)
+
+    return jacob
+
+
+def hessian_matrix(obj: Callable, x: list, method: str, h: float = 1e-5, args: Optional[tuple] = None) -> np.ndarray:
+    """
+    Computes Hessian matrix of a vector-valued function using finite difference methods.
+
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param x: Point at which to evaluate the derivative.
+    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
+    :param h: Step size for the finite difference approximation (default is 1e-10).
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Numerical Hessian matrix at point x.
+    """
+
+    hessian = np.zeros((len(x), len(x)))
+    for i in range(len(x)):
+        for j in range(len(x)):
+            if i == j:
+                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h, args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h)
+            else:
+                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h, args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h)
+
+    return hessian
 
 
 def sampling_kernel_without_time(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, args: Optional[tuple] = None) -> pd.DataFrame:
     """
     Generates random samples from a specified distribution using kernel density estimation.
 
-    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}.
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
     :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+    :param number_of_limit_functions: Number of limit state functions or constraints.
+    :param args: Extra arguments to pass to the objective function (optional).
 
-    :return: Random samples.
+    :return: Random samples, objective function evaluations and indicator functions.
     """
 
-    n_vars = len(random_var_settings)
-    random_data = np.zeros((n_samples, n_vars))
-    
-    # Generate random samples for each variable
-    for i, dist_info in enumerate(random_var_settings):
-        random_data[:, i] = parepydi.random_sampling(
-            dist_info['type'], dist_info['parameters'], method, n_samples
-        )
+    # random_data = np.zeros((n_samples, len(random_var_settings)))
+    # # Generate random samples for each variable
+    # for i, dist_info in enumerate(random_var_settings):
+    #     random_data[:, i] = parepydi.random_sampling(dist_info['type'], dist_info['parameters'], method, n_samples)
 
-    # Evaluate objective function for each sample
-    g_matrix = np.zeros((n_samples, number_of_limit_functions))
-    indicator_matrix = np.zeros_like(g_matrix)
+    # # Evaluate objective function for each sample
+    # g_matrix = np.zeros((n_samples, number_of_limit_functions))
+    # indicator_matrix = np.zeros_like(g_matrix)
+    # for idx, sample in enumerate(random_data):
+    #     g_values = obj(list(sample), args) if args is not None else obj(list(sample))
+    #     g_matrix[idx, :] = g_values
+    #     indicator_matrix[idx, :] = [1 if g <= 0 else 0 for g in g_values]
 
-    for idx, sample in enumerate(random_data):
-        g_values = obj(list(sample), *args) if args else obj(list(sample))
-        g_matrix[idx, :] = g_values
-        indicator_matrix[idx, :] = [1 if g <= 0 else 0 for g in g_values]
+    # # Build DataFrame
+    # df = pd.DataFrame(random_data, columns=[f'X_{i}' for i in range(len(random_var_settings))])
+    # for j in range(number_of_limit_functions):
+    #     df[f'G_{j}'] = g_matrix[:, j]
+    #     df[f'I_{j}'] = indicator_matrix[:, j]
+        
+    dataset_x = {}
+    for i, value in enumerate(random_var_settings):
+        dataset_x[f'X_{i}'] = parepydi.random_sampling(value['type'], value['parameters'], method, n_samples)
+    random_data = pd.DataFrame(dataset_x)
+    results = random_data.apply(lambda row: obj(list(row), args), axis=1) if args is not None else random_data.apply(lambda row: obj(list(row)), axis=1)
+    g_names = []
+    for i in range(number_of_limit_functions):
+        g_names.append(f'G_{i}')
+    random_data[g_names] = pd.DataFrame(results.tolist(), index=random_data.index)
+    for col in g_names:
+        random_data[f'I_{col}'] = np.where(random_data[col] <= 0, 1, 0)
 
-    # Build DataFrame
-    df = pd.DataFrame(random_data, columns=[f'X{i}' for i in range(n_vars)])
-    for j in range(number_of_limit_functions):
-        df[f'g_{j}'] = g_matrix[:, j]
-        df[f'I_{j}'] = indicator_matrix[:, j]
-
-    return df   
+    return random_data
 
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
 #     """
