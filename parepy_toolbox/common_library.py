@@ -1,7 +1,5 @@
 """Common library for PAREpy toolbox"""
-from typing import Union, Optional, Callable
-import re
-from datetime import datetime
+from typing import Optional, Callable
 
 import scipy as sc
 import numpy as np

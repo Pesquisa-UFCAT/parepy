@@ -206,7 +206,6 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     return x
 
 
-
 # def random_sampling(dist: str, parameters_scipy: dict, method: str, n_samples: int) -> list: # ORIGINAL SEM USAR A CONVERSAO
 #     """
 #     Generates random samples from a specified distribution.
