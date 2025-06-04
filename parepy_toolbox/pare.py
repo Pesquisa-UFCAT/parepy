@@ -28,6 +28,14 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
     """
 
+    # x_k (len(random_var_settings), x_0,k, x_1,k, ..., x_n,k)
+    # y_k (len(random_var_settings), y_0,k, y_1,k, ..., y_n,k)
+    # ϐ_k
+    # α_k (len(random_var_settings), α_0,k, α_1,k, ..., α_n,k)
+    # ϐ_k+1
+    # y_k+1 (len(random_var_settings), y_0,k+1, y_1,k+1, ..., y_n,k+1)
+    # x_k+1 (len(random_var_settings), x_0,k+1, x_1,k+1, ..., x_n,k+1)
+    # error
     results = []
     x_k = x0.copy()
     error = 1/tol
