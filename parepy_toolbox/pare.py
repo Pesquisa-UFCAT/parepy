@@ -13,7 +13,7 @@ import parepy_toolbox.common_library as parepyco
 import parepy_toolbox.distributions as parepydi
 
 
-def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, random_var_settings: list, x0: list, method: str = "form", args: Optional[tuple] = None) -> list:
+def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, random_var_settings: list, x0: list, method: str = "form", args: Optional[tuple] = None) -> pd.DataFrame:
     """
     Computes the reliability index and probability of failure using FORM (First Order Reliability Method) or SORM (Second Order Reliability Method).
 
@@ -27,23 +27,17 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
 
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
     """
-
-    # x_k (len(random_var_settings), x_0,k, x_1,k, ..., x_n,k)
-    # y_k (len(random_var_settings), y_0,k, y_1,k, ..., y_n,k)
-    # ϐ_k
-    # α_k (len(random_var_settings), α_0,k, α_1,k, ..., α_n,k)
-    # ϐ_k+1
-    # y_k+1 (len(random_var_settings), y_0,k+1, y_1,k+1, ..., y_n,k+1)
-    # x_k+1 (len(random_var_settings), x_0,k+1, x_1,k+1, ..., x_n,k+1)
-    # error
     results = []
     x_k = x0.copy()
-    error = 1/tol
+    error = 1 / tol
     iteration = 0
+    n = len(random_var_settings)
+
+    start_time = time.time()
 
     # Iteration process
-    while (error > tol and iteration < max_iter):
-        iter_results = []
+    while error > tol and iteration < max_iter:
+        row = {}
         mu_eq = []
         sigma_eq = []
 
@@ -59,40 +53,72 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
         mu_vars = parepyco.mu_matrix(mu_eq)
         y_k = parepyco.x_to_y(np.array(x_k).reshape(-1, 1), dneq1, mu_vars)
         beta_k = np.linalg.norm(y_k)
-        iter_results.append(x_k)
-        iter_results.append(y_k.flatten().tolist())
-        iter_results.append(beta_k)
 
-        # Numerical differentiation g(x) and g(y)
+        # Store initial values of x_k, y_k, and beta_k
+        for i in range(n):
+            row[f"x_{i},k"] = x_k[i]
+            row[f"y_{i},k"] = y_k[i, 0]
+        row["β_k"] = beta_k
+
+         # Numerical differentiation g(x) and g(y)
         g_diff_x = parepyco.jacobian_matrix(obj, x_k, 'center', 1e-12, args) if args is not None else parepyco.jacobian_matrix(obj, x_k, 'center', 1e-12)
         g_diff_y = np.matrix_transpose(dneq) @ g_diff_x
-
+        
         # alpha vector
         norm_gdiff = np.linalg.norm(g_diff_y)
         alpha = g_diff_y / norm_gdiff
-        iter_results.append(alpha.flatten().tolist())
 
-        # Beta update
+        for i in range(n):
+            row[f"α_{i},k"] = alpha[i, 0]
+
+         # Beta update
         g_y = obj(x_k)
         beta_k1 = beta_k + g_y / (np.matrix_transpose(g_diff_y) @ alpha)
-        iter_results.append(beta_k1[0, 0])
-        
-        # yk and xk update
+        row["β_k+1"] = beta_k1[0, 0]
+
+        # yk and xk update 
         y_k1 = - alpha @ beta_k1
-        iter_results.append(y_k1.flatten().tolist())
-        x_k1 = parepyco.y_to_x(y_k1, dneq, mu_vars)
-        x_k1 = x_k1.flatten().tolist()
-        iter_results.append(x_k1)
+        for i in range(n):
+            row[f"y_{i},k+1"] = y_k1[i, 0]
+
+        x_k1 = parepyco.y_to_x(y_k1, dneq, mu_vars).flatten().tolist()
+        for i in range(n):
+            row[f"x_{i},k+1"] = x_k1[i]
 
         # Storage and error
         x_k = x_k1.copy()
         y_k = y_k1.copy()
         iteration += 1
+
         if beta_k == 0.0:
             beta_k = tol * 1E1
         error = np.abs(beta_k1[0, 0] - beta_k) / beta_k
-        iter_results.append(error)
-        results.append(iter_results)
+        row["error"] = error
+
+        results.append(row)
+
+        # Verbose output
+        elapsed_time = time.time() - start_time
+        print(f"Time: {elapsed_time:.2f}s, Iteration {iteration} (error = {error:.4e})")
+
+    df = pd.DataFrame(results)
+
+    # Ordering columns
+    col_order = (
+        [f"x_{i},k" for i in range(n)] +
+        [f"y_{i},k" for i in range(n)] +
+        ["β_k"] +
+        [f"α_{i},k" for i in range(n)] +
+        ["β_k+1"] +
+        [f"y_{i},k+1" for i in range(n)] +
+        [f"x_{i},k+1" for i in range(n)] +
+        ["error"]
+    )
+    results = df[col_order]
+
+    # Last row contain the final beta value
+    final_beta = df["β_k+1"].iloc[-1]
+
 
     # hessian = np.array([[0.7009, 0],[0, 0]]) ####################
     # if method.lower() == "sorm":
@@ -123,7 +149,8 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     #     pf_sorm = sc.stats.norm.cdf(-beta_u) * correction
     #     beta_sorm = -sc.stats.norm.ppf(pf_sorm)
             
-    return results
+    return results, final_beta
+
 
 
 def sampling_algorithm_structural_analysis_(objective_function: Callable, number_of_samples: int, method: str, variables_settings: list, number_of_limit_functions: int, none_variable: Optional[object], block_size: int, parallel: bool = True) -> pd.DataFrame:
@@ -152,7 +179,17 @@ def sampling_algorithm_structural_analysis_(objective_function: Callable, number
     end_time = time.perf_counter()
     print(f"Amostragem concluída em {end_time - start_time:.2f} segundos.")
 
-    return pd.concat(results, ignore_index=True)
+    final_df = pd.concat(results, ignore_index=True)
+
+    f_df, beta_df = parepyco.summarize_failure_probabilities(final_df)
+
+    print("Pf:")
+    print(f_df)
+    print("\nBeta:")
+    print(beta_df)
+    print('\n')
+
+    return final_df
 
 
 # def sampling_generator(number_of_samples: int, numerical_model: Dict, variables_settings: List) -> pd.DataFrame:
