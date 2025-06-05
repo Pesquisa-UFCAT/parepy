@@ -126,6 +126,35 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     return results
 
 
+def sampling_algorithm_structural_analysis_(objective_function: Callable, number_of_samples: int, method: str, variables_settings: list, number_of_limit_functions: int, none_variable: Optional[object], block_size: int, parallel: bool = True) -> pd.DataFrame:
+
+    n_blocks = number_of_samples // block_size
+    remainder = number_of_samples % block_size
+
+    setups = [
+        (objective_function, variables_settings, method, block_size, number_of_limit_functions, (none_variable,))
+        for _ in range(n_blocks)
+    ]
+
+    if remainder > 0:
+        setups.append((
+            objective_function, variables_settings, method, remainder, number_of_limit_functions, (none_variable,)
+        ))
+
+    start_time = time.perf_counter()
+
+    if parallel:
+        with Pool() as pool:
+            results = pool.starmap(parepyco.sampling_kernel_without_time, setups)
+    else:
+        results = [parepyco.sampling_kernel_without_time(*args) for args in setups]
+
+    end_time = time.perf_counter()
+    print(f"Amostragem concluída em {end_time - start_time:.2f} segundos.")
+
+    return pd.concat(results, ignore_index=True)
+
+
 # def sampling_generator(number_of_samples: int, numerical_model: Dict, variables_settings: List) -> pd.DataFrame:
 #     """
 #     Generates random samples for design variables only (X variables).

@@ -276,6 +276,33 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
 
     return random_data
 
+
+def summarize_failure_probabilities(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Generates a summary DataFrame containing the probability of failure (pf) and reliability index (β) for each indicator function column in the input DataFrame.
+
+    :param df: DataFrame containing columns prefixed with 'I_' representing indicator functions.
+
+    :return: Tuple of DataFrames:
+        - pf_df: DataFrame with probability of failure values for each indicator function.
+        - beta_df: DataFrame with reliability index values for each indicator function.
+
+    """
+    pf_values = {}
+    beta_values = {}
+
+    for col in df.columns:
+        if col.startswith("I_"):
+            idx = col.split("_")[1]
+            pf = df[col].mean()
+            beta = beta_equation(pf)
+            pf_values[f"pf_{idx}"] = pf
+            beta_values[f"beta_{idx}"] = beta
+
+    pf_df = pd.DataFrame([pf_values])
+    beta_df = pd.DataFrame([beta_values])
+    return pf_df, beta_df
+
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
 #     """
 #     Generates a set of random numbers according to a specified probability distribution model.
