@@ -119,6 +119,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     # Last row contain the final beta value
     final_beta = df["β_k+1"].iloc[-1]
 
+    final_pf = parepyco.pf_equation(final_beta)
 
     # hessian = np.array([[0.7009, 0],[0, 0]]) ####################
     # if method.lower() == "sorm":
@@ -149,14 +150,14 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     #     pf_sorm = sc.stats.norm.cdf(-beta_u) * correction
     #     beta_sorm = -sc.stats.norm.ppf(pf_sorm)
             
-    return results, final_beta
+    return results, final_pf, final_beta
 
 
-
-def sampling_algorithm_structural_analysis_(objective_function: Callable, number_of_samples: int, method: str, variables_settings: list, number_of_limit_functions: int, none_variable: Optional[object], block_size: int, parallel: bool = True) -> pd.DataFrame:
+def sampling_algorithm_structural_analysis_(objective_function: Callable, number_of_samples: int, method: str,  variables_settings: list, number_of_limit_functions: int, none_variable: Optional[object],  block_size: int, parallel: bool = True, txt_output: bool = False) -> pd.DataFrame:
 
     n_blocks = number_of_samples // block_size
     remainder = number_of_samples % block_size
+
 
     setups = [
         (objective_function, variables_settings, method, block_size, number_of_limit_functions, (none_variable,))
@@ -181,15 +182,40 @@ def sampling_algorithm_structural_analysis_(objective_function: Callable, number
 
     final_df = pd.concat(results, ignore_index=True)
 
+    if txt_output:
+        data_atual = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        nome_arquivo = f"amostragem_{data_atual}.txt"
+        final_df.to_csv(nome_arquivo, sep="\t", index=False)
+        print(f"Arquivo '{nome_arquivo}' salvo com sucesso.")
+
     f_df, beta_df = parepyco.summarize_failure_probabilities(final_df)
 
-    print("Pf:")
-    print(f_df)
-    print("\nBeta:")
-    print(beta_df)
-    print('\n')
+    return final_df, f_df, beta_df
 
-    return final_df
+
+def reprocess_sampling_results(folder_path: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+
+    all_files = [f for f in os.listdir(folder_path) if f.endswith(".txt")]
+    if not all_files:
+        raise FileNotFoundError("Nenhum arquivo .txt encontrado na pasta especificada.")
+
+    dataframes = []
+    for file in all_files:
+        file_path = os.path.join(folder_path, file)
+        df = pd.read_csv(file_path, sep="\t")
+        dataframes.append(df)
+
+    final_df = pd.concat(dataframes, ignore_index=True)
+    print(f"{len(dataframes)} arquivos carregados. Total de amostras: {len(final_df)}.")
+
+    col_I = [col for col in final_df.columns if col.startswith("I_")]
+    if not col_I:
+        raise ValueError("Nenhuma coluna de indicador de falha ('I_*') foi encontrada nos arquivos.")
+
+    f_df, beta_df = parepyco.summarize_failure_probabilities(final_df)
+    print("Reavaliação concluída com sucesso.")
+
+    return final_df, f_df, beta_df
 
 
 # def sampling_generator(number_of_samples: int, numerical_model: Dict, variables_settings: List) -> pd.DataFrame:

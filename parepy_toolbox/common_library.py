@@ -4,6 +4,7 @@ from typing import Optional, Callable
 import scipy as sc
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 import parepy_toolbox.distributions as parepydi
 
@@ -301,7 +302,53 @@ def summarize_failure_probabilities(df: pd.DataFrame) -> pd.DataFrame:
 
     pf_df = pd.DataFrame([pf_values])
     beta_df = pd.DataFrame([beta_values])
+
     return pf_df, beta_df
+
+
+def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
+    """
+    This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
+
+    :param df: DataFrame containing the data with indicator function column
+    :param column: Name of the column to be analyzed.
+
+    :return: Tuple of lists:
+    
+        - div: List of sample sizes considered at each step.
+        - m: List of running mean values (estimated probability of failure).
+        - ci_l: List containing the lower confidence interval values of the column.
+        - ci_u: List containing the upper confidence interval values of the column.
+        - var: List containing the variance values of the column.
+    """
+    
+    column_values = df[column].to_list()
+    step = 1000
+    div = [i for i in range(step, len(column_values), step)]
+    m = []
+    ci_u = []
+    ci_l = []
+    var = []
+    for i in range(0, len(div)+1):
+        if i == len(div):
+            aux = column_values.copy()
+            div.append(len(column_values))
+        else:
+            aux = column_values[:div[i]]
+        mean = np.mean(aux)
+        std = np.std(aux, ddof=1)
+        n = len(aux)
+        confidence_level = 0.95
+        t_critic = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
+        margin = t_critic * (std / np.sqrt(n))
+        confidence_interval = (mean - margin, mean + margin)
+        m.append(mean)
+        ci_u.append(confidence_interval[1])
+        ci_l.append(confidence_interval[0])
+        var.append((mean * (1 - mean))/n)
+
+    return div, m, ci_l, ci_u, var
+
 
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
 #     """
@@ -528,50 +575,6 @@ def summarize_failure_probabilities(df: pd.DataFrame) -> pd.DataFrame:
 #             df_beta[f'G_{i}'] = beta_results
 
 #     return df_pf, df_beta
-
-
-# def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
-#     """
-#     This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
-
-#     :param df: DataFrame containing the data with indicator function column
-#     :param column: Name of the column to be analyzed.
-
-#     :return: Tuple of lists:
-    
-#         - div: List of sample sizes considered at each step.
-#         - m: List of running mean values (estimated probability of failure).
-#         - ci_l: List containing the lower confidence interval values of the column.
-#         - ci_u: List containing the upper confidence interval values of the column.
-#         - var: List containing the variance values of the column.
-#     """
-    
-#     column_values = df[column].to_list()
-#     step = 1000
-#     div = [i for i in range(step, len(column_values), step)]
-#     m = []
-#     ci_u = []
-#     ci_l = []
-#     var = []
-#     for i in range(0, len(div)+1):
-#         if i == len(div):
-#             aux = column_values.copy()
-#             div.append(len(column_values))
-#         else:
-#             aux = column_values[:div[i]]
-#         mean = np.mean(aux)
-#         std = np.std(aux, ddof=1)
-#         n = len(aux)
-#         confidence_level = 0.95
-#         t_critic = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
-#         margin = t_critic * (std / np.sqrt(n))
-#         confidence_interval = (mean - margin, mean + margin)
-#         m.append(mean)
-#         ci_u.append(confidence_interval[1])
-#         ci_l.append(confidence_interval[0])
-#         var.append((mean * (1 - mean))/n)
-
-#     return div, m, ci_l, ci_u, var
 
 
 # def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> tuple[pd.DataFrame, list]:
