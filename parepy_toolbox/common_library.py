@@ -94,7 +94,7 @@ def beta_equation(pf: float) -> float:
     return -sc.stats.norm.ppf(pf)
 
 
-def first_second_order_derivative_numerical_differentiation_unidimensional(obj: Callable, x: list, pos: str, method: str, order: str = 'first', h: float = 1e-10, args: Optional[tuple] = None) -> float:
+def first_second_order_derivative_numerical_differentiation_unidimensional(obj: Callable, x: list, pos: str, method: str, order: str = 'first', h: float = 1E-5, args: Optional[tuple] = None) -> float:
     """
     Computes the numerical derivative of a function at a given point in the given dimension using the central, backward and forward difference method.
 
@@ -185,7 +185,7 @@ def first_second_order_derivative_numerical_differentiation_unidimensional(obj: 
     return diff
 
 
-def jacobian_matrix(obj: Callable, x: list, method: str, h: float = 1e-10, args: Optional[tuple] = None) -> np.ndarray:
+def jacobian_matrix(obj: Callable, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None) -> np.ndarray:
     """
     Computes Jacobian matrix of a vector-valued function using finite difference methods.
 
@@ -205,7 +205,7 @@ def jacobian_matrix(obj: Callable, x: list, method: str, h: float = 1e-10, args:
     return jacob
 
 
-def hessian_matrix(obj: Callable, x: list, method: str, h: float = 1e-5, args: Optional[tuple] = None) -> np.ndarray:
+def hessian_matrix(obj: Callable, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None) -> np.ndarray:
     """
     Computes Hessian matrix of a vector-valued function using finite difference methods.
 
@@ -243,41 +243,41 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     :return: Random samples, objective function evaluations and indicator functions.
     """
 
-    # if method != 'sobol':
-    #     random_data = np.zeros((n_samples, len(random_var_settings)))
-    # else:
-    #     random_data = np.zeros((2**n_samples , len(random_var_settings)))
-    # # Generate random samples for each variable
-    # for i, dist_info in enumerate(random_var_settings):
-    #     random_data[:, i] = parepydi.random_sampling(dist_info['type'], dist_info['parameters'], method, n_samples)
+    if method != 'sobol':
+        random_data = np.zeros((n_samples, len(random_var_settings)))
+    else:
+        random_data = np.zeros((2**n_samples , len(random_var_settings)))
+    # Generate random samples for each variable
+    for i, dist_info in enumerate(random_var_settings):
+        random_data[:, i] = parepydi.random_sampling(dist_info['type'], dist_info['parameters'], method, n_samples)
 
-    # # Evaluate objective function for each sample
-    # g_matrix = np.zeros((n_samples, number_of_limit_functions))
-    # indicator_matrix = np.zeros_like(g_matrix)
-    # for idx, sample in enumerate(random_data):
-    #     g_values = obj(list(sample), args) if args is not None else obj(list(sample))
-    #     g_matrix[idx, :] = g_values
-    #     indicator_matrix[idx, :] = [1 if g <= 0 else 0 for g in g_values]
+    # Evaluate objective function for each sample
+    g_matrix = np.zeros((n_samples, number_of_limit_functions))
+    indicator_matrix = np.zeros_like(g_matrix)
+    for idx, sample in enumerate(random_data):
+        g_values = obj(list(sample), args) if args is not None else obj(list(sample))
+        g_matrix[idx, :] = g_values
+        indicator_matrix[idx, :] = [1 if g <= 0 else 0 for g in g_values]
 
-    # # Build DataFrame
-    # df = pd.DataFrame(random_data, columns=[f'X_{i}' for i in range(len(random_var_settings))])
-    # for j in range(number_of_limit_functions):
-    #     df[f'G_{j}'] = g_matrix[:, j]
-    #     df[f'I_{j}'] = indicator_matrix[:, j]
+    # Build DataFrame
+    df = pd.DataFrame(random_data, columns=[f'X_{i}' for i in range(len(random_var_settings))])
+    for j in range(number_of_limit_functions):
+        df[f'G_{j}'] = g_matrix[:, j]
+        df[f'I_{j}'] = indicator_matrix[:, j]
 
-    dataset_x = {}
-    for i, value in enumerate(random_var_settings):
-        dataset_x[f'X_{i}'] = parepydi.random_sampling(value['type'], value['parameters'], method, n_samples)
-    random_data = pd.DataFrame(dataset_x)
-    results = random_data.apply(lambda row: obj(list(row), args), axis=1) if args is not None else random_data.apply(lambda row: obj(list(row)), axis=1)
-    g_names = []
-    for i in range(number_of_limit_functions):
-        g_names.append(f'G_{i}')
-    random_data[g_names] = pd.DataFrame(results.tolist(), index=random_data.index)
-    for col in g_names:
-        random_data[f'I_{col}'] = np.where(random_data[col] <= 0, 1, 0)
+    # dataset_x = {}
+    # for i, value in enumerate(random_var_settings):
+    #     dataset_x[f'X_{i}'] = parepydi.random_sampling(value['type'], value['parameters'], method, n_samples)
+    # random_data = pd.DataFrame(dataset_x)
+    # results = random_data.apply(lambda row: obj(list(row), args), axis=1) if args is not None else random_data.apply(lambda row: obj(list(row)), axis=1)
+    # g_names = []
+    # for i in range(number_of_limit_functions):
+    #     g_names.append(f'G_{i}')
+    # random_data[g_names] = pd.DataFrame(results.tolist(), index=random_data.index)
+    # for col in g_names:
+    #     random_data[f'I_{col}'] = np.where(random_data[col] <= 0, 1, 0)
 
-    return random_data
+    return df
 
 
 def summarize_pf_beta(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -309,7 +309,7 @@ def summarize_pf_beta(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
 
 def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
     """
-    This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
+    Calculates the convergence rate of the probability of failure.
 
     :param df: Random samples, objective function evaluations and indicator functions.
     :param column: Name of the column to be analyzed. Supported values: 'I_0', 'I_1', ..., 'I_n' where n is the number of limit state functions.

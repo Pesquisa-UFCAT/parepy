@@ -12,16 +12,15 @@ import parepy_toolbox.common_library as parepyco
 import parepy_toolbox.distributions as parepydi
 
 
-def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, random_var_settings: list, x0: list, method: str = "form", verbose: bool = False, args: Optional[tuple] = None) -> tuple[pd.DataFrame, float, float]:
+def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, random_var_settings: list, x0: list, verbose: bool = False, args: Optional[tuple] = None) -> tuple[pd.DataFrame, float, float]:
     """
-    Computes the reliability index and probability of failure using FORM (First Order Reliability Method) or SORM (Second Order Reliability Method).
+    Computes the reliability index and probability of failure using FORM (First Order Reliability Method).
 
     :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
     :param tol: Tolerance for convergence.
     :param max_iter: Maximum number of iterations allowed.
     :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
     :param x0: Initial guess.
-    :param method: Method to use for reliability analysis. Supported values: "form" or "sorm".
     :param verbose: If True, prints detailed information about the process.
     :param args: Extra arguments to pass to the objective function (optional).
 
@@ -118,7 +117,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     final_beta = df["β_k+1"].iloc[-1]
     final_pf = parepyco.pf_equation(final_beta)
 
-    # hessian = np.array([[0.7009, 0],[0, 0]]) ####################
+    # hessian = parepyco.hessian_matrix(obj, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None)
     # if method.lower() == "sorm":
     #     beta_u = beta_k1[0, 0]
     #     mu_eq = []
@@ -132,7 +131,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     #     dneq, dneq1 = parepyco.std_matrix(sigma_eq)
     #     mu_vars = parepyco.mu_matrix(mu_eq)
     #     # Numerical differentiation g(y)
-    #     g_diff_x = parepyco.jacobian_matrix(obj, x_k, 'center', 1e-12, args) if args is not None else parepyco.jacobian_matrix(obj, x_k, 'center', 1e-12)
+    #     g_diff_x = parepyco.jacobian_matrix(obj, x_k, 'center', h=1E-8, args=args) if args is not None else parepyco.jacobian_matrix(obj, x_k, 'center', h=1E-8)
     #     g_diff_y = np.matrix_transpose(dneq) @ np.array(g_diff_x).reshape(-1, 1)
     #     norm_gdiff = np.linalg.norm(g_diff_y)
     #     m = len(x_k)
@@ -172,12 +171,12 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     if method != 'sobol':
         samples_per_block = n_samples // block_size
         samples_per_block_remainder = n_samples % block_size
-        setups = [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions, args=args) for _ in range(block_size)] if args is not None else [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions) for _ in range(block_size)]
+        setups = [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions, args) for _ in range(block_size)] if args is not None else [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions) for _ in range(block_size)]
         if samples_per_block_remainder > 0:
-            setups.append((obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions, args=args) if args is not None else (obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions))
+            setups.append((obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions, args) if args is not None else (obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions))
     else:
         parallel = False
-        setups = [(obj, random_var_settings, method, n_samples, number_of_limit_functions, args=args) if args is not None else (obj, random_var_settings, method, n_samples, number_of_limit_functions)]
+        setups = [(obj, random_var_settings, method, n_samples, number_of_limit_functions, args) if args is not None else (obj, random_var_settings, method, n_samples, number_of_limit_functions)]
 
     # Random sampling and computes G function
     start_time = time.perf_counter()
