@@ -68,7 +68,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
             row[f"α_{i},k"] = alpha[i, 0]
 
         # Beta update
-        g_y = obj(x_k)
+        g_y = obj(x_k, args) if args is not None else obj(x_k)
         beta_k1 = beta_k + g_y / (np.matrix_transpose(g_diff_y) @ alpha)
         row["β_k+1"] = beta_k1[0, 0]
 
