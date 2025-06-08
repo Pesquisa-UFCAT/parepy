@@ -4,7 +4,6 @@ from typing import Optional, Callable
 import scipy as sc
 import numpy as np
 import pandas as pd
-from scipy import stats
 
 import parepy_toolbox.distributions as parepydi
 
@@ -15,7 +14,7 @@ def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
 
     :param std: Standard deviation parameters.
 
-    return: output[0] = D matrix, output[1] = D^-1 matrix
+    return: output[0] = D matrix, output[1] = D^-1 matrix.
     """
 
     dneq = np.zeros((len(std), len(std)))
@@ -33,7 +32,7 @@ def mu_matrix(mean: list) -> np.ndarray:
 
     :param mu: Mean parameters.
 
-    return: Mean matrix
+    return: Mean matrix.
     """
 
     mu_neq = np.zeros((len(mean), 1))
@@ -201,7 +200,7 @@ def jacobian_matrix(obj: Callable, x: list, method: str, h: float = 1e-10, args:
 
     jacob = np.zeros((len(x), 1))
     for i in range(len(x)):
-        jacob[i, 0] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h, args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h)
+        jacob[i, 0] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h=h)
 
     return jacob
 
@@ -223,9 +222,9 @@ def hessian_matrix(obj: Callable, x: list, method: str, h: float = 1e-5, args: O
     for i in range(len(x)):
         for j in range(len(x)):
             if i == j:
-                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h, args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h)
+                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h=h)
             else:
-                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h, args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h)
+                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h=h)
 
     return hessian
 
@@ -244,7 +243,10 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     :return: Random samples, objective function evaluations and indicator functions.
     """
 
-    # random_data = np.zeros((n_samples, len(random_var_settings)))
+    # if method != 'sobol':
+    #     random_data = np.zeros((n_samples, len(random_var_settings)))
+    # else:
+    #     random_data = np.zeros((2**n_samples , len(random_var_settings)))
     # # Generate random samples for each variable
     # for i, dist_info in enumerate(random_var_settings):
     #     random_data[:, i] = parepydi.random_sampling(dist_info['type'], dist_info['parameters'], method, n_samples)
@@ -262,7 +264,7 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     # for j in range(number_of_limit_functions):
     #     df[f'G_{j}'] = g_matrix[:, j]
     #     df[f'I_{j}'] = indicator_matrix[:, j]
-        
+
     dataset_x = {}
     for i, value in enumerate(random_var_settings):
         dataset_x[f'X_{i}'] = parepydi.random_sampling(value['type'], value['parameters'], method, n_samples)
@@ -278,17 +280,16 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     return random_data
 
 
-def summarize_failure_probabilities(df: pd.DataFrame) -> pd.DataFrame:
+def summarize_pf_beta(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Generates a summary DataFrame containing the probability of failure (pf) and reliability index (β) for each indicator function column in the input DataFrame.
 
-    :param df: DataFrame containing columns prefixed with 'I_' representing indicator functions.
+    :param df: Random samples, objective function evaluations and indicator functions.
 
-    :return: Tuple of DataFrames:
-        - pf_df: DataFrame with probability of failure values for each indicator function.
-        - beta_df: DataFrame with reliability index values for each indicator function.
+    :return: output [0] = Probability of failure values for each indicator function, output[1] = beta_df: Reliability index values for each indicator function.
 
     """
+    
     pf_values = {}
     beta_values = {}
 
@@ -310,18 +311,12 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     """
     This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
 
-    :param df: DataFrame containing the data with indicator function column
-    :param column: Name of the column to be analyzed.
+    :param df: Random samples, objective function evaluations and indicator functions.
+    :param column: Name of the column to be analyzed. Supported values: 'I_0', 'I_1', ..., 'I_n' where n is the number of limit state functions.
 
-    :return: Tuple of lists:
-    
-        - div: List of sample sizes considered at each step.
-        - m: List of running mean values (estimated probability of failure).
-        - ci_l: List containing the lower confidence interval values of the column.
-        - ci_u: List containing the upper confidence interval values of the column.
-        - var: List containing the variance values of the column.
+    :return: output[0] = div: List of sample sizes considered at each step, output[1] = m: List of mean values (estimated probability of failure), output[2] = ci_l: List containing the lower confidence interval values of the column, output[3] = ci_u: List containing the upper confidence interval values of the column, output[4] = var: List containing the variance values of the column. 
     """
-    
+
     column_values = df[column].to_list()
     step = 1000
     div = [i for i in range(step, len(column_values), step)]
@@ -339,7 +334,7 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
         std = np.std(aux, ddof=1)
         n = len(aux)
         confidence_level = 0.95
-        t_critic = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
+        t_critic = sc.stats.t.ppf((1 + confidence_level) / 2, df=n-1)
         margin = t_critic * (std / np.sqrt(n))
         confidence_interval = (mean - margin, mean + margin)
         m.append(mean)

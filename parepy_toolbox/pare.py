@@ -1,10 +1,9 @@
 """Probabilistic Approach to Reliability Engineering (PAREPY)"""
 import time
 import os
-import itertools
 from datetime import datetime
 from multiprocessing import Pool
-from typing import Callable, List, Dict, Tuple, Optional
+from typing import Callable, Optional
 
 import numpy as np
 import pandas as pd
@@ -13,7 +12,7 @@ import parepy_toolbox.common_library as parepyco
 import parepy_toolbox.distributions as parepydi
 
 
-def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, random_var_settings: list, x0: list, method: str = "form", args: Optional[tuple] = None) -> pd.DataFrame:
+def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, random_var_settings: list, x0: list, method: str = "form", verbose: bool = False, args: Optional[tuple] = None) -> tuple[pd.DataFrame, float, float]:
     """
     Computes the reliability index and probability of failure using FORM (First Order Reliability Method) or SORM (Second Order Reliability Method).
 
@@ -23,17 +22,18 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
     :param x0: Initial guess.
     :param method: Method to use for reliability analysis. Supported values: "form" or "sorm".
+    :param verbose: If True, prints detailed information about the process.
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
     """
+
     results = []
     x_k = x0.copy()
     error = 1 / tol
     iteration = 0
     n = len(random_var_settings)
-
-    start_time = time.time()
+    start_time = time.perf_counter()
 
     # Iteration process
     while error > tol and iteration < max_iter:
@@ -53,25 +53,22 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
         mu_vars = parepyco.mu_matrix(mu_eq)
         y_k = parepyco.x_to_y(np.array(x_k).reshape(-1, 1), dneq1, mu_vars)
         beta_k = np.linalg.norm(y_k)
-
-        # Store initial values of x_k, y_k, and beta_k
         for i in range(n):
             row[f"x_{i},k"] = x_k[i]
             row[f"y_{i},k"] = y_k[i, 0]
         row["β_k"] = beta_k
 
-         # Numerical differentiation g(x) and g(y)
-        g_diff_x = parepyco.jacobian_matrix(obj, x_k, 'center', 1e-12, args) if args is not None else parepyco.jacobian_matrix(obj, x_k, 'center', 1e-12)
+        # Numerical differentiation g(x) and g(y)
+        g_diff_x = parepyco.jacobian_matrix(obj, x_k, 'center', h=1E-8, args=args) if args is not None else parepyco.jacobian_matrix(obj, x_k, 'center', h=1E-8)
         g_diff_y = np.matrix_transpose(dneq) @ g_diff_x
         
         # alpha vector
         norm_gdiff = np.linalg.norm(g_diff_y)
         alpha = g_diff_y / norm_gdiff
-
         for i in range(n):
             row[f"α_{i},k"] = alpha[i, 0]
 
-         # Beta update
+        # Beta update
         g_y = obj(x_k)
         beta_k1 = beta_k + g_y / (np.matrix_transpose(g_diff_y) @ alpha)
         row["β_k+1"] = beta_k1[0, 0]
@@ -89,17 +86,16 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
         x_k = x_k1.copy()
         y_k = y_k1.copy()
         iteration += 1
-
         if beta_k == 0.0:
             beta_k = tol * 1E1
         error = np.abs(beta_k1[0, 0] - beta_k) / beta_k
         row["error"] = error
 
+        # Verbose 
+        if verbose:
+            elapsed_time = time.perf_counter() - start_time
+            print(f"⏱️ Time: {elapsed_time:.4e}s, Iteration {iteration} (error = {error:.4e})")
         results.append(row)
-
-        # Verbose output
-        elapsed_time = time.time() - start_time
-        print(f"Time: {elapsed_time:.2f}s, Iteration {iteration} (error = {error:.4e})")
 
     df = pd.DataFrame(results)
 
@@ -116,9 +112,10 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     )
     results = df[col_order]
 
-    # Last row contain the final beta value
+    # Last row contain the final beta value and probability of failure
+    if verbose:
+        print("🧮 Computes β and pf")
     final_beta = df["β_k+1"].iloc[-1]
-
     final_pf = parepyco.pf_equation(final_beta)
 
     # hessian = np.array([[0.7009, 0],[0, 0]]) ####################
@@ -149,51 +146,63 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     #     correction = 1 / np.sqrt(det_j)
     #     pf_sorm = sc.stats.norm.cdf(-beta_u) * correction
     #     beta_sorm = -sc.stats.norm.ppf(pf_sorm)
-            
+    if verbose:
+        print("✔️ Algorithm finished!")
+
     return results, final_pf, final_beta
 
 
-def sampling_algorithm_structural_analysis_(objective_function: Callable, number_of_samples: int, method: str,  variables_settings: list, number_of_limit_functions: int, none_variable: Optional[object],  block_size: int, parallel: bool = True, txt_output: bool = False) -> pd.DataFrame:
+def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, parallel: bool = True, verbose: bool = False, args: Optional[tuple] = None) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """                                    
+    Computes the reliability index and probability of failure using sampling methods.
 
-    n_blocks = number_of_samples // block_size
-    remainder = number_of_samples % block_size
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+    :param number_of_limit_functions: Number of limit state functions or constraints.
+    :param parallel: Start parallel process.
+    :param verbose: If True, prints detailed information about the process.
+    :param args: Extra arguments to pass to the objective function (optional).
 
+    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.
+    """
 
-    setups = [
-        (objective_function, variables_settings, method, block_size, number_of_limit_functions, (none_variable,))
-        for _ in range(n_blocks)
-    ]
+    block_size = 100
+    if method != 'sobol':
+        samples_per_block = n_samples // block_size
+        samples_per_block_remainder = n_samples % block_size
+        setups = [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions, args=args) for _ in range(block_size)] if args is not None else [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions) for _ in range(block_size)]
+        if samples_per_block_remainder > 0:
+            setups.append((obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions, args=args) if args is not None else (obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions))
+    else:
+        parallel = False
+        setups = [(obj, random_var_settings, method, n_samples, number_of_limit_functions, args=args) if args is not None else (obj, random_var_settings, method, n_samples, number_of_limit_functions)]
 
-    if remainder > 0:
-        setups.append((
-            objective_function, variables_settings, method, remainder, number_of_limit_functions, (none_variable,)
-        ))
-
+    # Random sampling and computes G function
     start_time = time.perf_counter()
-
     if parallel:
         with Pool() as pool:
             results = pool.starmap(parepyco.sampling_kernel_without_time, setups)
     else:
-        results = [parepyco.sampling_kernel_without_time(*args) for args in setups]
-
+        results = [parepyco.sampling_kernel_without_time(*args_aux) for args_aux in setups]
     end_time = time.perf_counter()
-    print(f"Amostragem concluída em {end_time - start_time:.2f} segundos.")
-
     final_df = pd.concat(results, ignore_index=True)
+    if verbose:
+        print(f"Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
 
-    if txt_output:
-        data_atual = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        nome_arquivo = f"amostragem_{data_atual}.txt"
-        final_df.to_csv(nome_arquivo, sep="\t", index=False)
-        print(f"Arquivo '{nome_arquivo}' salvo com sucesso.")
+    if verbose:
+        filename = f"sampling_{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.txt"
+        final_df.to_csv(filename, sep="\t", index=False)
+        print(f"file '{filename}' has been successfully saved.")
 
-    f_df, beta_df = parepyco.summarize_failure_probabilities(final_df)
+    # Computes pf and beta
+    pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
 
-    return final_df, f_df, beta_df
+    return final_df, pf_df, beta_df
 
 
-def reprocess_sampling_results(folder_path: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def reprocess_sampling_results(folder_path: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
     all_files = [f for f in os.listdir(folder_path) if f.endswith(".txt")]
     if not all_files:
