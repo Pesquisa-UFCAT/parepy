@@ -14,7 +14,8 @@ sys.path.insert(0, os.path.abspath('../../parepy_toolbox'))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages'
 ]
 
 add_module_names = False
