@@ -363,7 +363,6 @@ def generate_factorial_design(variable_names: List[str], levels_per_variable: Li
     return df
 
 
-
 # def sampling_algorithm_structural_analysis_kernel(objective_function: callable, number_of_samples: int, numerical_model: dict, variables_settings: list, number_of_limit_functions: int, none_variable = None) -> pd.DataFrame:
 #     """
 #     Creates samples and evaluates the limit state functions in structural reliability problems.
