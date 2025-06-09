@@ -1,3 +1,7 @@
+# folders
 env/
 __pycache__/
-*.pyc
+parepy_toolbox/__pycache__/
+ambiente_parepy/
+*.txt
+.ipynb_checkpoints/

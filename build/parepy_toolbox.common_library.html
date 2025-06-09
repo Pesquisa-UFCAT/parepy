@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>parepy_toolbox.common_library module &#8212; Parepy  documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=67a6116b" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?v=9f571ed1" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=e6b0ddf4" />
+    <link id="pygments_dark_css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css" href="_static/pygments_dark.css?v=5349f25f" />
+    
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="parepy_toolbox.distributions module" href="parepy_toolbox.distributions.html" />
+    <link rel="prev" title="parepy_toolbox package" href="parepy_toolbox.html" /><link rel="stylesheet" href="_static/pydoctheme_dark.css" media="(prefers-color-scheme: dark)" id="pydoctheme_dark_css">
+    <link rel="shortcut icon" type="image/png" href="_static/py.svg">
+            <script type="text/javascript" src="_static/copybutton.js"></script>
+            <script type="text/javascript" src="_static/menu.js"></script>
+            <script type="text/javascript" src="_static/search-focus.js"></script>
+            <script type="text/javascript" src="_static/themetoggle.js"></script> 
+  </head>
+<body>
+<div class="mobile-nav">
+    <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu">
+    <nav class="nav-content" role="navigation">
+        <label for="menuToggler" class="toggler__label">
+            <span></span>
+        </label>
+        <span class="nav-items-wrapper">
+            <a href="https://www.python.org/" class="nav-logo">
+                <img src="_static/py.svg" alt="Python logo">
+            </a>
+            <span class="version_switcher_placeholder"></span>
+            <form role="search" class="search" action="search.html" method="get">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="search-icon">
+                    <path fill-rule="nonzero" fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+                <input placeholder="Quick search" aria-label="Quick search" type="search" name="q">
+                <input type="submit" value="Go">
+            </form>
+        </span>
+    </nav>
+    <div class="menu-wrapper">
+        <nav class="menu" role="navigation" aria-label="main navigation">
+            <div class="language_switcher_placeholder"></div>
+            
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="activateTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label>
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">parepy_toolbox.common_library module</a><ul>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.beta_equation"><code class="docutils literal notranslate"><span class="pre">beta_equation()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.calc_pf_beta"><code class="docutils literal notranslate"><span class="pre">calc_pf_beta()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.convergence_probability_failure"><code class="docutils literal notranslate"><span class="pre">convergence_probability_failure()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.cornell_algorithm_structural_analysis"><code class="docutils literal notranslate"><span class="pre">cornell_algorithm_structural_analysis()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.fbf"><code class="docutils literal notranslate"><span class="pre">fbf()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.hasofer_lind_rackwitz_fiessler_algorithm"><code class="docutils literal notranslate"><span class="pre">hasofer_lind_rackwitz_fiessler_algorithm()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.log_message"><code class="docutils literal notranslate"><span class="pre">log_message()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.newton_raphson"><code class="docutils literal notranslate"><span class="pre">newton_raphson()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.norm_array"><code class="docutils literal notranslate"><span class="pre">norm_array()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.pf_equation"><code class="docutils literal notranslate"><span class="pre">pf_equation()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.sampling"><code class="docutils literal notranslate"><span class="pre">sampling()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="parepy_toolbox.html"
+                          title="previous chapter">parepy_toolbox package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="parepy_toolbox.distributions.html"
+                          title="next chapter">parepy_toolbox.distributions module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/parepy_toolbox.common_library.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </nav>
+    </div>
+</div>
+  
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parepy_toolbox.distributions.html" title="parepy_toolbox.distributions module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="parepy_toolbox.html" title="parepy_toolbox package"
+             accesskey="P">previous</a> |</li>
+          <li><img src="_static/py.svg" alt="Python logo" style="vertical-align: middle; margin-top: -1px"></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="index.html">Parepy  documentation</a> &#187;
+              
+          </li>
+          <li class="nav-item nav-item-1"><a href="parepy_toolbox.html" accesskey="U">parepy_toolbox package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">parepy_toolbox.common_library module</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="search" name="q" id="search-box">
+          <input type="submit" value="Go">
+        </form>
+    </div>
+                     |
+                </li>
+            <li class="right">
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="activateTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label> |</li>
+            
+      </ul>
+    </div>    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-parepy_toolbox.common_library">
+<span id="parepy-toolbox-common-library-module"></span><h1>parepy_toolbox.common_library module<a class="headerlink" href="#module-parepy_toolbox.common_library" title="Link to this heading"><span>#</span></a></h1>
+<p>Common library for PAREpy toolbox</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.beta_equation">
+<span class="sig-name descname"><span class="pre">beta_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pf</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.beta_equation" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>This function calculates the reliability index value for a given probability of failure (pf).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> (<em>float</em>) – Probability of failure (pf) value to be converted to beta.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If pf is not between 0 and 1.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Beta value (β) corresponding to the given pf.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float | str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.calc_pf_beta">
+<span class="sig-name descname"><span class="pre">calc_pf_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_or_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_constraints</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.calc_pf_beta" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Calculates the probability of failure (pf) and reliability index (β) based on the columns of a DataFrame
+that start with ‘I’ (indicator function). If a .txt file path is passed, this function evaluates pf and β values too.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_or_path</strong> (<em>DataFrame</em><em> | </em><em>str</em>) – A DataFrame containing boolean indicator columns prefixed with ‘I’, or a string path to a .txt file.</p></li>
+<li><p><strong>numerical_model</strong> (<em>str</em>) – Dictionary containing the numerical model.</p></li>
+<li><p><strong>n_constraints</strong> (<em>int</em>) – Number of limit state functions or constraints.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Tuple of DataFrames:</p>
+<ul class="simple">
+<li><p>df_pf: probability of failure values for each column prefixed with ‘G’.</p></li>
+<li><p>df_beta: reliability index values for each column prefixed with ‘G’.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>DataFrame</em>, <em>DataFrame</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.convergence_probability_failure">
+<span class="sig-name descname"><span class="pre">convergence_probability_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.convergence_probability_failure" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing the data with indicator function column</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Name of the column to be analyzed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Tuple of lists:</p>
+<ul class="simple">
+<li><p>div: List of sample sizes considered at each step.</p></li>
+<li><p>m: List of running mean values (estimated probability of failure).</p></li>
+<li><p>ci_l: List containing the lower confidence interval values of the column.</p></li>
+<li><p>ci_u: List containing the upper confidence interval values of the column.</p></li>
+<li><p>var: List containing the variance values of the column.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list, list, list, list, list]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.cornell_algorithm_structural_analysis">
+<span class="sig-name descname"><span class="pre">cornell_algorithm_structural_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.cornell_algorithm_structural_analysis" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Applies the Cornell reliability algorithm to evaluate the probability of failure and reliability index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>setup</strong> (<em>dict</em>) – <p>Dictionary containing the input settings, including:</p>
+<ul class="simple">
+<li><p>’variables settings’: list of variable configurations with ‘mean’ and ‘sigma’ values,</p></li>
+<li><p>’objective function’: function that returns a list of g values,</p></li>
+<li><p>’none variable’: additional fixed parameters for the objective function.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>Tuple of two DataFrames:</p>
+<ul class="simple">
+<li><p>pf_dataframe: DataFrame containing the probability of failure (pf) for each limit state.</p></li>
+<li><p>beta_dataframe: DataFrame containing the reliability index (β) for each limit state.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>DataFrame</em>, <em>DataFrame</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.fbf">
+<span class="sig-name descname"><span class="pre">fbf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algorithm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_constraints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_analysis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_about_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.fbf" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>This function application first barrier failure algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> (<em>str</em>) – Name of the algorithm.</p></li>
+<li><p><strong>n_constraints</strong> (<em>int</em>) – Number of constraints analyzed.</p></li>
+<li><p><strong>time_analysis</strong> (<em>int</em>) – Time period for analysis.</p></li>
+<li><p><strong>results_about_data</strong> (<em>DataFrame</em>) – DataFrame containing the results to be processed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated DataFrame after processing.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>DataFrame</em>, list]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.hasofer_lind_rackwitz_fiessler_algorithm">
+<span class="sig-name descname"><span class="pre">hasofer_lind_rackwitz_fiessler_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_y_k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.hasofer_lind_rackwitz_fiessler_algorithm" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Calculates the new y value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_k</strong> (<em>ndarray</em>) – Current y value.</p></li>
+<li><p><strong>g_y</strong> (<em>float</em>) – Objective function at point <cite>y_k</cite>.</p></li>
+<li><p><strong>grad_y_k</strong> (<em>ndarray</em>) – Gradient of the objective function at point <cite>y_k</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New y value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.log_message">
+<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.log_message" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Logs a message with the current time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – The message to log.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.newton_raphson">
+<span class="sig-name descname"><span class="pre">newton_raphson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.newton_raphson" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Calculates the root of a function using the Newton-Raphson method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>Callable</em>) – Function for which the root is sought.</p></li>
+<li><p><strong>df</strong> (<em>Callable</em>) – Derivative of the function.</p></li>
+<li><p><strong>x0</strong> (<em>float</em>) – Initial guess for the root.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance for convergence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Approximated root of the function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.norm_array">
+<span class="sig-name descname"><span class="pre">norm_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.norm_array" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Evaluates the norm of the array ar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ar</strong> (<em>list</em>) – A list of numerical values (floats) representing the array.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The norm of the array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.pf_equation">
+<span class="sig-name descname"><span class="pre">pf_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.pf_equation" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>beta</strong> (<em>float</em>) – Reliability index (β).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Probability of failure.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.sampling">
+<span class="sig-name descname"><span class="pre">sampling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables_setup</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#parepy_toolbox.common_library.sampling" title="Link to this definition"><span>#</span></a></dt>
+<dd><p>Generates a set of random numbers according to a specified probability distribution model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples to generate.</p></li>
+<li><p><strong>model</strong> (<em>dict</em>) – Dictionary containing the model parameters.</p></li>
+<li><p><strong>variables_setup</strong> (<em>list</em>) – List of dictionaries, each containing parameters for a random variable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Numpy array with the generated random samples.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">parepy_toolbox.common_library module</a><ul>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.beta_equation"><code class="docutils literal notranslate"><span class="pre">beta_equation()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.calc_pf_beta"><code class="docutils literal notranslate"><span class="pre">calc_pf_beta()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.convergence_probability_failure"><code class="docutils literal notranslate"><span class="pre">convergence_probability_failure()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.cornell_algorithm_structural_analysis"><code class="docutils literal notranslate"><span class="pre">cornell_algorithm_structural_analysis()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.fbf"><code class="docutils literal notranslate"><span class="pre">fbf()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.hasofer_lind_rackwitz_fiessler_algorithm"><code class="docutils literal notranslate"><span class="pre">hasofer_lind_rackwitz_fiessler_algorithm()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.log_message"><code class="docutils literal notranslate"><span class="pre">log_message()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.newton_raphson"><code class="docutils literal notranslate"><span class="pre">newton_raphson()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.norm_array"><code class="docutils literal notranslate"><span class="pre">norm_array()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.pf_equation"><code class="docutils literal notranslate"><span class="pre">pf_equation()</span></code></a></li>
+<li><a class="reference internal" href="#parepy_toolbox.common_library.sampling"><code class="docutils literal notranslate"><span class="pre">sampling()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="parepy_toolbox.html"
+                          title="previous chapter">parepy_toolbox package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="parepy_toolbox.distributions.html"
+                          title="next chapter">parepy_toolbox.distributions module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/parepy_toolbox.common_library.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>  
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="parepy_toolbox.distributions.html" title="parepy_toolbox.distributions module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="parepy_toolbox.html" title="parepy_toolbox package"
+             >previous</a> |</li>
+          <li><img src="_static/py.svg" alt="Python logo" style="vertical-align: middle; margin-top: -1px"></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="index.html">Parepy  documentation</a> &#187;
+              
+          </li>
+          <li class="nav-item nav-item-1"><a href="parepy_toolbox.html" >parepy_toolbox package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">parepy_toolbox.common_library module</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="search" name="q" id="search-box">
+          <input type="submit" value="Go">
+        </form>
+    </div>
+                     |
+                </li>
+            <li class="right">
+<label class="theme-selector-label">
+    Theme
+    <select class="theme-selector" oninput="activateTheme(this.value)">
+        <option value="auto" selected>Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+</label> |</li>
+            
+      </ul>
+    </div>  
+    <div class="footer">
+    &copy; 
+    Copyright
+     2025, Wanderlei.
+    <br>
+    This page is licensed under the Python Software Foundation License Version 2.
+    <br>
+    Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
+    <br>
+    
+    
+    <br>
+
+    The Python Software Foundation is a non-profit corporation.
+<a href="https://www.python.org/psf/donations/">Please donate.</a>
+<br>
+    <br>
+    
+    <br>
+
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+
+  </body>
+</html>
