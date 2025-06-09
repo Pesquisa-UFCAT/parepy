@@ -1,0 +1,11 @@
+numpy
+pandas
+scipy
+matplotlib
+poetry
+seaborn
+ipykernel
+openpyxl
+tabulate
+sphinx
+sphinxawesome-theme
