@@ -1,5 +1,5 @@
 """Common library for PAREpy toolbox"""
-from typing import Optional, Callable
+from typing import Optional, Callable, Tuple
 
 import scipy as sc
 import numpy as np
@@ -243,16 +243,15 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     :return: Random samples, objective function evaluations and indicator functions.
     """
 
-    if method != 'sobol':
-        random_data = np.zeros((n_samples, len(random_var_settings)))
-    else:
-        random_data = np.zeros((2**n_samples , len(random_var_settings)))
+    n_real_samples = 2**n_samples if method == 'sobol' else n_samples
+    random_data = np.zeros((n_real_samples, len(random_var_settings)))
+
     # Generate random samples for each variable
     for i, dist_info in enumerate(random_var_settings):
         random_data[:, i] = parepydi.random_sampling(dist_info['type'], dist_info['parameters'], method, n_samples)
 
     # Evaluate objective function for each sample
-    g_matrix = np.zeros((n_samples, number_of_limit_functions))
+    g_matrix = np.zeros((n_real_samples, number_of_limit_functions))
     indicator_matrix = np.zeros_like(g_matrix)
     for idx, sample in enumerate(random_data):
         g_values = obj(list(sample), args) if args is not None else obj(list(sample))
