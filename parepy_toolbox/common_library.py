@@ -1,321 +1,321 @@
 """Common library for PAREpy toolbox"""
-from typing import Union, Callable
-import re
-from datetime import datetime
+from typing import Optional, Callable, Tuple
 
-from scipy.integrate import quad
-import scipy.stats as stats
+import scipy as sc
 import numpy as np
-from numpy import sqrt, pi, exp
 import pandas as pd
 
 import parepy_toolbox.distributions as parepydi
 
 
-def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
+def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
     """
-    This algorithm generates a set of random numbers according to a type of distribution.
+    Extract D matrix and D^-1 matrix from a list of variables. Used in Y to X or X to Y transformation.
 
-    Args:
-        n_samples (Integer): Number of samples
-        model (Dictionary): Model parameters
-        variables_setup (List): Random variable parameters (list of dictionaries)
-    
-    Returns:
-        random_sampling (np.array): Random samples
+    :param std: Standard deviation parameters.
+
+    return: output[0] = D matrix, output[1] = D^-1 matrix.
     """
 
-    # Model settings
-    model_sampling = model['model sampling'].upper()
-    id_type = []
-    id_corr = []
-    for v in variables_setup:
-        if 'parameters' in v and 'corr' in v['parameters']:
-            id_type.append('g-corr-g_var')
-            id_corr.append(v['parameters']['corr']['var'])
-        else:
-            id_type.append('g')
-    for k in id_corr:
-        id_type[k] = 'g-corr-b_var'
+    dneq = np.zeros((len(std), len(std)))
+    dneq1 = np.zeros((len(std), len(std)))
+    for i, sigma in enumerate(std):
+        dneq[i, i] = sigma
+        dneq1[i, i] = 1 / sigma
 
-    if model_sampling in ['MCS', 'LHS']:
-        random_sampling = np.zeros((n_samples, len(variables_setup)))
-
-        for j, variable in enumerate(variables_setup):
-            if id_type[j] == 'g-corr-b_var':
-                continue
-            type_dist = variable['type'].upper()
-            seed_dist = variable['seed']
-            params = variable['parameters']
-
-            if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters_g = {'mean': mean, 'sigma': sigma}
-                pho = params['corr']['pho']
-                m = params['corr']['var']
-                parameters_b = variables_setup[m]['parameters']
-                random_sampling[:, m], random_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'UNIFORM' and id_type[j] == 'g':
-                min_val = params['min']
-                max_val = params['max']
-                parameters = {'min': min_val, 'max': max_val}
-                random_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
-                mean = params['mean']
-                sigma = params['sigma']
-                parameters = {'mean': mean, 'sigma': sigma}
-                random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-
-            elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
-                min_val = params['min']
-                max_val = params['max']
-                mode = params['mode']
-                parameters = {'min': min_val, 'max': max_val, 'mode': mode}
-                random_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
-    elif model_sampling in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
-        time_analysis = model['time steps']
-        random_sampling = np.empty((0, len(variables_setup)))
-        match = re.search(r'\b(MCS|LHS)\b', model_sampling.upper(), re.IGNORECASE)
-        model_sampling = match.group(1).upper()
-
-        for _ in range(n_samples):
-            temporal_sampling = np.zeros((time_analysis, len(variables_setup)))
-
-            for j, variable in enumerate(variables_setup):
-                if id_type[j] == 'g-corr-b_var':
-                    continue
-                type_dist = variable['type'].upper()
-                seed_dist = variable['seed']
-                sto = variable['stochastic variable']
-                params = variable['parameters']
-
-                if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters_g = {'mean': mean, 'sigma': sigma}
-                    pho = params['corr']['pho']
-                    m = params['corr']['var']
-                    parameters_b = variables_setup[m]['parameters']
-                    if sto is False:
-                        temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                        temporal_sampling[1:, m]
-                    else:
-                        temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'UNIFORM' and id_type[j] == 'g':
-                    min_val = params['min']
-                    max_val = params['max']
-                    parameters = {'min': min_val, 'max': max_val}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
-                    mean = params['mean']
-                    sigma = params['sigma']
-                    parameters = {'mean': mean, 'sigma': sigma}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-                elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
-                    min_val = params['min']
-                    max_val = params['max']
-                    mode = params['mode']
-                    parameters = {'min': min_val, 'max': max_val, 'mode': mode}
-                    if sto is False:
-                        temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
-                        temporal_sampling[1:, j]
-                    else:
-                        temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
-
-            random_sampling = np.concatenate((random_sampling, temporal_sampling), axis=0)  
-
-        time_sampling = np.zeros((time_analysis * n_samples, 1))
-        cont = 0
-        for _ in range(n_samples):
-            for m in range(time_analysis):
-                time_sampling[cont, 0] = int(m)
-                cont += 1
-        random_sampling = np.concatenate((random_sampling, time_sampling), axis=1)   
-
-    return random_sampling
+    return dneq, dneq1
 
 
-def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -> float:
+def mu_matrix(mean: list) -> np.ndarray:
     """
-    This function calculates the root of a function using the Newton-Raphson method.
+    Extract mean matrix from a list of variables. Used in Y to X or X to Y transformation.
 
-    Args:
-        f (Python function [def]): Function
-        df (Python function [def]): Derivative of the function
-        x0 (Float): Initial value
-        tol (Float): Tolerance
-    
-    Returns:
-        x0 (Float): Root of the function
+    :param mu: Mean parameters.
+
+    return: Mean matrix.
     """
 
-    if abs(f(x0)) < tol:
-        return x0
-    else:
-        return newton_raphson(f, df, x0 - f(x0)/df(x0), tol)
+    mu_neq = np.zeros((len(mean), 1))
+    for i, mu in enumerate(mean):
+        mu_neq[i, 0] = mu
+
+    return mu_neq
+
+
+def x_to_y(x: np.ndarray, dneq1: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
+    """
+    Transforms a vector of random variables from the X space to the Y space.
+
+    :param x: Random variables in the X space.
+    :param dneq1: D^-1 matrix.
+    :param mu_neq: Mean matrix.
+
+    :return: Transformed random variables in the Y space.
+    """
+
+    return dneq1 @ (x - mu_neq)
+
+
+def y_to_x(y: np.ndarray, dneq: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
+    """
+    Transforms a vector of random variables from the Y space to the X space.
+
+    :param y: Random variables in the Y space.
+    :param dneq: D matrix.
+    :param mu_neq: Mean matrix.
+
+    :return: Transformed random variables in the X space.
+    """
+
+    return dneq @ y + mu_neq
 
 
 def pf_equation(beta: float) -> float:
     """
-    This function calculates the probability of failure (pf) for a given reliability index (ϐ) using a standard normal cumulative distribution function. The calculation is performed by integrating the probability density function (PDF) of a standard normal distribution.
+    Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.
 
-    Args:
-        beta (Float): Reliability index
+    :param beta: Reliability index (β).
     
-    Returns:
-        pf_value (Float): Probability of failure
+    :return: Probability of failure (pf).
     """
 
-    def integrand(x):
-        return 1/sqrt(2*np.pi) * np.exp(-x**2/2)
-
-    def integral_x(x):
-        integral, _ = quad(integrand, 0, x)
-        return 1 - (0.5 + integral)
-
-    return integral_x(beta)
+    return sc.stats.norm.cdf(-beta)
 
 
-def beta_equation(pf: float) -> Union[float, str]:
+def beta_equation(pf: float) -> float:
     """
-    This function calculates the reliability index value for a given probability of failure (pf).
+    Calculates the reliability index value for a given probability of failure (pf), using the inverse cumulative distribution function (ICDF) of the standard normal distribution.
 
-    Args:
-        pf (Float): Probability of failure
+    :param pf: Probability of failure (pf).
 
-    Returns:
-        beta_value (Float or String): Beta value
+    :return: Reliability index (β).
     """
 
-    if pf > 0.5:
-        beta_value = "minus infinity"
-    else:
-        F = lambda BETA: BETA*(0.00569689925051199*sqrt(2)*exp(-0.497780952459929*BETA**2)/sqrt(pi) + 0.0131774933075162*sqrt(2)*exp(-0.488400032299965*BETA**2)/sqrt(pi) + 0.0204695783506533*sqrt(2)*exp(-0.471893773055302*BETA**2)/sqrt(pi) + 0.0274523479879179*sqrt(2)*exp(-0.448874334002837*BETA**2)/sqrt(pi) + 0.0340191669061785*sqrt(2)*exp(-0.42018898411968*BETA**2)/sqrt(pi) + 0.0400703501675005*sqrt(2)*exp(-0.386874144322843*BETA**2)/sqrt(pi) + 0.045514130991482*sqrt(2)*exp(-0.350103048710684*BETA**2)/sqrt(pi) + 0.0502679745335254*sqrt(2)*exp(-0.311127540182165*BETA**2)/sqrt(pi) + 0.0542598122371319*sqrt(2)*exp(-0.271217130855817*BETA**2)/sqrt(pi) + 0.0574291295728559*sqrt(2)*exp(-0.231598755762806*BETA**2)/sqrt(pi) + 0.0597278817678925*sqrt(2)*exp(-0.19340060305222*BETA**2)/sqrt(pi) + 0.0611212214951551*sqrt(2)*exp(-0.157603139738968*BETA**2)/sqrt(pi) + 0.0615880268633578*sqrt(2)*exp(-0.125*BETA**2)/sqrt(pi) + 0.0611212214951551*sqrt(2)*exp(-0.0961707934336129*BETA**2)/sqrt(pi) + 0.0597278817678925*sqrt(2)*exp(-0.0714671611917261*BETA**2)/sqrt(pi) + 0.0574291295728559*sqrt(2)*exp(-0.0510126028581118*BETA**2)/sqrt(pi) + 0.0542598122371319*sqrt(2)*exp(-0.0347157651329596*BETA**2)/sqrt(pi) + 0.0502679745335254*sqrt(2)*exp(-0.0222960750615538*BETA**2)/sqrt(pi) + 0.045514130991482*sqrt(2)*exp(-0.0133198644739499*BETA**2)/sqrt(pi) + 0.0400703501675005*sqrt(2)*exp(-0.00724451280416452*BETA**2)/sqrt(pi) + 0.0340191669061785*sqrt(2)*exp(-0.00346766973926267*BETA**2)/sqrt(pi) + 0.0274523479879179*sqrt(2)*exp(-0.00137833506369952*BETA**2)/sqrt(pi) + 0.0204695783506533*sqrt(2)*exp(-0.000406487440814915*BETA**2)/sqrt(pi) + 0.0131774933075162*sqrt(2)*exp(-6.80715702059458e-5*BETA**2)/sqrt(pi) + 0.00569689925051199*sqrt(2)*exp(-2.46756468031828e-6*BETA**2)/sqrt(pi))/2 + pf - 0.5
-        F_PRIME = lambda BETA: BETA*(-0.00567161586997623*sqrt(2)*BETA*exp(-0.497780952459929*BETA**2)/sqrt(pi) - 0.0128717763140469*sqrt(2)*BETA*exp(-0.488400032299965*BETA**2)/sqrt(pi) - 0.0193189331214818*sqrt(2)*BETA*exp(-0.471893773055302*BETA**2)/sqrt(pi) - 0.0246453088397815*sqrt(2)*BETA*exp(-0.448874334002837*BETA**2)/sqrt(pi) - 0.0285889583658099*sqrt(2)*BETA*exp(-0.42018898411968*BETA**2)/sqrt(pi) - 0.0310043648675369*sqrt(2)*BETA*exp(-0.386874144322843*BETA**2)/sqrt(pi) - 0.0318692720390705*sqrt(2)*BETA*exp(-0.350103048710684*BETA**2)/sqrt(pi) - 0.031279502533111*sqrt(2)*BETA*exp(-0.311127540182165*BETA**2)/sqrt(pi) - 0.0294323811914605*sqrt(2)*BETA*exp(-0.271217130855817*BETA**2)/sqrt(pi) - 0.0266010299072288*sqrt(2)*BETA*exp(-0.231598755762806*BETA**2)/sqrt(pi) - 0.0231028167058843*sqrt(2)*BETA*exp(-0.19340060305222*BETA**2)/sqrt(pi) - 0.0192657928246347*sqrt(2)*BETA*exp(-0.157603139738968*BETA**2)/sqrt(pi) - 0.0153970067158395*sqrt(2)*BETA*exp(-0.125*BETA**2)/sqrt(pi) - 0.0117561527336413*sqrt(2)*BETA*exp(-0.0961707934336129*BETA**2)/sqrt(pi) - 0.00853716430789267*sqrt(2)*BETA*exp(-0.0714671611917261*BETA**2)/sqrt(pi) - 0.00585921875877428*sqrt(2)*BETA*exp(-0.0510126028581118*BETA**2)/sqrt(pi) - 0.00376734179556552*sqrt(2)*BETA*exp(-0.0347157651329596*BETA**2)/sqrt(pi) - 0.00224155706678351*sqrt(2)*BETA*exp(-0.0222960750615538*BETA**2)/sqrt(pi) - 0.00121248411291229*sqrt(2)*BETA*exp(-0.0133198644739499*BETA**2)/sqrt(pi) - 0.000580580329711626*sqrt(2)*BETA*exp(-0.00724451280416452*BETA**2)/sqrt(pi) - 0.000235934471270962*sqrt(2)*BETA*exp(-0.00346766973926267*BETA**2)/sqrt(pi) - 7.56770676252561e-5*sqrt(2)*BETA*exp(-0.00137833506369952*BETA**2)/sqrt(pi) - 1.66412530366349e-5*sqrt(2)*BETA*exp(-0.000406487440814915*BETA**2)/sqrt(pi) - 1.79402532164194e-6*sqrt(2)*BETA*exp(-6.80715702059458e-5*BETA**2)/sqrt(pi) - 2.81149347557902e-8*sqrt(2)*BETA*exp(-2.46756468031828e-6*BETA**2)/sqrt(pi))/2 + 0.002848449625256*sqrt(2)*exp(-0.497780952459929*BETA**2)/sqrt(pi) + 0.00658874665375808*sqrt(2)*exp(-0.488400032299965*BETA**2)/sqrt(pi) + 0.0102347891753266*sqrt(2)*exp(-0.471893773055302*BETA**2)/sqrt(pi) + 0.0137261739939589*sqrt(2)*exp(-0.448874334002837*BETA**2)/sqrt(pi) + 0.0170095834530893*sqrt(2)*exp(-0.42018898411968*BETA**2)/sqrt(pi) + 0.0200351750837502*sqrt(2)*exp(-0.386874144322843*BETA**2)/sqrt(pi) + 0.022757065495741*sqrt(2)*exp(-0.350103048710684*BETA**2)/sqrt(pi) + 0.0251339872667627*sqrt(2)*exp(-0.311127540182165*BETA**2)/sqrt(pi) + 0.027129906118566*sqrt(2)*exp(-0.271217130855817*BETA**2)/sqrt(pi) + 0.028714564786428*sqrt(2)*exp(-0.231598755762806*BETA**2)/sqrt(pi) + 0.0298639408839463*sqrt(2)*exp(-0.19340060305222*BETA**2)/sqrt(pi) + 0.0305606107475775*sqrt(2)*exp(-0.157603139738968*BETA**2)/sqrt(pi) + 0.0307940134316789*sqrt(2)*exp(-0.125*BETA**2)/sqrt(pi) + 0.0305606107475775*sqrt(2)*exp(-0.0961707934336129*BETA**2)/sqrt(pi) + 0.0298639408839463*sqrt(2)*exp(-0.0714671611917261*BETA**2)/sqrt(pi) + 0.028714564786428*sqrt(2)*exp(-0.0510126028581118*BETA**2)/sqrt(pi) + 0.027129906118566*sqrt(2)*exp(-0.0347157651329596*BETA**2)/sqrt(pi) + 0.0251339872667627*sqrt(2)*exp(-0.0222960750615538*BETA**2)/sqrt(pi) + 0.022757065495741*sqrt(2)*exp(-0.0133198644739499*BETA**2)/sqrt(pi) + 0.0200351750837502*sqrt(2)*exp(-0.00724451280416452*BETA**2)/sqrt(pi) + 0.0170095834530893*sqrt(2)*exp(-0.00346766973926267*BETA**2)/sqrt(pi) + 0.0137261739939589*sqrt(2)*exp(-0.00137833506369952*BETA**2)/sqrt(pi) + 0.0102347891753266*sqrt(2)*exp(-0.000406487440814915*BETA**2)/sqrt(pi) + 0.00658874665375808*sqrt(2)*exp(-6.80715702059458e-5*BETA**2)/sqrt(pi) + 0.002848449625256*sqrt(2)*exp(-2.46756468031828e-6*BETA**2)/sqrt(pi)
-        beta_value = newton_raphson(F, F_PRIME, 0.0, 1E-15)
-
-        return beta_value
+    return -sc.stats.norm.ppf(pf)
 
 
-def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+def first_second_order_derivative_numerical_differentiation_unidimensional(obj: Callable, x: list, pos: str, method: str, order: str = 'first', h: float = 1E-5, args: Optional[tuple] = None) -> float:
     """
-    Calculates the values of probability of failure or reliability index from the columns of a DataFrame that start with 'I_' (Indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
+    Computes the numerical derivative of a function at a given point in the given dimension using the central, backward and forward difference method.
+
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param x: Point at which to evaluate the derivative.
+    :param pos: Dimension in the list x where the derivative is to be calculated. When use order 'xy', pos is a str contain first and second dimension separated by a comma (e.g., '0,1' for the first and second dimensions). 
+    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
+    :param order: Order of the derivative to compute (default is first for first-order derivative). Supported values: 'first', 'second', or 'xy'.
+    :param h: Step size for the finite difference approximation (default is 1e-10).
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Numerical derivative of order n of the function at point x in dimension pos.
+    """
+
+    if order == 'first':
+        a = x.copy()
+        b = x.copy()
+        if method == "forward":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += h
+            den = h
+        elif method == "backward":
+            for i in range(len(x)):
+                if i == int(pos):
+                    b[i] -= h
+            den = h
+        elif method == "center":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += h
+                    b[i] -= h
+            den = 2 * h
+        fa = obj(a, args) if args is not None else obj(a)
+        fb = obj(b, args) if args is not None else obj(b)
+        diff = (fa - fb) / den
+    elif order == 'second':
+        a = x.copy()
+        b = x.copy()
+        x_aux = x.copy()
+        den = h ** 2
+        if method == "forward":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += 2*h
+                    x_aux[i] += h
+            fa = obj(a, args) if args is not None else obj(a)
+            fx = obj(x_aux, args) if args is not None else obj(x_aux)
+            fb = obj(b, args) if args is not None else obj(b)
+        elif method == "backward":
+            for i in range(len(x)):
+                if i == int(pos):
+                    b[i] -= 2*h
+                    x_aux[i] -= h
+            fa = obj(a, args) if args is not None else obj(a)
+            fx = obj(x_aux, args) if args is not None else obj(x_aux)
+            fb = obj(b, args) if args is not None else obj(b)
+        elif method == "center":
+            for i in range(len(x)):
+                if i == int(pos):
+                    a[i] += h
+                    b[i] -= h
+            fa = obj(a, args) if args is not None else obj(a)
+            fx = obj(x_aux, args) if args is not None else obj(x_aux)
+            fb = obj(b, args) if args is not None else obj(b)
+        diff = (fa - 2 * fx + fb) / den
+    elif order == 'xy':
+        pos_x = int(pos.split(',')[0])
+        pos_y = int(pos.split(',')[1])
+        a = x.copy()
+        a[pos_x] += h
+        a[pos_y] += h
+        b = x.copy()
+        b[pos_x] += h
+        b[pos_y] -= h
+        c = x.copy()
+        c[pos_x] -= h
+        c[pos_y] += h
+        d = x.copy()
+        d[pos_x] -= h
+        d[pos_y] -= h
+        fa = obj(a, args) if args is not None else obj(a)
+        fb = obj(b, args) if args is not None else obj(b)
+        fc = obj(c, args) if args is not None else obj(c)
+        fd = obj(d, args) if args is not None else obj(d)
+        diff = (fa - fb - fc + fd) / (4 * h ** 2)
+
+    return diff
+
+
+def jacobian_matrix(obj: Callable, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None) -> np.ndarray:
+    """
+    Computes Jacobian matrix of a vector-valued function using finite difference methods.
+
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param x: Point at which to evaluate the derivative.
+    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
+    :param h: Step size for the finite difference approximation (default is 1e-10).
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Numerical Jacobian matrix at point x.
+    """
+
+    jacob = np.zeros((len(x), 1))
+    for i in range(len(x)):
+        jacob[i, 0] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h=h)
+
+    return jacob
+
+
+def hessian_matrix(obj: Callable, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None) -> np.ndarray:
+    """
+    Computes Hessian matrix of a vector-valued function using finite difference methods.
+
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param x: Point at which to evaluate the derivative.
+    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
+    :param h: Step size for the finite difference approximation (default is 1e-10).
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Numerical Hessian matrix at point x.
+    """
+
+    hessian = np.zeros((len(x), len(x)))
+    for i in range(len(x)):
+        for j in range(len(x)):
+            if i == j:
+                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h=h)
+            else:
+                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h=h)
+
+    return hessian
+
+
+def sampling_kernel_without_time(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, args: Optional[tuple] = None) -> pd.DataFrame:
+    """
+    Generates random samples from a specified distribution using kernel density estimation.
+
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+    :param number_of_limit_functions: Number of limit state functions or constraints.
+    :param args: Extra arguments to pass to the objective function (optional).
+
+    :return: Random samples, objective function evaluations and indicator functions.
+    """
+
+    n_real_samples = 2**n_samples if method == 'sobol' else n_samples
+    random_data = np.zeros((n_real_samples, len(random_var_settings)))
+
+    # Generate random samples for each variable
+    for i, dist_info in enumerate(random_var_settings):
+        random_data[:, i] = parepydi.random_sampling(dist_info['type'], dist_info['parameters'], method, n_samples)
+
+    # Evaluate objective function for each sample
+    g_matrix = np.zeros((n_real_samples, number_of_limit_functions))
+    indicator_matrix = np.zeros_like(g_matrix)
+    for idx, sample in enumerate(random_data):
+        g_values = obj(list(sample), args) if args is not None else obj(list(sample))
+        g_matrix[idx, :] = g_values
+        indicator_matrix[idx, :] = [1 if g <= 0 else 0 for g in g_values]
+
+    # Build DataFrame
+    df = pd.DataFrame(random_data, columns=[f'X_{i}' for i in range(len(random_var_settings))])
+    for j in range(number_of_limit_functions):
+        df[f'G_{j}'] = g_matrix[:, j]
+        df[f'I_{j}'] = indicator_matrix[:, j]
+
+    # dataset_x = {}
+    # for i, value in enumerate(random_var_settings):
+    #     dataset_x[f'X_{i}'] = parepydi.random_sampling(value['type'], value['parameters'], method, n_samples)
+    # random_data = pd.DataFrame(dataset_x)
+    # results = random_data.apply(lambda row: obj(list(row), args), axis=1) if args is not None else random_data.apply(lambda row: obj(list(row)), axis=1)
+    # g_names = []
+    # for i in range(number_of_limit_functions):
+    #     g_names.append(f'G_{i}')
+    # random_data[g_names] = pd.DataFrame(results.tolist(), index=random_data.index)
+    # for col in g_names:
+    #     random_data[f'I_{col}'] = np.where(random_data[col] <= 0, 1, 0)
+
+    return df
+
+
+def summarize_pf_beta(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Generates a summary DataFrame containing the probability of failure (pf) and reliability index (β) for each indicator function column in the input DataFrame.
+
+    :param df: Random samples, objective function evaluations and indicator functions.
+
+    :return: output [0] = Probability of failure values for each indicator function, output[1] = beta_df: Reliability index values for each indicator function.
+
+    """
     
-    Args:
-        df_or_path (DataFrame or String): The DataFrame containing the columns with boolean values about indicator function, or a path to a .txt file
-        numerical_model (Dictionary): Containing the numerical model
-        n_constraints (Integer): Number of state limit functions or constraints 
+    pf_values = {}
+    beta_values = {}
 
-    Returns:
-        df_pf (DataFrame): DataFrame containing the values for probability of failure for each 'G_' column
-        df_beta (DataFrame): DataFrame containing the values for beta for each 'G_' column
-    """
+    for col in df.columns:
+        if col.startswith("I_"):
+            idx = col.split("_")[1]
+            pf = df[col].mean()
+            beta = beta_equation(pf)
+            pf_values[f"pf_{idx}"] = pf
+            beta_values[f"beta_{idx}"] = beta
 
-    # Read dataset
-    if isinstance(df_or_path, str) and df_or_path.endswith('.txt'):
-        df = pd.read_csv(df_or_path, delimiter='\t')
-    else:
-        df = df_or_path
+    pf_df = pd.DataFrame([pf_values])
+    beta_df = pd.DataFrame([beta_values])
 
-    # Calculate pf and beta values
-    if numerical_model.upper() in ['MCS', 'LHS']:
-        filtered_df = df.filter(like='I_', axis=1)
-        pf_results = filtered_df.mean(axis=0)
-        df_pf = pd.DataFrame([pf_results.to_list()], columns=pf_results.index)
-        beta_results = [beta_equation(pf) for pf in pf_results.to_list()] 
-        df_beta = pd.DataFrame([beta_results], columns=pf_results.index)
-    elif numerical_model.upper() in ['TIME-MCS', 'TIME-LHS', 'TIME MCS', 'TIME LHS', 'MCS TIME', 'LHS TIME', 'MCS-TIME', 'LHS-TIME']:
-        df_pf = pd.DataFrame()
-        df_beta = pd.DataFrame()
-        for i in range(n_constraints):
-            filtered_df = df.filter(like=f'I_{i}', axis=1)
-            pf_results = filtered_df.mean(axis=0)
-            beta_results = [beta_equation(pf) for pf in pf_results.to_list()]
-            df_pf[f'G_{i}'] = pf_results.to_list()
-            df_beta[f'G_{i}'] = beta_results
-
-    return df_pf, df_beta
+    return pf_df, beta_df
 
 
 def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
     """
-    This function calculates the convergence rate of a given column in a data frame. This function is used to check the convergence of the failure probability.
+    Calculates the convergence rate of the probability of failure.
 
-    Args:
-        df (DataFrame): DataFrame containing the data with indicator function column
-        column (String): Name of the column to be analyzed
+    :param df: Random samples, objective function evaluations and indicator functions.
+    :param column: Name of the column to be analyzed. Supported values: 'I_0', 'I_1', ..., 'I_n' where n is the number of limit state functions.
 
-    Returns:
-        div (List): list containing sample sizes
-        m (List): list containing the mean values of the column. pf value rate
-        ci_l (List): list containing the lower confidence interval values of the column
-        ci_u (List): list containing the upper confidence interval values of the column
-        var (List): list containing the variance values of the column
+    :return: output[0] = div: List of sample sizes considered at each step, output[1] = m: List of mean values (estimated probability of failure), output[2] = ci_l: List containing the lower confidence interval values of the column, output[3] = ci_u: List containing the upper confidence interval values of the column, output[4] = var: List containing the variance values of the column. 
     """
-    
+
     column_values = df[column].to_list()
     step = 1000
     div = [i for i in range(step, len(column_values), step)]
@@ -333,7 +333,7 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
         std = np.std(aux, ddof=1)
         n = len(aux)
         confidence_level = 0.95
-        t_critic = stats.t.ppf((1 + confidence_level) / 2, df=n-1)
+        t_critic = sc.stats.t.ppf((1 + confidence_level) / 2, df=n-1)
         margin = t_critic * (std / np.sqrt(n))
         confidence_interval = (mean - margin, mean + margin)
         m.append(mean)
@@ -344,128 +344,315 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     return div, m, ci_l, ci_u, var
 
 
-def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> tuple[pd.DataFrame, list]:
-    """
-    This function application first barrier failure algorithm.
+# def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
+#     """
+#     Generates a set of random numbers according to a specified probability distribution model.
 
-    Args:
-        algorithm (str): Name of the algorithm
-        n_constraints (int): Number of constraints analyzed
-        time_analysis (int): Time period for analysis
-        results_about_data (pd.DataFrame): DataFrame containing the results to be processed 
+#     :param n_samples: Number of samples to generate.
+#     :param model: Dictionary containing the model parameters.
+#     :param variables_setup: List of dictionaries, each containing parameters for a random variable.
 
-    Returns:
-        results_about_data: Updated DataFrame after processing
-    """
+#     :return: Numpy array with the generated random samples.
+#     """
 
-    if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
-        i_columns = []
-        for i in range(n_constraints):
-            aux_column_names = []
-            for j in range(time_analysis):
-                aux_column_names.append('I_' + str(i) + '_t=' + str(j))
-            i_columns.append(aux_column_names)
+#     # Model settings
+#     model_sampling = model['model sampling'].upper()
+#     id_type = []
+#     id_corr = []
+#     for v in variables_setup:
+#         if 'parameters' in v and 'corr' in v['parameters']:
+#             id_type.append('g-corr-g_var')
+#             id_corr.append(v['parameters']['corr']['var'])
+#         else:
+#             id_type.append('g')
+#     for k in id_corr:
+#         id_type[k] = 'g-corr-b_var'
 
-        for i in i_columns:
-            matrixx = results_about_data[i].values
-            for id, linha in enumerate(matrixx):
-                indice_primeiro_1 = np.argmax(linha == 1)
-                if linha[indice_primeiro_1] == 1:
-                    matrixx[id, indice_primeiro_1:] = 1
-            results_about_data = pd.concat([results_about_data.drop(columns=i),
-                                            pd.DataFrame(matrixx, columns=i)], axis=1)
-    else:
-        i_columns = []
-        for i in range(n_constraints):
-            i_columns.append(['I_' + str(i)])
+#     if model_sampling in ['MCS', 'LHS']:
+#         random_sampling = np.zeros((n_samples, len(variables_setup)))
+
+#         for j, variable in enumerate(variables_setup):
+#             if id_type[j] == 'g-corr-b_var':
+#                 continue
+#             type_dist = variable['type'].upper()
+#             seed_dist = variable['seed']
+#             params = variable['parameters']
+
+#             if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters_g = {'mean': mean, 'sigma': sigma}
+#                 pho = params['corr']['pho']
+#                 m = params['corr']['var']
+#                 parameters_b = variables_setup[m]['parameters']
+#                 random_sampling[:, m], random_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'UNIFORM' and id_type[j] == 'g':
+#                 min_val = params['min']
+#                 max_val = params['max']
+#                 parameters = {'min': min_val, 'max': max_val}
+#                 random_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
+#                 mean = params['mean']
+#                 sigma = params['sigma']
+#                 parameters = {'mean': mean, 'sigma': sigma}
+#                 random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+
+#             elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
+#                 min_val = params['min']
+#                 max_val = params['max']
+#                 mode = params['mode']
+#                 parameters = {'min': min_val, 'max': max_val, 'mode': mode}
+#                 random_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)
+#     elif model_sampling in ['MCS-TIME', 'MCS_TIME', 'MCS TIME', 'LHS-TIME', 'LHS_TIME', 'LHS TIME']:
+#         time_analysis = model['time steps']
+#         random_sampling = np.empty((0, len(variables_setup)))
+#         match = re.search(r'\b(MCS|LHS)\b', model_sampling.upper(), re.IGNORECASE)
+#         model_sampling = match.group(1).upper()
+
+#         for _ in range(n_samples):
+#             temporal_sampling = np.zeros((time_analysis, len(variables_setup)))
+
+#             for j, variable in enumerate(variables_setup):
+#                 if id_type[j] == 'g-corr-b_var':
+#                     continue
+#                 type_dist = variable['type'].upper()
+#                 seed_dist = variable['seed']
+#                 sto = variable['stochastic variable']
+#                 params = variable['parameters']
+
+#                 if (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif (type_dist == 'NORMAL' or type_dist == 'GAUSSIAN') and id_type[j] == 'g-corr-g_var':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters_g = {'mean': mean, 'sigma': sigma}
+#                     pho = params['corr']['pho']
+#                     m = params['corr']['var']
+#                     parameters_b = variables_setup[m]['parameters']
+#                     if sto is False:
+#                         temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                         temporal_sampling[1:, m]
+#                     else:
+#                         temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'UNIFORM' and id_type[j] == 'g':
+#                     min_val = params['min']
+#                     max_val = params['max']
+#                     parameters = {'min': min_val, 'max': max_val}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'GUMBEL MAX' and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'GUMBEL MIN' and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'LOGNORMAL' and id_type[j] == 'g':
+#                     mean = params['mean']
+#                     sigma = params['sigma']
+#                     parameters = {'mean': mean, 'sigma': sigma}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#                 elif type_dist == 'TRIANGULAR' and id_type[j] == 'g':
+#                     min_val = params['min']
+#                     max_val = params['max']
+#                     mode = params['mode']
+#                     parameters = {'min': min_val, 'max': max_val, 'mode': mode}
+#                     if sto is False:
+#                         temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)
+#                         temporal_sampling[1:, j]
+#                     else:
+#                         temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)
+
+#             random_sampling = np.concatenate((random_sampling, temporal_sampling), axis=0)  
+
+#         time_sampling = np.zeros((time_analysis * n_samples, 1))
+#         cont = 0
+#         for _ in range(n_samples):
+#             for m in range(time_analysis):
+#                 time_sampling[cont, 0] = int(m)
+#                 cont += 1
+#         random_sampling = np.concatenate((random_sampling, time_sampling), axis=1)   
+
+#     return random_sampling
+
+
+# def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -> tuple[pd.DataFrame, pd.DataFrame]:
+#     """
+#     Calculates the probability of failure (pf) and reliability index (β) based on the columns of a DataFrame
+#     that start with 'I' (indicator function). If a .txt file path is passed, this function evaluates pf and β values too.
+
+#     :param df_or_path: A DataFrame containing boolean indicator columns prefixed with 'I', or a string path to a .txt file.
+
+#     :param numerical_model: Dictionary containing the numerical model.
+
+#     :param n_constraints: Number of limit state functions or constraints.
+
+#     :return: Tuple of DataFrames:
+
+#         - df_pf: probability of failure values for each column prefixed with 'G'.
+#         - df_beta: reliability index values for each column prefixed with 'G'.
+#     """
+
+#     # Read dataset
+#     if isinstance(df_or_path, str) and df_or_path.endswith('.txt'):
+#         df = pd.read_csv(df_or_path, delimiter='\t')
+#     else:
+#         df = df_or_path
+
+#     # Calculate pf and beta values
+#     if numerical_model.upper() in ['MCS', 'LHS']:
+#         filtered_df = df.filter(like='I_', axis=1)
+#         pf_results = filtered_df.mean(axis=0)
+#         df_pf = pd.DataFrame([pf_results.to_list()], columns=pf_results.index)
+#         beta_results = [beta_equation(pf) for pf in pf_results.to_list()] 
+#         df_beta = pd.DataFrame([beta_results], columns=pf_results.index)
+#     elif numerical_model.upper() in ['TIME-MCS', 'TIME-LHS', 'TIME MCS', 'TIME LHS', 'MCS TIME', 'LHS TIME', 'MCS-TIME', 'LHS-TIME']:
+#         df_pf = pd.DataFrame()
+#         df_beta = pd.DataFrame()
+#         for i in range(n_constraints):
+#             filtered_df = df.filter(like=f'I_{i}', axis=1)
+#             pf_results = filtered_df.mean(axis=0)
+#             beta_results = [beta_equation(pf) for pf in pf_results.to_list()]
+#             df_pf[f'G_{i}'] = pf_results.to_list()
+#             df_beta[f'G_{i}'] = beta_results
+
+#     return df_pf, df_beta
+
+
+# def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -> tuple[pd.DataFrame, list]:
+#     """
+#     This function application first barrier failure algorithm.
+
+#     :param algorithm: Name of the algorithm.
+#     :param n_constraints: Number of constraints analyzed.
+#     :param time_analysis: Time period for analysis.
+#     :param results_about_data: DataFrame containing the results to be processed.
+
+#     :return: Updated DataFrame after processing.
+#     """
+
+#     if algorithm.upper() in ['MCS-TIME', 'MCS_TIME', 'MCS TIME']:
+#         i_columns = []
+#         for i in range(n_constraints):
+#             aux_column_names = []
+#             for j in range(time_analysis):
+#                 aux_column_names.append('I_' + str(i) + '_t=' + str(j))
+#             i_columns.append(aux_column_names)
+
+#         for i in i_columns:
+#             matrixx = results_about_data[i].values
+#             for id, linha in enumerate(matrixx):
+#                 indice_primeiro_1 = np.argmax(linha == 1)
+#                 if linha[indice_primeiro_1] == 1:
+#                     matrixx[id, indice_primeiro_1:] = 1
+#             results_about_data = pd.concat([results_about_data.drop(columns=i),
+#                                             pd.DataFrame(matrixx, columns=i)], axis=1)
+#     else:
+#         i_columns = []
+#         for i in range(n_constraints):
+#             i_columns.append(['I_' + str(i)])
     
-    return results_about_data, i_columns
+#     return results_about_data, i_columns
 
 
-def log_message(message: str) -> None:
-    """
-    Logs a message with the current time.
+# def log_message(message: str) -> None:
+#     """
+#     Logs a message with the current time.
 
-    Args:
-        message (str): The message to log.
+#     :param message: The message to log.
     
-    Returns:
-        None
-    """
-    current_time = datetime.now().strftime('%H:%M:%S')
-    print(f'{current_time} - {message}')
+#     :return: None
+#     """
+#     current_time = datetime.now().strftime('%H:%M:%S')
+#     print(f'{current_time} - {message}')
 
 
-def norm_array(ar: list) -> float:
-    """
-    Evaluates the norm of the array ar.
+# def norm_array(ar: list) -> float:
+#     """
+#     Evaluates the norm of the array ar.
 
-    Args:
-        ar (float): A list of numerical values (floats) representing the array.
+#     :param ar: A list of numerical values (floats) representing the array.
 
-    Returns:
-        float: The norm of the array.
-    """
-    norm_ar = [i ** 2 for i in ar]
-    norm_ar = sum(norm_ar) ** 0.5
-    return norm_ar
+#     :return: The norm of the array.
+#     """
+#     norm_ar = [i ** 2 for i in ar]
+#     norm_ar = sum(norm_ar) ** 0.5
+#     return norm_ar
 
 
-def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -> np.ndarray:
-    """
-    This function calculates the y new value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
-    
-    Args:
-        y_k (Float): Current y value
-        g_y (Float): Objective function in point y_k
-        grad_y_k (Float): Gradient of the objective function in point y_k
-        
-    Returns:
-        y_new (Float): New y value
-    """
+# def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -> np.ndarray:
+#     """
+#     Calculates the new y value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.
 
-    num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])
-    print("num: ", num)
-    num = num[0][0]
-    den = (np.linalg.norm(grad_y_k)) ** 2
-    print("den: ", den)
-    aux = num / den
-    y_new = aux * grad_y_k
+#     :param y_k: Current y value.
+#     :param g_y: Objective function at point `y_k`.
+#     :param grad_y_k: Gradient of the objective function at point `y_k`.
 
-    return y_new
+#     :return: New y value.
+#     """
 
+#     num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])
+#     print("num: ", num)
+#     num = num[0][0]
+#     den = (np.linalg.norm(grad_y_k)) ** 2
+#     print("den: ", den)
+#     aux = num / den
+#     y_new = aux * grad_y_k
 
-def cornell_algorithm_structural_analysis(setup):
-    sigma = []  # 'mean'
-    var = []    # 'sigma'
+#     return y_new
 
-    for var_config in setup['variables settings']:
-        mean = var_config['parameters']['mean']
-        std = var_config['parameters']['sigma']
-        sigma.append(mean)
-        var.append(std)
-
-    g_list = setup['objective function'](sigma, setup['none variable'])
-
-    beta_list = []
-    pf_list = []
-
-    total_variance = sum(std ** 2 for std in var)
-    sigma_total = sqrt(total_variance)
-
-    for g_i in g_list:
-        beta_i = g_i / sigma_total
-        pf_i = pf_equation(beta_i)
-        beta_list.append(beta_i)
-        pf_list.append(pf_i)
-
-    pf_columns = [f'pf_{i}' for i in range(len(pf_list))]
-    beta_columns = [f'beta_{i}' for i in range(len(beta_list))]
-
-    pf_dataframe = pd.DataFrame([pf_list], columns=pf_columns)
-    beta_dataframe = pd.DataFrame([beta_list], columns=beta_columns)
-
-    return pf_dataframe, beta_dataframe
 # def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = 'all') -> dict:
 #     """
 #     Evaluates the fit of distributions to the provided data.
@@ -504,3 +691,20 @@ def cornell_algorithm_structural_analysis(setup):
 #     }
     
 #     return top_3_distributions
+
+# def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -> float:
+#     """
+#     Calculates the root of a function using the Newton-Raphson method.
+
+#     :param f: Function for which the root is sought.
+#     :param df: Derivative of the function.
+#     :param x0: Initial guess for the root.
+#     :param tol: Tolerance for convergence.
+
+#     :return: Approximated root of the function.
+#     """
+
+#     if abs(f(x0)) < tol:
+#         return x0
+#     else:
+#         return newton_raphson(f, df, x0 - f(x0)/df(x0), tol)
