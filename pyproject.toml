@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "parepy-toolbox"
-version = "3.0.0"
+version = "3.0.1"
 description = ""
 authors = ["wmpjrufg <wanderlei_junior@ufcat.edu.br>"]
 readme = "readme-pypi.md"
