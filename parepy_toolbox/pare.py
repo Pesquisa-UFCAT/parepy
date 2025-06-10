@@ -192,7 +192,7 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
         print(f"Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
 
     if verbose:
-        filename = f"sampling_{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.txt"
+        filename = f"sampling_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
         final_df.to_csv(filename, sep="\t", index=False)
         print(f"file '{filename}' has been successfully saved.")
         print("✔️ Algorithm finished!")
