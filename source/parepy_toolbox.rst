@@ -4,37 +4,13 @@ parepy\_toolbox package
 Submodules
 ----------
 
-parepy\_toolbox.common\_library module
---------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: parepy_toolbox.common_library
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-parepy\_toolbox.distributions module
-------------------------------------
-
-.. automodule:: parepy_toolbox.distributions
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-parepy\_toolbox.pare module
----------------------------
-
-.. automodule:: parepy_toolbox.pare
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-parepy\_toolbox.problems module
--------------------------------
-
-.. automodule:: parepy_toolbox.problems
-   :members:
-   :show-inheritance:
-   :undoc-members:
+   parepy_toolbox.common_library
+   parepy_toolbox.distributions
+   parepy_toolbox.pare
+   parepy_toolbox.problems
 
 Module contents
 ---------------

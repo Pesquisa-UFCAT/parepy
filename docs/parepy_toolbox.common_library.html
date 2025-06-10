@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>parepy_toolbox.common_library module &#8212; parepy - toolbox 2.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=c2377ec0"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="parepy_toolbox.distributions module" href="parepy_toolbox.distributions.html" />
+    <link rel="prev" title="parepy_toolbox package" href="parepy_toolbox.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-parepy_toolbox.common_library">
+<span id="parepy-toolbox-common-library-module"></span><h1>parepy_toolbox.common_library module<a class="headerlink" href="#module-parepy_toolbox.common_library" title="Link to this heading">¶</a></h1>
+<p>Common library for PAREpy toolbox</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.beta_equation">
+<span class="sig-name descname"><span class="pre">beta_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#beta_equation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.beta_equation" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the reliability index value for a given probability of failure (pf), using the inverse cumulative distribution function (ICDF) of the standard normal distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pf</strong> (<em>float</em>) – Probability of failure (pf).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reliability index (β).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.convergence_probability_failure">
+<span class="sig-name descname"><span class="pre">convergence_probability_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#convergence_probability_failure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.convergence_probability_failure" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the convergence rate of the probability of failure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – Random samples, objective function evaluations and indicator functions.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Name of the column to be analyzed. Supported values: ‘I_0’, ‘I_1’, …, ‘I_n’ where n is the number of limit state functions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>output[0] = div: List of sample sizes considered at each step, output[1] = m: List of mean values (estimated probability of failure), output[2] = ci_l: List containing the lower confidence interval values of the column, output[3] = ci_u: List containing the upper confidence interval values of the column, output[4] = var: List containing the variance values of the column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list, list, list, list, list]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.first_second_order_derivative_numerical_differentiation_unidimensional">
+<span class="sig-name descname"><span class="pre">first_second_order_derivative_numerical_differentiation_unidimensional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'first'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#first_second_order_derivative_numerical_differentiation_unidimensional"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.first_second_order_derivative_numerical_differentiation_unidimensional" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the numerical derivative of a function at a given point in the given dimension using the central, backward and forward difference method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>Callable</em>) – The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</p></li>
+<li><p><strong>x</strong> (<em>list</em>) – Point at which to evaluate the derivative.</p></li>
+<li><p><strong>pos</strong> (<em>str</em>) – Dimension in the list x where the derivative is to be calculated. When use order ‘xy’, pos is a str contain first and second dimension separated by a comma (e.g., ‘0,1’ for the first and second dimensions).</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method to use for differentiation. Supported values: ‘center’, ‘forward’, or ‘backward’.</p></li>
+<li><p><strong>order</strong> (<em>str</em>) – Order of the derivative to compute (default is first for first-order derivative). Supported values: ‘first’, ‘second’, or ‘xy’.</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Step size for the finite difference approximation (default is 1e-10).</p></li>
+<li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Numerical derivative of order n of the function at point x in dimension pos.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.hessian_matrix">
+<span class="sig-name descname"><span class="pre">hessian_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#hessian_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.hessian_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Computes Hessian matrix of a vector-valued function using finite difference methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>Callable</em>) – The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</p></li>
+<li><p><strong>x</strong> (<em>list</em>) – Point at which to evaluate the derivative.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method to use for differentiation. Supported values: ‘center’, ‘forward’, or ‘backward’.</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Step size for the finite difference approximation (default is 1e-10).</p></li>
+<li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Numerical Hessian matrix at point x.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.jacobian_matrix">
+<span class="sig-name descname"><span class="pre">jacobian_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#jacobian_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.jacobian_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Computes Jacobian matrix of a vector-valued function using finite difference methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>Callable</em>) – The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</p></li>
+<li><p><strong>x</strong> (<em>list</em>) – Point at which to evaluate the derivative.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method to use for differentiation. Supported values: ‘center’, ‘forward’, or ‘backward’.</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Step size for the finite difference approximation (default is 1e-10).</p></li>
+<li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Numerical Jacobian matrix at point x.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.mu_matrix">
+<span class="sig-name descname"><span class="pre">mu_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#mu_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.mu_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Extract mean matrix from a list of variables. Used in Y to X or X to Y transformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> – Mean parameters.</p></li>
+<li><p><strong>mean</strong> (<em>list</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ndarray</em></p>
+</dd>
+</dl>
+<p>return: Mean matrix.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.pf_equation">
+<span class="sig-name descname"><span class="pre">pf_equation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#pf_equation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.pf_equation" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>beta</strong> (<em>float</em>) – Reliability index (β).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Probability of failure (pf).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.sampling_kernel_without_time">
+<span class="sig-name descname"><span class="pre">sampling_kernel_without_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_var_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_limit_functions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#sampling_kernel_without_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.sampling_kernel_without_time" title="Link to this definition">¶</a></dt>
+<dd><p>Generates random samples from a specified distribution using kernel density estimation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>Callable</em>) – The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</p></li>
+<li><p><strong>random_var_settings</strong> (<em>list</em>) – Containing the distribution type and parameters. Example: {‘type’: ‘normal’, ‘parameters’: {‘mean’: 0, ‘std’: 1}}. Supported distributions: (a) ‘uniform’: keys ‘min’ and ‘max’, (b) ‘normal’: keys ‘mean’ and ‘std’, (c) ‘lognormal’: keys ‘mean’ and ‘std’, (d) ‘gumbel max’: keys ‘mean’ and ‘std’, (e) ‘gumbel min’: keys ‘mean’ and ‘std’, (f) ‘triangular’: keys ‘min’, ‘mode’ and ‘max’, or (g) ‘gamma’: keys ‘mean’ and ‘std’.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Sampling method. Supported values: ‘lhs’ (Latin Hypercube Sampling), ‘mcs’ (Crude Monte Carlo Sampling) or ‘sobol’ (Sobol Sampling).</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples. For Sobol sequences, this variable represents the exponent “m” (n = 2^m).</p></li>
+<li><p><strong>number_of_limit_functions</strong> (<em>int</em>) – Number of limit state functions or constraints.</p></li>
+<li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Random samples, objective function evaluations and indicator functions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>DataFrame</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.std_matrix">
+<span class="sig-name descname"><span class="pre">std_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">std</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#std_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.std_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Extract D matrix and D^-1 matrix from a list of variables. Used in Y to X or X to Y transformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>std</strong> (<em>list</em>) – Standard deviation parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<em>ndarray</em>, <em>ndarray</em>]</p>
+</dd>
+</dl>
+<p>return: output[0] = D matrix, output[1] = D^-1 matrix.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.summarize_pf_beta">
+<span class="sig-name descname"><span class="pre">summarize_pf_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#summarize_pf_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.summarize_pf_beta" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a summary DataFrame containing the probability of failure (pf) and reliability index (β) for each indicator function column in the input DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>DataFrame</em>) – Random samples, objective function evaluations and indicator functions.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>output [0] = Probability of failure values for each indicator function, output[1] = beta_df: Reliability index values for each indicator function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>DataFrame</em>, <em>DataFrame</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.x_to_y">
+<span class="sig-name descname"><span class="pre">x_to_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dneq1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_neq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#x_to_y"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.x_to_y" title="Link to this definition">¶</a></dt>
+<dd><p>Transforms a vector of random variables from the X space to the Y space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Random variables in the X space.</p></li>
+<li><p><strong>dneq1</strong> (<em>ndarray</em>) – D^-1 matrix.</p></li>
+<li><p><strong>mu_neq</strong> (<em>ndarray</em>) – Mean matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed random variables in the Y space.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="parepy_toolbox.common_library.y_to_x">
+<span class="sig-name descname"><span class="pre">y_to_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dneq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_neq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/common_library.html#y_to_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.common_library.y_to_x" title="Link to this definition">¶</a></dt>
+<dd><p>Transforms a vector of random variables from the Y space to the X space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – Random variables in the Y space.</p></li>
+<li><p><strong>dneq</strong> (<em>ndarray</em>) – D matrix.</p></li>
+<li><p><strong>mu_neq</strong> (<em>ndarray</em>) – Mean matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed random variables in the X space.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">parepy - toolbox</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">parepy_toolbox</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="parepy_toolbox.html">parepy_toolbox package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">parepy_toolbox</a><ul>
+  <li><a href="parepy_toolbox.html">parepy_toolbox package</a><ul>
+      <li>Previous: <a href="parepy_toolbox.html" title="previous chapter">parepy_toolbox package</a></li>
+      <li>Next: <a href="parepy_toolbox.distributions.html" title="next chapter">parepy_toolbox.distributions module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, gpee.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/parepy_toolbox.common_library.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
