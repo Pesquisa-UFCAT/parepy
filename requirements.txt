@@ -8,5 +8,4 @@ ipykernel
 openpyxl
 tabulate
 sphinx
-furo
-sphinxawesome-theme
+pydata-sphinx-theme

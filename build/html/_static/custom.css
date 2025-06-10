@@ -1,1 +1,7 @@
-/* This file intentionally left blank. */
+body {
+    text-align: justify;
+}
+
+div.body, div.body p, div.body li {
+    text-align: justify;
+}
