@@ -396,6 +396,15 @@ document.write(`
 <span class="sd">    :param beta: Reliability index (β).</span>
 <span class="sd">    </span>
 <span class="sd">    :return: Probability of failure (pf).</span>
+
+
+<span class="sd">    Use Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import pf_equation</span>
+<span class="sd">    &gt;&gt;&gt; beta = 3.5</span>
+<span class="sd">    &gt;&gt;&gt; pf = pf_equation(beta)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Probability of failure {pf:.5e}&quot;)</span>
+<span class="sd">    Probability of failure 2.32629e-04</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span></div>
@@ -411,6 +420,14 @@ document.write(`
 <span class="sd">    :param pf: Probability of failure (pf).</span>
 
 <span class="sd">    :return: Reliability index (β).</span>
+
+<span class="sd">    Use Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import beta_equation</span>
+<span class="sd">    &gt;&gt;&gt; pf = 2.32629e-04</span>
+<span class="sd">    &gt;&gt;&gt; beta = beta_equation(pf)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Reliability index (beta) {beta:.5f}&quot;)</span>
+<span class="sd">    Reliability index 3.50</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="o">-</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span></div>

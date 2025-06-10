@@ -340,6 +340,16 @@ document.write(`
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
+<section id="use-example">
+<h2>Use Example<a class="headerlink" href="#use-example" title="Link to this heading">#</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">parepy_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">beta_equation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pf</span> <span class="o">=</span> <span class="mf">2.32629e-04</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta_equation</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reliability index (beta) </span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Reliability index 3.50</span>
+</pre></div>
+</div>
+</section>
 </dd></dl>
 
 <dl class="py function">
@@ -466,6 +476,16 @@ document.write(`
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
+<section id="id1">
+<h2>Use Example<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">parepy_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">pf_equation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">beta</span> <span class="o">=</span> <span class="mf">3.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pf</span> <span class="o">=</span> <span class="n">pf_equation</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probability of failure </span><span class="si">{</span><span class="n">pf</span><span class="si">:</span><span class="s2">.5e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Probability of failure 2.32629e-04</span>
+</pre></div>
+</div>
+</section>
 </dd></dl>
 
 <dl class="py function">

@@ -77,6 +77,15 @@ def pf_equation(beta: float) -> float:
     :param beta: Reliability index (β).
     
     :return: Probability of failure (pf).
+
+
+    Use Example
+    ==============
+    >>> from parepy_toolbox import pf_equation
+    >>> beta = 3.5
+    >>> pf = pf_equation(beta)
+    >>> print(f"Probability of failure {pf:.5e}")
+    Probability of failure 2.32629e-04
     """
 
     return sc.stats.norm.cdf(-beta)
@@ -89,6 +98,14 @@ def beta_equation(pf: float) -> float:
     :param pf: Probability of failure (pf).
 
     :return: Reliability index (β).
+
+    Use Example
+    ==============
+    >>> from parepy_toolbox import beta_equation
+    >>> pf = 2.32629e-04
+    >>> beta = beta_equation(pf)
+    >>> print(f"Reliability index (beta) {beta:.5f}")
+    Reliability index 3.50
     """
 
     return -sc.stats.norm.ppf(pf)
