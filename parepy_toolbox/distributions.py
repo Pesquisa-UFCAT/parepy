@@ -204,6 +204,26 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     return x
 
 
+def random_sampling_statistcs(dist: str, parameters: dict, value: float):
+    """
+    """
+    
+    # Convert user parameters to scipy.stats format
+    parameters_scipy = convert_params_to_scipy(dist, parameters)
+    
+    if dist.lower() == 'uniform':
+        rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        pdf = rv.pdf(value)
+        cdf = rv.cdf(value)
+        icdf = rv.ppf(value)
+    elif dist.lower() == 'normal':
+        rv = sc.stats.norm(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        pdf = rv.pdf(value)
+        cdf = rv.cdf(value)
+        icdf = rv.ppf(value)
+
+    return pdf, cdf, icdf
+
 # def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
 #     """
 #     Generates a uniform sampling between 0 and 1.

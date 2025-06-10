@@ -152,7 +152,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     return results, final_pf, final_beta
 
 
-def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, parallel: bool = True, verbose: bool = False, args: Optional[tuple] = None) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, parallel: bool = True, verbose: bool = False, random_var_settings_importance_sampling: Optional[list] = None, args: Optional[tuple] = None) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """                                    
     Computes the reliability index and probability of failure using sampling methods.
 
@@ -195,6 +195,7 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
         filename = f"sampling_{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.txt"
         final_df.to_csv(filename, sep="\t", index=False)
         print(f"file '{filename}' has been successfully saved.")
+        print("✔️ Algorithm finished!")
 
     # Computes pf and beta
     pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
@@ -215,8 +216,6 @@ def reprocess_sampling_results(folder_path: str, verbose: bool = True) -> tuple[
     start_time = time.perf_counter()
 
     all_files = [f for f in os.listdir(folder_path) if f.endswith(".txt")]
-    if not all_files:
-        raise FileNotFoundError("No .txt files were found in the specified folder.")
 
     dataframes = []
     for file in all_files:
@@ -227,11 +226,9 @@ def reprocess_sampling_results(folder_path: str, verbose: bool = True) -> tuple[
     final_df = pd.concat(dataframes, ignore_index=True)
 
     if verbose:
-        print(f"{len(dataframes)} files loaded. Total number of samples: {len(final_df)}.")
+        print(f"🧮 {len(dataframes)} files loaded. Total number of samples: {len(final_df)}.")
 
     col_I = [col for col in final_df.columns if col.startswith("I_")]
-    if not col_I:
-        raise ValueError("No failure indicator columns ('I_*') were found in the files.")
 
     f_df, beta_df = parepyco.summarize_failure_probabilities(final_df)
 
@@ -239,64 +236,37 @@ def reprocess_sampling_results(folder_path: str, verbose: bool = True) -> tuple[
 
     if verbose:
         print("Reprocessing completed successfully.")
-        print(f"Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
+        print(f"🧮 Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
+        print("✔️ Algorithm finished!")
 
     return final_df, f_df, beta_df
 
 
-def sobol_algorithm(obj: Callable,  random_var_settings: list, n_samples: int, number_of_limit_functions: int, parallel: bool = False, verbose: bool = False, args: Optional[tuple] = None) -> pd.DataFrame:
+def sobol_algorithm(obj: Callable,  random_var_settings: list, n_sobol: int, number_of_limit_functions: int, parallel: bool = False, verbose: bool = False, args: Optional[tuple] = None) -> pd.DataFrame:
     """
     Calculates the Sobol sensitivity indices in structural reliability problems.
 
     :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
     :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
-    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+    :param n_sobol: This variable represents the exponent "m" (n = 2^m) to generate Sobol sequence sampling. Must be a positive integer.
     :param number_of_limit_functions: Number of limit state functions or constraints.
     :param parallel: Start parallel process.
     :param verbose: If True, prints detailed information about the process.
     :param args: Extra arguments to pass to the objective function (optional)
 
-    :return: Dictionary containing the first-order and total-order Sobol sensitivity indices for each input variable. 
+    :return: First-order and total-order Sobol sensitivity indices for each input variable. 
     """
 
     if verbose:
-        print("Starting Sobol analysis...")
-
-    start_time = time.perf_counter()
+        print("🧮 Starting Sobol analysis...")
 
     # Sampling for distributions A and B
-    dist_a, pf_df_a, beta_df_a = sampling_algorithm_structural_analysis(
-        obj=obj,
-        random_var_settings=random_var_settings,
-        method='sobol',
-        n_samples=n_samples,
-        number_of_limit_functions=number_of_limit_functions,
-        parallel=parallel,
-        verbose=verbose,
-        args=args
-    )
+    start_time = time.perf_counter()
+    dist_a, _, _ = sampling_algorithm_structural_analysis(obj, random_var_settings, 'sobol', n_sobol, number_of_limit_functions, parallel=parallel, verbose=verbose, args=args) if args is not None else sampling_algorithm_structural_analysis(obj, random_var_settings, 'sobol', n_sobol, number_of_limit_functions, parallel=parallel, verbose=verbose)
+    dist_b, _, _ = sampling_algorithm_structural_analysis(obj, random_var_settings, 'sobol', n_sobol, number_of_limit_functions, parallel=parallel, verbose=verbose, args=args) if args is not None else sampling_algorithm_structural_analysis(obj, random_var_settings, 'sobol', n_sobol, number_of_limit_functions, parallel=parallel, verbose=verbose)
 
-    dist_b, pf_df_b, beta_df_b = sampling_algorithm_structural_analysis(
-        obj=obj,
-        random_var_settings=random_var_settings,
-        method='sobol',
-        n_samples=n_samples,
-        number_of_limit_functions=number_of_limit_functions,
-        parallel=parallel,
-        verbose=verbose,
-        args=args
-    )
-
-    if verbose:
-        print("pf_df (A):")
-        print(pf_df_a)
-        print("beta_df (A):")
-        print(beta_df_a)
-        print("pf_df (B):")
-        print(pf_df_b)
-        print("beta_df (B):")
-        print(beta_df_b)
-
+    # DataFrame
+    n_samples = 2 ** n_sobol
     y_a = dist_a['G_0'].to_list()
     y_b = dist_b['G_0'].to_list()
     f_0_2 = (sum(y_a) / n_samples) ** 2
@@ -326,7 +296,8 @@ def sobol_algorithm(obj: Callable,  random_var_settings: list, n_samples: int, n
 
     end_time = time.perf_counter()
     if verbose:
-        print(f"Sobol analysis completed in {end_time - start_time:.2f} seconds.")
+        print(f"🧮 Sobol analysis completed in {end_time - start_time:.2f} seconds.")
+        print("✔️ Algorithm finished!")
 
     dict_sobol = pd.DataFrame({'s_i': s_i, 's_t': s_t})
 
@@ -335,20 +306,17 @@ def sobol_algorithm(obj: Callable,  random_var_settings: list, n_samples: int, n
 
 def generate_factorial_design(variable_names: List[str], levels_per_variable: List[List[float]], verbose: bool = False) -> pd.DataFrame:
     """
-    Generates a full factorial design based on variable names and levels.    Generates a full factorial design based on the input dictionary of variable levels. Computes all possible combinations of the provided levels for each variable and returns them in a structured DataFrame.
+    Generates a full factorial design based on variable names and levels.
 
-    :param variable_names: List of variable names.
+    :param variable_names: Variable names.
     :param levels_per_variable: List of lists, where each sublist contains the levels for the corresponding variable.
     :param verbose: If True, prints the number of combinations and preview of the DataFrame.
 
-    :return: DataFrame containing all possible combinations of the levels provided.
+    :return: All possible combinations of the levels provided.
     """
 
-    if len(variable_names) != len(levels_per_variable):
-        raise ValueError("The number of variable names must match the number of level sets provided.")
-
     if verbose:
-        print("Generating factorial design...")
+        print("🧮 Generating factorial design...")
         for name, levels in zip(variable_names, levels_per_variable):
             print(f" - {name}: {levels}")
 
@@ -356,9 +324,9 @@ def generate_factorial_design(variable_names: List[str], levels_per_variable: Li
     df = pd.DataFrame(combinations, columns=variable_names)
 
     if verbose:
-        print(f"Generated {len(df)} combinations.")
-        print("Sample of factorial design:")
-        print(df.head())
+        print(f"🧮 Generated {len(df)} combinations.")
+        print("🧮 Sample of factorial design:")
+        print("✔️ Algorithm finished!")
 
     return df
 
