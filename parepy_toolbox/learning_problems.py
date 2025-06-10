@@ -1,6 +1,7 @@
 """Learning and problems to use in PAREpy toolbox"""
 from typing import Callable
 
+
 def structural_problems(type_: str, name: str) -> tuple[Callable, list]:
     """
     This function contain several problems about structural reliability.
