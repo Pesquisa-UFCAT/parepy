@@ -397,13 +397,13 @@ document.write(`
 <span class="sd">    </span>
 <span class="sd">    :return: Probability of failure (pf).</span>
 
-
 <span class="sd">    Use Example</span>
 <span class="sd">    ==============</span>
-<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import pf_equation</span>
-<span class="sd">    &gt;&gt;&gt; beta = 3.5</span>
-<span class="sd">    &gt;&gt;&gt; pf = pf_equation(beta)</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;Probability of failure {pf:.5e}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    from parepy_toolbox import pf_equation</span>
+<span class="sd">    beta = 3.5</span>
+<span class="sd">    pf = pf_equation(beta)</span>
+<span class="sd">    print(f&quot;Probability of failure {pf:.5e}&quot;)</span>
 <span class="sd">    Probability of failure 2.32629e-04</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -423,10 +423,11 @@ document.write(`
 
 <span class="sd">    Use Example</span>
 <span class="sd">    ==============</span>
-<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import beta_equation</span>
-<span class="sd">    &gt;&gt;&gt; pf = 2.32629e-04</span>
-<span class="sd">    &gt;&gt;&gt; beta = beta_equation(pf)</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;Reliability index (beta) {beta:.5f}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    from parepy_toolbox import beta_equation</span>
+<span class="sd">    pf = 2.32629e-04</span>
+<span class="sd">    beta = beta_equation(pf)</span>
+<span class="sd">    print(f&quot;Reliability index (beta) {beta:.5f}&quot;)</span>
 <span class="sd">    Reliability index 3.50</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

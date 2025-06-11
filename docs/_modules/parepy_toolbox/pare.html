@@ -333,6 +333,23 @@ document.write(`
 <span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
 
 <span class="sd">    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).</span>
+<span class="sd">    </span>
+<span class="sd">    Use Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    from parepy_toolbox import deterministic_algorithm_structural_analysis</span>
+<span class="sd">    def obj(x):</span>
+<span class="sd">        return [12.5 * x[0]**3 - x[1]]</span>
+<span class="sd">    d = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 1., &#39;std&#39;: 0.1}}</span>
+<span class="sd">    l = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 10., &#39;std&#39;: 1.}}</span>
+<span class="sd">    var = [d, l]</span>
+<span class="sd">    x0 = [1.0, 10.0]</span>
+<span class="sd">    max_iter = 100</span>
+<span class="sd">    tol = 1E-8</span>
+<span class="sd">    results, pf, beta = deterministic_algorithm_structural_analysis(obj, tol, max_iter, var, x0, verbose=True)</span>
+<span class="sd">    print(f&quot;Probability of failure: {pf}&quot;)</span>
+<span class="sd">    print(f&quot;Reliability index (beta): {beta}&quot;)</span>
+<span class="sd">    results.head()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -476,6 +493,20 @@ document.write(`
 <span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
 
 <span class="sd">    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.</span>
+
+<span class="sd">    Use Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import sampling_algorithm_structural_analysis</span>
+<span class="sd">    &gt;&gt;&gt; def obj(x):</span>
+<span class="sd">    ...     return [12.5 * x[0]**3 -x[1]]</span>
+<span class="sd">    &gt;&gt;&gt; d = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 1., &#39;std&#39;: 0.1}}</span>
+<span class="sd">    &gt;&gt;&gt; l = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 10., &#39;std&#39;: 1.}}</span>
+<span class="sd">    &gt;&gt;&gt; var = [d, l]</span>
+<span class="sd">    &gt;&gt;&gt; df, pf, beta = sampling_algorithm_structural_analysis(obj, var, method=&#39;lhs&#39;, n_samples=10000, number_of_limit_functions=1, parallel=False, verbose=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(pf)</span>
+<span class="sd">    &gt;&gt;&gt; print(beta)</span>
+<span class="sd">    &gt;&gt;&gt; print(df.head())</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">block_size</span> <span class="o">=</span> <span class="mi">100</span>

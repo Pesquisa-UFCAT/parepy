@@ -26,6 +26,23 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
+    
+    Use Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    from parepy_toolbox import deterministic_algorithm_structural_analysis
+    def obj(x):
+        return [12.5 * x[0]**3 - x[1]]
+    d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
+    l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
+    var = [d, l]
+    x0 = [1.0, 10.0]
+    max_iter = 100
+    tol = 1E-8
+    results, pf, beta = deterministic_algorithm_structural_analysis(obj, tol, max_iter, var, x0, verbose=True)
+    print(f"Probability of failure: {pf}")
+    print(f"Reliability index (beta): {beta}")
+    results.head()
     """
 
     results = []
@@ -166,6 +183,20 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.
+
+    Use Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    >>> from parepy_toolbox import sampling_algorithm_structural_analysis
+    >>> def obj(x):
+    ...     return [12.5 * x[0]**3 -x[1]]
+    >>> d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
+    >>> l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
+    >>> var = [d, l]
+    >>> df, pf, beta = sampling_algorithm_structural_analysis(obj, var, method='lhs', n_samples=10000, number_of_limit_functions=1, parallel=False, verbose=True)
+    >>> print(pf)
+    >>> print(beta)
+    >>> print(df.head())
     """
 
     block_size = 100

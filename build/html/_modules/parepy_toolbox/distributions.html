@@ -423,6 +423,13 @@ document.write(`
 <span class="sd">    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent &quot;m&quot; (n = 2^m).</span>
 
 <span class="sd">    :return: Random samples.</span>
+<span class="sd">    </span>
+<span class="sd">    Use Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    parameters = {&#39;mean&#39;: 10, &#39;std&#39;: 2}</span>
+<span class="sd">    samples = random_sampling(dist=&#39;normal&#39;, parameters=parameters,method=&#39;lhs&#39;, n_samples=100)</span>
+<span class="sd">    print(samples[:10])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Convert user parameters to scipy.stats format</span>

@@ -110,6 +110,13 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
 
     :return: Random samples.
+    
+    Use Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    parameters = {'mean': 10, 'std': 2}
+    samples = random_sampling(dist='normal', parameters=parameters,method='lhs', n_samples=100)
+    print(samples[:10])
     """
 
     # Convert user parameters to scipy.stats format
