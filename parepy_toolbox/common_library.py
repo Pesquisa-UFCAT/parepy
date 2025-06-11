@@ -14,7 +14,7 @@ def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
 
     :param std: Standard deviation parameters.
 
-    return: output[0] = D matrix, output[1] = D^-1 matrix.
+    :return: output[0] = D matrix, output[1] = D^-1 matrix.
     """
 
     dneq = np.zeros((len(std), len(std)))
@@ -32,7 +32,7 @@ def mu_matrix(mean: list) -> np.ndarray:
 
     :param mu: Mean parameters.
 
-    return: Mean matrix.
+    :return: Mean matrix.
     """
 
     mu_neq = np.zeros((len(mean), 1))
