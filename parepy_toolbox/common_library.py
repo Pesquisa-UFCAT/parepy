@@ -77,6 +77,15 @@ def pf_equation(beta: float) -> float:
     :param beta: Reliability index (β).
     
     :return: Probability of failure (pf).
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    from parepy_toolbox import pf_equation
+
+    beta = 3.5
+    pf = pf_equation(beta)
+    print(f"Probability of failure {pf:.5e}")
     """
 
     return sc.stats.norm.cdf(-beta)
@@ -89,6 +98,15 @@ def beta_equation(pf: float) -> float:
     :param pf: Probability of failure (pf).
 
     :return: Reliability index (β).
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    from parepy_toolbox import beta_equation
+
+    pf = 2.32629e-04
+    beta = beta_equation(pf)
+    print(f"Reliability index (beta) {beta:.5f}")
     """
 
     return -sc.stats.norm.ppf(pf)
@@ -241,6 +259,29 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Random samples, objective function evaluations and indicator functions.
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    from parepy_toolbox import sampling_kernel_without_time
+
+    def obj(x):
+        g_0 = 12.5 * x[0] ** 3 - x[1]
+        return [g_0]
+
+    d = {'type': 'normal', 'parameters': {'mean': 1.0, 'std': 0.1}}
+    l = {'type': 'normal', 'parameters': {'mean': 10.0, 'std': 1.0}}
+    var = [d, l]
+
+    number_of_limit_functions = 1
+    method = 'mcs'
+    n_samples = 10000
+
+    start = time.perf_counter()
+    df = sampling_kernel_without_time(obj, var, method, n_samples, number_of_limit_functions)
+    end = time.perf_counter()
+    print(end-start)
+    df
     """
 
     n_real_samples = 2**n_samples if method == 'sobol' else n_samples
@@ -314,6 +355,26 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     :param column: Name of the column to be analyzed. Supported values: 'I_0', 'I_1', ..., 'I_n' where n is the number of limit state functions.
 
     :return: output[0] = div: List of sample sizes considered at each step, output[1] = m: List of mean values (estimated probability of failure), output[2] = ci_l: List containing the lower confidence interval values of the column, output[3] = ci_u: List containing the upper confidence interval values of the column, output[4] = var: List containing the variance values of the column. 
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    from parepy_toolbox import common_library
+
+    data = {
+        'X_0': np.random.normal(1.0, 0.1, 1000),
+        'X_1': np.random.normal(10.0, 1.0, 1000),
+        'I_0': np.random.binomial(1, p=1e-3, size=1000)
+    }
+
+    df = pd.DataFrame(data)
+    div, pf_mean, ci_lower, ci_upper, pf_var = convergence_probability_failure(df, 'I_0')
+
+    print("Sample sizes considered at each step:", div)
+    print("Estimated probability of failure (mean):", pf_mean)
+    print("Lower confidence interval values:", ci_lower)
+    print("Upper confidence interval values:", ci_upper)
+    print("Variance values:", pf_var)
     """
 
     column_values = df[column].to_list()
