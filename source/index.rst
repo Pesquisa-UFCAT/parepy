@@ -40,3 +40,4 @@ Welcome to PAREpy's Documentation!
    :caption: Contents:
    
    parepy_toolbox
+   quick_start

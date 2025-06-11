@@ -12,10 +12,3 @@ Submodules
    parepy_toolbox.pare
    parepy_toolbox.problems
 
-Module contents
----------------
-
-.. automodule:: parepy_toolbox
-   :members:
-   :show-inheritance:
-   :undoc-members:
