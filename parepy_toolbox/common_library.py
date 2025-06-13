@@ -343,6 +343,49 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
 
     return div, m, ci_l, ci_u, var
 
+def calculate_weights(df_samples, original_settings, sampling_settings):
+    n_vars = len(original_settings)
+    n_samples = df_samples.shape[0]
+
+    p_vals = np.ones(n_samples)
+    q_vals = np.ones(n_samples)
+
+    for j in range(n_vars):
+        col = f"X_{j}"
+        x_j = df_samples[col].values
+
+        p_info = original_settings[j]
+        q_info = sampling_settings[j]
+
+        dist_p = get_distribution(p_info['type'], p_info['parameters'])
+        dist_q = get_distribution(q_info['type'], q_info['parameters'])
+
+        p_vals *= dist_p.pdf(x_j)
+        q_vals *= dist_q.pdf(x_j)
+
+    weights = p_vals / q_vals
+    return weights
+
+def get_distribution(dist: str, parameters: dict):
+    dist = dist.lower()
+    p = parepydi.convert_params_to_scipy(dist, parameters)
+
+    if dist == 'normal':
+        return sc.stats.norm(loc=p['loc'], scale=p['scale'])
+    elif dist == 'lognormal':
+        return sc.stats.lognorm(s=p['s'], loc=p['loc'], scale=p['scale'])
+    elif dist == 'uniform':
+        return sc.stats.uniform(loc=p['loc'], scale=p['scale'])
+    elif dist == 'gumbel max':
+        return sc.stats.gumbel_r(loc=p['loc'], scale=p['scale'])
+    elif dist == 'gumbel min':
+        return sc.stats.gumbel_l(loc=p['loc'], scale=p['scale'])
+    elif dist == 'triangular':
+        return sc.stats.triang(c=p['c'], loc=p['loc'], scale=p['scale'])
+    elif dist == 'gamma':
+        return sc.stats.gamma(a=p['a'], loc=p['loc'], scale=p['scale'])
+    else:
+        raise NotImplementedError(f"Distribution '{dist}' not allowed.")
 
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
 #     """

@@ -163,12 +163,15 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     :param number_of_limit_functions: Number of limit state functions or constraints.
     :param parallel: Start parallel process.
     :param verbose: If True, prints detailed information about the process.
+    :param random_var_settings_importance_sampling: Optional. If provided, it will be used for importance sampling. It should have the same structure as random_var_settings plus the importance sampling distribution parameters. This is only supported for the 'mcs' method. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}.  (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.
     """
 
     block_size = 100
+    setups = []
+    
     if method != 'sobol':
         samples_per_block = n_samples // block_size
         samples_per_block_remainder = n_samples % block_size
@@ -187,7 +190,20 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     else:
         results = [parepyco.sampling_kernel_without_time(*args_aux) for args_aux in setups]
     end_time = time.perf_counter()
+
+    if random_var_settings_importance_sampling:
+        if method != 'mcs':
+            raise ValueError(f"Method '{method}' is not supported for importance sampling. Only Monte Carlo is allowed.")
+
+        setups = [(obj, random_var_settings_importance_sampling, method, samples_per_block, number_of_limit_functions, args) for _ in range(block_size)] if args is not None else [(obj, random_var_settings_importance_sampling, method, samples_per_block, number_of_limit_functions) for _ in range(block_size)]
+        results_importance_sampling = [parepyco.sampling_kernel_without_time(*args_aux) for args_aux in setups]
+        df_importance_sampling = pd.concat(results_importance_sampling, ignore_index=True)
+        weights = parepyco.calculate_weights(df_importance_sampling, random_var_settings, random_var_settings_importance_sampling)
+        df_importance_sampling["W"] = weights
+        results = [df_importance_sampling] 
+
     final_df = pd.concat(results, ignore_index=True)
+    
     if verbose:
         print(f"Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
 
@@ -201,7 +217,6 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
 
     return final_df, pf_df, beta_df
-
 
 def reprocess_sampling_results(folder_path: str, verbose: bool = True) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """

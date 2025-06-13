@@ -1,5 +1,5 @@
 import sys
-path  = r'C:\git-projetos\parepy'  # PC notebook wander
+path  = r'/Users/donizetti/Doutorado'  # Local path para o ParePy Toolbox
 sys.path.append(path)
 from parepy_toolbox import *
 
@@ -9,7 +9,8 @@ def obj(x):
 d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
 l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
 var = [d, l]
-df, pf, beta = sampling_algorithm_structural_analysis(obj, var, 'lhs', 1000, 1, parallel=False, verbose=False)
+
+df, pf, beta = sampling_algorithm_structural_analysis(obj, var, 'lhs', 10000, 1, parallel=False, verbose=False)
 print(pf)
 print(beta)
 print(df.head())
