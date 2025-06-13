@@ -1,5 +1,5 @@
 import sys
-path  = r'/Users/donizetti/Doutorado'  # Local path para o ParePy Toolbox
+path  = r'/Users/donizetti/Doutorado/parepy'  # Local path para o ParePy Toolbox
 sys.path.append(path)
 from parepy_toolbox import *
 

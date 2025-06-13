@@ -1,16 +1,16 @@
 import sys
-path = r'D:\dphd\parepy' # Local path para o ParePy Toolbox
+path  = r'/Users/donizetti/Doutorado/parepy' # Local path para o ParePy Toolbox
 sys.path.append(path)
 from parepy_toolbox import *
 
 # def obj(x):
 #     return [x[0] - x[1]]
 
-# def obj(x):
-#     return [12.5 * x[0] ** 3 - x[1]]
+def obj(x):
+    return [12.5 * x[0] ** 3 - x[1]]
 
-def obj(x):    
-    return [(50 * (0.6 - x[0])**2 / (0.1 + x[1])) - 275]  
+#def obj(x):    
+#    return [(50 * (0.6 - x[0])**2 / (0.1 + x[1])) - 275]  
 
 d = {'type': 'normal', 'parameters': {'mean': 0, 'std': 0.01}}
 l = {'type': 'normal', 'parameters': {'mean': 0, 'std': 0.03}}

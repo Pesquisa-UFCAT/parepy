@@ -200,6 +200,16 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
         df_importance_sampling = pd.concat(results_importance_sampling, ignore_index=True)
         weights = parepyco.calculate_weights(df_importance_sampling, random_var_settings, random_var_settings_importance_sampling)
         df_importance_sampling["W"] = weights
+        indicator_functions = df_importance_sampling["I_0"].to_numpy()
+        true_condition = np.where(indicator_functions > 0)
+        weights = weights[true_condition]
+
+        print("Weights:", weights)  
+        
+        proba = np.sum(weights) / n_samples
+        
+        print(f"Probability of failure (importance sampling): {proba}")
+
         results = [df_importance_sampling] 
 
     final_df = pd.concat(results, ignore_index=True)
