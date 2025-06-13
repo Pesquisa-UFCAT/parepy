@@ -405,16 +405,7 @@ random_var_settings = [uniform_pi, uniform_pi, uniform_pi]
 # Sobol sequence: 2^n_sobol samples
 n_sobol = 12  # n = 2^12 = 4096 samples
 number_of_limit_functions = 1
-```
 
----
-
-Now, we can run the Sobol sensitivity analysis using the `sobol_algorithm` function:
-
-```python
-import time
-
-start = time.perf_counter()
 sobol_results = sobol_algorithm(
     obj=ishigami,
     random_var_settings=random_var_settings,
@@ -422,8 +413,6 @@ sobol_results = sobol_algorithm(
     number_of_limit_functions=number_of_limit_functions,
     verbose=True
 )
-end = time.perf_counter()
-
 ```
 
 ---
