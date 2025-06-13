@@ -260,7 +260,174 @@ def example_function(x, none_variable):
 
     return [r_0, r_1], [s_0, s_1], [g_0, g_1]
 ```
-  
+
+## Example 3: Using deterministic algorithm 
+
+To demonstrate how to use the FORM-based deterministic algorithm, we’ll employ the objective function from Beck \[1], as shown in Example 1.
+
+The State Limit Function is:
+
+$$
+\mathbf{G}(\boldsymbol{X}) = \boldsymbol{R}_d - \boldsymbol{D} - \boldsymbol{L}
+$$
+
+Our objective function implementation will be as follows:
+
+```python
+def example_function(x, none_variable=None):
+    """Beck example objective function"""
+    r_d = x[0]
+    d = x[1]
+    l = x[2]
+    g = r_d - d - l
+    return g
+```
+
+Running the deterministic algorithm requires defining the random variables and their distributions. In this case, we will use normal distributions for the random variables. 
+
+```python
+from parepy_toolbox import deterministic_algorithm_structural_analysis
+
+# Random variable settings 
+random_var_settings = [
+    {'type': 'normal', 'parameters': {'mean': 30, 'std': 3}},   
+    {'type': 'normal', 'parameters': {'mean': 15, 'std': 1.5}}, 
+    {'type': 'normal', 'parameters': {'mean': 10, 'std': 1}}    
+]
+
+# Initial guess
+x0 = [30, 15, 10]
+
+# Tolerance and iteration settings
+tol = 1e-5
+max_iter = 50
+
+# Run analysis
+results_df, pf, beta = deterministic_algorithm_structural_analysis(
+    obj=example_function,
+    tol=tol,
+    max_iter=max_iter,
+    random_var_settings=random_var_settings,
+    x0=x0,
+    verbose=True
+)
+```
+
+
+## Example 4: Using Sampling-Based Structural Reliability Analysis
+
+To demonstrate how to perform sampling-based structural reliability analysis, we’ll use the following objective function:
+
+$$
+\mathbf{G}(\boldsymbol{X}) = \boldsymbol{R}_d - \boldsymbol{D} - \boldsymbol{L}
+$$
+
+This is the same function from Beck \[1].
+
+Our objective function implementation will be as follows:
+
+```python
+def example_function(x, none_variable=None):
+    """Beck example objective function"""
+    r_d = x[0]
+    d = x[1]
+    l = x[2]
+    g = r_d - d - l
+    return [g]
+```
+
+Performing sampling-based structural reliability analysis requires defining the random variables and their distributions. In this case, we will use normal distributions for the random variables.
+
+```python
+from parepy_toolbox import sampling_kernel_without_time
+
+# Define random variables: R_d, D, L
+random_var_settings = [
+    {'type': 'normal', 'parameters': {'mean': 30, 'std': 3}},   # R_d
+    {'type': 'normal', 'parameters': {'mean': 15, 'std': 1.5}}, # D
+    {'type': 'normal', 'parameters': {'mean': 10, 'std': 1.0}}, # L
+]
+
+# Sampling configuration
+method = 'mcs'                    # 'mcs', 'lhs', or 'sobol'
+n_samples = 10000
+number_of_limit_functions = 1    # Since the function returns a single G
+
+# Run sampling analysis
+import time
+start = time.perf_counter()
+df = sampling_kernel_without_time(
+    obj=example_function,
+    random_var_settings=random_var_settings,
+    method=method,
+    n_samples=n_samples,
+    number_of_limit_functions=number_of_limit_functions
+)
+end = time.perf_counter()
+```
+
+## Example 5: Global Sensitivity Analysis using Sobol's Method
+
+The Ishigami function is a well-known benchmark in global sensitivity analysis:
+
+$$
+f(x) = \sin(x_0) + a \cdot \sin^2(x_1) + b \cdot x_2^4 \cdot \sin(x_0)
+$$
+
+where $a = 7$ and $b = 0.1$.
+
+This function is highly non-linear and exhibits strong variable interactions, making it ideal for validating the performance of Sobol-based sensitivity indices.
+
+Objective function implementation for the Ishigami function:
+
+```python
+def ishigami(x, none_variable=None):
+    a = 7
+    b = 0.10
+    x_0 = x[0]
+    x_1 = x[1]
+    x_2 = x[2]
+    result = np.sin(x_0) + a * np.sin(x_1) ** 2 + b * (x_2 ** 4) * np.sin(x_0)
+    return [result]  # Compatible with sobol_algorithm
+```
+
+---
+
+Assembling the Sobol sensitivity analysis requires defining the random variables and their distributions. In this case, we will use uniform distributions over the interval $[-\pi, \pi]$ for all three variables.
+
+```python
+from parepy_toolbox import sobol_algorithm
+
+# Define random variables: Uniform in [-π, π]
+uniform_pi = {'type': 'uniform', 'parameters': {'min': -np.pi, 'max': np.pi}}
+random_var_settings = [uniform_pi, uniform_pi, uniform_pi]
+
+# Sobol sequence: 2^n_sobol samples
+n_sobol = 12  # n = 2^12 = 4096 samples
+number_of_limit_functions = 1
+```
+
+---
+
+Now, we can run the Sobol sensitivity analysis using the `sobol_algorithm` function:
+
+```python
+import time
+
+start = time.perf_counter()
+sobol_results = sobol_algorithm(
+    obj=ishigami,
+    random_var_settings=random_var_settings,
+    n_sobol=n_sobol,
+    number_of_limit_functions=number_of_limit_functions,
+    verbose=True
+)
+end = time.perf_counter()
+
+```
+
+---
+
 ## Concluding remarks
 PAREpy represents a contribution to structural reliability engineering by offering an accessible, efficient, and extensible platform for probabilistic analysis. Its use in education and research will help advance the understanding and application of reliability concepts, supporting the development of safer and more robust structural designs.  
 
