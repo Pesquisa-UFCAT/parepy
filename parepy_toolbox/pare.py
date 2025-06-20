@@ -22,7 +22,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     :param max_iter: Maximum number of iterations allowed.
     :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
     :param x0: Initial guess.
-    :param verbose: If True, prints detailed information about the process.
+    :param verbose: If True, prints detailed information about the process. Default is `False`.
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
@@ -182,7 +182,7 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
     :param number_of_limit_functions: Number of limit state functions or constraints.
     :param parallel: Start parallel process.
-    :param verbose: If True, prints detailed information about the process.
+    :param verbose: If True, prints detailed information about the process. Default is `False`.
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.
@@ -240,12 +240,12 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     return final_df, pf_df, beta_df
 
 
-def reprocess_sampling_results(folder_path: str, verbose: bool = True) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def reprocess_sampling_results(folder_path: str, verbose: bool = False) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Reprocesses sampling results from multiple .txt files in a specified folder.
 
     :param folder_path: Path to the folder containing sampling result files (.txt format).
-    :param verbose: If True, prints detailed information about the process.
+    :param verbose: If True, prints detailed information about the process. Default is `False`.
 
     :return: Results of reprocessing: [0] = Combined dataframe with all sampling data, [1] = Failure probabilities for each limit state function, [2] = Reliability index (beta) for each limit state function.
 
@@ -262,20 +262,15 @@ def reprocess_sampling_results(folder_path: str, verbose: bool = True) -> tuple[
     """
 
     start_time = time.perf_counter()
-
     all_files = [f for f in os.listdir(folder_path) if f.endswith(".txt")]
-
     dataframes = []
     for file in all_files:
         file_path = os.path.join(folder_path, file)
         df = pd.read_csv(file_path, sep="\t")
         dataframes.append(df)
-
     final_df = pd.concat(dataframes, ignore_index=True)
-
     if verbose:
         print(f"🧮 {len(dataframes)} files loaded. Total number of samples: {len(final_df)}.")
-
     col_I = [col for col in final_df.columns if col.startswith("I_")]
 
     f_df, beta_df = parepyco.summarize_failure_probabilities(final_df)
