@@ -1,4 +1,5 @@
-"""Common library for PAREpy toolbox"""
+"""Common library contains utility functions for PAREpy's framework.
+"""
 from typing import Optional, Callable
 
 import scipy as sc
