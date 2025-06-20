@@ -30,7 +30,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     Example
     ==============
     >>> # pip install -U parepy-toolbox
-    from parepy_toolbox import deterministic_algorithm_structural_analysis
+    >>> from parepy_toolbox import deterministic_algorithm_structural_analysis
 
     def obj(x):
         return [12.5 * x[0]**3 - x[1]]
