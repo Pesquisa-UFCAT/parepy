@@ -374,22 +374,19 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     Example
     ==============
     >>> # pip install -U parepy-toolbox
-    from parepy_toolbox import common_library
-
-    data = {
-        'X_0': np.random.normal(1.0, 0.1, 1000),
-        'X_1': np.random.normal(10.0, 1.0, 1000),
-        'I_0': np.random.binomial(1, p=1e-3, size=1000)
-    }
-
-    df = pd.DataFrame(data)
-    div, pf_mean, ci_lower, ci_upper, pf_var = convergence_probability_failure(df, 'I_0')
-
-    print("Sample sizes considered at each step:", div)
-    print("Estimated probability of failure (mean):", pf_mean)
-    print("Lower confidence interval values:", ci_lower)
-    print("Upper confidence interval values:", ci_upper)
-    print("Variance values:", pf_var)
+    >>> from parepy_toolbox import common_library
+    >>> data = {
+                'X_0': np.random.normal(1.0, 0.1, 1000),
+                'X_1': np.random.normal(10.0, 1.0, 1000),
+                'I_0': np.random.binomial(1, p=1e-3, size=1000)
+               }
+    >>> df = pd.DataFrame(data)
+    >>> div, pf_mean, ci_lower, ci_upper, pf_var = convergence_probability_failure(df, 'I_0')
+    >>> print("Sample sizes considered at each step:", div)
+    >>> print("Estimated probability of failure (mean):", pf_mean)
+    >>> print("Lower confidence interval values:", ci_lower)
+    >>> print("Upper confidence interval values:", ci_upper)
+    >>> print("Variance values:", pf_var)
     """
 
     column_values = df[column].to_list()
