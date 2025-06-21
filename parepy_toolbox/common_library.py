@@ -417,6 +417,36 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     return div, m, ci_l, ci_u, var
 
 
+def calculate_weights(df: pd.DataFrame, random_var_settings: list, random_var_settings_importance_sampling: list):
+    n_vars = len(random_var_settings)
+    n_samples = df.shape[0]
+    p_vals = []
+    q_vals = []
+    df_copy = df.copy()
+
+    for j in range(n_vars):
+        col = f"X_{j}"
+        x_j = df_copy[col].tolist()
+        p_info = random_var_settings[j]
+        q_info = random_var_settings_importance_sampling[j]
+        df_copy[f"p_X_{j}"] = parepydi.random_sampling_statistcs(p_info['type'], p_info['parameters'], x_j)
+        df_copy[f"q_X_{j}"] = parepydi.random_sampling_statistcs(q_info['type'], q_info['parameters'], x_j)
+
+    df_copy['num'] = 1
+    df_copy['den'] = 1
+    for col in df_copy.columns:
+        if col.startswith('p_X_'):
+            df_copy['num'] *= df_copy[col]
+        elif col.startswith('q_X_'):
+            df_copy['den'] *= df_copy[col]
+    df_copy['w'] = [a / b for a, b in zip(df_copy['num'].tolist(), df_copy['den'].tolist())] 
+    cols_i = [col for col in df.columns if col.startswith('I_')]
+    for j in cols_i:
+        df_copy[f'w_{j}'] = np.where((df[j] == 0).any(axis=1), 0, df_copy['w'])
+
+    return df_copy
+
+
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
 #     """
 #     Generates a set of random numbers according to a specified probability distribution model.

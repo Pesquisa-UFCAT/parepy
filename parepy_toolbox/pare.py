@@ -25,7 +25,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     :param verbose: If True, prints detailed information about the process. Default is `False`.
     :param args: Extra arguments to pass to the objective function (optional).
 
-    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
+    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = Reliability index values for each indicator function.
     
     Example
     ==============
@@ -33,7 +33,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
     >>> from parepy_toolbox import deterministic_algorithm_structural_analysis
 
     def obj(x):
-        return [12.5 * x[0]**3 - x[1]]
+        return 12.5 * x[0]**3 - x[1]
 
     d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
     l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
@@ -185,7 +185,7 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     :param verbose: If True, prints detailed information about the process. Default is `False`.
     :param args: Extra arguments to pass to the objective function (optional).
 
-    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.
+    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = Reliability index values for each indicator function.
 
     Example
     ==============
@@ -206,15 +206,16 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     """
 
     block_size = 100
+    ran_var_set = random_var_settings_importance_sampling if random_var_settings_importance_sampling is not None else random_var_settings
     if method != 'sobol':
         samples_per_block = n_samples // block_size
         samples_per_block_remainder = n_samples % block_size
-        setups = [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions, args) for _ in range(block_size)] if args is not None else [(obj, random_var_settings, method, samples_per_block, number_of_limit_functions) for _ in range(block_size)]
+        setups = [(obj, ran_var_set, method, samples_per_block, number_of_limit_functions, args) for _ in range(block_size)] if args is not None else [(obj, ran_var_set, method, samples_per_block, number_of_limit_functions) for _ in range(block_size)]
         if samples_per_block_remainder > 0:
-            setups.append((obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions, args) if args is not None else (obj, random_var_settings, method, samples_per_block_remainder, number_of_limit_functions))
+            setups.append((obj, ran_var_set, method, samples_per_block_remainder, number_of_limit_functions, args) if args is not None else (obj, ran_var_set, method, samples_per_block_remainder, number_of_limit_functions))
     else:
         parallel = False
-        setups = [(obj, random_var_settings, method, n_samples, number_of_limit_functions, args) if args is not None else (obj, random_var_settings, method, n_samples, number_of_limit_functions)]
+        setups = [(obj, ran_var_set, method, n_samples, number_of_limit_functions, args) if args is not None else (obj, ran_var_set, method, n_samples, number_of_limit_functions)]
 
     # Random sampling and computes G function
     start_time = time.perf_counter()
@@ -228,14 +229,18 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     if verbose:
         print(f"Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
 
+    # Computes pf and beta
+    if random_var_settings_importance_sampling:
+        
+    else:
+        pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
+
+
     if verbose:
         filename = f"sampling_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
         final_df.to_csv(filename, sep="\t", index=False)
         print(f"file '{filename}' has been successfully saved.")
         print("✔️ Algorithm finished!")
-
-    # Computes pf and beta
-    pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
 
     return final_df, pf_df, beta_df
 

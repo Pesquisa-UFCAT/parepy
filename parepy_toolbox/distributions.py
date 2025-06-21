@@ -243,7 +243,7 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     return x
 
 
-def random_sampling_statistcs(dist: str, parameters: dict, value: float):
+def random_sampling_statistcs(dist: str, parameters: dict, values: list):
     """
     """
 
@@ -252,16 +252,16 @@ def random_sampling_statistcs(dist: str, parameters: dict, value: float):
 
     if dist.lower() == 'uniform':
         rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
-        pdf = rv.pdf(value)
-        cdf = rv.cdf(value)
-        icdf = rv.ppf(value)
+        pdf = rv.pdf(values)
+        # cdf = rv.cdf(value)
+        # icdf = rv.ppf(value)
     elif dist.lower() == 'normal':
         rv = sc.stats.norm(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
-        pdf = rv.pdf(value)
-        cdf = rv.cdf(value)
-        icdf = rv.ppf(value)
+        pdf = rv.pdf(values)
+        # cdf = rv.cdf(value)
+        # icdf = rv.ppf(value)
 
-    return pdf, cdf, icdf
+    return pdf.tolist() if  #, cdf, icdf
 
 # def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
 #     """
