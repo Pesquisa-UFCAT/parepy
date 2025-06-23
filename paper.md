@@ -7,47 +7,47 @@ tags:
   - Sampling
   - Structures
 authors:
-  - name: Prof. PhD Wanderlei Malaquias Pereira Junior
+  - name: Prof. Wanderlei Malaquias Pereira Junior
     equal-contrib: true
     affiliation: 1
 
-  - name: Msc Murilo Carneiro Rodrigues
+  - name: Murilo Carneiro Rodrigues
     equal-contrib: true
     affiliation: 1
 
-  - name: Msc Matheus Henrique Morato Moraes
+  - name: Matheus Henrique Morato Moraes
     equal-contrib: true
     affiliation: 3
 
-  - name: Prof. PhD Daniel de Lima Araújo
+  - name: Daniel de Lima Araújo
     equal-contrib: true 
     affiliation: 1
 
-  - name: Prof. PhD André Teófilo Beck
+  - name: André Teófilo Beck
     equal-contrib: true
     affiliation: 2
 
-  - name: Prof. PhD André Luis Christoforo
+  - name: André Luis Christoforo
     equal-contrib: true
     affiliation: 3
 
-  - name: Prof. PhD Iuri Fazolin
+  - name: PhD Iuri Fazolin
     equal-contrib: true
     affiliation: 1
 
-  - name: Prof. PhD Marcos Luiz Henrique
+  - name: Marcos Luiz Henrique
     equal-contrib: true
     affiliation: 4
 
-  - name: Prof. Marcos Napoleão Rabelo
+  - name: Marcos Napoleão Rabelo
     equal-contrib: true
     affiliation: 1
 
-  - name: Prof. PhD Fran Sergio Lobato
+  - name: Fran Sergio Lobato
     equal-contrib: true
     affiliation: 5
 
-  - name: Disc. Luiz Henrique Ferreira Rezio
+  - name: Luiz Henrique Ferreira Rezio
     equal-contrib: true
     affiliation: 1
 
