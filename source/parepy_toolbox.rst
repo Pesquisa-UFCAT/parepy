@@ -10,5 +10,5 @@ Submodules
    parepy_toolbox.common_library
    parepy_toolbox.distributions
    parepy_toolbox.pare
-   parepy_toolbox.problems
+   parepy_toolbox.learning_problems
 

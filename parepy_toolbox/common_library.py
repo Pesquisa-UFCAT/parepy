@@ -1,5 +1,6 @@
-"""Common library for PAREpy toolbox"""
-from typing import Optional, Callable, Tuple
+"""Common library contains utility functions for PAREpy's framework.
+"""
+from typing import Optional, Callable
 
 import scipy as sc
 import numpy as np
@@ -14,7 +15,7 @@ def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
 
     :param std: Standard deviation parameters.
 
-    return: output[0] = D matrix, output[1] = D^-1 matrix.
+    :return: output[0] = D matrix (Diagonal standard deviation matrix), output[1] = D^-1 matrix (Inverse of diagonal standard deviation matrix).
     """
 
     dneq = np.zeros((len(std), len(std)))
@@ -32,7 +33,7 @@ def mu_matrix(mean: list) -> np.ndarray:
 
     :param mu: Mean parameters.
 
-    return: Mean matrix.
+    :return: Mean matrix.
     """
 
     mu_neq = np.zeros((len(mean), 1))
@@ -47,7 +48,7 @@ def x_to_y(x: np.ndarray, dneq1: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
     Transforms a vector of random variables from the X space to the Y space.
 
     :param x: Random variables in the X space.
-    :param dneq1: D^-1 matrix.
+    :param dneq1: D^-1 matrix (Inverse of diagonal standard deviation matrix).
     :param mu_neq: Mean matrix.
 
     :return: Transformed random variables in the Y space.
@@ -78,14 +79,14 @@ def pf_equation(beta: float) -> float:
     
     :return: Probability of failure (pf).
 
-    Use Example
+    Example
     ==============
     >>> # pip install -U parepy-toolbox
-    from parepy_toolbox import pf_equation
-    beta = 3.5
-    pf = pf_equation(beta)
-    print(f"Probability of failure {pf:.5e}")
-    Probability of failure 2.32629e-04
+    >>> from parepy_toolbox import pf_equation
+    >>> beta = 3.5
+    >>> pf = pf_equation(beta)
+    >>> print(f"Probability of failure: {pf:.5e}")
+    Probability of failure: 2.32629e-04
     """
 
     return sc.stats.norm.cdf(-beta)
@@ -99,14 +100,14 @@ def beta_equation(pf: float) -> float:
 
     :return: Reliability index (β).
 
-    Use Example
+    Example
     ==============
     >>> # pip install -U parepy-toolbox
-    from parepy_toolbox import beta_equation
-    pf = 2.32629e-04
-    beta = beta_equation(pf)
-    print(f"Reliability index (beta) {beta:.5f}")
-    Reliability index 3.50
+    >>> from parepy_toolbox import beta_equation
+    >>> pf = 2.32629e-04
+    >>> beta = beta_equation(pf)
+    >>> print(f"Reliability index: {beta:.5f}")
+    Reliability index: 3.50000
     """
 
     return -sc.stats.norm.ppf(pf)
@@ -249,16 +250,69 @@ def hessian_matrix(obj: Callable, x: list, method: str, h: float = 1E-5, args: O
 
 def sampling_kernel_without_time(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, args: Optional[tuple] = None) -> pd.DataFrame:
     """
-    Generates random samples from a specified distribution using kernel density estimation.
+    Generates random samples from a specified distribution using kernel density estimation. This sampling generator not consider time series 
 
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
-    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
-    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+    :param obj: The objective function: :py:func:`obj(x, args) -> float` or :py:func:`obj(x) -> float`, where ``x`` is a list with shape *n* and args is a tuple fixed parameters needed to completely specify the function.
+    :param random_var_settings: Containing the distribution type and parameters. Example: ``{"type": "normal", "parameters": {"mean": 0, "std": 1}}``. Supported distributions (See more details in Table 1): (a) ``"uniform ``, (b) ``"normal"``, (c) ``"lognormal'``: keys ``'mean'`` and ``'std'``, (d) ``'gumbel max'``: keys ``'mean'`` and ``'std'``, (e) ``'gumbel min'``: keys ``'mean'`` and ``'std'``, (f) ``'triangular'``: keys ``'min'``, ``'mode'`` and ``'max'``, or (g) ``'gamma'``: keys ``'mean'`` and ``'std'``.
+    :param method: Sampling method. Supported values: ``"lhs"`` (Latin Hypercube Sampling), ``"mcs"`` (Crude Monte Carlo Sampling) or ``"sobol"`` (Sobol Sampling).
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent *m* (:math:`n = 2^m`).
     :param number_of_limit_functions: Number of limit state functions or constraints.
     :param args: Extra arguments to pass to the objective function (optional).
 
     :return: Random samples, objective function evaluations and indicator functions.
+
+    .. list-table:: **Table 1: Supported values**
+       :widths: 20 40
+       :header-rows: 1
+
+       * - **Name**
+         - **Expected parameters**
+       * - ``"uniform"``
+         - ``"min"`` and ``"max"``
+       * - ``"normal"``
+         - ``"mean"`` and ``"std"``
+       * - ``"lognormal"``
+         - ``"mean"`` and ``"std"``
+       * - ``"gumbel max"``
+         - ``"mean"`` and ``"std"``
+       * - ``"gumbel min"``
+         - ``"mean"`` and ``"std"``
+       * - ``"triangular"``
+         - ``"min"``, ``"mode"``, and ``"max"``
+       * - ``"gamma"``
+         - ``"mean"`` and ``"std"``
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    >>> from parepy_toolbox import sampling_kernel_without_time
+    >>> def obj(x): # We reccomend to create this py function in other .py file when use parellel process and a .ipynb code
+            g_0 = 12.5 * x[0] ** 3 - x[1]
+            return [g_0]
+    >>> d = {'type': 'normal', 'parameters': {'mean': 1.0, 'std': 0.1}}
+    >>> l = {'type': 'normal', 'parameters': {'mean': 10.0, 'std': 1.0}}
+    >>> var = [d, l]
+    >>> number_of_limit_functions = 1
+    >>> method = 'mcs'
+    >>> n_samples = 10000
+    >>> start = time.perf_counter()
+    >>> df = sampling_kernel_without_time(obj, var, method, n_samples, number_of_limit_functions)
+    >>> end = time.perf_counter()
+    >>> print(f"Time elapsed: {(end-start):.5f}")
+    >>> print(df)
+            X_0        X_1        G_0     I_0
+    0     1.193612  10.539209  10.717671  0.0
+    1     1.041650  10.441663   3.686170  0.0
+    2     1.133054   9.232075   8.950766  0.0
+    3     0.983667  10.080005   1.817470  0.0
+    4     0.908051  10.095981  -0.736729  1.0
+    ...        ...        ...        ...  ...
+    9995  1.016563   9.815083   3.316392  0.0
+    9996  0.998764   9.623686   2.830013  0.0
+    9997  0.826956   9.338711  -2.269712  1.0
+    9998  1.060813   9.721774   5.200211  0.0
+    9999  1.107219   9.239544   7.727668  0.0
+    [10000 rows x 4 columns]
     """
 
     n_real_samples = 2**n_samples if method == 'sobol' else n_samples
@@ -303,8 +357,7 @@ def summarize_pf_beta(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
 
     :param df: Random samples, objective function evaluations and indicator functions.
 
-    :return: output [0] = Probability of failure values for each indicator function, output[1] = beta_df: Reliability index values for each indicator function.
-
+    :return: output [0] = Probability of failure values for each indicator function, output[1] = Reliability index values for each indicator function.
     """
     
     pf_values = {}
@@ -329,9 +382,26 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     Calculates the convergence rate of the probability of failure.
 
     :param df: Random samples, objective function evaluations and indicator functions.
-    :param column: Name of the column to be analyzed. Supported values: 'I_0', 'I_1', ..., 'I_n' where n is the number of limit state functions.
+    :param column: Name of the column to be analyzed. Supported values: ``"I_0"``, ``"I_1"``, ..., ``"I_n"`` where *n* is the number of limit state functions.
 
-    :return: output[0] = div: List of sample sizes considered at each step, output[1] = m: List of mean values (estimated probability of failure), output[2] = ci_l: List containing the lower confidence interval values of the column, output[3] = ci_u: List containing the upper confidence interval values of the column, output[4] = var: List containing the variance values of the column. 
+    :return: output[0] = Sample size, output[1] = Mean, output[2] = Lower confidence limit, output[3] = Upper confidence limit, output[4] = Variance. 
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    >>> from parepy_toolbox import common_library
+    >>> data = {
+                'X_0': np.random.normal(1.0, 0.1, 1000),
+                'X_1': np.random.normal(10.0, 1.0, 1000),
+                'I_0': np.random.binomial(1, p=1e-3, size=1000)
+               }
+    >>> df = pd.DataFrame(data)
+    >>> div, pf_mean, ci_lower, ci_upper, pf_var = convergence_probability_failure(df, 'I_0')
+    >>> print("Sample sizes considered at each step:", div)
+    >>> print("Estimated probability of failure (mean):", pf_mean)
+    >>> print("Lower confidence interval values:", ci_lower)
+    >>> print("Upper confidence interval values:", ci_upper)
+    >>> print("Variance values:", pf_var)
     """
 
     column_values = df[column].to_list()
@@ -360,6 +430,33 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
         var.append((mean * (1 - mean))/n)
 
     return div, m, ci_l, ci_u, var
+
+
+def calculate_weights(df: pd.DataFrame, random_var_settings: list, random_var_settings_importance_sampling: list) -> pd.DataFrame:
+    n_vars = len(random_var_settings)
+    df_copy = df.copy()
+
+    for j in range(n_vars):
+        col = f"X_{j}"
+        x_j = df_copy[col].tolist()
+        p_info = random_var_settings[j]
+        q_info = random_var_settings_importance_sampling[j]
+        df_copy[f"p_X_{j}"] = parepydi.random_sampling_statistcs(p_info['type'], p_info['parameters'], x_j)
+        df_copy[f"q_X_{j}"] = parepydi.random_sampling_statistcs(q_info['type'], q_info['parameters'], x_j)
+
+    df_copy['num'] = 1
+    df_copy['den'] = 1
+    for col in df_copy.columns:
+        if col.startswith('p_X_'):
+            df_copy['num'] *= df_copy[col]
+        elif col.startswith('q_X_'):
+            df_copy['den'] *= df_copy[col]
+    df_copy['w'] = [a / b for a, b in zip(df_copy['num'].tolist(), df_copy['den'].tolist())] 
+    cols_i = [col for col in df.columns if col.startswith('I_')]
+    for j in cols_i:
+        df_copy[f'w_{j}'] = np.where((df[j]==0).any(axis=1), 0, df_copy['w'])
+
+    return df_copy
 
 
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:

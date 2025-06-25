@@ -1,0 +1,1156 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parepy_toolbox.distributions &#8212; parepy - toolbox 2.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b8b15c53" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=c2377ec0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/parepy_toolbox/distributions';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">parepy - toolbox 2.0.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parepy_toolbox.html">
+    parepy_toolbox package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick_start.html">
+    Quick Start
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parepy_toolbox.html">
+    parepy_toolbox package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick_start.html">
+    Quick Start
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">parepy_toolbox.distributions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for parepy_toolbox.distributions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Probability distributions&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
+
+
+<div class="viewcode-block" id="convert_params_to_scipy">
+<a class="viewcode-back" href="../../parepy_toolbox.distributions.html#parepy_toolbox.distributions.convert_params_to_scipy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_params_to_scipy</span><span class="p">(</span><span class="n">dist</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert user-provided distribution parameters to the format required by &quot;scipy.stats&quot;.</span>
+
+<span class="sd">    :param parameters: Original distribution parameters. (a) &#39;uniform&#39;: keys &#39;min&#39; and &#39;max&#39;, (b) &#39;normal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (c) &#39;lognormal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (d) &#39;gumbel max&#39;: keys &#39;mean&#39; and &#39;std&#39;, (e) &#39;gumbel min&#39;: keys &#39;mean&#39; and &#39;std&#39;, (f) &#39;triangular&#39;: keys &#39;min&#39;, &#39;mode&#39; and &#39;max&#39;, or (g) &#39;gamma&#39;: keys &#39;mean&#39; and &#39;std&#39;.</span>
+
+<span class="sd">    :return: Distribution parameters according scipy.stats documentation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+
+    <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uniform&#39;</span><span class="p">:</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">],</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]}</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;normal&#39;</span><span class="p">:</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">],</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]}</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lognormal&#39;</span><span class="p">:</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">lambda_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">epsilon</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="n">epsilon</span><span class="p">,</span> <span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">lambda_</span><span class="p">)}</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gumbel max&#39;</span><span class="p">:</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.5772156649015329</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">gamma</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="n">beta</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">alpha</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gumbel min&#39;</span><span class="p">:</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.5772156649015329</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">gamma</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="n">beta</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">alpha</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;triangular&#39;</span><span class="p">:</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]),</span> <span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">],</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;min&#39;</span><span class="p">]}</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gamma&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">scale</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;weibull min&#39;</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">weibull_params_from_mean_std</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">equation</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+                <span class="n">gamma1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">loggamma</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">c</span><span class="p">))</span>
+                <span class="n">gamma2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">loggamma</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">c</span><span class="p">))</span>
+                <span class="n">cv_squared</span> <span class="o">=</span> <span class="p">(</span><span class="n">std</span> <span class="o">/</span> <span class="n">mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">gamma2</span> <span class="o">/</span> <span class="p">(</span><span class="n">gamma1</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">cv_squared</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">equation</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">loggamma</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">c</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">c</span><span class="p">,</span> <span class="n">scale</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">weibull_params_from_mean_std</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">],</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">])</span>
+        <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;loc&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="n">scale</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">parameters_scipy</span></div>
+
+
+
+<div class="viewcode-block" id="normal_tail_approximation">
+<a class="viewcode-back" href="../../parepy_toolbox.distributions.html#parepy_toolbox.distributions.normal_tail_approximation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normal_tail_approximation</span><span class="p">(</span><span class="n">dist</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters_scipy</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts non-normal distributions to normal approximations while preserving their statistical properties in x point.</span>
+
+<span class="sd">    :param dist: Type of distribution. Supported values: &#39;uniform&#39;, &#39;normal&#39;, &#39;lognormal&#39;, &#39;gumbel max&#39;, &#39;gumbel min&#39;, &#39;triangular&#39;, or &#39;gamma&#39;.</span>
+<span class="sd">    :param parameters_scipy: Distribution parameters according scipy.stats documentation.</span>
+<span class="sd">    :param x: Project point.</span>
+
+<span class="sd">    return: output[0] = Mean of the normal approximation at point x, output[1] = Standard deviation of the normal approximation at point x.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uniform&#39;</span><span class="p">:</span>
+        <span class="n">z_aux</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">z_aux</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">std_eq</span> <span class="o">*</span> <span class="n">z</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;normal&#39;</span><span class="p">:</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">]</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lognormal&#39;</span><span class="p">:</span>
+        <span class="n">z_aux</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">z_aux</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">std_eq</span> <span class="o">*</span> <span class="n">z</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gumbel max&#39;</span><span class="p">:</span>
+        <span class="n">z_aux</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_r</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">z_aux</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_r</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">std_eq</span> <span class="o">*</span> <span class="n">z</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gumbel min&#39;</span><span class="p">:</span>
+        <span class="n">z_aux</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_l</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">z_aux</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_l</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">std_eq</span> <span class="o">*</span> <span class="n">z</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;triangular&#39;</span><span class="p">:</span>
+        <span class="n">z_aux</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">triang</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">z_aux</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">triang</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">std_eq</span> <span class="o">*</span> <span class="n">z</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gamma&#39;</span><span class="p">:</span>
+        <span class="n">z_aux</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gamma</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">z_aux</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gamma</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">std_eq</span> <span class="o">*</span> <span class="n">z</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;weibull min&#39;</span><span class="p">:</span>
+        <span class="n">z_aux</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">weibull_min</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">z_aux</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">weibull_min</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">std_eq</span> <span class="o">=</span> <span class="n">num</span> <span class="o">/</span> <span class="n">den</span>
+        <span class="n">mean_eq</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">std_eq</span> <span class="o">*</span> <span class="n">z</span>
+
+    <span class="k">return</span> <span class="n">mean_eq</span><span class="p">,</span> <span class="n">std_eq</span></div>
+
+
+
+<div class="viewcode-block" id="random_sampling">
+<a class="viewcode-back" href="../../parepy_toolbox.distributions.html#parepy_toolbox.distributions.random_sampling">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">random_sampling</span><span class="p">(</span><span class="n">dist</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates random samples from a specified distribution.</span>
+
+<span class="sd">    :param dist: Type of distribution. Supported values: &#39;uniform&#39;, &#39;normal&#39;, &#39;lognormal&#39;, &#39;gumbel max&#39;, &#39;gumbel min&#39;, &#39;triangular&#39;, or &#39;gamma&#39;.</span>
+<span class="sd">    :param parameters: Original distribution parameters. (a) &#39;uniform&#39;: keys &#39;min&#39; and &#39;max&#39;, (b) &#39;normal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (c) &#39;lognormal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (d) &#39;gumbel max&#39;: keys &#39;mean&#39; and &#39;std&#39;, (e) &#39;gumbel min&#39;: keys &#39;mean&#39; and &#39;std&#39;, (f) &#39;triangular&#39;: keys &#39;min&#39;, &#39;mode&#39; and &#39;max&#39;, or (g) &#39;gamma&#39;: keys &#39;mean&#39; and &#39;std&#39;.    </span>
+<span class="sd">    :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling), &#39;mcs&#39; (Crude Monte Carlo Sampling) or &#39;sobol&#39; (Sobol Sampling).</span>
+<span class="sd">    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent &quot;m&quot; (n = 2^m).</span>
+
+<span class="sd">    :return: Random samples.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import random_sampling</span>
+<span class="sd">    &gt;&gt;&gt; parameters = {&#39;mean&#39;: 10, &#39;std&#39;: 2}</span>
+<span class="sd">    &gt;&gt;&gt; samples = random_sampling(dist=&#39;normal&#39;, parameters=parameters,method=&#39;lhs&#39;, n_samples=100)</span>
+<span class="sd">    &gt;&gt;&gt; print(samples[:10])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Convert user parameters to scipy.stats format</span>
+    <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="n">convert_params_to_scipy</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+    <span class="c1"># Generate random samples based on the specified distribution and method</span>
+    <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uniform&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;normal&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lognormal&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">lognorm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gumbel max&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_r</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_r</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_r</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gumbel min&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_l</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_l</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gumbel_l</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;triangular&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">triang</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">triang</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">triang</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gamma&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gamma</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">gamma</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;weibull min&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;mcs&#39;</span><span class="p">:</span>
+            <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">weibull_min</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rv</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">n_samples</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lhs&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">LatinHypercube</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">weibull_min</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+        <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+            <span class="n">sampler</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">qmc</span><span class="o">.</span><span class="n">Sobol</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">random_base2</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">weibull_min</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="n">x</span></div>
+
+
+
+<div class="viewcode-block" id="random_sampling_statistcs">
+<a class="viewcode-back" href="../../parepy_toolbox.distributions.html#parepy_toolbox.distributions.random_sampling_statistcs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">random_sampling_statistcs</span><span class="p">(</span><span class="n">dist</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Convert user parameters to scipy.stats format</span>
+    <span class="n">parameters_scipy</span> <span class="o">=</span> <span class="n">convert_params_to_scipy</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uniform&#39;</span><span class="p">:</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="c1"># cdf = rv.cdf(value)</span>
+        <span class="c1"># icdf = rv.ppf(value)</span>
+    <span class="k">elif</span> <span class="n">dist</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;normal&#39;</span><span class="p">:</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;loc&#39;</span><span class="p">],</span> <span class="n">scale</span><span class="o">=</span><span class="n">parameters_scipy</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">])</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="c1"># cdf = rv.cdf(value)</span>
+        <span class="c1"># icdf = rv.ppf(value)</span>
+
+    <span class="k">return</span> <span class="n">pdf</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># if  #, cdf, icdf</span></div>
+
+
+<span class="c1"># def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a uniform sampling between 0 and 1.</span>
+
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.</span>
+
+<span class="c1">#     :return: Random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     rng = np.random.default_rng(seed=seed)</span>
+
+<span class="c1">#     return rng.random(n_samples).tolist()</span>
+
+
+<span class="c1"># def lhs_sampling_zero_one(n_samples: int, dimension: int, seed: Optional[int] = None) -&gt; np.ndarray:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a uniform sampling between 0 and 1 using the Latin Hypercube Sampling algorithm.</span>
+
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param dimension: Number of dimensions.</span>
+<span class="c1">#     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.</span>
+
+<span class="c1">#     :return: Random samples.</span>
+    
+<span class="c1">#     # Theory:</span>
+<span class="c1">#     Latin hypercube sampling is a stratified sampling technique that produces random numbers in terms of the marginal CDF of a random input variable.</span>
+    
+<span class="c1">#     ### PDF</span>
+<span class="c1">#     $$</span>
+<span class="c1">#     f(x) = \begin{cases} </span>
+<span class="c1">#                 \frac{1}{b-a} &amp; \text{se } a \leq x \leq b \\</span>
+<span class="c1">#                 0 &amp; \text{caso contrário}</span>
+<span class="c1">#             \end{cases}</span>
+<span class="c1">#     $$</span>
+    
+<span class="c1">#     ### CDF</span>
+    
+<span class="c1">#     $$</span>
+<span class="c1">#     F(x) = \begin{cases}</span>
+<span class="c1">#                 0 &amp; \text{se } x &lt; a \\</span>
+<span class="c1">#                 \frac{x-a}{b-a} &amp; \text{se } a \leq x \leq b \\</span>
+<span class="c1">#                 1 &amp; \text{se } x &gt; b</span>
+<span class="c1">#             \end{cases}</span>
+<span class="c1">#     $$</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     r = np.zeros((n_samples, dimension))</span>
+<span class="c1">#     p = np.zeros((n_samples, dimension))</span>
+<span class="c1">#     original_ids = [i for i in range(1, n_samples+1)]</span>
+<span class="c1">#     if seed is not None:</span>
+<span class="c1">#         x = crude_sampling_zero_one(n_samples * dimension, seed)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         x = crude_sampling_zero_one(n_samples * dimension)</span>
+<span class="c1">#     for i in range(dimension):</span>
+<span class="c1">#         perms = original_ids.copy()</span>
+<span class="c1">#         r[:, i] = x[:n_samples]</span>
+<span class="c1">#         del x[:n_samples]</span>
+<span class="c1">#         rng = np.random.default_rng(seed=seed)</span>
+<span class="c1">#         rng.shuffle(perms)</span>
+<span class="c1">#         p[:, i] = perms.copy()</span>
+<span class="c1">#     u = (p - r) * (1 / n_samples)</span>
+
+<span class="c1">#     return u</span>
+
+
+<span class="c1"># def uniform_sampling(parameters: dict, method: str, n_samples: int, seed: Optional[int] = None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a uniform sampling between a minimum (a) and maximum (b) value.</span>
+
+<span class="c1">#     :param parameters: Distribution parameters. (a) key &#39;min&#39;: Minimum value. (b) key &#39;max&#39;: Maximum value.</span>
+<span class="c1">#     :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling) or &#39;mcs&#39; (Crude Monte Carlo Sampling).</span>
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for reproducible random number generation. If None (default), the results are non-repeatable.</span>
+
+<span class="c1">#     :return: Random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     # Random uniform sampling between 0 and 1</span>
+<span class="c1">#     if method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples, seed)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#     elif method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()</span>
+
+<span class="c1">#     # PDF parameters and generation of samples    </span>
+<span class="c1">#     a = parameters[&#39;min&#39;]</span>
+<span class="c1">#     b = parameters[&#39;max&#39;]</span>
+<span class="c1">#     u = [float(a + (b - a) * i) for i in u_aux]</span>
+
+<span class="c1">#     return u</span>
+
+
+<span class="c1"># def normal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a normal (Gaussian) sampling with specified mean (mu) and standard deviation (sigma).</span>
+
+<span class="c1">#     :param parameters: Dictionary of parameters, including:</span>
+    
+<span class="c1">#         - &#39;mu&#39;: Mean of the normal distribution.</span>
+<span class="c1">#         - &#39;sigma&#39;: Standard deviation of the normal distribution.</span>
+
+<span class="c1">#     :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling) or &#39;mcs&#39; (Crude Monte Carlo Sampling).</span>
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for random number generation. Default is None for a random seed.</span>
+
+<span class="c1">#     :return: List of random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     # Random uniform sampling between 0 and 1</span>
+<span class="c1">#     if method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux1 = crude_sampling_zero_one(n_samples, seed)</span>
+<span class="c1">#             u_aux2 = crude_sampling_zero_one(n_samples, seed+1)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux1 = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#             u_aux2 = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#     elif method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux1 = lhs_sampling_zero_one(n_samples, 2)</span>
+
+<span class="c1">#     # PDF parameters and generation of samples  </span>
+<span class="c1">#     mean = parameters[&#39;mean&#39;]</span>
+<span class="c1">#     std = parameters[&#39;sigma&#39;]</span>
+<span class="c1">#     u = []</span>
+<span class="c1">#     for i in range(n_samples):</span>
+<span class="c1">#         if method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#             z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))</span>
+<span class="c1">#         elif method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#             z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))</span>
+<span class="c1">#         u.append(mean + std * z)</span>
+
+<span class="c1">#     return u</span>
+
+
+<span class="c1"># def corr_normal_sampling(parameters_b: dict, parameters_g: dict, pho_gb: float, method: str, n_samples: int, seed: int=None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a normal (Gaussian) sampling with specified mean (mu) and standard deviation (sigma).</span>
+
+<span class="c1">#     Variable g has a correlation `rho_gb` with b.</span>
+
+<span class="c1">#     :param parameters: Dictionary of parameters, including:</span>
+
+<span class="c1">#         - &#39;mu&#39;: Mean of the normal distribution.</span>
+<span class="c1">#         - &#39;sigma&#39;: Standard deviation of the normal distribution.</span>
+
+<span class="c1">#     :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling) or &#39;mcs&#39; (Crude Monte Carlo Sampling).</span>
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for random number generation. Use None for a random seed.</span>
+
+<span class="c1">#     :return: List of random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     # Random uniform sampling between 0 and 1</span>
+<span class="c1">#     if method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux1 = crude_sampling_zero_one(n_samples, seed)</span>
+<span class="c1">#             u_aux2 = crude_sampling_zero_one(n_samples, seed+1)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux1 = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#             u_aux2 = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#     elif method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux1 = lhs_sampling_zero_one(n_samples, 2)</span>
+
+<span class="c1">#     # PDF parameters and generation of samples  </span>
+<span class="c1">#     mean_b = parameters_b[&#39;mean&#39;]</span>
+<span class="c1">#     std_b = parameters_b[&#39;sigma&#39;]</span>
+<span class="c1">#     mean_g = parameters_g[&#39;mean&#39;]</span>
+<span class="c1">#     std_g = parameters_g[&#39;sigma&#39;]</span>
+<span class="c1">#     b = []</span>
+<span class="c1">#     g = []</span>
+<span class="c1">#     for i in range(n_samples):</span>
+<span class="c1">#         if method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#             z_1 = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))</span>
+<span class="c1">#             z_2 = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.sin(2 * np.pi * u_aux1[i, 1]))</span>
+<span class="c1">#         elif method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#             z_1 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))</span>
+<span class="c1">#             z_2 = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.sin(2 * np.pi * u_aux2[i]))</span>
+<span class="c1">#         b.append(mean_b + std_b * z_1)</span>
+<span class="c1">#         g.append(mean_g + std_g * (pho_gb * z_1 + z_2 * np.sqrt(1 - pho_gb ** 2)))</span>
+
+<span class="c1">#     return b, g</span>
+
+
+<span class="c1"># def lognormal_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a log-normal sampling with specified mean and standard deviation.</span>
+
+<span class="c1">#     :param parameters: Dictionary of parameters, including:</span>
+
+<span class="c1">#         - &#39;mu&#39;: Mean of the underlying normal distribution.</span>
+<span class="c1">#         - &#39;sigma&#39;: Standard deviation of the underlying normal distribution.</span>
+
+<span class="c1">#     :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling) or &#39;mcs&#39; (Crude Monte Carlo Sampling).</span>
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for random number generation.</span>
+
+<span class="c1">#     :return: List of random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+
+
+<span class="c1">#     # Random uniform sampling between 0 and 1</span>
+<span class="c1">#     if method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux1 = crude_sampling_zero_one(n_samples, seed)</span>
+<span class="c1">#             u_aux2 = crude_sampling_zero_one(n_samples, seed+1)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux1 = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#             u_aux2 = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#     elif method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux1 = lhs_sampling_zero_one(n_samples, 2, seed)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux1 = lhs_sampling_zero_one(n_samples, 2)</span>
+
+<span class="c1">#     # PDF parameters and generation of samples  </span>
+<span class="c1">#     mean = parameters[&#39;mean&#39;]</span>
+<span class="c1">#     std = parameters[&#39;sigma&#39;]</span>
+<span class="c1">#     epsilon = np.sqrt(np.log(1 + (std/mean)**2))</span>
+<span class="c1">#     lambdaa = np.log(mean) - 0.5 * epsilon**2</span>
+<span class="c1">#     u = []</span>
+<span class="c1">#     for i in range(n_samples):</span>
+<span class="c1">#         if method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#             z = float(np.sqrt(-2 * np.log(u_aux1[i, 0])) * np.cos(2 * np.pi * u_aux1[i, 1]))</span>
+<span class="c1">#         elif method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#             z = float(np.sqrt(-2 * np.log(u_aux1[i])) * np.cos(2 * np.pi * u_aux2[i]))</span>
+<span class="c1">#         u.append(np.exp(lambdaa + epsilon * z))</span>
+
+<span class="c1">#     return u</span>
+
+
+<span class="c1"># def gumbel_max_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a Gumbel maximum distribution with specified mean and standard deviation.</span>
+
+<span class="c1">#     :param parameters: Dictionary of parameters, including:</span>
+
+<span class="c1">#         - &#39;mu&#39;: Mean of the Gumbel distribution.</span>
+<span class="c1">#         - &#39;sigma&#39;: Standard deviation of the Gumbel distribution.</span>
+
+<span class="c1">#     :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling) or &#39;mcs&#39; (Crude Monte Carlo Sampling).</span>
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for random number generation.</span>
+
+<span class="c1">#     :return: List of random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     # Random uniform sampling between 0 and 1</span>
+<span class="c1">#     if method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples, seed)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#     elif method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()</span>
+
+<span class="c1">#     # PDF parameters and generation of samples  </span>
+<span class="c1">#     mean = parameters[&#39;mean&#39;]</span>
+<span class="c1">#     std = parameters[&#39;sigma&#39;]</span>
+<span class="c1">#     gamma = 0.577215665</span>
+<span class="c1">#     beta = np.pi / (np.sqrt(6) * std)</span>
+<span class="c1">#     alpha = mean - gamma / beta</span>
+<span class="c1">#     u = []</span>
+<span class="c1">#     for i in range(n_samples):</span>
+<span class="c1">#         u.append(alpha - (1 / beta) * np.log(-np.log(u_aux[i])))</span>
+
+<span class="c1">#     return u</span>
+
+
+<span class="c1"># def gumbel_min_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a Gumbel minimum distribution with specified mean and standard deviation.</span>
+
+<span class="c1">#     :param parameters: Dictionary of parameters, including:</span>
+
+<span class="c1">#         - &#39;mu&#39;: Mean of the Gumbel distribution.</span>
+<span class="c1">#         - &#39;sigma&#39;: Standard deviation of the Gumbel distribution.</span>
+
+<span class="c1">#     :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling) or &#39;mcs&#39; (Crude Monte Carlo Sampling).</span>
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for random number generation.</span>
+
+<span class="c1">#     :return: List of random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+
+<span class="c1">#     # Random uniform sampling between 0 and 1</span>
+<span class="c1">#     if method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples, seed)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#     elif method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()</span>
+
+<span class="c1">#     # PDF parameters and generation of samples  </span>
+<span class="c1">#     mean = parameters[&#39;mean&#39;]</span>
+<span class="c1">#     std = parameters[&#39;sigma&#39;]</span>
+<span class="c1">#     gamma = 0.577215665</span>
+<span class="c1">#     beta = np.pi / (np.sqrt(6) * std) </span>
+<span class="c1">#     alpha = mean + gamma / beta</span>
+<span class="c1">#     u = []</span>
+<span class="c1">#     for i in range(n_samples):</span>
+<span class="c1">#         u.append(alpha + (1 / beta) * np.log(-np.log(1 - u_aux[i])))</span>
+
+<span class="c1">#     return u</span>
+
+
+<span class="c1"># def triangular_sampling(parameters: dict, method: str, n_samples: int, seed: int=None) -&gt; list:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a triangular sampling with minimum a, mode c, and maximum b.</span>
+
+<span class="c1">#     :param parameters: Dictionary of parameters, including:</span>
+
+<span class="c1">#         - &#39;a&#39;: Minimum value of the distribution.</span>
+<span class="c1">#         - &#39;c&#39;: Mode (most likely value) of the distribution.</span>
+<span class="c1">#         - &#39;b&#39;: Maximum value of the distribution.</span>
+
+<span class="c1">#     :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling) or &#39;mcs&#39; (Crude Monte Carlo Sampling).</span>
+<span class="c1">#     :param n_samples: Number of samples.</span>
+<span class="c1">#     :param seed: Seed for random number generation.</span>
+
+<span class="c1">#     :return: List of random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+
+<span class="c1">#     # Random uniform sampling between 0 and 1</span>
+<span class="c1">#     if method.lower() == &#39;mcs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples, seed)</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = crude_sampling_zero_one(n_samples)</span>
+<span class="c1">#     elif method.lower() == &#39;lhs&#39;:</span>
+<span class="c1">#         if seed is not None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1, seed).flatten()</span>
+<span class="c1">#         elif seed is None:</span>
+<span class="c1">#             u_aux = lhs_sampling_zero_one(n_samples, 1).flatten()</span>
+
+<span class="c1">#     # PDF parameters and generation of samples  </span>
+<span class="c1">#     a = parameters[&#39;min&#39;]</span>
+<span class="c1">#     c = parameters[&#39;mode&#39;]</span>
+<span class="c1">#     b = parameters[&#39;max&#39;]</span>
+<span class="c1">#     u = []</span>
+<span class="c1">#     for i in range(n_samples):</span>
+<span class="c1">#         criteria = (c - a) / (b - a)</span>
+<span class="c1">#         if u_aux[i] &lt; criteria:</span>
+<span class="c1">#             u.append(a + np.sqrt(u_aux[i] * (b - a) * (c - a)))</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             u.append(b - np.sqrt((1 - u_aux[i]) * (b - a) * (b - c)))</span>
+
+<span class="c1">#     return u</span>
+
+
+<span class="c1"># def cdf_gumbel_max(x: float, u: float, beta: float) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the cumulative distribution function (CDF) of the Maximum Gumbel distribution.</span>
+
+<span class="c1">#     :param x: Input value for which the CDF will be calculated.</span>
+<span class="c1">#     :param u: Location parameter (mode) of the Maximum Gumbel distribution.</span>
+<span class="c1">#     :param beta: Scale parameter of the Maximum Gumbel distribution.</span>
+
+<span class="c1">#     :return: Value of the CDF at point x.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     fx = np.exp(-np.exp((- beta * (x - u))))</span>
+<span class="c1">#     return fx</span>
+
+
+<span class="c1"># def pdf_gumbel_max(x: float, u: float, beta: float) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the probability density function (PDF) of the Maximum Gumbel distribution.</span>
+
+<span class="c1">#     :param x: Input value for which the PDF will be calculated.</span>
+<span class="c1">#     :param u: Location parameter (mode) of the Maximum Gumbel distribution.</span>
+<span class="c1">#     :param beta: Scale parameter of the Maximum Gumbel distribution.</span>
+
+<span class="c1">#     :return: Value of the PDF at point x.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     fx = beta * np.exp((- beta * (x - u))) - np.exp((- beta * (x - u)))</span>
+<span class="c1">#     return fx</span>
+
+
+<span class="c1"># def cdf_gumbel_min(x: float, u: float, beta: float) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the cumulative distribution function (CDF) of the Minimum Gumbel distribution.</span>
+
+<span class="c1">#     :param x: Input value for which the CDF will be calculated.</span>
+<span class="c1">#     :param u: Location parameter (mode) of the Minimum Gumbel distribution.</span>
+<span class="c1">#     :param beta: Scale parameter of the Minimum Gumbel distribution.</span>
+
+<span class="c1">#     :return: Value of the CDF at point x.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     fx = 1 - np.exp(- np.exp((beta * (x - u))))</span>
+<span class="c1">#     return fx</span>
+
+
+<span class="c1"># def pdf_gumbel_min(x: float, u: float, beta: float) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the probability density function (PDF) of the Minimum Gumbel distribution.</span>
+
+<span class="c1">#     :param x: Input value for which the PDF will be calculated.</span>
+<span class="c1">#     :param u: Location parameter (mode) of the Minimum Gumbel distribution.</span>
+<span class="c1">#     :param beta: Scale parameter of the Minimum Gumbel distribution.</span>
+
+<span class="c1">#     :return: Value of the PDF at point x.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     fx = beta * np.exp((beta * (x - u))) - np.exp(beta * (x - u))</span>
+<span class="c1">#     return fx</span>
+
+
+<span class="c1"># def cdf_normal(x: float, u: float, sigma: float) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the cumulative distribution function (CDF) of the Normal distribution.</span>
+
+<span class="c1">#     :param x: Input value for which the CDF will be calculated.</span>
+<span class="c1">#     :param u: Mean (location) of the Normal distribution.</span>
+<span class="c1">#     :param sigma: Standard deviation (scale) of the Normal distribution.</span>
+
+<span class="c1">#     :return: Value of the CDF at point x.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     fx = norm.cdf(x, loc=u, scale=sigma)</span>
+<span class="c1">#     return fx</span>
+
+
+<span class="c1"># def pdf_normal(x: float, u: float, sigma: float) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the probability density function (PDF) of the Normal distribution.</span>
+
+<span class="c1">#     :param x: Input value for which the PDF will be calculated.</span>
+<span class="c1">#     :param u: Mean (location) of the Normal distribution.</span>
+<span class="c1">#     :param sigma: Standard deviation (scale) of the Normal distribution.</span>
+
+<span class="c1">#     :return: Value of the PDF at point x.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     fx = norm.pdf(x, loc=u, scale=sigma)</span>
+<span class="c1">#     return fx</span>
+
+
+<span class="c1"># def log_normal(x: float, lambdaa: float, epsilon: float) -&gt; tuple[float, float]:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the location (u) and scale (sigma) parameters for a Log-Normal distribution.</span>
+
+<span class="c1">#     :param x: Input value.</span>
+<span class="c1">#     :param lambdaa: Shape parameter of the Log-Normal distribution.</span>
+<span class="c1">#     :param epsilon: Scale parameter of the Log-Normal distribution.</span>
+
+<span class="c1">#     :return: Tuple containing:</span>
+<span class="c1">#         - u: Location parameter.</span>
+<span class="c1">#         - sigma: Scale parameter.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     loc = x * (1 - np.log(x) + lambdaa)</span>
+<span class="c1">#     sigma = x * epsilon</span>
+<span class="c1">#     return loc, sigma</span>
+
+
+<span class="c1"># def non_normal_approach_normal(x, dist, params):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Converts a non-normal distribution to an equivalent normal distribution.</span>
+
+<span class="c1">#     :param x: Random variable.</span>
+<span class="c1">#     :param dist: Type of distribution. Supported values: &#39;gumbel max&#39;, &#39;gumbel min&#39;, &#39;lognormal&#39;.</span>
+<span class="c1">#     :param params: Dictionary of distribution parameters, depending on the selected distribution type.</span>
+
+<span class="c1">#         - For &#39;gumbel max&#39; or &#39;gumbel min&#39;: {&#39;mu&#39;: location, &#39;sigma&#39;: scale}</span>
+<span class="c1">#         - For &#39;lognormal&#39;: {&#39;lambda&#39;: shape, &#39;epsilon&#39;: scale}</span>
+
+<span class="c1">#     :return: Tuple containing:</span>
+<span class="c1">#         - mu_t: Mean of the equivalent normal distribution.</span>
+<span class="c1">#         - sigma_t: Standard deviation of the equivalent normal distribution.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     if dist == &#39;gumbel max&#39;:</span>
+<span class="c1">#         u = params.get(&#39;u&#39;)</span>
+<span class="c1">#         beta = params.get(&#39;beta&#39;)</span>
+<span class="c1">#         cdf_x = cdf_gumbel_max(x, u, beta)</span>
+<span class="c1">#         pdf_temp = pdf_gumbel_max(x, u, beta)</span>
+<span class="c1">#     elif dist == &#39;gumbel min&#39;:</span>
+<span class="c1">#         u = params.get(&#39;u&#39;)</span>
+<span class="c1">#         beta = params.get(&#39;beta&#39;)</span>
+<span class="c1">#         cdf_x = cdf_gumbel_min(x, u, beta)</span>
+<span class="c1">#         pdf_temp = pdf_gumbel_min(x, u, beta)</span>
+    
+<span class="c1">#     if dist == &#39;lognormal&#39;:</span>
+<span class="c1">#         epsilon = params.get(&#39;epsilon&#39;)</span>
+<span class="c1">#         lambdaa = params.get(&#39;lambda&#39;)</span>
+<span class="c1">#         loc_eq, sigma_eq = log_normal(x, lambdaa, epsilon)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         icdf = norm.ppf(cdf_x, loc=0, scale=1)</span>
+<span class="c1">#         sigma_eq = norm.pdf(icdf, loc=0, scale=1) / pdf_temp</span>
+<span class="c1">#         loc_eq = x - sigma_eq * icdf</span>
+
+<span class="c1">#     return float(loc_eq), float(sigma_eq)</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, gpee.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

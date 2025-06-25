@@ -9,3 +9,4 @@ openpyxl
 tabulate
 sphinx
 pydata-sphinx-theme
+myst-parser

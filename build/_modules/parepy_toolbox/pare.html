@@ -1,0 +1,927 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parepy_toolbox.pare &#8212; parepy - toolbox 2.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b8b15c53" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=c2377ec0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/parepy_toolbox/pare';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">parepy - toolbox 2.0.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parepy_toolbox.html">
+    parepy_toolbox package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick_start.html">
+    Quick Start
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parepy_toolbox.html">
+    parepy_toolbox package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick_start.html">
+    Quick Start
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">parepy_toolbox.pare</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for parepy_toolbox.pare</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Probabilistic Approach to Reliability Engineering (PAREPY)&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">parepy_toolbox.common_library</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">parepyco</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">parepy_toolbox.distributions</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">parepydi</span>
+
+
+<div class="viewcode-block" id="deterministic_algorithm_structural_analysis">
+<a class="viewcode-back" href="../../parepy_toolbox.pare.html#parepy_toolbox.pare.deterministic_algorithm_structural_analysis">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">deterministic_algorithm_structural_analysis</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">x0</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the reliability index and probability of failure using FORM (First Order Reliability Method).</span>
+
+<span class="sd">    :param obj: The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</span>
+<span class="sd">    :param tol: Tolerance for convergence.</span>
+<span class="sd">    :param max_iter: Maximum number of iterations allowed.</span>
+<span class="sd">    :param random_var_settings: Containing the distribution type and parameters. Example: {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 0, &#39;std&#39;: 1}}. Supported distributions: (a) &#39;uniform&#39;: keys &#39;min&#39; and &#39;max&#39;, (b) &#39;normal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (c) &#39;lognormal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (d) &#39;gumbel max&#39;: keys &#39;mean&#39; and &#39;std&#39;, (e) &#39;gumbel min&#39;: keys &#39;mean&#39; and &#39;std&#39;, (f) &#39;triangular&#39;: keys &#39;min&#39;, &#39;mode&#39; and &#39;max&#39;, or (g) &#39;gamma&#39;: keys &#39;mean&#39; and &#39;std&#39;.</span>
+<span class="sd">    :param x0: Initial guess.</span>
+<span class="sd">    :param verbose: If True, prints detailed information about the process. Default is `False`.</span>
+<span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
+
+<span class="sd">    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = Reliability index values for each indicator function.</span>
+<span class="sd">    </span>
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import deterministic_algorithm_structural_analysis</span>
+
+<span class="sd">    def obj(x):</span>
+<span class="sd">        return 12.5 * x[0]**3 - x[1]</span>
+
+<span class="sd">    d = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 1., &#39;std&#39;: 0.1}}</span>
+<span class="sd">    l = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 10., &#39;std&#39;: 1.}}</span>
+<span class="sd">    var = [d, l]</span>
+<span class="sd">    x0 = [1.0, 10.0]</span>
+<span class="sd">    max_iter = 100</span>
+<span class="sd">    tol = 1E-8</span>
+
+<span class="sd">    results, pf, beta = deterministic_algorithm_structural_analysis(obj, tol, max_iter, var, x0, verbose=True)</span>
+<span class="sd">    print(f&quot;Probability of failure: {pf}&quot;)</span>
+<span class="sd">    print(f&quot;Reliability index (beta): {beta}&quot;)</span>
+<span class="sd">    results.head()    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">x_k</span> <span class="o">=</span> <span class="n">x0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">tol</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">random_var_settings</span><span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="c1"># Iteration process</span>
+    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">mu_eq</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sigma_eq</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Conversion Non-normal to Normal</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random_var_settings</span><span class="p">):</span>
+            <span class="n">paras_scipy</span> <span class="o">=</span> <span class="n">parepydi</span><span class="o">.</span><span class="n">convert_params_to_scipy</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">var</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">])</span>
+            <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">parepydi</span><span class="o">.</span><span class="n">normal_tail_approximation</span><span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">paras_scipy</span><span class="p">,</span> <span class="n">x_k</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">mu_eq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+            <span class="n">sigma_eq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="c1"># yk</span>
+        <span class="n">dneq</span><span class="p">,</span> <span class="n">dneq1</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">std_matrix</span><span class="p">(</span><span class="n">sigma_eq</span><span class="p">)</span>
+        <span class="n">mu_vars</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">mu_matrix</span><span class="p">(</span><span class="n">mu_eq</span><span class="p">)</span>
+        <span class="n">y_k</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">x_to_y</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_k</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dneq1</span><span class="p">,</span> <span class="n">mu_vars</span><span class="p">)</span>
+        <span class="n">beta_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;y_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_k</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;β_k&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta_k</span>
+
+        <span class="c1"># Numerical differentiation g(x) and g(y)</span>
+        <span class="n">g_diff_x</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">jacobian_matrix</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x_k</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mf">1E-8</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">jacobian_matrix</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x_k</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mf">1E-8</span><span class="p">)</span>
+        <span class="n">g_diff_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix_transpose</span><span class="p">(</span><span class="n">dneq</span><span class="p">)</span> <span class="o">@</span> <span class="n">g_diff_x</span>
+        
+        <span class="c1"># alpha vector</span>
+        <span class="n">norm_gdiff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g_diff_y</span><span class="p">)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">g_diff_y</span> <span class="o">/</span> <span class="n">norm_gdiff</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;α_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Beta update</span>
+        <span class="n">g_y</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_k</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_k</span><span class="p">)</span>
+        <span class="n">beta_k1</span> <span class="o">=</span> <span class="n">beta_k</span> <span class="o">+</span> <span class="n">g_y</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matrix_transpose</span><span class="p">(</span><span class="n">g_diff_y</span><span class="p">)</span> <span class="o">@</span> <span class="n">alpha</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;β_k+1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta_k1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># yk and xk update </span>
+        <span class="n">y_k1</span> <span class="o">=</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">@</span> <span class="n">beta_k1</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;y_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k+1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_k1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">x_k1</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">y_to_x</span><span class="p">(</span><span class="n">y_k1</span><span class="p">,</span> <span class="n">dneq</span><span class="p">,</span> <span class="n">mu_vars</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">row</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k+1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_k1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># Storage and error</span>
+        <span class="n">x_k</span> <span class="o">=</span> <span class="n">x_k1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">y_k</span> <span class="o">=</span> <span class="n">y_k1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">beta_k</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">beta_k</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">*</span> <span class="mf">1E1</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">beta_k1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">beta_k</span><span class="p">)</span> <span class="o">/</span> <span class="n">beta_k</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">error</span>
+
+        <span class="c1"># Verbose </span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⏱️ Time: </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">s, Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s2"> (error = </span><span class="si">{</span><span class="n">error</span><span class="si">:</span><span class="s2">.4e</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="c1"># Ordering columns</span>
+    <span class="n">col_order</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">+</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;y_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">+</span>
+        <span class="p">[</span><span class="s2">&quot;β_k&quot;</span><span class="p">]</span> <span class="o">+</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;α_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">+</span>
+        <span class="p">[</span><span class="s2">&quot;β_k+1&quot;</span><span class="p">]</span> <span class="o">+</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;y_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k+1&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">+</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;x_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">,k+1&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">+</span>
+        <span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col_order</span><span class="p">]</span>
+
+    <span class="c1"># Last row contain the final beta value and probability of failure</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🧮 Computes β and pf&quot;</span><span class="p">)</span>
+    <span class="n">final_beta</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;β_k+1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">final_pf</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">pf_equation</span><span class="p">(</span><span class="n">final_beta</span><span class="p">)</span>
+
+    <span class="c1"># hessian = parepyco.hessian_matrix(obj, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None)</span>
+    <span class="c1"># if method.lower() == &quot;sorm&quot;:</span>
+    <span class="c1">#     beta_u = beta_k1[0, 0]</span>
+    <span class="c1">#     mu_eq = []</span>
+    <span class="c1">#     sigma_eq = []</span>
+    <span class="c1">#     # Conversion Non-normal to Normal</span>
+    <span class="c1">#     for i, var in enumerate(variables):</span>
+    <span class="c1">#         paras_scipy = parepydi.convert_params_to_scipy(var[&#39;type&#39;], var[&#39;parameters&#39;])</span>
+    <span class="c1">#         m, s = parepydi.normal_tail_approximation(var[&#39;type&#39;], paras_scipy, x_k[i])</span>
+    <span class="c1">#         mu_eq.append(m)</span>
+    <span class="c1">#         sigma_eq.append(s)</span>
+    <span class="c1">#     dneq, dneq1 = parepyco.std_matrix(sigma_eq)</span>
+    <span class="c1">#     mu_vars = parepyco.mu_matrix(mu_eq)</span>
+    <span class="c1">#     # Numerical differentiation g(y)</span>
+    <span class="c1">#     g_diff_x = parepyco.jacobian_matrix(obj, x_k, &#39;center&#39;, h=1E-8, args=args) if args is not None else parepyco.jacobian_matrix(obj, x_k, &#39;center&#39;, h=1E-8)</span>
+    <span class="c1">#     g_diff_y = np.matrix_transpose(dneq) @ np.array(g_diff_x).reshape(-1, 1)</span>
+    <span class="c1">#     norm_gdiff = np.linalg.norm(g_diff_y)</span>
+    <span class="c1">#     m = len(x_k)</span>
+    <span class="c1">#     q = np.eye(m)</span>
+    <span class="c1">#     q[:, 0] = y_k.flatten().tolist()</span>
+    <span class="c1">#     q, _ = np.linalg.qr(q)</span>
+    <span class="c1">#     q = np.fliplr(q)</span>
+    <span class="c1">#     a = q.T @ hessian @ q</span>
+    <span class="c1">#     j = np.eye(m - 1) + beta_u * a[:m-1, :m-1] / norm_gdiff</span>
+    <span class="c1">#     det_j = np.linalg.det(j)</span>
+    <span class="c1">#     correction = 1 / np.sqrt(det_j)</span>
+    <span class="c1">#     pf_sorm = sc.stats.norm.cdf(-beta_u) * correction</span>
+    <span class="c1">#     beta_sorm = -sc.stats.norm.ppf(pf_sorm)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✔️ Algorithm finished!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">final_pf</span><span class="p">,</span> <span class="n">final_beta</span></div>
+
+
+
+<div class="viewcode-block" id="sampling_algorithm_structural_analysis">
+<a class="viewcode-back" href="../../parepy_toolbox.pare.html#parepy_toolbox.pare.sampling_algorithm_structural_analysis">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sampling_algorithm_structural_analysis</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">parallel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">random_var_settings_importance_sampling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;                                    </span>
+<span class="sd">    Computes the reliability index and probability of failure using sampling methods.</span>
+
+<span class="sd">    :param obj: The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</span>
+<span class="sd">    :param random_var_settings: Containing the distribution type and parameters. Example: {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 0, &#39;std&#39;: 1}}. Supported distributions: (a) &#39;uniform&#39;: keys &#39;min&#39; and &#39;max&#39;, (b) &#39;normal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (c) &#39;lognormal&#39;: keys &#39;mean&#39; and &#39;std&#39;, (d) &#39;gumbel max&#39;: keys &#39;mean&#39; and &#39;std&#39;, (e) &#39;gumbel min&#39;: keys &#39;mean&#39; and &#39;std&#39;, (f) &#39;triangular&#39;: keys &#39;min&#39;, &#39;mode&#39; and &#39;max&#39;, or (g) &#39;gamma&#39;: keys &#39;mean&#39; and &#39;std&#39;.</span>
+<span class="sd">    :param method: Sampling method. Supported values: &#39;lhs&#39; (Latin Hypercube Sampling), &#39;mcs&#39; (Crude Monte Carlo Sampling) or &#39;sobol&#39; (Sobol Sampling).</span>
+<span class="sd">    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent &quot;m&quot; (n = 2^m).</span>
+<span class="sd">    :param number_of_limit_functions: Number of limit state functions or constraints.</span>
+<span class="sd">    :param parallel: Start parallel process.</span>
+<span class="sd">    :param verbose: If True, prints detailed information about the process. Default is `False`.</span>
+<span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
+
+<span class="sd">    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = Reliability index values for each indicator function.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    from parepy_toolbox import sampling_algorithm_structural_analysis</span>
+
+<span class="sd">    def obj(x):</span>
+<span class="sd">        return [12.5 * x[0]**3 -x[1]]</span>
+
+<span class="sd">    d = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 1., &#39;std&#39;: 0.1}}</span>
+<span class="sd">    l = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 10., &#39;std&#39;: 1.}}</span>
+<span class="sd">    var = [d, l]</span>
+
+<span class="sd">    df, pf, beta = sampling_algorithm_structural_analysis(obj, var, method=&#39;lhs&#39;, n_samples=10000, number_of_limit_functions=1, parallel=False, verbose=True)</span>
+<span class="sd">    print(pf)</span>
+<span class="sd">    print(beta)</span>
+<span class="sd">    print(df.head())</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">block_size</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">ran_var_set</span> <span class="o">=</span> <span class="n">random_var_settings_importance_sampling</span> <span class="k">if</span> <span class="n">random_var_settings_importance_sampling</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">random_var_settings</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s1">&#39;sobol&#39;</span><span class="p">:</span>
+        <span class="n">samples_per_block</span> <span class="o">=</span> <span class="n">n_samples</span> <span class="o">//</span> <span class="n">block_size</span>
+        <span class="n">samples_per_block_remainder</span> <span class="o">=</span> <span class="n">n_samples</span> <span class="o">%</span> <span class="n">block_size</span>
+        <span class="n">setups</span> <span class="o">=</span> <span class="p">[(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ran_var_set</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">samples_per_block</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">block_size</span><span class="p">)]</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ran_var_set</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">samples_per_block</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">block_size</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">samples_per_block_remainder</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">setups</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">obj</span><span class="p">,</span> <span class="n">ran_var_set</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">samples_per_block_remainder</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ran_var_set</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">samples_per_block_remainder</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parallel</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">setups</span> <span class="o">=</span> <span class="p">[(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ran_var_set</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ran_var_set</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">)]</span>
+
+    <span class="c1"># Random sampling and computes G function</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">parallel</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Pool</span><span class="p">()</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">parepyco</span><span class="o">.</span><span class="n">sampling_kernel_without_time</span><span class="p">,</span> <span class="n">setups</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">parepyco</span><span class="o">.</span><span class="n">sampling_kernel_without_time</span><span class="p">(</span><span class="o">*</span><span class="n">args_aux</span><span class="p">)</span> <span class="k">for</span> <span class="n">args_aux</span> <span class="ow">in</span> <span class="n">setups</span><span class="p">]</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">final_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sampling and computes the G functions </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Computes pf and beta</span>
+    <span class="k">if</span> <span class="n">random_var_settings_importance_sampling</span><span class="p">:</span>
+        <span class="n">final_df</span> <span class="o">=</span> <span class="n">calculate_weights</span><span class="p">(</span><span class="n">final_df</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">,</span> <span class="n">random_var_settings_importance_sampling</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pf_df</span><span class="p">,</span> <span class="n">beta_df</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">summarize_pf_beta</span><span class="p">(</span><span class="n">final_df</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sampling_</span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">_%H-%M-%S&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">.txt&quot;</span>
+        <span class="n">final_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; has been successfully saved.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✔️ Algorithm finished!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">pf_df</span><span class="p">,</span> <span class="n">beta_df</span></div>
+
+
+
+<div class="viewcode-block" id="reprocess_sampling_results">
+<a class="viewcode-back" href="../../parepy_toolbox.pare.html#parepy_toolbox.pare.reprocess_sampling_results">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reprocess_sampling_results</span><span class="p">(</span><span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reprocesses sampling results from multiple .txt files in a specified folder.</span>
+
+<span class="sd">    :param folder_path: Path to the folder containing sampling result files (.txt format).</span>
+<span class="sd">    :param verbose: If True, prints detailed information about the process. Default is `False`.</span>
+
+<span class="sd">    :return: Results of reprocessing: [0] = Combined dataframe with all sampling data, [1] = Failure probabilities for each limit state function, [2] = Reliability index (beta) for each limit state function.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    from parepy_toolbox import reprocess_sampling_results</span>
+
+<span class="sd">    df, pf, beta = reprocess_sampling_results(&quot;path/to/your/folder&quot;, verbose=True)</span>
+
+<span class="sd">    print(&quot;PF:&quot;, pf_df)</span>
+<span class="sd">    print(&quot;Beta:&quot;, beta_df)</span>
+<span class="sd">    df_all.head()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">all_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">)]</span>
+    <span class="n">dataframes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">all_files</span><span class="p">:</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">dataframes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">final_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dataframes</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🧮 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataframes</span><span class="p">)</span><span class="si">}</span><span class="s2"> files loaded. Total number of samples: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">final_df</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="n">col_I</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">final_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;I_&quot;</span><span class="p">)]</span>
+
+    <span class="n">f_df</span><span class="p">,</span> <span class="n">beta_df</span> <span class="o">=</span> <span class="n">parepyco</span><span class="o">.</span><span class="n">summarize_failure_probabilities</span><span class="p">(</span><span class="n">final_df</span><span class="p">)</span>
+
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reprocessing completed successfully.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🧮 Sampling and computes the G functions </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✔️ Algorithm finished!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">f_df</span><span class="p">,</span> <span class="n">beta_df</span></div>
+
+
+
+<div class="viewcode-block" id="sobol_algorithm">
+<a class="viewcode-back" href="../../parepy_toolbox.pare.html#parepy_toolbox.pare.sobol_algorithm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sobol_algorithm</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>  <span class="n">random_var_settings</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">n_sobol</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">parallel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the Sobol sensitivity indices in structural reliability problems.</span>
+
+<span class="sd">    :param obj: The objective function: ``obj(x, args) -&gt; float`` or ``obj(x) -&gt; float``, where ``x`` is a list with shape ``n`` and ``args`` is a tuple of fixed parameters needed to completely specify the function.</span>
+<span class="sd">    :param random_var_settings: List of dictionaries containing the distribution type and parameters.  </span>
+<span class="sd">        Example: ``{&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 0, &#39;std&#39;: 1}}``.  </span>
+<span class="sd">        Supported distributions:  </span>
+<span class="sd">        - ``uniform``: keys ``min`` and ``max``  </span>
+<span class="sd">        - ``normal``: keys ``mean`` and ``std``  </span>
+<span class="sd">        - ``lognormal``: keys ``mean`` and ``std``  </span>
+<span class="sd">        - ``gumbel_max``: keys ``mean`` and ``std``  </span>
+<span class="sd">        - ``gumbel_min``: keys ``mean`` and ``std``  </span>
+<span class="sd">        - ``triangular``: keys ``min``, ``mode`` and ``max``  </span>
+<span class="sd">        - ``gamma``: keys ``mean`` and ``std``</span>
+<span class="sd">    :param n_sobol: This variable represents the exponent &quot;m&quot; (``n = 2^m``) to generate Sobol sequence sampling. Must be a positive integer.</span>
+<span class="sd">    :param number_of_limit_functions: Number of limit state functions or constraints.</span>
+<span class="sd">    :param parallel: If True, runs the evaluation in parallel processes.</span>
+<span class="sd">    :param verbose: If True, prints detailed information about the process.</span>
+<span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
+
+<span class="sd">    :return: A pandas DataFrame with the first-order and total-order Sobol sensitivity indices for each input variable.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    =======</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import sobol_algorithm</span>
+<span class="sd">    &gt;&gt;&gt; import time</span>
+<span class="sd">    &gt;&gt;&gt; def obj(x, *args):</span>
+<span class="sd">    ...     g_0 = 12.5 * x[0] ** 3 - x[1]</span>
+<span class="sd">    ...     time.sleep(1e-6)</span>
+<span class="sd">    ...     return [g_0]</span>
+
+<span class="sd">    &gt;&gt;&gt; d = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 1.0, &#39;std&#39;: 0.1}}</span>
+<span class="sd">    &gt;&gt;&gt; l = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 10.0, &#39;std&#39;: 1.0}}</span>
+<span class="sd">    &gt;&gt;&gt; var = [d, l]</span>
+<span class="sd">    &gt;&gt;&gt; amostras = 12</span>
+
+<span class="sd">    &gt;&gt;&gt; data_sobol = sobol_algorithm(obj=obj, random_var_settings=var, n_sobol=amostras, number_of_limit_functions=1, verbose=True)</span>
+<span class="sd">    &gt;&gt;&gt; data_sobol.head()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🧮 Starting Sobol analysis...&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Sampling for distributions A and B</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">dist_a</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sampling_algorithm_structural_analysis</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">,</span> <span class="s1">&#39;sobol&#39;</span><span class="p">,</span> <span class="n">n_sobol</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sampling_algorithm_structural_analysis</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">,</span> <span class="s1">&#39;sobol&#39;</span><span class="p">,</span> <span class="n">n_sobol</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="n">dist_b</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sampling_algorithm_structural_analysis</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">,</span> <span class="s1">&#39;sobol&#39;</span><span class="p">,</span> <span class="n">n_sobol</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">sampling_algorithm_structural_analysis</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">,</span> <span class="s1">&#39;sobol&#39;</span><span class="p">,</span> <span class="n">n_sobol</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1"># DataFrame</span>
+    <span class="n">n_samples</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">n_sobol</span>
+    <span class="n">y_a</span> <span class="o">=</span> <span class="n">dist_a</span><span class="p">[</span><span class="s1">&#39;G_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="n">y_b</span> <span class="o">=</span> <span class="n">dist_b</span><span class="p">[</span><span class="s1">&#39;G_0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="n">f_0_2</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">y_a</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_samples</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">dist_a</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;G_0&#39;</span><span class="p">,</span> <span class="s1">&#39;I_0&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">dist_b</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;G_0&#39;</span><span class="p">,</span> <span class="s1">&#39;I_0&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">s_i</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">s_t</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+        <span class="n">C</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">y_c_i</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">):</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">C</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:]),</span> <span class="n">args</span><span class="p">)</span>
+            <span class="n">y_c_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">y_a_dot_y_c_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_c_i</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)]</span>
+        <span class="n">y_b_dot_y_c_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_b</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_c_i</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)]</span>
+        <span class="n">y_a_dot_y_a</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_a</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)]</span>
+
+        <span class="n">var_y</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_a_dot_y_a</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_0_2</span>
+
+        <span class="n">s_i</span><span class="o">.</span><span class="n">append</span><span class="p">(((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_a_dot_y_c_i</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_0_2</span><span class="p">)</span> <span class="o">/</span> <span class="n">var_y</span><span class="p">)</span>
+        <span class="n">s_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_b_dot_y_c_i</span><span class="p">)</span> <span class="o">-</span> <span class="n">f_0_2</span><span class="p">)</span> <span class="o">/</span> <span class="n">var_y</span><span class="p">)</span>
+
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🧮 Sobol analysis completed in </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✔️ Algorithm finished!&quot;</span><span class="p">)</span>
+
+    <span class="n">dict_sobol</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;s_i&#39;</span><span class="p">:</span> <span class="n">s_i</span><span class="p">,</span> <span class="s1">&#39;s_t&#39;</span><span class="p">:</span> <span class="n">s_t</span><span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">dict_sobol</span></div>
+
+
+
+<div class="viewcode-block" id="generate_factorial_design">
+<a class="viewcode-back" href="../../parepy_toolbox.pare.html#parepy_toolbox.pare.generate_factorial_design">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_factorial_design</span><span class="p">(</span><span class="n">variable_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">levels_per_variable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a full factorial design based on variable names and levels.</span>
+
+<span class="sd">    :param variable_names: Variable names.</span>
+<span class="sd">    :param levels_per_variable: List of lists, where each sublist contains the levels for the corresponding variable.</span>
+<span class="sd">    :param verbose: If True, prints the number of combinations and preview of the DataFrame.</span>
+<span class="sd">    :return: All possible combinations of the levels provided.</span>
+
+<span class="sd">    **Example**::</span>
+
+<span class="sd">        &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">        &gt;&gt;&gt; from parepy_toolbox import generate_factorial_design</span>
+
+<span class="sd">        &gt;&gt;&gt; variable_names = [&#39;i (mm)&#39;, &#39;j (mm)&#39;, &#39;k (mm)&#39;, &#39;l (mm)&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; levels_per_variable = [</span>
+<span class="sd">        ...     np.linspace(0, 10, 3),</span>
+<span class="sd">        ...     np.linspace(0, 15, 4),</span>
+<span class="sd">        ...     [5, 15],</span>
+<span class="sd">        ...     np.linspace(0, 20, 5)</span>
+<span class="sd">        ... ]</span>
+
+<span class="sd">        &gt;&gt;&gt; df = parepy.generate_factorial_design(variable_names, levels_per_variable, verbose=True)</span>
+<span class="sd">        &gt;&gt;&gt; print(df.head())</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🧮 Generating factorial design...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">levels</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">variable_names</span><span class="p">,</span> <span class="n">levels_per_variable</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; - </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">levels</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">combinations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">levels_per_variable</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">combinations</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">variable_names</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;🧮 Generated </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> combinations.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🧮 Sample of factorial design:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✔️ Algorithm finished!&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<span class="c1"># def sampling_algorithm_structural_analysis_kernel(objective_function: callable, number_of_samples: int, numerical_model: dict, variables_settings: list, number_of_limit_functions: int, none_variable = None) -&gt; pd.DataFrame:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Creates samples and evaluates the limit state functions in structural reliability problems.</span>
+
+<span class="c1">#     :param objective_function: User-defined Python function to evaluate the limit state(s).</span>
+<span class="c1">#     :param number_of_samples: Number of samples to generate.</span>
+<span class="c1">#     :param numerical_model: Dictionary with model configuration (e.g., sampling type).</span>
+<span class="c1">#     :param variables_settings: List of variable definitions with distribution parameters.</span>
+<span class="c1">#     :param number_of_limit_functions: Number of limit state functions or constraints.</span>
+<span class="c1">#     :param none_variable: Optional auxiliary input to be passed to the objective function.</span>
+
+<span class="c1">#     :return: DataFrame with reliability analysis results.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     # Ensure all variables have seeds</span>
+<span class="c1">#     for var in variables_settings:</span>
+<span class="c1">#         if &#39;seed&#39; not in var:</span>
+<span class="c1">#             var[&#39;seed&#39;] = None</span>
+
+<span class="c1">#     n_dimensions = len(variables_settings)</span>
+<span class="c1">#     algorithm = numerical_model[&#39;model sampling&#39;]</span>
+<span class="c1">#     is_time_analysis = algorithm.upper() in [&#39;MCS-TIME&#39;, &#39;MCS_TIME&#39;, &#39;MCS TIME&#39;, &#39;LHS-TIME&#39;, &#39;LHS_TIME&#39;, &#39;LHS TIME&#39;]</span>
+<span class="c1">#     time_analysis = numerical_model[&#39;time steps&#39;] if is_time_analysis else None</span>
+
+<span class="c1">#     # Generate samples</span>
+<span class="c1">#     dataset_x = parepyco.sampling(</span>
+<span class="c1">#         n_samples=number_of_samples,</span>
+<span class="c1">#         model=numerical_model,</span>
+<span class="c1">#         variables_setup=variables_settings</span>
+<span class="c1">#     )</span>
+
+<span class="c1">#     # Initialize output arrays</span>
+<span class="c1">#     capacity = np.zeros((len(dataset_x), number_of_limit_functions))</span>
+<span class="c1">#     demand = np.zeros((len(dataset_x), number_of_limit_functions))</span>
+<span class="c1">#     state_limit = np.zeros((len(dataset_x), number_of_limit_functions))</span>
+<span class="c1">#     indicator_function = np.zeros((len(dataset_x), number_of_limit_functions))</span>
+
+<span class="c1">#     # Evaluate objective function</span>
+<span class="c1">#     for idx, sample in enumerate(dataset_x):</span>
+<span class="c1">#         c_i, d_i, g_i = objective_function(list(sample), none_variable)</span>
+<span class="c1">#         capacity[idx, :] = c_i</span>
+<span class="c1">#         demand[idx, :] = d_i</span>
+<span class="c1">#         state_limit[idx, :] = g_i</span>
+<span class="c1">#         indicator_function[idx, :] = [1 if val &lt;= 0 else 0 for val in g_i]</span>
+
+<span class="c1">#     # Stack all results</span>
+<span class="c1">#     results = np.hstack((dataset_x, capacity, demand, state_limit, indicator_function))</span>
+
+<span class="c1">#     # Format results into DataFrame</span>
+<span class="c1">#     if is_time_analysis:</span>
+<span class="c1">#         block_size = int(len(results) / number_of_samples)</span>
+<span class="c1">#         all_rows = []</span>
+<span class="c1">#         for i in range(number_of_samples):</span>
+<span class="c1">#             block = results[i * block_size:(i + 1) * block_size, :].T.flatten().tolist()</span>
+<span class="c1">#             all_rows.append(block)</span>
+<span class="c1">#         results_about_data = pd.DataFrame(all_rows)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         results_about_data = pd.DataFrame(results)</span>
+
+<span class="c1">#     # Create column names</span>
+<span class="c1">#     column_names = []</span>
+
+<span class="c1">#     for i in range(n_dimensions):</span>
+<span class="c1">#         if is_time_analysis:</span>
+<span class="c1">#             for t in range(time_analysis):</span>
+<span class="c1">#                 column_names.append(f&#39;X_{i}_t={t}&#39;)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             column_names.append(f&#39;X_{i}&#39;)</span>
+
+<span class="c1">#     if is_time_analysis:</span>
+<span class="c1">#         for t in range(time_analysis):</span>
+<span class="c1">#             column_names.append(f&#39;STEP_t_{t}&#39;)</span>
+
+<span class="c1">#     for i in range(number_of_limit_functions):</span>
+<span class="c1">#         if is_time_analysis:</span>
+<span class="c1">#             for t in range(time_analysis):</span>
+<span class="c1">#                 column_names.append(f&#39;R_{i}_t={t}&#39;)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             column_names.append(f&#39;R_{i}&#39;)</span>
+
+<span class="c1">#     for i in range(number_of_limit_functions):</span>
+<span class="c1">#         if is_time_analysis:</span>
+<span class="c1">#             for t in range(time_analysis):</span>
+<span class="c1">#                 column_names.append(f&#39;S_{i}_t={t}&#39;)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             column_names.append(f&#39;S_{i}&#39;)</span>
+
+<span class="c1">#     for i in range(number_of_limit_functions):</span>
+<span class="c1">#         if is_time_analysis:</span>
+<span class="c1">#             for t in range(time_analysis):</span>
+<span class="c1">#                 column_names.append(f&#39;G_{i}_t={t}&#39;)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             column_names.append(f&#39;G_{i}&#39;)</span>
+
+<span class="c1">#     for i in range(number_of_limit_functions):</span>
+<span class="c1">#         if is_time_analysis:</span>
+<span class="c1">#             for t in range(time_analysis):</span>
+<span class="c1">#                 column_names.append(f&#39;I_{i}_t={t}&#39;)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             column_names.append(f&#39;I_{i}&#39;)</span>
+
+<span class="c1">#     results_about_data.columns = column_names</span>
+
+<span class="c1">#     # First Barrier Failure (FBF) adjustment if time-dependent</span>
+<span class="c1">#     if is_time_analysis:</span>
+<span class="c1">#         results_about_data, _ = parepyco.fbf(</span>
+<span class="c1">#             algorithm,</span>
+<span class="c1">#             number_of_limit_functions,</span>
+<span class="c1">#             time_analysis,</span>
+<span class="c1">#             results_about_data</span>
+<span class="c1">#         )</span>
+
+<span class="c1">#     return results_about_data</span>
+
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, gpee.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

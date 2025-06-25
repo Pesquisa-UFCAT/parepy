@@ -1,0 +1,1237 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>parepy_toolbox.common_library &#8212; parepy - toolbox 2.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b8b15c53" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=c2377ec0"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/parepy_toolbox/common_library';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">parepy - toolbox 2.0.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parepy_toolbox.html">
+    parepy_toolbox package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick_start.html">
+    Quick Start
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parepy_toolbox.html">
+    parepy_toolbox package
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../quick_start.html">
+    Quick Start
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">parepy_toolbox.common_library</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for parepy_toolbox.common_library</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Common library contains utility functions for PAREpy&#39;s framework.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">parepy_toolbox.distributions</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">parepydi</span>
+
+
+<div class="viewcode-block" id="std_matrix">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.std_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">std_matrix</span><span class="p">(</span><span class="n">std</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract D matrix and D^-1 matrix from a list of variables. Used in Y to X or X to Y transformation.</span>
+
+<span class="sd">    :param std: Standard deviation parameters.</span>
+
+<span class="sd">    :return: output[0] = D matrix (Diagonal standard deviation matrix), output[1] = D^-1 matrix (Inverse of diagonal standard deviation matrix).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dneq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">std</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">std</span><span class="p">)))</span>
+    <span class="n">dneq1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">std</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">std</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">std</span><span class="p">):</span>
+        <span class="n">dneq</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span>
+        <span class="n">dneq1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sigma</span>
+
+    <span class="k">return</span> <span class="n">dneq</span><span class="p">,</span> <span class="n">dneq1</span></div>
+
+
+
+<div class="viewcode-block" id="mu_matrix">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.mu_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mu_matrix</span><span class="p">(</span><span class="n">mean</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract mean matrix from a list of variables. Used in Y to X or X to Y transformation.</span>
+
+<span class="sd">    :param mu: Mean parameters.</span>
+
+<span class="sd">    :return: Mean matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mu_neq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">mean</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mu</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mean</span><span class="p">):</span>
+        <span class="n">mu_neq</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span>
+
+    <span class="k">return</span> <span class="n">mu_neq</span></div>
+
+
+
+<div class="viewcode-block" id="x_to_y">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.x_to_y">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">x_to_y</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">dneq1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">mu_neq</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a vector of random variables from the X space to the Y space.</span>
+
+<span class="sd">    :param x: Random variables in the X space.</span>
+<span class="sd">    :param dneq1: D^-1 matrix (Inverse of diagonal standard deviation matrix).</span>
+<span class="sd">    :param mu_neq: Mean matrix.</span>
+
+<span class="sd">    :return: Transformed random variables in the Y space.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">dneq1</span> <span class="o">@</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu_neq</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="y_to_x">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.y_to_x">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">y_to_x</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">dneq</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">mu_neq</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms a vector of random variables from the Y space to the X space.</span>
+
+<span class="sd">    :param y: Random variables in the Y space.</span>
+<span class="sd">    :param dneq: D matrix.</span>
+<span class="sd">    :param mu_neq: Mean matrix.</span>
+
+<span class="sd">    :return: Transformed random variables in the X space.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">dneq</span> <span class="o">@</span> <span class="n">y</span> <span class="o">+</span> <span class="n">mu_neq</span></div>
+
+
+
+<div class="viewcode-block" id="pf_equation">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.pf_equation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pf_equation</span><span class="p">(</span><span class="n">beta</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.</span>
+
+<span class="sd">    :param beta: Reliability index (β).</span>
+<span class="sd">    </span>
+<span class="sd">    :return: Probability of failure (pf).</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import pf_equation</span>
+<span class="sd">    &gt;&gt;&gt; beta = 3.5</span>
+<span class="sd">    &gt;&gt;&gt; pf = pf_equation(beta)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Probability of failure: {pf:.5e}&quot;)</span>
+<span class="sd">    Probability of failure: 2.32629e-04</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="beta_equation">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.beta_equation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">beta_equation</span><span class="p">(</span><span class="n">pf</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the reliability index value for a given probability of failure (pf), using the inverse cumulative distribution function (ICDF) of the standard normal distribution.</span>
+
+<span class="sd">    :param pf: Probability of failure (pf).</span>
+
+<span class="sd">    :return: Reliability index (β).</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import beta_equation</span>
+<span class="sd">    &gt;&gt;&gt; pf = 2.32629e-04</span>
+<span class="sd">    &gt;&gt;&gt; beta = beta_equation(pf)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Reliability index: {beta:.5f}&quot;)</span>
+<span class="sd">    Reliability index: 3.50000</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="first_second_order_derivative_numerical_differentiation_unidimensional">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.first_second_order_derivative_numerical_differentiation_unidimensional">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">first_second_order_derivative_numerical_differentiation_unidimensional</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1E-5</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the numerical derivative of a function at a given point in the given dimension using the central, backward and forward difference method.</span>
+
+<span class="sd">    :param obj: The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</span>
+<span class="sd">    :param x: Point at which to evaluate the derivative.</span>
+<span class="sd">    :param pos: Dimension in the list x where the derivative is to be calculated. When use order &#39;xy&#39;, pos is a str contain first and second dimension separated by a comma (e.g., &#39;0,1&#39; for the first and second dimensions). </span>
+<span class="sd">    :param method: Method to use for differentiation. Supported values: &#39;center&#39;, &#39;forward&#39;, or &#39;backward&#39;.</span>
+<span class="sd">    :param order: Order of the derivative to compute (default is first for first-order derivative). Supported values: &#39;first&#39;, &#39;second&#39;, or &#39;xy&#39;.</span>
+<span class="sd">    :param h: Step size for the finite difference approximation (default is 1e-10).</span>
+<span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
+
+<span class="sd">    :return: Numerical derivative of order n of the function at point x in dimension pos.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s1">&#39;first&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+                    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+            <span class="n">den</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;backward&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+                    <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+            <span class="n">den</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+                    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+                    <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+            <span class="n">den</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">h</span>
+        <span class="n">fa</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">fa</span> <span class="o">-</span> <span class="n">fb</span><span class="p">)</span> <span class="o">/</span> <span class="n">den</span>
+    <span class="k">elif</span> <span class="n">order</span> <span class="o">==</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x_aux</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">den</span> <span class="o">=</span> <span class="n">h</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+                    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="n">h</span>
+                    <span class="n">x_aux</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+            <span class="n">fa</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">fx</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_aux</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_aux</span><span class="p">)</span>
+            <span class="n">fb</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;backward&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+                    <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">2</span><span class="o">*</span><span class="n">h</span>
+                    <span class="n">x_aux</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+            <span class="n">fa</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">fx</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_aux</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_aux</span><span class="p">)</span>
+            <span class="n">fb</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+                    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+                    <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+            <span class="n">fa</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">fx</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_aux</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">x_aux</span><span class="p">)</span>
+            <span class="n">fb</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">fa</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">fx</span> <span class="o">+</span> <span class="n">fb</span><span class="p">)</span> <span class="o">/</span> <span class="n">den</span>
+    <span class="k">elif</span> <span class="n">order</span> <span class="o">==</span> <span class="s1">&#39;xy&#39;</span><span class="p">:</span>
+        <span class="n">pos_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">pos_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">pos_x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">pos_y</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">b</span><span class="p">[</span><span class="n">pos_x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+        <span class="n">b</span><span class="p">[</span><span class="n">pos_y</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">pos_x</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">pos_y</span><span class="p">]</span> <span class="o">+=</span> <span class="n">h</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">pos_x</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">pos_y</span><span class="p">]</span> <span class="o">-=</span> <span class="n">h</span>
+        <span class="n">fa</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">fb</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">fc</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">fd</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">fa</span> <span class="o">-</span> <span class="n">fb</span> <span class="o">-</span> <span class="n">fc</span> <span class="o">+</span> <span class="n">fd</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">h</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">diff</span></div>
+
+
+
+<div class="viewcode-block" id="jacobian_matrix">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.jacobian_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">jacobian_matrix</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1E-5</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes Jacobian matrix of a vector-valued function using finite difference methods.</span>
+
+<span class="sd">    :param obj: The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</span>
+<span class="sd">    :param x: Point at which to evaluate the derivative.</span>
+<span class="sd">    :param method: Method to use for differentiation. Supported values: &#39;center&#39;, &#39;forward&#39;, or &#39;backward&#39;.</span>
+<span class="sd">    :param h: Step size for the finite difference approximation (default is 1e-10).</span>
+<span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
+
+<span class="sd">    :return: Numerical Jacobian matrix at point x.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">jacob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="n">jacob</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_second_order_derivative_numerical_differentiation_unidimensional</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">method</span><span class="p">,</span> <span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">first_second_order_derivative_numerical_differentiation_unidimensional</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">method</span><span class="p">,</span> <span class="s1">&#39;first&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">jacob</span></div>
+
+
+
+<div class="viewcode-block" id="hessian_matrix">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.hessian_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hessian_matrix</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1E-5</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes Hessian matrix of a vector-valued function using finite difference methods.</span>
+
+<span class="sd">    :param obj: The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</span>
+<span class="sd">    :param x: Point at which to evaluate the derivative.</span>
+<span class="sd">    :param method: Method to use for differentiation. Supported values: &#39;center&#39;, &#39;forward&#39;, or &#39;backward&#39;.</span>
+<span class="sd">    :param h: Step size for the finite difference approximation (default is 1e-10).</span>
+<span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
+
+<span class="sd">    :return: Numerical Hessian matrix at point x.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">hessian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                <span class="n">hessian</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_second_order_derivative_numerical_differentiation_unidimensional</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">method</span><span class="p">,</span> <span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">first_second_order_derivative_numerical_differentiation_unidimensional</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">method</span><span class="p">,</span> <span class="s1">&#39;second&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hessian</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_second_order_derivative_numerical_differentiation_unidimensional</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">first_second_order_derivative_numerical_differentiation_unidimensional</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">hessian</span></div>
+
+
+
+<div class="viewcode-block" id="sampling_kernel_without_time">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.sampling_kernel_without_time">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sampling_kernel_without_time</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates random samples from a specified distribution using kernel density estimation. This sampling generator not consider time series </span>
+
+<span class="sd">    :param obj: The objective function: :py:func:`obj(x, args) -&gt; float` or :py:func:`obj(x) -&gt; float`, where ``x`` is a list with shape *n* and args is a tuple fixed parameters needed to completely specify the function.</span>
+<span class="sd">    :param random_var_settings: Containing the distribution type and parameters. Example: ``{&quot;type&quot;: &quot;normal&quot;, &quot;parameters&quot;: {&quot;mean&quot;: 0, &quot;std&quot;: 1}}``. Supported distributions (See more details in Table 1): (a) ``&quot;uniform ``, (b) ``&quot;normal&quot;``, (c) ``&quot;lognormal&#39;``: keys ``&#39;mean&#39;`` and ``&#39;std&#39;``, (d) ``&#39;gumbel max&#39;``: keys ``&#39;mean&#39;`` and ``&#39;std&#39;``, (e) ``&#39;gumbel min&#39;``: keys ``&#39;mean&#39;`` and ``&#39;std&#39;``, (f) ``&#39;triangular&#39;``: keys ``&#39;min&#39;``, ``&#39;mode&#39;`` and ``&#39;max&#39;``, or (g) ``&#39;gamma&#39;``: keys ``&#39;mean&#39;`` and ``&#39;std&#39;``.</span>
+<span class="sd">    :param method: Sampling method. Supported values: ``&quot;lhs&quot;`` (Latin Hypercube Sampling), ``&quot;mcs&quot;`` (Crude Monte Carlo Sampling) or ``&quot;sobol&quot;`` (Sobol Sampling).</span>
+<span class="sd">    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent *m* (:math:`n = 2^m`).</span>
+<span class="sd">    :param number_of_limit_functions: Number of limit state functions or constraints.</span>
+<span class="sd">    :param args: Extra arguments to pass to the objective function (optional).</span>
+
+<span class="sd">    :return: Random samples, objective function evaluations and indicator functions.</span>
+
+<span class="sd">    .. list-table:: **Table 1: Supported values**</span>
+<span class="sd">       :widths: 20 40</span>
+<span class="sd">       :header-rows: 1</span>
+
+<span class="sd">       * - **Name**</span>
+<span class="sd">         - **Expected parameters**</span>
+<span class="sd">       * - ``&quot;uniform&quot;``</span>
+<span class="sd">         - ``&quot;min&quot;`` and ``&quot;max&quot;``</span>
+<span class="sd">       * - ``&quot;normal&quot;``</span>
+<span class="sd">         - ``&quot;mean&quot;`` and ``&quot;std&quot;``</span>
+<span class="sd">       * - ``&quot;lognormal&quot;``</span>
+<span class="sd">         - ``&quot;mean&quot;`` and ``&quot;std&quot;``</span>
+<span class="sd">       * - ``&quot;gumbel max&quot;``</span>
+<span class="sd">         - ``&quot;mean&quot;`` and ``&quot;std&quot;``</span>
+<span class="sd">       * - ``&quot;gumbel min&quot;``</span>
+<span class="sd">         - ``&quot;mean&quot;`` and ``&quot;std&quot;``</span>
+<span class="sd">       * - ``&quot;triangular&quot;``</span>
+<span class="sd">         - ``&quot;min&quot;``, ``&quot;mode&quot;``, and ``&quot;max&quot;``</span>
+<span class="sd">       * - ``&quot;gamma&quot;``</span>
+<span class="sd">         - ``&quot;mean&quot;`` and ``&quot;std&quot;``</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import sampling_kernel_without_time</span>
+<span class="sd">    &gt;&gt;&gt; def obj(x): # We reccomend to create this py function in other .py file when use parellel process and a .ipynb code</span>
+<span class="sd">            g_0 = 12.5 * x[0] ** 3 - x[1]</span>
+<span class="sd">            return [g_0]</span>
+<span class="sd">    &gt;&gt;&gt; d = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 1.0, &#39;std&#39;: 0.1}}</span>
+<span class="sd">    &gt;&gt;&gt; l = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 10.0, &#39;std&#39;: 1.0}}</span>
+<span class="sd">    &gt;&gt;&gt; var = [d, l]</span>
+<span class="sd">    &gt;&gt;&gt; number_of_limit_functions = 1</span>
+<span class="sd">    &gt;&gt;&gt; method = &#39;mcs&#39;</span>
+<span class="sd">    &gt;&gt;&gt; n_samples = 10000</span>
+<span class="sd">    &gt;&gt;&gt; start = time.perf_counter()</span>
+<span class="sd">    &gt;&gt;&gt; df = sampling_kernel_without_time(obj, var, method, n_samples, number_of_limit_functions)</span>
+<span class="sd">    &gt;&gt;&gt; end = time.perf_counter()</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Time elapsed: {(end-start):.5f}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(df)</span>
+<span class="sd">            X_0        X_1        G_0     I_0</span>
+<span class="sd">    0     1.193612  10.539209  10.717671  0.0</span>
+<span class="sd">    1     1.041650  10.441663   3.686170  0.0</span>
+<span class="sd">    2     1.133054   9.232075   8.950766  0.0</span>
+<span class="sd">    3     0.983667  10.080005   1.817470  0.0</span>
+<span class="sd">    4     0.908051  10.095981  -0.736729  1.0</span>
+<span class="sd">    ...        ...        ...        ...  ...</span>
+<span class="sd">    9995  1.016563   9.815083   3.316392  0.0</span>
+<span class="sd">    9996  0.998764   9.623686   2.830013  0.0</span>
+<span class="sd">    9997  0.826956   9.338711  -2.269712  1.0</span>
+<span class="sd">    9998  1.060813   9.721774   5.200211  0.0</span>
+<span class="sd">    9999  1.107219   9.239544   7.727668  0.0</span>
+<span class="sd">    [10000 rows x 4 columns]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">n_real_samples</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">n_samples</span> <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;sobol&#39;</span> <span class="k">else</span> <span class="n">n_samples</span>
+    <span class="n">random_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_real_samples</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">random_var_settings</span><span class="p">)))</span>
+
+    <span class="c1"># Generate random samples for each variable</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dist_info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random_var_settings</span><span class="p">):</span>
+        <span class="n">random_data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">parepydi</span><span class="o">.</span><span class="n">random_sampling</span><span class="p">(</span><span class="n">dist_info</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">dist_info</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">],</span> <span class="n">method</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+
+    <span class="c1"># Evaluate objective function for each sample</span>
+    <span class="n">g_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_real_samples</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="p">))</span>
+    <span class="n">indicator_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">g_matrix</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">random_data</span><span class="p">):</span>
+        <span class="n">g_values</span> <span class="o">=</span> <span class="n">obj</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">sample</span><span class="p">),</span> <span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">obj</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">sample</span><span class="p">))</span>
+        <span class="n">g_matrix</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">g_values</span>
+        <span class="n">indicator_matrix</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">g</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">g_values</span><span class="p">]</span>
+
+    <span class="c1"># Build DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">random_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;X_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">random_var_settings</span><span class="p">))])</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_limit_functions</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;G_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">g_matrix</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;I_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">indicator_matrix</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+
+    <span class="c1"># dataset_x = {}</span>
+    <span class="c1"># for i, value in enumerate(random_var_settings):</span>
+    <span class="c1">#     dataset_x[f&#39;X_{i}&#39;] = parepydi.random_sampling(value[&#39;type&#39;], value[&#39;parameters&#39;], method, n_samples)</span>
+    <span class="c1"># random_data = pd.DataFrame(dataset_x)</span>
+    <span class="c1"># results = random_data.apply(lambda row: obj(list(row), args), axis=1) if args is not None else random_data.apply(lambda row: obj(list(row)), axis=1)</span>
+    <span class="c1"># g_names = []</span>
+    <span class="c1"># for i in range(number_of_limit_functions):</span>
+    <span class="c1">#     g_names.append(f&#39;G_{i}&#39;)</span>
+    <span class="c1"># random_data[g_names] = pd.DataFrame(results.tolist(), index=random_data.index)</span>
+    <span class="c1"># for col in g_names:</span>
+    <span class="c1">#     random_data[f&#39;I_{col}&#39;] = np.where(random_data[col] &lt;= 0, 1, 0)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="summarize_pf_beta">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.summarize_pf_beta">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">summarize_pf_beta</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a summary DataFrame containing the probability of failure (pf) and reliability index (β) for each indicator function column in the input DataFrame.</span>
+
+<span class="sd">    :param df: Random samples, objective function evaluations and indicator functions.</span>
+
+<span class="sd">    :return: output [0] = Probability of failure values for each indicator function, output[1] = Reliability index values for each indicator function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">pf_values</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">beta_values</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;I_&quot;</span><span class="p">):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="n">beta_equation</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span>
+            <span class="n">pf_values</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;pf_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pf</span>
+            <span class="n">beta_values</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;beta_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta</span>
+
+    <span class="n">pf_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">pf_values</span><span class="p">])</span>
+    <span class="n">beta_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">beta_values</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">pf_df</span><span class="p">,</span> <span class="n">beta_df</span></div>
+
+
+
+<div class="viewcode-block" id="convergence_probability_failure">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.convergence_probability_failure">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convergence_probability_failure</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the convergence rate of the probability of failure.</span>
+
+<span class="sd">    :param df: Random samples, objective function evaluations and indicator functions.</span>
+<span class="sd">    :param column: Name of the column to be analyzed. Supported values: ``&quot;I_0&quot;``, ``&quot;I_1&quot;``, ..., ``&quot;I_n&quot;`` where *n* is the number of limit state functions.</span>
+
+<span class="sd">    :return: output[0] = Sample size, output[1] = Mean, output[2] = Lower confidence limit, output[3] = Upper confidence limit, output[4] = Variance. </span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ==============</span>
+<span class="sd">    &gt;&gt;&gt; # pip install -U parepy-toolbox</span>
+<span class="sd">    &gt;&gt;&gt; from parepy_toolbox import common_library</span>
+<span class="sd">    &gt;&gt;&gt; data = {</span>
+<span class="sd">                &#39;X_0&#39;: np.random.normal(1.0, 0.1, 1000),</span>
+<span class="sd">                &#39;X_1&#39;: np.random.normal(10.0, 1.0, 1000),</span>
+<span class="sd">                &#39;I_0&#39;: np.random.binomial(1, p=1e-3, size=1000)</span>
+<span class="sd">               }</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame(data)</span>
+<span class="sd">    &gt;&gt;&gt; div, pf_mean, ci_lower, ci_upper, pf_var = convergence_probability_failure(df, &#39;I_0&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;Sample sizes considered at each step:&quot;, div)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;Estimated probability of failure (mean):&quot;, pf_mean)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;Lower confidence interval values:&quot;, ci_lower)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;Upper confidence interval values:&quot;, ci_upper)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;Variance values:&quot;, pf_var)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">column_values</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">div</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">column_values</span><span class="p">),</span> <span class="n">step</span><span class="p">)]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ci_u</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ci_l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">div</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">div</span><span class="p">):</span>
+            <span class="n">aux</span> <span class="o">=</span> <span class="n">column_values</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">div</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">column_values</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">aux</span> <span class="o">=</span> <span class="n">column_values</span><span class="p">[:</span><span class="n">div</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">aux</span><span class="p">)</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">aux</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">aux</span><span class="p">)</span>
+        <span class="n">confidence_level</span> <span class="o">=</span> <span class="mf">0.95</span>
+        <span class="n">t_critic</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">confidence_level</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">margin</span> <span class="o">=</span> <span class="n">t_critic</span> <span class="o">*</span> <span class="p">(</span><span class="n">std</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="n">confidence_interval</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean</span> <span class="o">-</span> <span class="n">margin</span><span class="p">,</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">margin</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+        <span class="n">ci_u</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">confidence_interval</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ci_l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">confidence_interval</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">var</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mean</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">mean</span><span class="p">))</span><span class="o">/</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">div</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">ci_l</span><span class="p">,</span> <span class="n">ci_u</span><span class="p">,</span> <span class="n">var</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_weights">
+<a class="viewcode-back" href="../../parepy_toolbox.common_library.html#parepy_toolbox.common_library.calculate_weights">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_weights</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">random_var_settings_importance_sampling</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="n">n_vars</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">random_var_settings</span><span class="p">)</span>
+    <span class="n">df_copy</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_vars</span><span class="p">):</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;X_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">x_j</span> <span class="o">=</span> <span class="n">df_copy</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">p_info</span> <span class="o">=</span> <span class="n">random_var_settings</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">q_info</span> <span class="o">=</span> <span class="n">random_var_settings_importance_sampling</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">df_copy</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;p_X_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parepydi</span><span class="o">.</span><span class="n">random_sampling_statistcs</span><span class="p">(</span><span class="n">p_info</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">p_info</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">],</span> <span class="n">x_j</span><span class="p">)</span>
+        <span class="n">df_copy</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;q_X_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parepydi</span><span class="o">.</span><span class="n">random_sampling_statistcs</span><span class="p">(</span><span class="n">q_info</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">q_info</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">],</span> <span class="n">x_j</span><span class="p">)</span>
+
+    <span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;num&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;den&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_copy</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;p_X_&#39;</span><span class="p">):</span>
+            <span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;num&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">df_copy</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;q_X_&#39;</span><span class="p">):</span>
+            <span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;den&#39;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">df_copy</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+    <span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">/</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;num&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;den&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())]</span> 
+    <span class="n">cols_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;I_&#39;</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">cols_i</span><span class="p">:</span>
+        <span class="n">df_copy</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;w_</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">df_copy</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">df_copy</span></div>
+
+
+
+<span class="c1"># def sampling(n_samples: int, model: dict, variables_setup: list) -&gt; np.ndarray:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Generates a set of random numbers according to a specified probability distribution model.</span>
+
+<span class="c1">#     :param n_samples: Number of samples to generate.</span>
+<span class="c1">#     :param model: Dictionary containing the model parameters.</span>
+<span class="c1">#     :param variables_setup: List of dictionaries, each containing parameters for a random variable.</span>
+
+<span class="c1">#     :return: Numpy array with the generated random samples.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     # Model settings</span>
+<span class="c1">#     model_sampling = model[&#39;model sampling&#39;].upper()</span>
+<span class="c1">#     id_type = []</span>
+<span class="c1">#     id_corr = []</span>
+<span class="c1">#     for v in variables_setup:</span>
+<span class="c1">#         if &#39;parameters&#39; in v and &#39;corr&#39; in v[&#39;parameters&#39;]:</span>
+<span class="c1">#             id_type.append(&#39;g-corr-g_var&#39;)</span>
+<span class="c1">#             id_corr.append(v[&#39;parameters&#39;][&#39;corr&#39;][&#39;var&#39;])</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             id_type.append(&#39;g&#39;)</span>
+<span class="c1">#     for k in id_corr:</span>
+<span class="c1">#         id_type[k] = &#39;g-corr-b_var&#39;</span>
+
+<span class="c1">#     if model_sampling in [&#39;MCS&#39;, &#39;LHS&#39;]:</span>
+<span class="c1">#         random_sampling = np.zeros((n_samples, len(variables_setup)))</span>
+
+<span class="c1">#         for j, variable in enumerate(variables_setup):</span>
+<span class="c1">#             if id_type[j] == &#39;g-corr-b_var&#39;:</span>
+<span class="c1">#                 continue</span>
+<span class="c1">#             type_dist = variable[&#39;type&#39;].upper()</span>
+<span class="c1">#             seed_dist = variable[&#39;seed&#39;]</span>
+<span class="c1">#             params = variable[&#39;parameters&#39;]</span>
+
+<span class="c1">#             if (type_dist == &#39;NORMAL&#39; or type_dist == &#39;GAUSSIAN&#39;) and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                 mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                 sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                 parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                 random_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)</span>
+
+<span class="c1">#             elif (type_dist == &#39;NORMAL&#39; or type_dist == &#39;GAUSSIAN&#39;) and id_type[j] == &#39;g-corr-g_var&#39;:</span>
+<span class="c1">#                 mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                 sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                 parameters_g = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                 pho = params[&#39;corr&#39;][&#39;pho&#39;]</span>
+<span class="c1">#                 m = params[&#39;corr&#39;][&#39;var&#39;]</span>
+<span class="c1">#                 parameters_b = variables_setup[m][&#39;parameters&#39;]</span>
+<span class="c1">#                 random_sampling[:, m], random_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)</span>
+
+<span class="c1">#             elif type_dist == &#39;UNIFORM&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                 min_val = params[&#39;min&#39;]</span>
+<span class="c1">#                 max_val = params[&#39;max&#39;]</span>
+<span class="c1">#                 parameters = {&#39;min&#39;: min_val, &#39;max&#39;: max_val}</span>
+<span class="c1">#                 random_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)</span>
+
+<span class="c1">#             elif type_dist == &#39;GUMBEL MAX&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                 mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                 sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                 parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                 random_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)</span>
+
+<span class="c1">#             elif type_dist == &#39;GUMBEL MIN&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                 mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                 sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                 parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                 random_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)</span>
+
+<span class="c1">#             elif type_dist == &#39;LOGNORMAL&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                 mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                 sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                 parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                 random_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)</span>
+
+<span class="c1">#             elif type_dist == &#39;TRIANGULAR&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                 min_val = params[&#39;min&#39;]</span>
+<span class="c1">#                 max_val = params[&#39;max&#39;]</span>
+<span class="c1">#                 mode = params[&#39;mode&#39;]</span>
+<span class="c1">#                 parameters = {&#39;min&#39;: min_val, &#39;max&#39;: max_val, &#39;mode&#39;: mode}</span>
+<span class="c1">#                 random_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=n_samples, seed=seed_dist)</span>
+<span class="c1">#     elif model_sampling in [&#39;MCS-TIME&#39;, &#39;MCS_TIME&#39;, &#39;MCS TIME&#39;, &#39;LHS-TIME&#39;, &#39;LHS_TIME&#39;, &#39;LHS TIME&#39;]:</span>
+<span class="c1">#         time_analysis = model[&#39;time steps&#39;]</span>
+<span class="c1">#         random_sampling = np.empty((0, len(variables_setup)))</span>
+<span class="c1">#         match = re.search(r&#39;\b(MCS|LHS)\b&#39;, model_sampling.upper(), re.IGNORECASE)</span>
+<span class="c1">#         model_sampling = match.group(1).upper()</span>
+
+<span class="c1">#         for _ in range(n_samples):</span>
+<span class="c1">#             temporal_sampling = np.zeros((time_analysis, len(variables_setup)))</span>
+
+<span class="c1">#             for j, variable in enumerate(variables_setup):</span>
+<span class="c1">#                 if id_type[j] == &#39;g-corr-b_var&#39;:</span>
+<span class="c1">#                     continue</span>
+<span class="c1">#                 type_dist = variable[&#39;type&#39;].upper()</span>
+<span class="c1">#                 seed_dist = variable[&#39;seed&#39;]</span>
+<span class="c1">#                 sto = variable[&#39;stochastic variable&#39;]</span>
+<span class="c1">#                 params = variable[&#39;parameters&#39;]</span>
+
+<span class="c1">#                 if (type_dist == &#39;NORMAL&#39; or type_dist == &#39;GAUSSIAN&#39;) and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                     mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                     sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                     parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                     if sto is False:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)</span>
+<span class="c1">#                         temporal_sampling[1:, j]</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.normal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)</span>
+
+<span class="c1">#                 elif (type_dist == &#39;NORMAL&#39; or type_dist == &#39;GAUSSIAN&#39;) and id_type[j] == &#39;g-corr-g_var&#39;:</span>
+<span class="c1">#                     mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                     sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                     parameters_g = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                     pho = params[&#39;corr&#39;][&#39;pho&#39;]</span>
+<span class="c1">#                     m = params[&#39;corr&#39;][&#39;var&#39;]</span>
+<span class="c1">#                     parameters_b = variables_setup[m][&#39;parameters&#39;]</span>
+<span class="c1">#                     if sto is False:</span>
+<span class="c1">#                         temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=1, seed=seed_dist)</span>
+<span class="c1">#                         temporal_sampling[1:, j]</span>
+<span class="c1">#                         temporal_sampling[1:, m]</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         temporal_sampling[:, m], temporal_sampling[:, j] = parepydi.corr_normal_sampling(parameters_b, parameters_g, pho, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)</span>
+
+<span class="c1">#                 elif type_dist == &#39;UNIFORM&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                     min_val = params[&#39;min&#39;]</span>
+<span class="c1">#                     max_val = params[&#39;max&#39;]</span>
+<span class="c1">#                     parameters = {&#39;min&#39;: min_val, &#39;max&#39;: max_val}</span>
+<span class="c1">#                     if sto is False:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)</span>
+<span class="c1">#                         temporal_sampling[1:, j]</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.uniform_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)</span>
+
+<span class="c1">#                 elif type_dist == &#39;GUMBEL MAX&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                     mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                     sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                     parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                     if sto is False:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)</span>
+<span class="c1">#                         temporal_sampling[1:, j]</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.gumbel_max_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)</span>
+
+<span class="c1">#                 elif type_dist == &#39;GUMBEL MIN&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                     mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                     sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                     parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                     if sto is False:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)</span>
+<span class="c1">#                         temporal_sampling[1:, j]</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.gumbel_min_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)</span>
+
+<span class="c1">#                 elif type_dist == &#39;LOGNORMAL&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                     mean = params[&#39;mean&#39;]</span>
+<span class="c1">#                     sigma = params[&#39;sigma&#39;]</span>
+<span class="c1">#                     parameters = {&#39;mean&#39;: mean, &#39;sigma&#39;: sigma}</span>
+<span class="c1">#                     if sto is False:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)</span>
+<span class="c1">#                         temporal_sampling[1:, j]</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.lognormal_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)</span>
+
+<span class="c1">#                 elif type_dist == &#39;TRIANGULAR&#39; and id_type[j] == &#39;g&#39;:</span>
+<span class="c1">#                     min_val = params[&#39;min&#39;]</span>
+<span class="c1">#                     max_val = params[&#39;max&#39;]</span>
+<span class="c1">#                     mode = params[&#39;mode&#39;]</span>
+<span class="c1">#                     parameters = {&#39;min&#39;: min_val, &#39;max&#39;: max_val, &#39;mode&#39;: mode}</span>
+<span class="c1">#                     if sto is False:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=1, seed=seed_dist)</span>
+<span class="c1">#                         temporal_sampling[1:, j]</span>
+<span class="c1">#                     else:</span>
+<span class="c1">#                         temporal_sampling[:, j] = parepydi.triangular_sampling(parameters, method=model_sampling.lower(), n_samples=time_analysis, seed=seed_dist)</span>
+
+<span class="c1">#             random_sampling = np.concatenate((random_sampling, temporal_sampling), axis=0)  </span>
+
+<span class="c1">#         time_sampling = np.zeros((time_analysis * n_samples, 1))</span>
+<span class="c1">#         cont = 0</span>
+<span class="c1">#         for _ in range(n_samples):</span>
+<span class="c1">#             for m in range(time_analysis):</span>
+<span class="c1">#                 time_sampling[cont, 0] = int(m)</span>
+<span class="c1">#                 cont += 1</span>
+<span class="c1">#         random_sampling = np.concatenate((random_sampling, time_sampling), axis=1)   </span>
+
+<span class="c1">#     return random_sampling</span>
+
+
+<span class="c1"># def calc_pf_beta(df_or_path: Union[pd.DataFrame, str], numerical_model: str, n_constraints: int) -&gt; tuple[pd.DataFrame, pd.DataFrame]:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the probability of failure (pf) and reliability index (β) based on the columns of a DataFrame</span>
+<span class="c1">#     that start with &#39;I&#39; (indicator function). If a .txt file path is passed, this function evaluates pf and β values too.</span>
+
+<span class="c1">#     :param df_or_path: A DataFrame containing boolean indicator columns prefixed with &#39;I&#39;, or a string path to a .txt file.</span>
+
+<span class="c1">#     :param numerical_model: Dictionary containing the numerical model.</span>
+
+<span class="c1">#     :param n_constraints: Number of limit state functions or constraints.</span>
+
+<span class="c1">#     :return: Tuple of DataFrames:</span>
+
+<span class="c1">#         - df_pf: probability of failure values for each column prefixed with &#39;G&#39;.</span>
+<span class="c1">#         - df_beta: reliability index values for each column prefixed with &#39;G&#39;.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     # Read dataset</span>
+<span class="c1">#     if isinstance(df_or_path, str) and df_or_path.endswith(&#39;.txt&#39;):</span>
+<span class="c1">#         df = pd.read_csv(df_or_path, delimiter=&#39;\t&#39;)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         df = df_or_path</span>
+
+<span class="c1">#     # Calculate pf and beta values</span>
+<span class="c1">#     if numerical_model.upper() in [&#39;MCS&#39;, &#39;LHS&#39;]:</span>
+<span class="c1">#         filtered_df = df.filter(like=&#39;I_&#39;, axis=1)</span>
+<span class="c1">#         pf_results = filtered_df.mean(axis=0)</span>
+<span class="c1">#         df_pf = pd.DataFrame([pf_results.to_list()], columns=pf_results.index)</span>
+<span class="c1">#         beta_results = [beta_equation(pf) for pf in pf_results.to_list()] </span>
+<span class="c1">#         df_beta = pd.DataFrame([beta_results], columns=pf_results.index)</span>
+<span class="c1">#     elif numerical_model.upper() in [&#39;TIME-MCS&#39;, &#39;TIME-LHS&#39;, &#39;TIME MCS&#39;, &#39;TIME LHS&#39;, &#39;MCS TIME&#39;, &#39;LHS TIME&#39;, &#39;MCS-TIME&#39;, &#39;LHS-TIME&#39;]:</span>
+<span class="c1">#         df_pf = pd.DataFrame()</span>
+<span class="c1">#         df_beta = pd.DataFrame()</span>
+<span class="c1">#         for i in range(n_constraints):</span>
+<span class="c1">#             filtered_df = df.filter(like=f&#39;I_{i}&#39;, axis=1)</span>
+<span class="c1">#             pf_results = filtered_df.mean(axis=0)</span>
+<span class="c1">#             beta_results = [beta_equation(pf) for pf in pf_results.to_list()]</span>
+<span class="c1">#             df_pf[f&#39;G_{i}&#39;] = pf_results.to_list()</span>
+<span class="c1">#             df_beta[f&#39;G_{i}&#39;] = beta_results</span>
+
+<span class="c1">#     return df_pf, df_beta</span>
+
+
+<span class="c1"># def fbf(algorithm: str, n_constraints: int, time_analysis: int, results_about_data: pd.DataFrame) -&gt; tuple[pd.DataFrame, list]:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     This function application first barrier failure algorithm.</span>
+
+<span class="c1">#     :param algorithm: Name of the algorithm.</span>
+<span class="c1">#     :param n_constraints: Number of constraints analyzed.</span>
+<span class="c1">#     :param time_analysis: Time period for analysis.</span>
+<span class="c1">#     :param results_about_data: DataFrame containing the results to be processed.</span>
+
+<span class="c1">#     :return: Updated DataFrame after processing.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     if algorithm.upper() in [&#39;MCS-TIME&#39;, &#39;MCS_TIME&#39;, &#39;MCS TIME&#39;]:</span>
+<span class="c1">#         i_columns = []</span>
+<span class="c1">#         for i in range(n_constraints):</span>
+<span class="c1">#             aux_column_names = []</span>
+<span class="c1">#             for j in range(time_analysis):</span>
+<span class="c1">#                 aux_column_names.append(&#39;I_&#39; + str(i) + &#39;_t=&#39; + str(j))</span>
+<span class="c1">#             i_columns.append(aux_column_names)</span>
+
+<span class="c1">#         for i in i_columns:</span>
+<span class="c1">#             matrixx = results_about_data[i].values</span>
+<span class="c1">#             for id, linha in enumerate(matrixx):</span>
+<span class="c1">#                 indice_primeiro_1 = np.argmax(linha == 1)</span>
+<span class="c1">#                 if linha[indice_primeiro_1] == 1:</span>
+<span class="c1">#                     matrixx[id, indice_primeiro_1:] = 1</span>
+<span class="c1">#             results_about_data = pd.concat([results_about_data.drop(columns=i),</span>
+<span class="c1">#                                             pd.DataFrame(matrixx, columns=i)], axis=1)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         i_columns = []</span>
+<span class="c1">#         for i in range(n_constraints):</span>
+<span class="c1">#             i_columns.append([&#39;I_&#39; + str(i)])</span>
+    
+<span class="c1">#     return results_about_data, i_columns</span>
+
+
+<span class="c1"># def log_message(message: str) -&gt; None:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Logs a message with the current time.</span>
+
+<span class="c1">#     :param message: The message to log.</span>
+    
+<span class="c1">#     :return: None</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     current_time = datetime.now().strftime(&#39;%H:%M:%S&#39;)</span>
+<span class="c1">#     print(f&#39;{current_time} - {message}&#39;)</span>
+
+
+<span class="c1"># def norm_array(ar: list) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Evaluates the norm of the array ar.</span>
+
+<span class="c1">#     :param ar: A list of numerical values (floats) representing the array.</span>
+
+<span class="c1">#     :return: The norm of the array.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     norm_ar = [i ** 2 for i in ar]</span>
+<span class="c1">#     norm_ar = sum(norm_ar) ** 0.5</span>
+<span class="c1">#     return norm_ar</span>
+
+
+<span class="c1"># def hasofer_lind_rackwitz_fiessler_algorithm(y_k: np.ndarray, g_y: float, grad_y_k: np.ndarray) -&gt; np.ndarray:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the new y value using the Hasofer-Lind-Rackwitz-Fiessler algorithm.</span>
+
+<span class="c1">#     :param y_k: Current y value.</span>
+<span class="c1">#     :param g_y: Objective function at point `y_k`.</span>
+<span class="c1">#     :param grad_y_k: Gradient of the objective function at point `y_k`.</span>
+
+<span class="c1">#     :return: New y value.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     num = np.dot(np.transpose(grad_y_k), y_k) - np.array([[g_y]])</span>
+<span class="c1">#     print(&quot;num: &quot;, num)</span>
+<span class="c1">#     num = num[0][0]</span>
+<span class="c1">#     den = (np.linalg.norm(grad_y_k)) ** 2</span>
+<span class="c1">#     print(&quot;den: &quot;, den)</span>
+<span class="c1">#     aux = num / den</span>
+<span class="c1">#     y_new = aux * grad_y_k</span>
+
+<span class="c1">#     return y_new</span>
+
+<span class="c1"># def goodness_of_fit(data: Union[np.ndarray, list], distributions: Union[str, list] = &#39;all&#39;) -&gt; dict:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Evaluates the fit of distributions to the provided data.</span>
+
+<span class="c1">#     This function fits various distributions to the data using the distfit library and returns the top three distributions based on the fit score.</span>
+
+<span class="c1">#     Args:</span>
+<span class="c1">#         data (np.array or list): Data to which distributions will be fitted. It should be a list or array of numeric values.</span>
+<span class="c1">#         distributions (str or list, optional): Distributions to be tested. If &#39;all&#39;, all available distributions will be tested. Otherwise, it should be a list of strings specifying the names of the distributions to test. The default is &#39;all&#39;.</span>
+
+<span class="c1">#     Returns:</span>
+<span class="c1">#         dict: A dictionary containing the top three fitted distributions. Each entry is a dictionary with the following keys:</span>
+<span class="c1">#             - &#39;rank&#39;: Ranking of the top three distributions based on the fit score.</span>
+<span class="c1">#             - &#39;type&#39; (str): The name of the fitted distribution.</span>
+<span class="c1">#             - &#39;params&#39; (tuple): Parameters of the fitted distribution.</span>
+    
+<span class="c1">#     Raises:</span>
+<span class="c1">#         ValueError: If the expected &#39;score&#39; column is not present in the DataFrame returned by `dist.summary()`.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     if distributions == &#39;all&#39;:</span>
+<span class="c1">#         dist = distfit()</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         dist = distfit(distr=distributions)</span>
+    
+<span class="c1">#     dist.fit_transform(data)</span>
+<span class="c1">#     summary_df = dist.summary</span>
+<span class="c1">#     sorted_models = summary_df.sort_values(by=&#39;score&#39;).head(3)</span>
+    
+<span class="c1">#     top_3_distributions = {</span>
+<span class="c1">#         f&#39;rank_{i+1}&#39;: {</span>
+<span class="c1">#             &#39;type&#39;: model[&#39;name&#39;],</span>
+<span class="c1">#             &#39;params&#39;: model[&#39;params&#39;]</span>
+<span class="c1">#         }</span>
+<span class="c1">#         for i, model in sorted_models.iterrows()</span>
+<span class="c1">#     }</span>
+    
+<span class="c1">#     return top_3_distributions</span>
+
+<span class="c1"># def newton_raphson(f: Callable, df: Callable, x0: float, tol: float) -&gt; float:</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculates the root of a function using the Newton-Raphson method.</span>
+
+<span class="c1">#     :param f: Function for which the root is sought.</span>
+<span class="c1">#     :param df: Derivative of the function.</span>
+<span class="c1">#     :param x0: Initial guess for the root.</span>
+<span class="c1">#     :param tol: Tolerance for convergence.</span>
+
+<span class="c1">#     :return: Approximated root of the function.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     if abs(f(x0)) &lt; tol:</span>
+<span class="c1">#         return x0</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         return newton_raphson(f, df, x0 - f(x0)/df(x0), tol)</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, gpee.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

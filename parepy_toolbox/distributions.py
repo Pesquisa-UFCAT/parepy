@@ -36,6 +36,18 @@ def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
         a = (parameters['mean'] / parameters['std']) ** 2
         scale = parameters['std'] ** 2 / parameters['mean']
         parameters_scipy = {'a': a, 'loc': 0.0, 'scale': scale}
+    elif dist.lower() == 'weibull min':
+        def weibull_params_from_mean_std(mean, std):
+            def equation(c):
+                gamma1 = np.exp(sc.special.loggamma(1 + 1 / c))
+                gamma2 = np.exp(sc.special.loggamma(1 + 2 / c))
+                cv_squared = (std / mean) ** 2
+                return (gamma2 / (gamma1 ** 2)) - 1 - cv_squared
+            c = sc.optimize.root(equation, x0=1.0).x[0]
+            scale = mean / np.exp(sc.special.loggamma(1 + 1 / c))
+            return c, scale
+        c, scale = weibull_params_from_mean_std(parameters['mean'], parameters['std'])
+        parameters_scipy = {'c': c, 'loc': 0.0, 'scale': scale}
 
     return parameters_scipy
 
@@ -96,6 +108,13 @@ def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tu
         den = sc.stats.gamma.pdf(x, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
         std_eq = num / den
         mean_eq = x - std_eq * z
+    elif dist.lower() == 'weibull min':
+        z_aux = sc.stats.weibull_min.cdf(x, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        z = sc.stats.norm.ppf(z_aux, loc=0, scale=1)
+        num = sc.stats.norm.pdf(z, loc=0, scale=1)
+        den = sc.stats.weibull_min.pdf(x, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        std_eq = num / den
+        mean_eq = x - std_eq * z
 
     return mean_eq, std_eq
 
@@ -110,13 +129,14 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
 
     :return: Random samples.
-    
-    Use Example
+
+    Example
     ==============
     >>> # pip install -U parepy-toolbox
-    parameters = {'mean': 10, 'std': 2}
-    samples = random_sampling(dist='normal', parameters=parameters,method='lhs', n_samples=100)
-    print(samples[:10])
+    >>> from parepy_toolbox import random_sampling
+    >>> parameters = {'mean': 10, 'std': 2}
+    >>> samples = random_sampling(dist='normal', parameters=parameters,method='lhs', n_samples=100)
+    >>> print(samples[:10])
     """
 
     # Convert user parameters to scipy.stats format
@@ -207,9 +227,41 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
             sampler = sc.stats.qmc.Sobol(d=1)
             samples = sampler.random_base2(m=n_samples)
             x = [sc.stats.gamma.ppf(i, a=parameters_scipy['a'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+    elif dist.lower() == 'weibull min':
+        if method.lower() == 'mcs':
+            rv = sc.stats.weibull_min(c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+            x = list(rv.rvs(size=n_samples))
+        elif method.lower() == 'lhs':
+            sampler = sc.stats.qmc.LatinHypercube(d=1)
+            samples = sampler.random(n=n_samples)
+            x = [sc.stats.weibull_min.ppf(i, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
+        elif method.lower() == 'sobol':
+            sampler = sc.stats.qmc.Sobol(d=1)
+            samples = sampler.random_base2(m=n_samples)
+            x = [sc.stats.weibull_min.ppf(i, c=parameters_scipy['c'], loc=parameters_scipy['loc'], scale=parameters_scipy['scale']) for i in samples.flatten()]
 
     return x
 
+
+def random_sampling_statistcs(dist: str, parameters: dict, values: list):
+    """
+    """
+
+    # Convert user parameters to scipy.stats format
+    parameters_scipy = convert_params_to_scipy(dist, parameters)
+
+    if dist.lower() == 'uniform':
+        rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        pdf = rv.pdf(values)
+        # cdf = rv.cdf(value)
+        # icdf = rv.ppf(value)
+    elif dist.lower() == 'normal':
+        rv = sc.stats.norm(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])
+        pdf = rv.pdf(values)
+        # cdf = rv.cdf(value)
+        # icdf = rv.ppf(value)
+
+    return pdf.tolist() # if  #, cdf, icdf
 
 # def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
 #     """

@@ -21,7 +21,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
-    'sphinx.ext.githubpages'
+    'sphinx.ext.githubpages',
+    "myst_parser"
 ]
 add_module_names = False
 autodoc_typehints = "description"
