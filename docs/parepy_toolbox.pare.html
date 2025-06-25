@@ -16,25 +16,28 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=b8b15c53" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=c2377ec0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
@@ -42,10 +45,11 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'parepy_toolbox.pare';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="parepy_toolbox.problems module" href="parepy_toolbox.problems.html" />
+    <link rel="next" title="parepy_toolbox.learning_problems module" href="parepy_toolbox.learning_problems.html" />
     <link rel="prev" title="parepy_toolbox.distributions module" href="parepy_toolbox.distributions.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -61,19 +65,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -81,7 +74,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -89,8 +81,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -139,6 +131,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quick_start.html">
+    Quick Start
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -150,29 +149,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
     </div>
     
@@ -181,15 +172,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -208,7 +195,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -229,6 +217,13 @@ document.write(`
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="quick_start.html">
+    Quick Start
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -241,15 +236,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
       </div>
     
@@ -264,7 +255,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="parepy_toolbox.common_library.html">parepy_toolbox.common_library module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parepy_toolbox.distributions.html">parepy_toolbox.distributions module</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">parepy_toolbox.pare module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parepy_toolbox.problems.html">parepy_toolbox.problems module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parepy_toolbox.learning_problems.html">parepy_toolbox.learning_problems module</a></li>
 </ul>
 </div>
 </nav></div>
@@ -272,9 +263,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -292,8 +288,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -305,7 +299,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="parepy_toolbox.html" class="nav-link">parepy_toolbox package</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">parepy_toolb...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">parepy_toolbox.pare module</span></li>
   </ul>
 </nav>
 </div>
@@ -337,68 +331,84 @@ document.write(`
 <li><p><strong>max_iter</strong> (<em>int</em>) – Maximum number of iterations allowed.</p></li>
 <li><p><strong>random_var_settings</strong> (<em>list</em>) – Containing the distribution type and parameters. Example: {‘type’: ‘normal’, ‘parameters’: {‘mean’: 0, ‘std’: 1}}. Supported distributions: (a) ‘uniform’: keys ‘min’ and ‘max’, (b) ‘normal’: keys ‘mean’ and ‘std’, (c) ‘lognormal’: keys ‘mean’ and ‘std’, (d) ‘gumbel max’: keys ‘mean’ and ‘std’, (e) ‘gumbel min’: keys ‘mean’ and ‘std’, (f) ‘triangular’: keys ‘min’, ‘mode’ and ‘max’, or (g) ‘gamma’: keys ‘mean’ and ‘std’.</p></li>
 <li><p><strong>x0</strong> (<em>list</em>) – Initial guess.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints detailed information about the process.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints detailed information about the process. Default is <cite>False</cite>.</p></li>
 <li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).</p>
+<dd class="field-even"><p>Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = Reliability index values for each indicator function.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple[<em>DataFrame</em>, float, float]</p>
 </dd>
 </dl>
-<section id="use-example">
-<h2>Use Example<a class="headerlink" href="#use-example" title="Link to this heading">#</a></h2>
+<p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># pip install -U parepy-toolbox</span>
-<span class="go">from parepy_toolbox import deterministic_algorithm_structural_analysis</span>
-<span class="go">def obj(x):</span>
-<span class="go">    return [12.5 * x[0]**3 - x[1]]</span>
-<span class="go">d = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 1., &#39;std&#39;: 0.1}}</span>
-<span class="go">l = {&#39;type&#39;: &#39;normal&#39;, &#39;parameters&#39;: {&#39;mean&#39;: 10., &#39;std&#39;: 1.}}</span>
-<span class="go">var = [d, l]</span>
-<span class="go">x0 = [1.0, 10.0]</span>
-<span class="go">max_iter = 100</span>
-<span class="go">tol = 1E-8</span>
-<span class="go">results, pf, beta = deterministic_algorithm_structural_analysis(obj, tol, max_iter, var, x0, verbose=True)</span>
-<span class="go">print(f&quot;Probability of failure: {pf}&quot;)</span>
-<span class="go">print(f&quot;Reliability index (beta): {beta}&quot;)</span>
-<span class="go">results.head()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">parepy_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">deterministic_algorithm_structural_analysis</span>
 </pre></div>
 </div>
-</section>
+<dl class="simple">
+<dt>def obj(x):</dt><dd><p>return 12.5 * x[0]**3 - x[1]</p>
+</dd>
+</dl>
+<p>d = {‘type’: ‘normal’, ‘parameters’: {‘mean’: 1., ‘std’: 0.1}}
+l = {‘type’: ‘normal’, ‘parameters’: {‘mean’: 10., ‘std’: 1.}}
+var = [d, l]
+x0 = [1.0, 10.0]
+max_iter = 100
+tol = 1E-8</p>
+<p>results, pf, beta = deterministic_algorithm_structural_analysis(obj, tol, max_iter, var, x0, verbose=True)
+print(f”Probability of failure: {pf}”)
+print(f”Reliability index (beta): {beta}”)
+results.head()</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parepy_toolbox.pare.generate_factorial_design">
 <span class="sig-name descname"><span class="pre">generate_factorial_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels_per_variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/pare.html#generate_factorial_design"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.pare.generate_factorial_design" title="Link to this definition">#</a></dt>
-<dd><p>Generates a full factorial design based on variable names and levels.    Generates a full factorial design based on the input dictionary of variable levels. Computes all possible combinations of the provided levels for each variable and returns them in a structured DataFrame.</p>
+<dd><p>Generates a full factorial design based on variable names and levels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>variable_names</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of variable names.</p></li>
+<li><p><strong>variable_names</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Variable names.</p></li>
 <li><p><strong>levels_per_variable</strong> (<em>List</em><em>[</em><em>List</em><em>[</em><em>float</em><em>]</em><em>]</em>) – List of lists, where each sublist contains the levels for the corresponding variable.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints the number of combinations and preview of the DataFrame.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataFrame containing all possible combinations of the levels provided.</p>
+<dd class="field-even"><p>All possible combinations of the levels provided.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>DataFrame</em></p>
 </dd>
 </dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># pip install -U parepy-toolbox</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">parepy_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_factorial_design</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">variable_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;i (mm)&#39;</span><span class="p">,</span> <span class="s1">&#39;j (mm)&#39;</span><span class="p">,</span> <span class="s1">&#39;k (mm)&#39;</span><span class="p">,</span> <span class="s1">&#39;l (mm)&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">levels_per_variable</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">parepy</span><span class="o">.</span><span class="n">generate_factorial_design</span><span class="p">(</span><span class="n">variable_names</span><span class="p">,</span> <span class="n">levels_per_variable</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parepy_toolbox.pare.reprocess_sampling_results">
-<span class="sig-name descname"><span class="pre">reprocess_sampling_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/pare.html#reprocess_sampling_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.pare.reprocess_sampling_results" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">reprocess_sampling_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/pare.html#reprocess_sampling_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.pare.reprocess_sampling_results" title="Link to this definition">#</a></dt>
 <dd><p>Reprocesses sampling results from multiple .txt files in a specified folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_path</strong> (<em>str</em>) – Path to the folder containing sampling result files (.txt format).</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints detailed information about the process.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints detailed information about the process. Default is <cite>False</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -408,11 +418,20 @@ document.write(`
 <dd class="field-odd"><p>tuple[<em>DataFrame</em>, <em>DataFrame</em>, <em>DataFrame</em>]</p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># pip install -U parepy-toolbox</span>
+<span class="go">from parepy_toolbox import reprocess_sampling_results</span>
+</pre></div>
+</div>
+<p>df, pf, beta = reprocess_sampling_results(“path/to/your/folder”, verbose=True)</p>
+<p>print(“PF:”, pf_df)
+print(“Beta:”, beta_df)
+df_all.head()</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parepy_toolbox.pare.sampling_algorithm_structural_analysis">
-<span class="sig-name descname"><span class="pre">sampling_algorithm_structural_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_var_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_limit_functions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/pare.html#sampling_algorithm_structural_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.pare.sampling_algorithm_structural_analysis" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sampling_algorithm_structural_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_var_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_limit_functions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_var_settings_importance_sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/pare.html#sampling_algorithm_structural_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.pare.sampling_algorithm_structural_analysis" title="Link to this definition">#</a></dt>
 <dd><p>Computes the reliability index and probability of failure using sampling methods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -423,58 +442,88 @@ document.write(`
 <li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples. For Sobol sequences, this variable represents the exponent “m” (n = 2^m).</p></li>
 <li><p><strong>number_of_limit_functions</strong> (<em>int</em>) – Number of limit state functions or constraints.</p></li>
 <li><p><strong>parallel</strong> (<em>bool</em>) – Start parallel process.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints detailed information about the process.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints detailed information about the process. Default is <cite>False</cite>.</p></li>
 <li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional).</p></li>
+<li><p><strong>random_var_settings_importance_sampling</strong> (<em>list</em><em> | </em><em>None</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.</p>
+<dd class="field-even"><p>Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = Reliability index values for each indicator function.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple[<em>DataFrame</em>, <em>DataFrame</em>, <em>DataFrame</em>]</p>
 </dd>
 </dl>
-<section id="id1">
-<h2>Use Example<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># pip install -U parepy-toolbox</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">parepy_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">sampling_algorithm_structural_analysis</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">obj</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="mf">12.5</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mf">10.</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">}}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">var</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="p">,</span> <span class="n">pf</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">sampling_algorithm_structural_analysis</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;lhs&#39;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="go">from parepy_toolbox import sampling_algorithm_structural_analysis</span>
 </pre></div>
 </div>
-</section>
+<dl class="simple">
+<dt>def obj(x):</dt><dd><p>return [12.5 * x[0]**3 -x[1]]</p>
+</dd>
+</dl>
+<p>d = {‘type’: ‘normal’, ‘parameters’: {‘mean’: 1., ‘std’: 0.1}}
+l = {‘type’: ‘normal’, ‘parameters’: {‘mean’: 10., ‘std’: 1.}}
+var = [d, l]</p>
+<p>df, pf, beta = sampling_algorithm_structural_analysis(obj, var, method=’lhs’, n_samples=10000, number_of_limit_functions=1, parallel=False, verbose=True)
+print(pf)
+print(beta)
+print(df.head())</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="parepy_toolbox.pare.sobol_algorithm">
-<span class="sig-name descname"><span class="pre">sobol_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_var_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_limit_functions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/pare.html#sobol_algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.pare.sobol_algorithm" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">sobol_algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_var_settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sobol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_limit_functions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/parepy_toolbox/pare.html#sobol_algorithm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#parepy_toolbox.pare.sobol_algorithm" title="Link to this definition">#</a></dt>
 <dd><p>Calculates the Sobol sensitivity indices in structural reliability problems.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>obj</strong> (<em>Callable</em>) – The objective function: obj(x, args) -&gt; float or obj(x) -&gt; float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.</p></li>
-<li><p><strong>random_var_settings</strong> (<em>list</em>) – Containing the distribution type and parameters. Example: {‘type’: ‘normal’, ‘parameters’: {‘mean’: 0, ‘std’: 1}}. Supported distributions: (a) ‘uniform’: keys ‘min’ and ‘max’, (b) ‘normal’: keys ‘mean’ and ‘std’, (c) ‘lognormal’: keys ‘mean’ and ‘std’, (d) ‘gumbel max’: keys ‘mean’ and ‘std’, (e) ‘gumbel min’: keys ‘mean’ and ‘std’, (f) ‘triangular’: keys ‘min’, ‘mode’ and ‘max’, or (g) ‘gamma’: keys ‘mean’ and ‘std’.</p></li>
-<li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples. For Sobol sequences, this variable represents the exponent “m” (n = 2^m).</p></li>
+<li><p><strong>obj</strong> (<em>Callable</em>) – The objective function: <code class="docutils literal notranslate"><span class="pre">obj(x,</span> <span class="pre">args)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">obj(x)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code>, where <code class="docutils literal notranslate"><span class="pre">x</span></code> is a list with shape <code class="docutils literal notranslate"><span class="pre">n</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> is a tuple of fixed parameters needed to completely specify the function.</p></li>
+<li><p><strong>random_var_settings</strong> (<em>list</em>) – List of dictionaries containing the distribution type and parameters.
+Example: <code class="docutils literal notranslate"><span class="pre">{'type':</span> <span class="pre">'normal',</span> <span class="pre">'parameters':</span> <span class="pre">{'mean':</span> <span class="pre">0,</span> <span class="pre">'std':</span> <span class="pre">1}}</span></code>.
+Supported distributions:
+- <code class="docutils literal notranslate"><span class="pre">uniform</span></code>: keys <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>
+- <code class="docutils literal notranslate"><span class="pre">normal</span></code>: keys <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">std</span></code>
+- <code class="docutils literal notranslate"><span class="pre">lognormal</span></code>: keys <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">std</span></code>
+- <code class="docutils literal notranslate"><span class="pre">gumbel_max</span></code>: keys <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">std</span></code>
+- <code class="docutils literal notranslate"><span class="pre">gumbel_min</span></code>: keys <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">std</span></code>
+- <code class="docutils literal notranslate"><span class="pre">triangular</span></code>: keys <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">mode</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>
+- <code class="docutils literal notranslate"><span class="pre">gamma</span></code>: keys <code class="docutils literal notranslate"><span class="pre">mean</span></code> and <code class="docutils literal notranslate"><span class="pre">std</span></code></p></li>
+<li><p><strong>n_sobol</strong> (<em>int</em>) – This variable represents the exponent “m” (<code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">2^m</span></code>) to generate Sobol sequence sampling. Must be a positive integer.</p></li>
 <li><p><strong>number_of_limit_functions</strong> (<em>int</em>) – Number of limit state functions or constraints.</p></li>
-<li><p><strong>parallel</strong> (<em>bool</em>) – Start parallel process.</p></li>
+<li><p><strong>parallel</strong> (<em>bool</em>) – If True, runs the evaluation in parallel processes.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em>) – If True, prints detailed information about the process.</p></li>
-<li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional)</p></li>
+<li><p><strong>args</strong> (<em>tuple</em><em> | </em><em>None</em>) – Extra arguments to pass to the objective function (optional).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Dictionary containing the first-order and total-order Sobol sensitivity indices for each input variable.</p>
+<dd class="field-even"><p>A pandas DataFrame with the first-order and total-order Sobol sensitivity indices for each input variable.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>DataFrame</em></p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># pip install -U parepy-toolbox</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">parepy_toolbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">sobol_algorithm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">obj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">g_0</span> <span class="o">=</span> <span class="mf">12.5</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="n">g_0</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span> <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">var</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="n">l</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amostras</span> <span class="o">=</span> <span class="mi">12</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data_sobol</span> <span class="o">=</span> <span class="n">sobol_algorithm</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">random_var_settings</span><span class="o">=</span><span class="n">var</span><span class="p">,</span> <span class="n">n_sobol</span><span class="o">=</span><span class="n">amostras</span><span class="p">,</span> <span class="n">number_of_limit_functions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_sobol</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -499,11 +548,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="parepy_toolbox.problems.html"
+       href="parepy_toolbox.learning_problems.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">parepy_toolbox.problems module</p>
+        <p class="prev-next-title">parepy_toolbox.learning_problems module</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -514,7 +563,8 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -534,13 +584,13 @@ document.write(`
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="_sources/parepy_toolbox.pare.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/parepy_toolbox.pare.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -555,8 +605,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -589,7 +639,8 @@ document.write(`
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
