@@ -261,7 +261,7 @@ def random_sampling_statistcs(dist: str, parameters: dict, values: list):
         # cdf = rv.cdf(value)
         # icdf = rv.ppf(value)
 
-    return pdf.tolist() if  #, cdf, icdf
+    return pdf.tolist() # if , cdf, icdf
 
 # def crude_sampling_zero_one(n_samples: int, seed: Optional[int] = None) -> list:
 #     """
