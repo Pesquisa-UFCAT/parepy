@@ -294,33 +294,42 @@ def sobol_algorithm(obj: Callable,  random_var_settings: list, n_sobol: int, num
     """
     Calculates the Sobol sensitivity indices in structural reliability problems.
 
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
-    :param n_sobol: This variable represents the exponent "m" (n = 2^m) to generate Sobol sequence sampling. Must be a positive integer.
+    :param obj: The objective function: ``obj(x, args) -> float`` or ``obj(x) -> float``, where ``x`` is a list with shape ``n`` and ``args`` is a tuple of fixed parameters needed to completely specify the function.
+    :param random_var_settings: List of dictionaries containing the distribution type and parameters.  
+        Example: ``{'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}``.  
+        Supported distributions:  
+        - ``uniform``: keys ``min`` and ``max``  
+        - ``normal``: keys ``mean`` and ``std``  
+        - ``lognormal``: keys ``mean`` and ``std``  
+        - ``gumbel_max``: keys ``mean`` and ``std``  
+        - ``gumbel_min``: keys ``mean`` and ``std``  
+        - ``triangular``: keys ``min``, ``mode`` and ``max``  
+        - ``gamma``: keys ``mean`` and ``std``
+    :param n_sobol: This variable represents the exponent "m" (``n = 2^m``) to generate Sobol sequence sampling. Must be a positive integer.
     :param number_of_limit_functions: Number of limit state functions or constraints.
-    :param parallel: Start parallel process.
+    :param parallel: If True, runs the evaluation in parallel processes.
     :param verbose: If True, prints detailed information about the process.
-    :param args: Extra arguments to pass to the objective function (optional)
+    :param args: Extra arguments to pass to the objective function (optional).
 
-    :return: First-order and total-order Sobol sensitivity indices for each input variable. 
+    :return: A pandas DataFrame with the first-order and total-order Sobol sensitivity indices for each input variable.
 
     Example
-    ==============
+    =======
     >>> # pip install -U parepy-toolbox
-    from parepy_toolbox import sobol_algorithm
+    >>> from parepy_toolbox import sobol_algorithm
+    >>> import time
+    >>> def obj(x, *args):
+    ...     g_0 = 12.5 * x[0] ** 3 - x[1]
+    ...     time.sleep(1e-6)
+    ...     return [g_0]
 
-    def obj(x, *args):
-        g_0 = 12.5 * x[0] ** 3 - x[1]
-        time.sleep(10**-6) 
-        return [g_0]
+    >>> d = {'type': 'normal', 'parameters': {'mean': 1.0, 'std': 0.1}}
+    >>> l = {'type': 'normal', 'parameters': {'mean': 10.0, 'std': 1.0}}
+    >>> var = [d, l]
+    >>> amostras = 12
 
-    d = {'type': 'normal', 'parameters': {'mean': 1.0, 'std': 0.1}}
-    l = {'type': 'normal', 'parameters': {'mean': 10.0, 'std': 1.0}}
-    var = [d, l]
-    amostras = 12
-
-    data_sobol = parepy.sobol_algorithm(obj=obj, random_var_settings=var, n_samples=amostras, number_of_limit_functions=1, verbose=True)
-    data_sobol.head()
+    >>> data_sobol = sobol_algorithm(obj=obj, random_var_settings=var, n_sobol=amostras, number_of_limit_functions=1, verbose=True)
+    >>> data_sobol.head()
     """
 
     if verbose:
@@ -377,24 +386,23 @@ def generate_factorial_design(variable_names: List[str], levels_per_variable: Li
     :param variable_names: Variable names.
     :param levels_per_variable: List of lists, where each sublist contains the levels for the corresponding variable.
     :param verbose: If True, prints the number of combinations and preview of the DataFrame.
-
     :return: All possible combinations of the levels provided.
 
-    Example
-    ==============
-    >>> # pip install -U parepy-toolbox
-    from parepy_toolbox import generate_factorial_design
+    **Example**::
 
-    variable_names = ['i (mm)', 'j (mm)', 'k (mm)', 'l (mm)']
-    levels_per_variable = [
-        np.linspace(0, 10, 3),   
-        np.linspace(0, 15, 4),     
-        [5, 15],                 
-        np.linspace(0, 20, 5)      
-    ]
+        >>> # pip install -U parepy-toolbox
+        >>> from parepy_toolbox import generate_factorial_design
 
-    df = parepy.generate_factorial_design(variable_names, levels_per_variable, verbose=True)
-    print(df.head())
+        >>> variable_names = ['i (mm)', 'j (mm)', 'k (mm)', 'l (mm)']
+        >>> levels_per_variable = [
+        ...     np.linspace(0, 10, 3),
+        ...     np.linspace(0, 15, 4),
+        ...     [5, 15],
+        ...     np.linspace(0, 20, 5)
+        ... ]
+
+        >>> df = parepy.generate_factorial_design(variable_names, levels_per_variable, verbose=True)
+        >>> print(df.head())
     """
 
     if verbose:
