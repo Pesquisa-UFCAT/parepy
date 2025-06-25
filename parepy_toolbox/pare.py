@@ -231,7 +231,7 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
 
     # Computes pf and beta
     if random_var_settings_importance_sampling:
-        
+        final_df = calculate_weights(final_df, random_var_settings, random_var_settings_importance_sampling)
     else:
         pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
 

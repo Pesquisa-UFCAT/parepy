@@ -417,11 +417,8 @@ def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list
     return div, m, ci_l, ci_u, var
 
 
-def calculate_weights(df: pd.DataFrame, random_var_settings: list, random_var_settings_importance_sampling: list):
+def calculate_weights(df: pd.DataFrame, random_var_settings: list, random_var_settings_importance_sampling: list) -> pd.DataFrame:
     n_vars = len(random_var_settings)
-    n_samples = df.shape[0]
-    p_vals = []
-    q_vals = []
     df_copy = df.copy()
 
     for j in range(n_vars):
@@ -442,7 +439,7 @@ def calculate_weights(df: pd.DataFrame, random_var_settings: list, random_var_se
     df_copy['w'] = [a / b for a, b in zip(df_copy['num'].tolist(), df_copy['den'].tolist())] 
     cols_i = [col for col in df.columns if col.startswith('I_')]
     for j in cols_i:
-        df_copy[f'w_{j}'] = np.where((df[j] == 0).any(axis=1), 0, df_copy['w'])
+        df_copy[f'w_{j}'] = np.where((df[j]==0).any(axis=1), 0, df_copy['w'])
 
     return df_copy
 
