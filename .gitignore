@@ -4,4 +4,5 @@ __pycache__/
 parepy_toolbox/__pycache__/
 ambiente_parepy/
 *.txt
+!local_examples/sampling_results/*.txt
 .ipynb_checkpoints/
