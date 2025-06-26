@@ -275,8 +275,7 @@ def reprocess_sampling_results(folder_path: str, verbose: bool = False) -> tuple
         dataframes.append(df)
     final_df = pd.concat(dataframes, ignore_index=True)
     if verbose:
-        print(f"🧮 {len(dataframes)} files loaded. Total number of samples: {len(final_df)}.")
-    col_I = [col for col in final_df.columns if col.startswith("I_")]
+        print(f"{len(dataframes)} files loaded. Total number of samples: {len(final_df)}.")
 
     f_df, beta_df = parepyco.summarize_failure_probabilities(final_df)
 
@@ -284,8 +283,8 @@ def reprocess_sampling_results(folder_path: str, verbose: bool = False) -> tuple
 
     if verbose:
         print("Reprocessing completed successfully.")
-        print(f"🧮 Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
-        print("✔️ Algorithm finished!")
+        print(f"Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
+        print("Algorithm finished!")
 
     return final_df, f_df, beta_df
 
