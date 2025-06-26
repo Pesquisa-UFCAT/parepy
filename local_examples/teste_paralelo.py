@@ -38,7 +38,7 @@ if __name__ == "__main__":
             n_samples=amostras,
             number_of_limit_functions=num_limit_functions,
             parallel=True,
-            verbose=False,
+            verbose=True,
             args=None
         )
         results[method] = (df, pf, beta)

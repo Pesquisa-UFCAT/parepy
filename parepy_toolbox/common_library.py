@@ -1,6 +1,7 @@
 """Common library contains utility functions for PAREpy's framework.
 """
 from typing import Optional, Callable
+from scipy.stats import norm
 
 import scipy as sc
 import numpy as np
@@ -487,6 +488,33 @@ def calculate_weights(df: pd.DataFrame, random_var_settings: list, random_var_se
         df_copy[f'w_{j}'] = np.where((df[j]==0).any(axis=1), 0, df_copy['w'])
 
     return df_copy
+
+def summarize_failure_probabilities(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Compute failure probabilities (PF) and reliability indices (Beta) for each limit state function (G_i).
+
+    Assumes the dataframe has columns named G1, G2, ..., Gn.
+
+    :param df: DataFrame with results of limit state functions.
+    :return: Tuple of (pf_df, beta_df)
+    """
+
+    g_columns = [col for col in df.columns if col.startswith("G")]
+    pf_values = {}
+    beta_values = {}
+
+    for col in g_columns:
+        failures = (df[col] <= 0).sum()
+        total = len(df[col])
+        pf = failures / total
+        beta = -norm.ppf(pf) if pf > 0 and pf < 1 else float("inf")
+        pf_values[col] = pf
+        beta_values[col] = beta
+
+    pf_df = pd.DataFrame.from_dict(pf_values, orient='index', columns=['Pf'])
+    beta_df = pd.DataFrame.from_dict(beta_values, orient='index', columns=['Beta'])
+
+    return pf_df, beta_df
 
 
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
