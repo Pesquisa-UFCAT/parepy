@@ -261,8 +261,8 @@ def reprocess_sampling_results(folder_path: str, verbose: bool = False) -> tuple
 
     df, pf, beta = reprocess_sampling_results("path/to/your/folder", verbose=True)
 
-    print("PF:", pf_df)
-    print("Beta:", beta_df)
+    print("PF:\n", pf_df)
+    print("\nBeta:\n", beta_df)
     df_all.head()
     """
 
