@@ -5,6 +5,7 @@ import itertools
 from datetime import datetime
 from multiprocessing import Pool
 from typing import Callable, Optional, List
+from scipy.stats import norm
 
 import numpy as np
 import pandas as pd
@@ -229,12 +230,29 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     if verbose:
         print(f"Sampling and computes the G functions {end_time - start_time:.2f} seconds.")
 
-    # Computes pf and beta
+    # Calcular pf e beta
     if random_var_settings_importance_sampling:
-        final_df = calculate_weights(final_df, random_var_settings, random_var_settings_importance_sampling)
+        final_df = parepyco.calculate_weights(final_df, random_var_settings, random_var_settings_importance_sampling)
+
+        # Calcular pf e beta ponderados
+        pf_dict = {}
+        beta_dict = {}
+        cols_i = [col for col in final_df.columns if col.startswith("I_")]
+        for col in cols_i:
+            w_col = f"w_{col}"
+            if w_col not in final_df.columns:
+                raise ValueError(f"Weight column '{w_col}' not found.")
+
+            w_sum = final_df[w_col].sum()
+            pf = w_sum / len(final_df)
+            beta = -norm.ppf(pf) if 0 < pf < 1 else float("inf")
+            pf_dict[col] = pf
+            beta_dict[col] = beta
+
+        pf_df = pd.DataFrame.from_dict(pf_dict, orient='index', columns=['Pf'])
+        beta_df = pd.DataFrame.from_dict(beta_dict, orient='index', columns=['Beta'])
     else:
         pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
-
 
     if verbose:
         filename = f"sampling_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"

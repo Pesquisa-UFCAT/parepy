@@ -485,7 +485,7 @@ def calculate_weights(df: pd.DataFrame, random_var_settings: list, random_var_se
     df_copy['w'] = [a / b for a, b in zip(df_copy['num'].tolist(), df_copy['den'].tolist())] 
     cols_i = [col for col in df.columns if col.startswith('I_')]
     for j in cols_i:
-        df_copy[f'w_{j}'] = np.where((df[j]==0).any(axis=1), 0, df_copy['w'])
+        df_copy[f'w_{j}'] = np.where(df[j] == 0, 0, df_copy['w'])
 
     return df_copy
 
