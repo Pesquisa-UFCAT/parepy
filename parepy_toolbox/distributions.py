@@ -1,54 +1,17 @@
-"""Probability distributions"""
-import numpy as np
+"""Family of distributions for reliability analysis and random sampling methods."""
 import scipy as sc
 
-
-def convert_params_to_scipy(dist: str, parameters: dict) -> dict:
-    """
-    Convert user-provided distribution parameters to the format required by "scipy.stats".
-
-    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
-
-    :return: Distribution parameters according scipy.stats documentation.
-    """   
-
-    if dist.lower() == 'uniform':
-        parameters_scipy = {'loc': parameters['min'], 'scale': parameters['max'] - parameters['min']}
-    elif dist.lower() == 'normal':
-        parameters_scipy = {'loc': parameters['mean'], 'scale': parameters['std']}
-    elif dist.lower() == 'lognormal':
-        epsilon = np.sqrt(np.log(1 + (parameters['std'] / parameters['mean']) ** 2))
-        lambda_ = np.log(parameters['mean']) - 0.5 * epsilon ** 2
-        parameters_scipy = {'s': epsilon, 'loc': 0.0, 'scale': np.exp(lambda_)}
-    elif dist.lower() == 'gumbel max':
-        gamma = 0.5772156649015329
-        alpha = parameters['std'] * np.sqrt(6) / np.pi
-        beta = parameters['mean'] - alpha * gamma
-        parameters_scipy = {'loc': beta, 'scale': alpha}
-    elif dist.lower() == 'gumbel min':
-        gamma = 0.5772156649015329
-        alpha = parameters['std'] * np.sqrt(6) / np.pi
-        beta = parameters['mean'] + alpha * gamma
-        parameters_scipy = {'loc': beta, 'scale': alpha}
-    elif dist.lower() == 'triangular':
-        parameters_scipy = {'c': (parameters['mode'] - parameters['min']) / (parameters['max'] - parameters['min']), 'loc': parameters['min'], 'scale': parameters['max'] - parameters['min']}
-    elif dist.lower() == 'gamma':
-        a = (parameters['mean'] / parameters['std']) ** 2
-        scale = parameters['std'] ** 2 / parameters['mean']
-        parameters_scipy = {'a': a, 'loc': 0.0, 'scale': scale}
-
-    return parameters_scipy
-
+import parepy_toolbox.internal_funcs as parepyin
 
 def normal_tail_approximation(dist: str, parameters_scipy: dict, x: float) -> tuple[float, float]:
     """
     Converts non-normal distributions to normal approximations while preserving their statistical properties in x point.
 
-    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', or 'gamma'.
-    :param parameters_scipy: Distribution parameters according scipy.stats documentation.
-    :param x: Project point.
+    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', or 'gamma'
+    :param parameters_scipy: Distribution parameters according scipy.stats documentation
+    :param x: Project point
 
-    return: output[0] = Mean of the normal approximation at point x, output[1] = Standard deviation of the normal approximation at point x.
+    return: output[0] = Mean of the normal approximation at point x, output[1] = Standard deviation of the normal approximation at point x
     """
 
     if dist.lower() == 'uniform':
@@ -104,16 +67,24 @@ def random_sampling(dist: str, parameters: dict, method: str, n_samples: int) ->
     """
     Generates random samples from a specified distribution.
 
-    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', or 'gamma'.
-    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.    
-    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
-    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
+    :param dist: Type of distribution. Supported values: 'uniform', 'normal', 'lognormal', 'gumbel max', 'gumbel min', 'triangular', or 'gamma'
+    :param parameters: Original distribution parameters. (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'  
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling)
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m)
 
-    :return: Random samples.
+    :return: Random samples
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    >>> from parepy_toolbox import random_sampling
+    >>> parameters = {'mean': 10, 'std': 2}
+    >>> samples = random_sampling(dist='normal', parameters=parameters,method='lhs', n_samples=100)
+    >>> print(samples[:10])
     """
 
     # Convert user parameters to scipy.stats format
-    parameters_scipy = convert_params_to_scipy(dist, parameters)
+    parameters_scipy = parepyin.convert_params_to_scipy(dist, parameters)
 
     # Generate random samples based on the specified distribution and method
     if dist.lower() == 'uniform':
@@ -209,7 +180,7 @@ def random_sampling_statistcs(dist: str, parameters: dict, value: float):
     """
     
     # Convert user parameters to scipy.stats format
-    parameters_scipy = convert_params_to_scipy(dist, parameters)
+    parameters_scipy = parepyin.convert_params_to_scipy(dist, parameters)
     
     if dist.lower() == 'uniform':
         rv = sc.stats.uniform(loc=parameters_scipy['loc'], scale=parameters_scipy['scale'])

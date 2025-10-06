@@ -11,21 +11,42 @@ import pandas as pd
 
 import parepy_toolbox.common_library as parepyco
 import parepy_toolbox.distributions as parepydi
+import parepy_toolbox.internal_funcs as parepyin
 
 
 def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_iter: int, random_var_settings: list, x0: list, verbose: bool = False, args: Optional[tuple] = None) -> tuple[pd.DataFrame, float, float]:
     """
     Computes the reliability index and probability of failure using FORM (First Order Reliability Method).
 
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param tol: Tolerance for convergence.
-    :param max_iter: Maximum number of iterations allowed.
-    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
-    :param x0: Initial guess.
-    :param verbose: If True, prints detailed information about the process.
-    :param args: Extra arguments to pass to the objective function (optional).
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function
+    :param tol: Tolerance for convergence
+    :param max_iter: Maximum number of iterations allowed
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'
+    :param x0: Initial guess
+    :param verbose: If True, prints detailed information about the process
+    :param args: Extra arguments to pass to the objective function (optional)
 
-    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta).
+    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Failure probability (pf), output[2] = Reliability index (beta)
+    
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    >>> from parepy_toolbox import deterministic_algorithm_structural_analysis
+
+    def obj(x):
+        return 12.5 * x[0]**3 - x[1]
+
+    d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
+    l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
+    var = [d, l]
+    x0 = [1.0, 10.0]
+    max_iter = 100
+    tol = 1E-8
+
+    results, pf, beta = deterministic_algorithm_structural_analysis(obj, tol, max_iter, var, x0, verbose=True)
+    print(f"Probability of failure: {pf}")
+    print(f"Reliability index (beta): {beta}")
+    results.head()    
     """
 
     results = []
@@ -43,7 +64,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
 
         # Conversion Non-normal to Normal
         for i, var in enumerate(random_var_settings):
-            paras_scipy = parepydi.convert_params_to_scipy(var['type'], var['parameters'])
+            paras_scipy = parepyin.convert_params_to_scipy(var['type'], var['parameters'])
             m, s = parepydi.normal_tail_approximation(var['type'], paras_scipy, x_k[i])
             mu_eq.append(m)
             sigma_eq.append(s)
@@ -59,7 +80,7 @@ def deterministic_algorithm_structural_analysis(obj: Callable, tol: float, max_i
         row["β_k"] = beta_k
 
         # Numerical differentiation g(x) and g(y)
-        g_diff_x = parepyco.jacobian_matrix(obj, x_k, 'center', h=1E-8, args=args) if args is not None else parepyco.jacobian_matrix(obj, x_k, 'center', h=1E-8)
+        g_diff_x = parepyin.jacobian_matrix(obj, x_k, 'center', h=1E-8, args=args) if args is not None else parepyin.jacobian_matrix(obj, x_k, 'center', h=1E-8)
         g_diff_y = np.matrix_transpose(dneq) @ g_diff_x
         
         # alpha vector
@@ -156,16 +177,33 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
     """                                    
     Computes the reliability index and probability of failure using sampling methods.
 
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
-    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
-    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
-    :param number_of_limit_functions: Number of limit state functions or constraints.
-    :param parallel: Start parallel process.
-    :param verbose: If True, prints detailed information about the process.
-    :param args: Extra arguments to pass to the objective function (optional).
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling)
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m)
+    :param number_of_limit_functions: Number of limit state functions or constraints
+    :param parallel: Start parallel process
+    :param verbose: If True, prints detailed information about the process
+    :param args: Extra arguments to pass to the objective function (optional)
 
-    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output [1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function.
+    :return: Results of reliability analysis. output[0] = Numerical data obtained for the MPP search, output[1] = Probability of failure values for each indicator function, output[2] = beta_df: Reliability index values for each indicator function
+
+    Example
+    ==============
+    >>> # pip install -U parepy-toolbox
+    from parepy_toolbox import sampling_algorithm_structural_analysis
+
+    def obj(x):
+        return [12.5 * x[0]**3 -x[1]]
+
+    d = {'type': 'normal', 'parameters': {'mean': 1., 'std': 0.1}}
+    l = {'type': 'normal', 'parameters': {'mean': 10., 'std': 1.}}
+    var = [d, l]
+
+    df, pf, beta = sampling_algorithm_structural_analysis(obj, var, method='lhs', n_samples=10000, number_of_limit_functions=1, parallel=False, verbose=True)
+    print(pf)
+    print(beta)
+    print(df.head())
     """
 
     block_size = 100
@@ -198,7 +236,7 @@ def sampling_algorithm_structural_analysis(obj: Callable, random_var_settings: l
         print("✔️ Algorithm finished!")
 
     # Computes pf and beta
-    pf_df, beta_df = parepyco.summarize_pf_beta(final_df)
+    pf_df, beta_df = parepyin.summarize_pf_beta(final_df)
 
     return final_df, pf_df, beta_df
 

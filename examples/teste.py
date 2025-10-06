@@ -1,7 +1,7 @@
 import numpy as np
 import time
 from multiprocessing import Pool
-from obj_function import nowak_example_time, nowak_example, evaluation_model_parallel
+from old.obj_function import nowak_example_time, nowak_example, evaluation_model_parallel
 
 
 

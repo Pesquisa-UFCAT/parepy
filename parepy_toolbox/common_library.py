@@ -1,5 +1,5 @@
 """Common library for PAREpy toolbox"""
-from typing import Optional, Callable, Tuple
+from typing import Optional, Callable
 
 import scipy as sc
 import numpy as np
@@ -12,9 +12,9 @@ def std_matrix(std: list) -> tuple[np.ndarray, np.ndarray]:
     """
     Extract D matrix and D^-1 matrix from a list of variables. Used in Y to X or X to Y transformation.
 
-    :param std: Standard deviation parameters.
+    :param std: Standard deviation parameters
 
-    return: output[0] = D matrix, output[1] = D^-1 matrix.
+    return: output[0] = D matrix, output[1] = D^-1 matrix
     """
 
     dneq = np.zeros((len(std), len(std)))
@@ -30,9 +30,9 @@ def mu_matrix(mean: list) -> np.ndarray:
     """
     Extract mean matrix from a list of variables. Used in Y to X or X to Y transformation.
 
-    :param mu: Mean parameters.
+    :param mu: Mean parameters
 
-    return: Mean matrix.
+    return: Mean matrix
     """
 
     mu_neq = np.zeros((len(mean), 1))
@@ -46,9 +46,9 @@ def x_to_y(x: np.ndarray, dneq1: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
     """
     Transforms a vector of random variables from the X space to the Y space.
 
-    :param x: Random variables in the X space.
-    :param dneq1: D^-1 matrix.
-    :param mu_neq: Mean matrix.
+    :param x: Random variables in the X space
+    :param dneq1: D^-1 matrix
+    :param mu_neq: Mean matrix
 
     :return: Transformed random variables in the Y space.
     """
@@ -60,11 +60,11 @@ def y_to_x(y: np.ndarray, dneq: np.ndarray, mu_neq: np.ndarray) -> np.ndarray:
     """
     Transforms a vector of random variables from the Y space to the X space.
 
-    :param y: Random variables in the Y space.
-    :param dneq: D matrix.
-    :param mu_neq: Mean matrix.
+    :param y: Random variables in the Y space
+    :param dneq: D matrix
+    :param mu_neq: Mean matrix
 
-    :return: Transformed random variables in the X space.
+    :return: Transformed random variables in the X space
     """
 
     return dneq @ y + mu_neq
@@ -74,9 +74,18 @@ def pf_equation(beta: float) -> float:
     """
     Calculates the probability of failure (pf) for a given reliability index (β), using the cumulative distribution function (CDF) of the standard normal distribution.
 
-    :param beta: Reliability index (β).
+    :param beta: Reliability index (β)
     
-    :return: Probability of failure (pf).
+    :return: Probability of failure (pf)
+
+    Example
+    ==============
+    >>> # pip install parepy-toolbox or pip install -U parepy-toolbox
+    >>> from parepy_toolbox import pf_equation
+    >>> beta = 3.5
+    >>> pf = pf_equation(beta)
+    >>> print(f"Probability of failure: {pf:.5e}")
+    Probability of failure: 2.32629e-04
     """
 
     return sc.stats.norm.cdf(-beta)
@@ -86,161 +95,89 @@ def beta_equation(pf: float) -> float:
     """
     Calculates the reliability index value for a given probability of failure (pf), using the inverse cumulative distribution function (ICDF) of the standard normal distribution.
 
-    :param pf: Probability of failure (pf).
+    :param pf: Probability of failure (pf)
 
-    :return: Reliability index (β).
+    :return: Reliability index (β)
+
+    Example
+    ==============
+    >>> # pip install parepy-toolbox or pip install -U parepy-toolbox
+    >>> from parepy_toolbox import beta_equation
+    >>> pf = 2.32629e-04
+    >>> beta = beta_equation(pf)
+    >>> print(f"Reliability index: {beta:.5f}")
+    Reliability index: 3.50000
     """
 
     return -sc.stats.norm.ppf(pf)
-
-
-def first_second_order_derivative_numerical_differentiation_unidimensional(obj: Callable, x: list, pos: str, method: str, order: str = 'first', h: float = 1E-5, args: Optional[tuple] = None) -> float:
-    """
-    Computes the numerical derivative of a function at a given point in the given dimension using the central, backward and forward difference method.
-
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param x: Point at which to evaluate the derivative.
-    :param pos: Dimension in the list x where the derivative is to be calculated. When use order 'xy', pos is a str contain first and second dimension separated by a comma (e.g., '0,1' for the first and second dimensions). 
-    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
-    :param order: Order of the derivative to compute (default is first for first-order derivative). Supported values: 'first', 'second', or 'xy'.
-    :param h: Step size for the finite difference approximation (default is 1e-10).
-    :param args: Extra arguments to pass to the objective function (optional).
-
-    :return: Numerical derivative of order n of the function at point x in dimension pos.
-    """
-
-    if order == 'first':
-        a = x.copy()
-        b = x.copy()
-        if method == "forward":
-            for i in range(len(x)):
-                if i == int(pos):
-                    a[i] += h
-            den = h
-        elif method == "backward":
-            for i in range(len(x)):
-                if i == int(pos):
-                    b[i] -= h
-            den = h
-        elif method == "center":
-            for i in range(len(x)):
-                if i == int(pos):
-                    a[i] += h
-                    b[i] -= h
-            den = 2 * h
-        fa = obj(a, args) if args is not None else obj(a)
-        fb = obj(b, args) if args is not None else obj(b)
-        diff = (fa - fb) / den
-    elif order == 'second':
-        a = x.copy()
-        b = x.copy()
-        x_aux = x.copy()
-        den = h ** 2
-        if method == "forward":
-            for i in range(len(x)):
-                if i == int(pos):
-                    a[i] += 2*h
-                    x_aux[i] += h
-            fa = obj(a, args) if args is not None else obj(a)
-            fx = obj(x_aux, args) if args is not None else obj(x_aux)
-            fb = obj(b, args) if args is not None else obj(b)
-        elif method == "backward":
-            for i in range(len(x)):
-                if i == int(pos):
-                    b[i] -= 2*h
-                    x_aux[i] -= h
-            fa = obj(a, args) if args is not None else obj(a)
-            fx = obj(x_aux, args) if args is not None else obj(x_aux)
-            fb = obj(b, args) if args is not None else obj(b)
-        elif method == "center":
-            for i in range(len(x)):
-                if i == int(pos):
-                    a[i] += h
-                    b[i] -= h
-            fa = obj(a, args) if args is not None else obj(a)
-            fx = obj(x_aux, args) if args is not None else obj(x_aux)
-            fb = obj(b, args) if args is not None else obj(b)
-        diff = (fa - 2 * fx + fb) / den
-    elif order == 'xy':
-        pos_x = int(pos.split(',')[0])
-        pos_y = int(pos.split(',')[1])
-        a = x.copy()
-        a[pos_x] += h
-        a[pos_y] += h
-        b = x.copy()
-        b[pos_x] += h
-        b[pos_y] -= h
-        c = x.copy()
-        c[pos_x] -= h
-        c[pos_y] += h
-        d = x.copy()
-        d[pos_x] -= h
-        d[pos_y] -= h
-        fa = obj(a, args) if args is not None else obj(a)
-        fb = obj(b, args) if args is not None else obj(b)
-        fc = obj(c, args) if args is not None else obj(c)
-        fd = obj(d, args) if args is not None else obj(d)
-        diff = (fa - fb - fc + fd) / (4 * h ** 2)
-
-    return diff
-
-
-def jacobian_matrix(obj: Callable, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None) -> np.ndarray:
-    """
-    Computes Jacobian matrix of a vector-valued function using finite difference methods.
-
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param x: Point at which to evaluate the derivative.
-    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
-    :param h: Step size for the finite difference approximation (default is 1e-10).
-    :param args: Extra arguments to pass to the objective function (optional).
-
-    :return: Numerical Jacobian matrix at point x.
-    """
-
-    jacob = np.zeros((len(x), 1))
-    for i in range(len(x)):
-        jacob[i, 0] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'first', h=h)
-
-    return jacob
-
-
-def hessian_matrix(obj: Callable, x: list, method: str, h: float = 1E-5, args: Optional[tuple] = None) -> np.ndarray:
-    """
-    Computes Hessian matrix of a vector-valued function using finite difference methods.
-
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param x: Point at which to evaluate the derivative.
-    :param method: Method to use for differentiation. Supported values: 'center', 'forward', or 'backward'.
-    :param h: Step size for the finite difference approximation (default is 1e-10).
-    :param args: Extra arguments to pass to the objective function (optional).
-
-    :return: Numerical Hessian matrix at point x.
-    """
-
-    hessian = np.zeros((len(x), len(x)))
-    for i in range(len(x)):
-        for j in range(len(x)):
-            if i == j:
-                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, str(i), method, 'second', h=h)
-            else:
-                hessian[i, j] = first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h=h, args=args) if args is not None else first_second_order_derivative_numerical_differentiation_unidimensional(obj, x, f'{j},{i}', method, 'xy', h=h)
-
-    return hessian
 
 
 def sampling_kernel_without_time(obj: Callable, random_var_settings: list, method: str, n_samples: int, number_of_limit_functions: int, args: Optional[tuple] = None) -> pd.DataFrame:
     """
     Generates random samples from a specified distribution using kernel density estimation.
 
-    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function.
-    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'.
-    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling).
-    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m).
-    :param number_of_limit_functions: Number of limit state functions or constraints.
-    :param args: Extra arguments to pass to the objective function (optional).
+    :param obj: The objective function: obj(x, args) -> float or obj(x) -> float, where x is a list with shape n and args is a tuple fixed parameters needed to completely specify the function
+    :param random_var_settings: Containing the distribution type and parameters. Example: {'type': 'normal', 'parameters': {'mean': 0, 'std': 1}}. Supported distributions: (a) 'uniform': keys 'min' and 'max', (b) 'normal': keys 'mean' and 'std', (c) 'lognormal': keys 'mean' and 'std', (d) 'gumbel max': keys 'mean' and 'std', (e) 'gumbel min': keys 'mean' and 'std', (f) 'triangular': keys 'min', 'mode' and 'max', or (g) 'gamma': keys 'mean' and 'std'
+    :param method: Sampling method. Supported values: 'lhs' (Latin Hypercube Sampling), 'mcs' (Crude Monte Carlo Sampling) or 'sobol' (Sobol Sampling)
+    :param n_samples: Number of samples. For Sobol sequences, this variable represents the exponent "m" (n = 2^m)
+    :param number_of_limit_functions: Number of limit state functions or constraints
+    :param args: Extra arguments to pass to the objective function (optional)
 
-    :return: Random samples, objective function evaluations and indicator functions.
+    :return: Random samples, objective function evaluations and indicator functions
+
+    .. list-table:: **Table 1: Supported distributions**
+       :widths: 20 40
+       :header-rows: 1
+
+       * - **Name**
+         - **Expected parameters**
+       * - ``"uniform"``
+         - ``"min"`` and ``"max"``
+       * - ``"normal"``
+         - ``"mean"`` and ``"std"``
+       * - ``"lognormal"``
+         - ``"mean"`` and ``"std"``
+       * - ``"gumbel max"``
+         - ``"mean"`` and ``"std"``
+       * - ``"gumbel min"``
+         - ``"mean"`` and ``"std"``
+       * - ``"triangular"``
+         - ``"min"``, ``"mode"``, and ``"max"``
+       * - ``"gamma"``
+         - ``"mean"`` and ``"std"``
+
+    Example
+    ==============
+    >>> # pip install parepy-toolbox or pip install -U parepy-toolbox
+    >>> import time
+    >>> from parepy_toolbox import sampling_kernel_without_time
+    >>> def obj(x):
+            g_0 = 12.5 * x[0] ** 3 - x[1]
+            return [g_0]
+    >>> d = {'type': 'normal', 'parameters': {'mean': 1.0, 'std': 0.1}}
+    >>> l = {'type': 'normal', 'parameters': {'mean': 10.0, 'std': 1.0}}
+    >>> var = [d, l]
+    >>> number_of_limit_functions = 1
+    >>> method = 'mcs'
+    >>> n_samples = 10000
+    >>> start = time.perf_counter()
+    >>> df = sampling_kernel_without_time(obj, var, method, n_samples, number_of_limit_functions)
+    >>> end = time.perf_counter()
+    >>> print(f"Time elapsed: {(end-start):.5f}")
+    >>> print(df)
+            X_0        X_1        G_0     I_0
+    0     1.193612  10.539209  10.717671  0.0
+    1     1.041650  10.441663   3.686170  0.0
+    2     1.133054   9.232075   8.950766  0.0
+    3     0.983667  10.080005   1.817470  0.0
+    4     0.908051  10.095981  -0.736729  1.0
+    ...        ...        ...        ...  ...
+    9995  1.016563   9.815083   3.316392  0.0
+    9996  0.998764   9.623686   2.830013  0.0
+    9997  0.826956   9.338711  -2.269712  1.0
+    9998  1.060813   9.721774   5.200211  0.0
+    9999  1.107219   9.239544   7.727668  0.0
+    [10000 rows x 4 columns]
     """
 
     n_real_samples = 2**n_samples if method == 'sobol' else n_samples
@@ -277,71 +214,6 @@ def sampling_kernel_without_time(obj: Callable, random_var_settings: list, metho
     #     random_data[f'I_{col}'] = np.where(random_data[col] <= 0, 1, 0)
 
     return df
-
-
-def summarize_pf_beta(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Generates a summary DataFrame containing the probability of failure (pf) and reliability index (β) for each indicator function column in the input DataFrame.
-
-    :param df: Random samples, objective function evaluations and indicator functions.
-
-    :return: output [0] = Probability of failure values for each indicator function, output[1] = beta_df: Reliability index values for each indicator function.
-
-    """
-    
-    pf_values = {}
-    beta_values = {}
-
-    for col in df.columns:
-        if col.startswith("I_"):
-            idx = col.split("_")[1]
-            pf = df[col].mean()
-            beta = beta_equation(pf)
-            pf_values[f"pf_{idx}"] = pf
-            beta_values[f"beta_{idx}"] = beta
-
-    pf_df = pd.DataFrame([pf_values])
-    beta_df = pd.DataFrame([beta_values])
-
-    return pf_df, beta_df
-
-
-def convergence_probability_failure(df: pd.DataFrame, column: str) -> tuple[list, list, list, list, list]:
-    """
-    Calculates the convergence rate of the probability of failure.
-
-    :param df: Random samples, objective function evaluations and indicator functions.
-    :param column: Name of the column to be analyzed. Supported values: 'I_0', 'I_1', ..., 'I_n' where n is the number of limit state functions.
-
-    :return: output[0] = div: List of sample sizes considered at each step, output[1] = m: List of mean values (estimated probability of failure), output[2] = ci_l: List containing the lower confidence interval values of the column, output[3] = ci_u: List containing the upper confidence interval values of the column, output[4] = var: List containing the variance values of the column. 
-    """
-
-    column_values = df[column].to_list()
-    step = 1000
-    div = [i for i in range(step, len(column_values), step)]
-    m = []
-    ci_u = []
-    ci_l = []
-    var = []
-    for i in range(0, len(div)+1):
-        if i == len(div):
-            aux = column_values.copy()
-            div.append(len(column_values))
-        else:
-            aux = column_values[:div[i]]
-        mean = np.mean(aux)
-        std = np.std(aux, ddof=1)
-        n = len(aux)
-        confidence_level = 0.95
-        t_critic = sc.stats.t.ppf((1 + confidence_level) / 2, df=n-1)
-        margin = t_critic * (std / np.sqrt(n))
-        confidence_interval = (mean - margin, mean + margin)
-        m.append(mean)
-        ci_u.append(confidence_interval[1])
-        ci_l.append(confidence_interval[0])
-        var.append((mean * (1 - mean))/n)
-
-    return div, m, ci_l, ci_u, var
 
 
 # def sampling(n_samples: int, model: dict, variables_setup: list) -> np.ndarray:
